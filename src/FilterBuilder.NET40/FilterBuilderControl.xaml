@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="Orc.FilterBuilder.NET40.FilterBuilderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<StackPanel x:Name="view" Orientation="Vertical" Margin="5,5,0,0">
+		<ComboBox ItemsSource="{Binding FilterSchemes}" MinWidth="300" 
+				  SelectedItem="{Binding SelectedFilterScheme}" DisplayMemberPath="Title"/>
+		<StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+			<Button Content="New" Width="80" Height="24" HorizontalAlignment="Left" Margin="0,0,5,0"
+					Command="{Binding NewSchemeCommand}"/>
+			<Button Content="Edit" Width="80" Height="24" HorizontalAlignment="Left" Margin="0,0,5,0"
+					Command="{Binding EditSchemeCommand}"/>
+			<Button Content="Apply" Width="80" Height="24" HorizontalAlignment="Left" Margin="0,0,5,0"
+					Command="{Binding ApplySchemeCommand}"/>
+		</StackPanel>
+	</StackPanel>
+</UserControl>
