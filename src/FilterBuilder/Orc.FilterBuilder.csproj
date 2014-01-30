@@ -62,6 +62,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="BooleanExpression.cs" />
     <Compile Include="ConditionGroup.cs" />
     <Compile Include="ConditionGroupType.cs" />
