@@ -24,7 +24,7 @@ let nuspecTemplatesDir = deploymentDir @@ "templates"
 let nugetExePath = @".\src\.nuget\nuget.exe"
 let nugetRepositoryDir = srcDir @@ @"packages"
 let nugetAccessKey = if File.Exists(@".\Nuget.key") then File.ReadAllText(@".\Nuget.key") else ""
-let version = File.ReadAllText(@".\version.txt")
+let version = File.ReadAllLines(@".\version.txt").FirstOrDefault()
 
 let solutionAssemblyInfoPath = srcDir @@ "SolutionAssemblyInfo.cs"
 let projectsToPackageAssemblyNames = ["Orc.FilterBuilder"]
