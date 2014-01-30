@@ -158,9 +158,9 @@ Target "NuGet" (fun _ ->
                 AccessKey = nugetAccessPublishKey })
                 getNuspecFile
     
-    let doAll files depenencies =
+    let doAll files dependencies =
         preparePackage files
-        doPackage depenencies
+        doPackage dependencies
         cleanPackage ""
 
     doAll binProjectFiles nugetDependencies
@@ -185,6 +185,6 @@ Target "All" DoNothing
 
 Target "Release" DoNothing
 "All" ==> "Release"
-//"NuGet" ==> "Release"
+"NuGet" ==> "Release"
  
 RunTargetOrDefault "All"

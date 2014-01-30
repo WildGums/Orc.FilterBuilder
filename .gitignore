@@ -53,7 +53,7 @@ _ReSharper*
 *.ncrunch*
 .*crunch*.local.xml
 
-# Installshield output folder 
+# Installshield output folder
 [Ee]xpress
 
 # DocProject is a documentation generator add-in
@@ -83,7 +83,7 @@ csx
 AppPackages/
 
 # Windows image file caches
-Thumbs.db 
+Thumbs.db
 
 # Others
 [Oo]bj
@@ -99,7 +99,7 @@ stylecop.*
 *.*~
 
 #RIA/Silverlight projects
-Generated_Code 
+Generated_Code
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
@@ -108,7 +108,7 @@ Backup*/
 UpgradeLog*.XML
 
 # Windows image file caches
-Thumbs.db 
+Thumbs.db
 
 # Folder config file
 Desktop.ini
@@ -127,3 +127,4 @@ packages/
 tools/FAKE
 build-log.xml
 build-log.txt
+Nuget.key
