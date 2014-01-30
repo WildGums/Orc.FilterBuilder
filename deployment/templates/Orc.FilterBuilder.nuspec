@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Orc.FilterBuilder</id>
+    <version>@build.number@</version>
+    <title>Orc.FilterBuilder</title>
+    <authors>Orcomp</authors>
+    <owners>Orcomp</owners>
+
+        <description>
+          WPF UI to help users build collection filters.
+        </description>
+        <summary>
+        </summary>
+        
+        <tags>wpf silverlight orcomp</tags>
+        <language>en-US</language>
+        <projectUrl>https://github.com/Orcomp/Orc.FilterBuilder</projectUrl>
+  </metadata>
+</package>
