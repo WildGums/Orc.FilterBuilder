@@ -123,4 +123,7 @@ lib/
 [Oo]utput/
 packages/
 
-
+# FAKE build
+tools/FAKE
+build-log.xml
+build-log.txt
