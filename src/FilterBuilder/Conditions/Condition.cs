@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeSpanType.cs" company="Orcomp development team">
+// <copyright file="Condition.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,13 +7,20 @@
 
 namespace Orc.FilterBuilder
 {
-    public enum TimeSpanType
+    public enum Condition
     {
-        Years,
-        Months,
-        Days,
-        Hours,
-        Minutes,
-        Seconds
+        Contains,
+        StartsWith,
+        EndsWith,
+        EqualTo,
+        NotEqualTo,
+        GreaterThan,
+        LessThan,
+        GreaterThanOrEqualTo,
+        LessThanOrEqualTo,
+        IsEmpty,
+        NotIsEmpty,
+        IsNull,
+        NotIsNull
     }
 }

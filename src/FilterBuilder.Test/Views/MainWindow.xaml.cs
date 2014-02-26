@@ -1,18 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="App.xaml.cs" company="Orcomp development team">
+// <copyright file="MainWindow.xaml.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Test
+namespace FilterBuilder.Test.Views
 {
-    using System.Windows;
+    using Catel.Windows;
 
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class MainWindow : DataWindow
     {
+        public MainWindow()
+            : base(DataWindowMode.Custom)
+        {
+            InitializeComponent();
+        }
     }
 }

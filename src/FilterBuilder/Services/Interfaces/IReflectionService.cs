@@ -1,19 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeSpanType.cs" company="Orcomp development team">
+// <copyright file="IReflectionService.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder
+namespace Orc.FilterBuilder.Services
 {
-    public enum TimeSpanType
+    using System;
+    using Orc.FilterBuilder.Models;
+
+    public interface IReflectionService
     {
-        Years,
-        Months,
-        Days,
-        Hours,
-        Minutes,
-        Seconds
+        #region Methods
+        InstanceProperties GetInstanceProperties(Type targetType);
+        #endregion
     }
 }

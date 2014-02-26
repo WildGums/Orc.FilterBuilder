@@ -1,19 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeSpanType.cs" company="Orcomp development team">
+// <copyright file="IFilterSchemeManager.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder
+namespace Orc.FilterBuilder.Services
 {
-    public enum TimeSpanType
+    using Orc.FilterBuilder.Models;
+
+    public interface IFilterSchemeManager
     {
-        Years,
-        Months,
-        Days,
-        Hours,
-        Minutes,
-        Seconds
+        #region Methods
+        void Save();
+        void Load();
+        #endregion
+
+        FilterSchemes FilterSchemes { get; }
     }
 }
