@@ -13,12 +13,6 @@ namespace Orc.FilterBuilder
 
     public class PropertyExpression : ConditionTreeItem
     {
-        #region Fields
-        private PropertyInfo _property;
-
-        private DataTypeExpression _dataTypeExpression;
-        #endregion
-
         #region Properties
         public PropertyInfo Property { get; set; }
 

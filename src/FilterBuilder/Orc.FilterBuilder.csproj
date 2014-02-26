@@ -80,6 +80,7 @@
     <Compile Include="Expressions\DecimalExpression.cs" />
     <Compile Include="Models\FilterSchemes.cs" />
     <Compile Include="ModuleInitializer.cs" />
+    <Compile Include="Runtime\Serialization\FilterSchemeSerializerModifier.cs" />
     <Compile Include="Services\Interfaces\IFilterSchemeManager.cs" />
     <Compile Include="Services\Interfaces\IReflectionService.cs" />
     <Compile Include="Services\ReflectionService.cs" />

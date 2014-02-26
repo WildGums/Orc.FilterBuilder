@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder.Services
 {
+    using System;
     using System.IO;
     using Catel;
     using Catel.Logging;
@@ -40,9 +41,18 @@ namespace Orc.FilterBuilder.Services
         {
             Log.Info("Saving filter schemes to '{0}'", _fileName);
 
-            using (var stream = File.Open(_fileName, FileMode.Create))
+            try
             {
-                _xmlSerializer.Serialize(FilterSchemes, stream);
+                using (var stream = File.Open(_fileName, FileMode.Create))
+                {
+                    _xmlSerializer.Serialize(FilterSchemes, stream);
+                }
+
+                Log.Debug("Saved filter schemes to '{0}'", _fileName);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to save filter schemes");
             }
         }
 
@@ -50,12 +60,21 @@ namespace Orc.FilterBuilder.Services
         {
             Log.Info("Loading filter schemes from '{0}'", _fileName);
 
-            if (File.Exists(_fileName))
+            try
             {
-                using (var stream = File.Open(_fileName, FileMode.Create))
+                if (File.Exists(_fileName))
                 {
-                    _xmlSerializer.Deserialize(FilterSchemes, stream);
+                    using (var stream = File.Open(_fileName, FileMode.Open))
+                    {
+                        _xmlSerializer.Deserialize(FilterSchemes, stream);
+                    }
+
+                    Log.Info("Loaded filter schemes from '{0}'", _fileName);
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to load filter schemes");
             }
         }
     }

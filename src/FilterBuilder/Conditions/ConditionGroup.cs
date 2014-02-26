@@ -26,6 +26,7 @@ namespace Orc.FilterBuilder
 
         #region Properties
         public List<ConditionGroupType> GroupTypes { get; set; }
+
         public ConditionGroupType Type { get; set; }
         #endregion
 
@@ -49,7 +50,7 @@ namespace Orc.FilterBuilder
 
         protected override ConditionTreeItem CopyPlainItem()
         {
-            ConditionGroup copiedGroup = new ConditionGroup();
+            var copiedGroup = new ConditionGroup();
             copiedGroup.Type = Type;
             return copiedGroup;
         }

@@ -11,10 +11,12 @@ namespace Orc.FilterBuilder
     using System.Collections.Generic;
     using System.Linq;
     using Catel.Data;
+    using Catel.Runtime.Serialization;
 
     public abstract class DataTypeExpression : ModelBase
     {
         #region Properties
+        [ExcludeFromSerialization]
         public List<Condition> Conditions { get; set; }
 
         public Condition SelectedCondition { get; set; }

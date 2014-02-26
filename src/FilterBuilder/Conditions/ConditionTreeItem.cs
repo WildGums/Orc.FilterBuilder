@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder
 {
     using System.Collections.ObjectModel;
     using Catel.Data;
+    using Catel.Runtime.Serialization;
 
     public abstract class ConditionTreeItem : ModelBase
     {
@@ -20,6 +21,7 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Properties
+        [ExcludeFromSerialization]
         public ConditionTreeItem Parent { get; set; }
 
         public ObservableCollection<ConditionTreeItem> Items { get; set; }

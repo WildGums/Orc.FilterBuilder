@@ -12,7 +12,10 @@ namespace Orc.FilterBuilder.Models
     using System.Linq;
     using Catel;
     using Catel.Data;
+    using Catel.Runtime.Serialization;
+    using Orc.FilterBuilder.Runtime.Serialization;
 
+    [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
         #region Constructors
@@ -44,6 +47,7 @@ namespace Orc.FilterBuilder.Models
 
         public string Title { get; set; }
 
+        [ExcludeFromSerialization]
         public ConditionTreeItem Root
         {
             get { return ConditionItems.First(); }

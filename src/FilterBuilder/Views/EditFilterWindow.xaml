@@ -30,7 +30,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Name:" Margin="10"/>
-        <TextBox Grid.Column="1" Text="{Binding FilterSchemeTitle}" Margin="10"/>
+        <TextBox Grid.Column="1" Text="{Binding FilterSchemeTitle, UpdateSourceTrigger=PropertyChanged}" Margin="10"/>
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="1" Margin="10,0,10,0" ItemsSource="{Binding FilterScheme.ConditionItems}">
             <TreeView.ItemContainerStyle>

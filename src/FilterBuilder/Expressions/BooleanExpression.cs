@@ -26,6 +26,7 @@ namespace Orc.FilterBuilder
 
         #region Properties
         public bool Value { get; set; }
+
         public List<bool> BooleanValues { get; set; }
         #endregion
 
