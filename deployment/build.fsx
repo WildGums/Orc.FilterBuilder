@@ -1,4 +1,4 @@
-#r @"tools\FAKE\tools\FakeLib.dll"
+#r @"..\tools\FAKE\tools\FakeLib.dll"
 
 open System
 open System.IO
@@ -14,23 +14,23 @@ open Fake.MSTest
 let binProjectName = "Orc.FilterBuilder"
 let netVersions = ["NET40"]
 
-let srcDir  = @".\src\"
-let deploymentDir  = @".\deployment\"
+let srcDir  = @"..\src\"
+let deploymentDir  = @".\"
 let packagesDir = deploymentDir @@ "packages"
 
 let dllDeploymentDirs = netVersions |> List.map(fun v -> v, packagesDir @@ "work" @@ "lib" @@ v) |> dict
 let nuspecTemplatesDir = deploymentDir @@ "templates"
 
-let nugetExePath = @".\src\.nuget\nuget.exe"
+let nugetExePath = @"..\src\.nuget\nuget.exe"
 let nugetRepositoryDir = srcDir @@ @"packages"
-let nugetAccessKey = if File.Exists(@".\Nuget.key") then File.ReadAllText(@".\Nuget.key") else ""
+let nugetAccessKey = if File.Exists(@"..\Nuget.key") then File.ReadAllText(@"..\Nuget.key") else ""
 let version = File.ReadAllLines(@".\version.txt").FirstOrDefault()
 
 let solutionAssemblyInfoPath = srcDir @@ "SolutionAssemblyInfo.cs"
 let projectsToPackageAssemblyNames = ["Orc.FilterBuilder"]
 let projectsToPackageDependencies:^string list = ["Catel.Core";"Catel.MVVM";"fasterflect"]
 
-let outputDir = @".\output\"
+let outputDir = @"..\output\"
 let outputReleaseDir = outputDir @@ "release" ////@@ netVersion
 let outputBinDir = outputReleaseDir ////@@ binProjectName
 let getProjectOutputBinDirs netVersion projectName = outputBinDir @@ netVersion @@ projectName
