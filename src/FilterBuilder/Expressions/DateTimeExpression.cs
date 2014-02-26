@@ -13,10 +13,14 @@ namespace Orc.FilterBuilder
     public class DateTimeExpression : DataTypeExpression
     {
         #region Constructors
+        public DateTimeExpression()
+            : this(false)
+        {
+        }
+
         public DateTimeExpression(bool isNullable)
         {
             IsNullable = isNullable;
-            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
             SelectedCondition = Condition.EqualTo;
             Value = DateTime.Now;
             ValueControlType = ValueControlType.DateTime;
@@ -30,6 +34,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
+        private void OnIsNullableChanged()
+        {
+            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
+        }
+
         public override bool CalculateResult(string propertyName, object entity)
         {
             if (IsNullable)

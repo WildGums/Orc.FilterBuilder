@@ -13,10 +13,14 @@ namespace Orc.FilterBuilder
     public class DecimalExpression : DataTypeExpression
     {
         #region Constructors
+        public DecimalExpression()
+            : this(false)
+        {
+        }
+
         public DecimalExpression(bool isNullable)
         {
             IsNullable = isNullable;
-            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
             SelectedCondition = Condition.EqualTo;
             Value = 0;
             ValueControlType = ValueControlType.Text;
@@ -30,6 +34,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
+        private void OnIsNullableChanged()
+        {
+            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
+        }
+
         public override bool CalculateResult(string propertyName, object entity)
         {
             if (IsNullable)

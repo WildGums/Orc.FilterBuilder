@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
+    using Catel.Runtime.Serialization;
     using Fasterflect;
 
     public class BooleanExpression : DataTypeExpression
@@ -27,6 +28,7 @@ namespace Orc.FilterBuilder
         #region Properties
         public bool Value { get; set; }
 
+        [ExcludeFromSerialization]
         public List<bool> BooleanValues { get; set; }
         #endregion
 

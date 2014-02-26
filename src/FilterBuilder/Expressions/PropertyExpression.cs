@@ -9,8 +9,11 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Reflection;
+    using Catel.Runtime.Serialization;
     using Fasterflect;
+    using Orc.FilterBuilder.Runtime.Serialization;
 
+    [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
     public class PropertyExpression : ConditionTreeItem
     {
         #region Properties

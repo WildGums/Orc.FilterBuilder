@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Linq;
     using Catel.Data;
+    using Catel.Runtime.Serialization;
     using Fasterflect;
 
     public class TimeSpanExpression : DataTypeExpression
@@ -35,6 +36,8 @@ namespace Orc.FilterBuilder
 
         #region Properties
         public TimeSpan Value { get; set; }
+
+        [ExcludeFromSerialization]
         public List<TimeSpanType> SpanTypes { get; set; }
 
         public TimeSpanType SelectedSpanType { get; set; }

@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder.Services
 
     public class FilterSchemeManager : IFilterSchemeManager
     {
-        private readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         #region Constants
         private const string FileName = "FilterSchemes.xml";

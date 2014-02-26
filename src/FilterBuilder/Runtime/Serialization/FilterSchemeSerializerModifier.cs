@@ -14,11 +14,6 @@ namespace Orc.FilterBuilder.Runtime.Serialization
 
     public class FilterSchemeSerializerModifier : SerializerModifierBase<FilterScheme>
     {
-        public FilterSchemeSerializerModifier()
-        {
-            
-        }
-
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
             if (string.Equals(memberValue.Name, "TargetType"))
@@ -35,10 +30,10 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             if (string.Equals(memberValue.Name, "TargetType"))
             {
-                var targetType = memberValue.Value as string;
-                if (targetType != null)
+                var targetTypeAsString = memberValue.Value as string;
+                if (targetTypeAsString != null)
                 {
-                    memberValue.Value = TypeCache.GetType(targetType);
+                    memberValue.Value = TypeCache.GetType(targetTypeAsString);
                 }
             }
         }

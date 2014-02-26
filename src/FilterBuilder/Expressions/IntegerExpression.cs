@@ -13,10 +13,14 @@ namespace Orc.FilterBuilder
     public class IntegerExpression : DataTypeExpression
     {
         #region Constructors
+        public IntegerExpression()
+            : this(false)
+        {
+        }
+
         public IntegerExpression(bool isNullable)
         {
             IsNullable = isNullable;
-            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
             SelectedCondition = Condition.EqualTo;
             Value = 0;
             ValueControlType = ValueControlType.Text;
@@ -30,11 +34,16 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
+        private void OnIsNullableChanged()
+        {
+            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
+        }
+
         public override bool CalculateResult(string propertyName, object entity)
         {
             if (IsNullable)
             {
-                var entityValue = (int?) entity.GetPropertyValue(propertyName);
+                var entityValue = (int?)entity.GetPropertyValue(propertyName);
                 switch (SelectedCondition)
                 {
                     case Condition.EqualTo:
@@ -59,7 +68,7 @@ namespace Orc.FilterBuilder
             }
             else
             {
-                var entityValue = (int) entity.GetPropertyValue(propertyName);
+                var entityValue = (int)entity.GetPropertyValue(propertyName);
                 switch (SelectedCondition)
                 {
                     case Condition.EqualTo:

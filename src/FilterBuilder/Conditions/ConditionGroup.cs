@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Catel.Runtime.Serialization;
 
     public class ConditionGroup : ConditionTreeItem
     {
@@ -25,6 +26,7 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Properties
+        [ExcludeFromSerialization]
         public List<ConditionGroupType> GroupTypes { get; set; }
 
         public ConditionGroupType Type { get; set; }
