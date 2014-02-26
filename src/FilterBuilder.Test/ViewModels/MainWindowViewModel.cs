@@ -7,8 +7,10 @@
 
 namespace FilterBuilder.Test.ViewModels
 {
+    using System;
     using System.Collections.ObjectModel;
     using Catel;
+    using Catel.Collections;
     using Catel.MVVM;
     using FilterBuilder.Test.Models;
     using FilterBuilder.Test.Services;
@@ -25,13 +27,15 @@ namespace FilterBuilder.Test.ViewModels
             _testDataService = testDataService;
 
             RawItems = _testDataService.GenerateTestItems();
-            FilteredItems = new ObservableCollection<TestEntity>();
+            FilteredItems = new FastObservableCollection<TestEntity>();
+
+            FilteredItems.CollectionChanged += (sender, e) => Console.WriteLine("Collection updated");
         }
         #endregion
 
         #region Properties
         public ObservableCollection<TestEntity> RawItems { get; private set; }
-        public ObservableCollection<TestEntity> FilteredItems { get; private set; }
+        public FastObservableCollection<TestEntity> FilteredItems { get; private set; }
 
         public override string Title
         {

@@ -7,12 +7,15 @@
 
 namespace Orc.FilterBuilder.ViewModels
 {
+    using System;
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Linq;
     using Catel;
+    using Catel.Collections;
     using Catel.Logging;
     using Catel.MVVM;
+    using Catel.Reflection;
     using Catel.Services;
     using Orc.FilterBuilder.Models;
     using Orc.FilterBuilder.Services;
@@ -94,13 +97,27 @@ namespace Orc.FilterBuilder.ViewModels
 
         public void OnApplyScheme()
         {
+            IDisposable suspendToken = null;
+            var filteredCollectionType = FilteredCollection.GetType();
+            if (filteredCollectionType.IsGenericTypeEx() && filteredCollectionType.GetGenericTypeDefinitionEx() == typeof(FastObservableCollection<>))
+            {
+                suspendToken = (IDisposable)filteredCollectionType.GetMethodEx("SuspendChangeNotifications").Invoke(FilteredCollection, null);
+            }
+
             FilteredCollection.Clear();
+
             foreach (object item in RawCollection)
             {
                 if (SelectedFilterScheme.CalculateResult(item))
                 {
                     FilteredCollection.Add(item);
                 }
+            }
+
+            if (suspendToken != null)
+            {
+                suspendToken.Dispose();
+                suspendToken = null;
             }
         }
 
