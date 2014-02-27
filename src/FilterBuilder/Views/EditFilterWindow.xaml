@@ -4,6 +4,7 @@
                   xmlns:net40="clr-namespace:Orc.FilterBuilder"
                   xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters"
                   xmlns:catel="http://catel.codeplex.com"
+                  xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup"
                   SizeToContent="Manual" ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
@@ -43,7 +44,7 @@
                     <Grid>
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
 									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
-                            <ComboBox ItemsSource="{Binding GroupTypes}" SelectedItem="{Binding Type}" MinWidth="80"/>
+                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" MinWidth="80"/>
                             <Button BorderThickness="0"  ToolTip="Add expression" Margin="3,0,0,0"
 									Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
 									CommandParameter="{Binding}">
@@ -67,7 +68,7 @@
 									  SelectedItem="{Binding Property}"
 									  Width="120"/>
 
-                            <ComboBox ItemsSource="{Binding DataTypeExpression.Conditions}"
+                            <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
 									  SelectedItem="{Binding DataTypeExpression.SelectedCondition}"
 									  MinWidth="80" Margin="3,0,0,0"/>
 

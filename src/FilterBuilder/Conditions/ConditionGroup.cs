@@ -7,28 +7,18 @@
 
 namespace Orc.FilterBuilder
 {
-    using System.Collections.Generic;
     using System.Linq;
-    using Catel.Runtime.Serialization;
 
     public class ConditionGroup : ConditionTreeItem
     {
         #region Constructors
         public ConditionGroup()
         {
-            GroupTypes = new List<ConditionGroupType>
-            {
-                ConditionGroupType.And,
-                ConditionGroupType.Or
-            };
             Type = ConditionGroupType.And;
         }
         #endregion
 
         #region Properties
-        [ExcludeFromSerialization]
-        public List<ConditionGroupType> GroupTypes { get; set; }
-
         public ConditionGroupType Type { get; set; }
         #endregion
 

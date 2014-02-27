@@ -19,13 +19,11 @@ namespace Orc.FilterBuilder.Converters
             switch ((string) parameter)
             {
                 case "Group":
-                    return value is ConditionGroup
-                        ? Visibility.Visible
-                        : Visibility.Collapsed;
+                    return value is ConditionGroup ? Visibility.Visible : Visibility.Collapsed;
+
                 case "Expression":
-                    return value is PropertyExpression
-                        ? Visibility.Visible
-                        : Visibility.Collapsed;
+                    return value is PropertyExpression ? Visibility.Visible : Visibility.Collapsed;
+
                 default:
                     throw new NotSupportedException(string.Format("Parameter {0} is not supported.", parameter));
             }

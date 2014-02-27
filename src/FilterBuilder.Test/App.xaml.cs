@@ -18,7 +18,7 @@ namespace Orc.FilterBuilder.Test
         protected override void OnStartup(StartupEventArgs e)
         {
 #if DEBUG
-            LogManager.AddDebugListener();
+            //LogManager.AddDebugListener();
 #endif
 
             base.OnStartup(e);

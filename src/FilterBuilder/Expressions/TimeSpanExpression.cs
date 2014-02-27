@@ -25,7 +25,6 @@ namespace Orc.FilterBuilder
         #region Constructors
         public TimeSpanExpression()
         {
-            Conditions = GetValueConditions();
             SelectedCondition = Condition.EqualTo;
             Value = TimeSpan.FromHours(1);
             ValueControlType = ValueControlType.TimeSpan;
@@ -57,21 +56,27 @@ namespace Orc.FilterBuilder
                     case TimeSpanType.Years:
                         Value = TimeSpan.FromDays(Amount * AverageDaysInYear);
                         break;
+
                     case TimeSpanType.Months:
                         Value = TimeSpan.FromDays(Amount * AverageDaysInMonth);
                         break;
+
                     case TimeSpanType.Days:
                         Value = TimeSpan.FromDays(Amount);
                         break;
+
                     case TimeSpanType.Hours:
                         Value = TimeSpan.FromHours(Amount);
                         break;
+
                     case TimeSpanType.Minutes:
                         Value = TimeSpan.FromMinutes(Amount);
                         break;
+
                     case TimeSpanType.Seconds:
                         Value = TimeSpan.FromSeconds(Amount);
                         break;
+
                     default:
                         throw new NotSupportedException(string.Format("Type '{0}' is not supported.", SelectedSpanType));
                 }
@@ -85,16 +90,22 @@ namespace Orc.FilterBuilder
             {
                 case Condition.EqualTo:
                     return entityValue == Value;
+
                 case Condition.NotEqualTo:
                     return entityValue != Value;
+
                 case Condition.GreaterThan:
                     return entityValue > Value;
+
                 case Condition.LessThan:
                     return entityValue < Value;
+
                 case Condition.GreaterThanOrEqualTo:
                     return entityValue >= Value;
+
                 case Condition.LessThanOrEqualTo:
                     return entityValue <= Value;
+
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
             }

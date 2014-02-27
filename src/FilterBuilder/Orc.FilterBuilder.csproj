@@ -73,6 +73,8 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Conditions\Helpers\ConditionHelper.cs" />
+    <Compile Include="Converters\DataTypeExpressionToConditionsConverter.cs" />
     <Compile Include="Expressions\BooleanExpression.cs" />
     <Compile Include="Conditions\ConditionGroup.cs" />
     <Compile Include="Conditions\ConditionGroupType.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Expressions\DataTypeExpression.cs" />
     <Compile Include="Expressions\DateTimeExpression.cs" />
     <Compile Include="Expressions\DecimalExpression.cs" />
+    <Compile Include="Markup\EnumBinding.cs" />
     <Compile Include="Models\FilterSchemes.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Runtime\Serialization\PropertyExpressionSerializerModifier.cs" />

@@ -34,11 +34,6 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
-        private void OnIsNullableChanged()
-        {
-            Conditions = IsNullable ? GetNullableValueConditions() : GetValueConditions();
-        }
-
         public override bool CalculateResult(string propertyName, object entity)
         {
             if (IsNullable)
@@ -48,20 +43,28 @@ namespace Orc.FilterBuilder
                 {
                     case Condition.EqualTo:
                         return entityValue == Value;
+
                     case Condition.NotEqualTo:
                         return entityValue != Value;
+
                     case Condition.GreaterThan:
                         return entityValue > Value;
+
                     case Condition.LessThan:
                         return entityValue < Value;
+
                     case Condition.GreaterThanOrEqualTo:
                         return entityValue >= Value;
+
                     case Condition.LessThanOrEqualTo:
                         return entityValue <= Value;
+
                     case Condition.IsNull:
                         return entityValue == null;
+
                     case Condition.NotIsNull:
                         return entityValue != null;
+
                     default:
                         throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
                 }
@@ -73,16 +76,22 @@ namespace Orc.FilterBuilder
                 {
                     case Condition.EqualTo:
                         return entityValue == Value;
+
                     case Condition.NotEqualTo:
                         return entityValue != Value;
+
                     case Condition.GreaterThan:
                         return entityValue > Value;
+
                     case Condition.LessThan:
                         return entityValue < Value;
+
                     case Condition.GreaterThanOrEqualTo:
                         return entityValue >= Value;
+
                     case Condition.LessThanOrEqualTo:
                         return entityValue <= Value;
+
                     default:
                         throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
                 }

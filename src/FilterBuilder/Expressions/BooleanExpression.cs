@@ -17,7 +17,6 @@ namespace Orc.FilterBuilder
         #region Constructors
         public BooleanExpression()
         {
-            Conditions = GetBooleandConditions();
             BooleanValues = new List<bool> {true, false};
             Value = true;
             SelectedCondition = Condition.EqualTo;
