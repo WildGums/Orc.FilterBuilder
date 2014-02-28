@@ -66,14 +66,18 @@ namespace Orc.FilterBuilder.ViewModels
         private void OnRawCollectionChanged()
         {
             UpdateFilters();
+
+            ApplyFilter();
         }
 
         private void OnFilteredCollectionChanged()
         {
-            if (FilteredCollection != null)
-            {
-                ApplySchemeCommand.Execute();
-            }
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            ApplySchemeCommand.Execute();
         }
 
         private void UpdateFilters()
