@@ -8,7 +8,7 @@
 namespace Orc.FilterBuilder
 {
     using System;
-    using Fasterflect;
+    using Orc.FilterBuilder.Models;
 
     public class StringExpression : DataTypeExpression
     {
@@ -26,9 +26,9 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
-        public override bool CalculateResult(string propertyName, object entity)
+        public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
-            var entityValue = entity.GetPropertyValue(propertyName) as string;
+            var entityValue = propertyMetadata.GetValue<string>(entity);
 
             switch (SelectedCondition)
             {

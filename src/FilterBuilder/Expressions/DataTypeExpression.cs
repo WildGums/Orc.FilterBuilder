@@ -8,9 +8,15 @@
 namespace Orc.FilterBuilder
 {
     using Catel.Data;
+    using Orc.FilterBuilder.Models;
 
     public abstract class DataTypeExpression : ModelBase
     {
+        protected DataTypeExpression()
+        {
+            IsValueRequired = true;
+        }
+
         #region Properties
         public Condition SelectedCondition { get; set; }
 
@@ -25,7 +31,7 @@ namespace Orc.FilterBuilder
             IsValueRequired = ConditionHelper.GetIsValueRequired(SelectedCondition);
         }
 
-        public abstract bool CalculateResult(string propertyName, object entity);
+        public abstract bool CalculateResult(IPropertyMetadata propertyMetadata, object entity);
         #endregion
     }
 }

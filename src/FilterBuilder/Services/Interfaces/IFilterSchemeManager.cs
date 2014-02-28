@@ -7,15 +7,24 @@
 
 namespace Orc.FilterBuilder.Services
 {
+    using System;
     using Orc.FilterBuilder.Models;
 
     public interface IFilterSchemeManager
     {
-        #region Methods
-        void Save();
-        void Load();
+        #region Properties
+        bool AutoSave { get; set; }
+        FilterSchemes FilterSchemes { get; }
         #endregion
 
-        FilterSchemes FilterSchemes { get; }
+        event EventHandler<EventArgs> Updated;
+        event EventHandler<EventArgs> Loaded;
+        event EventHandler<EventArgs> Saved;
+
+        #region Methods
+        void UpdateFilters();
+        void Load(string fileName = null);
+        void Save(string fileName = null);
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace Orc.FilterBuilder
     using System.Linq;
     using Catel.Data;
     using Catel.Runtime.Serialization;
-    using Fasterflect;
+    using Orc.FilterBuilder.Models;
 
     public class TimeSpanExpression : DataTypeExpression
     {
@@ -83,9 +83,9 @@ namespace Orc.FilterBuilder
             }
         }
 
-        public override bool CalculateResult(string propertyName, object entity)
+        public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
-            var entityValue = (TimeSpan) entity.GetPropertyValue(propertyName);
+            var entityValue = propertyMetadata.GetValue<TimeSpan>(entity);
             switch (SelectedCondition)
             {
                 case Condition.EqualTo:

@@ -10,7 +10,7 @@ namespace Orc.FilterBuilder
     using System;
     using System.Collections.Generic;
     using Catel.Runtime.Serialization;
-    using Fasterflect;
+    using Orc.FilterBuilder.Models;
 
     public class BooleanExpression : DataTypeExpression
     {
@@ -32,9 +32,9 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
-        public override bool CalculateResult(string propertyName, object entity)
+        public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
-            bool entityValue = (bool) entity.GetPropertyValue(propertyName);
+            bool entityValue = propertyMetadata.GetValue<bool>(entity);
             switch (SelectedCondition)
             {
                 case Condition.EqualTo:

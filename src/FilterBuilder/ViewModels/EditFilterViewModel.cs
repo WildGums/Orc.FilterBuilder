@@ -33,6 +33,9 @@ namespace Orc.FilterBuilder.ViewModels
             _originalFilterScheme = filterScheme;
             _reflectionService = reflectionService;
 
+            //SuspendValidation = true;
+            DeferValidationUntilFirstSaveCall = true;
+
             InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
 
             FilterScheme = _originalFilterScheme.Copy();
@@ -50,13 +53,13 @@ namespace Orc.FilterBuilder.ViewModels
         public string FilterSchemeTitle { get; set; }
         public FilterScheme FilterScheme { get; private set; }
 
-        public List<PropertyInfo> InstanceProperties { get; private set; }
+        public List<IPropertyMetadata> InstanceProperties { get; private set; }
 
         public Command<ConditionGroup> AddGroupCommand { get; private set; }
         public Command<ConditionGroup> AddExpressionCommand { get; private set; }
         public Command<ConditionTreeItem> DeleteConditionItem { get; private set; }
         #endregion
-
+        
         #region Methods
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {

@@ -25,7 +25,12 @@ namespace Orc.FilterBuilder.Models
         }
 
         public FilterScheme(Type targetType)
-            : this(targetType, string.Empty, new ConditionGroup())
+            : this(targetType, string.Empty)
+        {
+        }
+
+        public FilterScheme(Type targetType, string title)
+            : this(targetType, title, new ConditionGroup())
         {
         }
 
@@ -34,6 +39,8 @@ namespace Orc.FilterBuilder.Models
             Argument.IsNotNull("targetType", targetType);
             Argument.IsNotNull("title", title);
             Argument.IsNotNull("root", root);
+
+            SuspendValidation = true;
 
             TargetType = targetType;
             Title = title;
