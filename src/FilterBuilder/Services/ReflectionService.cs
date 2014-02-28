@@ -25,6 +25,11 @@ namespace Orc.FilterBuilder.Services
 
             return _cache.GetFromCacheOrFetch(targetType, () => new InstanceProperties(targetType));
         }
+
+        public void ClearCache()
+        {
+            _cache.Clear();
+        }
         #endregion
     }
 }

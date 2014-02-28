@@ -21,12 +21,12 @@ namespace Orc.FilterBuilder
         {
             Argument.IsNotNull(() => collection);
 
-            var collectionType = collection.GetType();
-            if (collectionType.IsGenericTypeEx())
-            {
-                var genericArguments = collectionType.GetGenericArgumentsEx();
-                return genericArguments[0];
-            }
+            //var collectionType = collection.GetType();
+            //if (collectionType.IsGenericTypeEx())
+            //{
+            //    var genericArguments = collectionType.GetGenericArgumentsEx();
+            //    return genericArguments[0];
+            //}
 
             var enumerator = collection.GetEnumerator();
             if (!enumerator.MoveNext())

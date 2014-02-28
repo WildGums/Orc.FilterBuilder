@@ -15,5 +15,7 @@ namespace Orc.FilterBuilder.Services
         #region Methods
         InstanceProperties GetInstanceProperties(Type targetType);
         #endregion
+
+        void ClearCache();
     }
 }
