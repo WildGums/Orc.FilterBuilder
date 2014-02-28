@@ -8,7 +8,7 @@
 namespace Orc.FilterBuilder
 {
     using System;
-    using Fasterflect;
+    using Orc.FilterBuilder.Models;
 
     public class DecimalExpression : DataTypeExpression
     {
@@ -34,11 +34,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
-        public override bool CalculateResult(string propertyName, object entity)
+        public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             if (IsNullable)
             {
-                var entityValue = (decimal?) entity.GetPropertyValue(propertyName);
+                var entityValue = propertyMetadata.GetValue<decimal?>(entity);
                 switch (SelectedCondition)
                 {
                     case Condition.EqualTo:
@@ -71,7 +71,7 @@ namespace Orc.FilterBuilder
             }
             else
             {
-                var entityValue = (decimal) entity.GetPropertyValue(propertyName);
+                var entityValue = propertyMetadata.GetValue<decimal>(entity);
                 switch (SelectedCondition)
                 {
                     case Condition.EqualTo:

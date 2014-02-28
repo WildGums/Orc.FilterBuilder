@@ -9,21 +9,33 @@ namespace Orc.FilterBuilder.Runtime.Serialization
 {
     using System;
     using System.Reflection;
+    using Catel;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
+    using Orc.FilterBuilder.Models;
+    using Orc.FilterBuilder.Services;
 
     public class PropertyExpressionSerializerModifier : SerializerModifierBase<PropertyExpression>
     {
         private const string Separator = "||";
 
+        private readonly IReflectionService _reflectionService;
+
+        public PropertyExpressionSerializerModifier(IReflectionService reflectionService)
+        {
+            Argument.IsNotNull(() => reflectionService);
+
+            _reflectionService = reflectionService;
+        }
+
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
             if (string.Equals(memberValue.Name, "Property"))
             {
-                var propertyInfo = memberValue.Value as PropertyInfo;
+                var propertyInfo = memberValue.Value as IPropertyMetadata;
                 if (propertyInfo != null)
                 {
-                    memberValue.Value = string.Format("{0}{1}{2}", propertyInfo.ReflectedType.FullName, Separator, propertyInfo.Name);
+                    memberValue.Value = string.Format("{0}{1}{2}", propertyInfo.OwnerType.FullName, Separator, propertyInfo.Name);
                 }
             }
         }
@@ -41,7 +53,8 @@ namespace Orc.FilterBuilder.Runtime.Serialization
                         var type = TypeCache.GetType(splittedString[0]);
                         if (type != null)
                         {
-                            memberValue.Value = type.GetProperty(splittedString[1]);
+                            var typeProperties = _reflectionService.GetInstanceProperties(type);
+                            memberValue.Value = typeProperties.GetProperty(splittedString[1]);
                         }
                     }
                 }

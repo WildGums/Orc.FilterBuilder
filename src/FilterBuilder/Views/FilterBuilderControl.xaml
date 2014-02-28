@@ -4,7 +4,7 @@
                    xmlns:catel="http://catel.codeplex.com">
 
     <StackPanel Orientation="Vertical" Margin="4,6,4,6">
-        <ComboBox ItemsSource="{Binding FilterSchemes.Schemes}" MinWidth="300" 
+        <ComboBox ItemsSource="{Binding AvailableSchemes}" MinWidth="300" 
                   SelectedItem="{Binding SelectedFilterScheme}" DisplayMemberPath="Title"/>
         
         <StackPanel Orientation="Horizontal" Margin="0,5,0,5">

@@ -19,36 +19,88 @@ namespace Orc.FilterBuilder.Services
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         #region Constants
-        private const string FileName = "FilterSchemes.xml";
+        private static readonly string DefaultFileName = Path.Combine(Catel.IO.Path.GetApplicationDataDirectory(), "FilterSchemes.xml");
         #endregion
 
         private readonly IXmlSerializer _xmlSerializer;
-        private readonly string _fileName;
+        private string _lastFileName;
 
         public FilterSchemeManager(IXmlSerializer xmlSerializer)
         {
             Argument.IsNotNull(() => xmlSerializer);
 
             _xmlSerializer = xmlSerializer;
-            _fileName = Path.Combine(Catel.IO.Path.GetApplicationDataDirectory(), FileName);
 
+            AutoSave = true;
             FilterSchemes = new FilterSchemes();
         }
 
+        public bool AutoSave { get; set; }
+
         public FilterSchemes FilterSchemes { get; private set; }
 
-        public void Save()
+        public event EventHandler<EventArgs> Updated;
+
+        public event EventHandler<EventArgs> Loaded;
+
+        public event EventHandler<EventArgs> Saved;
+
+        public void UpdateFilters()
         {
-            Log.Info("Saving filter schemes to '{0}'", _fileName);
+            Updated.SafeInvoke(this);
+
+            if (AutoSave)
+            {
+                Save();
+            }
+        }
+
+        public void Load(string fileName = null)
+        {
+            fileName = GetFileName(fileName);
+
+            Log.Info("Loading filter schemes from '{0}'", fileName);
+
+            FilterSchemes = new FilterSchemes();
 
             try
             {
-                using (var stream = File.Open(_fileName, FileMode.Create))
+
+                if (File.Exists(fileName))
+                {
+                    using (var stream = File.Open(fileName, FileMode.Open))
+                    {
+                        _xmlSerializer.Deserialize(FilterSchemes, stream);
+                    }
+                }
+
+                Log.Info("Loaded filter schemes from '{0}'", fileName);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to load filter schemes");
+            }
+
+            Loaded.SafeInvoke(this);
+            Updated.SafeInvoke(this);
+        }
+
+        public void Save(string fileName = null)
+        {
+            fileName = GetFileName(fileName);
+
+            Log.Info("Saving filter schemes to '{0}'", fileName);
+
+            try
+            {
+                using (var stream = File.Open(fileName, FileMode.Create))
                 {
                     _xmlSerializer.Serialize(FilterSchemes, stream);
                 }
 
-                Log.Debug("Saved filter schemes to '{0}'", _fileName);
+                Saved.SafeInvoke(this);
+
+                Log.Debug("Saved filter schemes to '{0}'", fileName);
             }
             catch (Exception ex)
             {
@@ -56,26 +108,21 @@ namespace Orc.FilterBuilder.Services
             }
         }
 
-        public void Load()
+        private string GetFileName(string fileName)
         {
-            Log.Info("Loading filter schemes from '{0}'", _fileName);
-
-            try
+            if (fileName == null)
             {
-                if (File.Exists(_fileName))
-                {
-                    using (var stream = File.Open(_fileName, FileMode.Open))
-                    {
-                        _xmlSerializer.Deserialize(FilterSchemes, stream);
-                    }
+                fileName = _lastFileName;
 
-                    Log.Info("Loaded filter schemes from '{0}'", _fileName);
+                if (fileName == null)
+                {
+                    fileName = DefaultFileName;
                 }
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to load filter schemes");
-            }
+
+            _lastFileName = fileName;
+
+            return fileName;
         }
     }
 }

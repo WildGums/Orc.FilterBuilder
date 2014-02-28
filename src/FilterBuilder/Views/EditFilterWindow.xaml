@@ -61,6 +61,7 @@
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
                         </StackPanel>
+                        
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
 									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
                             <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"

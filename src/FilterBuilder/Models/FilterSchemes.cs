@@ -6,8 +6,8 @@
 
 
 namespace Orc.FilterBuilder.Models
-{
-    using System.Collections.Generic;
+{   
+    using System.Collections.ObjectModel;
     using Catel.Data;
 
     public class FilterSchemes : ModelBase
@@ -15,12 +15,12 @@ namespace Orc.FilterBuilder.Models
         #region Constructors
         public FilterSchemes()
         {
-            Schemes = new List<FilterScheme>();
+            Schemes = new ObservableCollection<FilterScheme>();
         }
         #endregion
 
         #region Properties
-        public List<FilterScheme> Schemes { get; private set; }
+        public ObservableCollection<FilterScheme> Schemes { get; private set; }
         #endregion
     }
 }
