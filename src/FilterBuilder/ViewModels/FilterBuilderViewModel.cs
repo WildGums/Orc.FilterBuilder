@@ -51,7 +51,7 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Properties
-        public List<FilterScheme> AvailableSchemes { get; private set; }
+        public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 
         public IEnumerable RawCollection { get; set; }
@@ -85,14 +85,14 @@ namespace Orc.FilterBuilder.ViewModels
             if (RawCollection == null)
             {
                 _targetType = null;
-                AvailableSchemes = new List<FilterScheme>();
+                AvailableSchemes = new ObservableCollection<FilterScheme>();
             }
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
-                AvailableSchemes = (from scheme in _filterSchemes.Schemes
-                                    where _targetType.IsAssignableFromEx(scheme.TargetType)
-                                    select scheme).ToList();
+                AvailableSchemes = new ObservableCollection<FilterScheme>((from scheme in _filterSchemes.Schemes
+                                                                           where _targetType.IsAssignableFromEx(scheme.TargetType)
+                                                                           select scheme));
             }
 
             AvailableSchemes.Insert(0, new FilterScheme(typeof(object), "No filter"));
