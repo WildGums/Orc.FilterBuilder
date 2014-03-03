@@ -13,7 +13,8 @@
             <Button Content="Edit" Width="80" Height="24" HorizontalAlignment="Left" Margin="0,0,5,0"
                     Command="{Binding EditSchemeCommand}"/>
             <Button Content="Apply" Width="80" Height="24" HorizontalAlignment="Left" Margin="0,0,5,0"
-                    Command="{Binding ApplySchemeCommand}"/>
+                    Command="{Binding ApplySchemeCommand}"
+                    Visibility="{Binding AutoApplyFilter, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=false}"/>
         </StackPanel>
     </StackPanel>
 
