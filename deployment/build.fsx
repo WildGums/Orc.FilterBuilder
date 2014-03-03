@@ -28,7 +28,7 @@ let version = File.ReadAllLines(@".\version.txt").FirstOrDefault()
 
 let solutionAssemblyInfoPath = srcDir @@ "SolutionAssemblyInfo.cs"
 let projectsToPackageAssemblyNames = ["Orc.FilterBuilder"]
-let projectsToPackageDependencies:^string list = ["Catel.Core";"Catel.MVVM";"fasterflect"]
+let projectsToPackageDependencies:^string list = ["Catel.Core";"Catel.MVVM"]
 
 let outputDir = @"..\output\"
 let outputReleaseDir = outputDir @@ "release" ////@@ netVersion
