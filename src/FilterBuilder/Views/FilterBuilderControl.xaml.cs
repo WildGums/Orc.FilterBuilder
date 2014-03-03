@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder.Views
 {
     using System.Collections;
+    using System.Data;
     using System.Windows;
     using Catel.MVVM.Views;
 
@@ -21,13 +22,13 @@ namespace Orc.FilterBuilder.Views
         #endregion
 
         #region Properties
-        public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register("RawCollection", typeof(IEnumerable), 
+        public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register("RawCollection", typeof(IEnumerable),
             typeof(FilterBuilderControl));
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public IEnumerable RawCollection
         {
-            get { return (IEnumerable) GetValue(RawCollectionProperty); }
+            get { return (IEnumerable)GetValue(RawCollectionProperty); }
             set { SetValue(RawCollectionProperty, value); }
         }
 
@@ -39,6 +40,16 @@ namespace Orc.FilterBuilder.Views
         {
             get { return (IList)GetValue(FilteredCollectionProperty); }
             set { SetValue(FilteredCollectionProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoApplyFilterProperty =
+            DependencyProperty.Register("AutoApplyFilter", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AutoApplyFilter
+        {
+            get { return (bool)GetValue(AutoApplyFilterProperty); }
+            set { SetValue(AutoApplyFilterProperty, value); }
         }
         #endregion
     }

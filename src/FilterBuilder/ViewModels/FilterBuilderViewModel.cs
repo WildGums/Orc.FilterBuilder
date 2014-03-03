@@ -54,6 +54,7 @@ namespace Orc.FilterBuilder.ViewModels
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 
+        public bool AutoApplyFilter { get; set; }
         public IEnumerable RawCollection { get; set; }
         public IList FilteredCollection { get; set; }
 
@@ -63,6 +64,14 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
+        private void OnSelectedFilterSchemeChanged()
+        {
+            if (AutoApplyFilter)
+            {
+                ApplyFilter();
+            }
+        }
+
         private void OnRawCollectionChanged()
         {
             UpdateFilters();
