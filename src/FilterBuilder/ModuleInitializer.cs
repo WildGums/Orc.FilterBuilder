@@ -6,15 +6,22 @@ using Orc.FilterBuilder.Services;
 /// </summary>
 public static class ModuleInitializer
 {
+    private static bool _initialized;
+
     /// <summary>
     /// Initializes the module.
     /// </summary>
     public static void Initialize()
     {
+        if (_initialized)
+        {
+            return;
+        }
+
         var serviceLocator = ServiceLocator.Default;
 
-        serviceLocator.RegisterType<IReflectionService, ReflectionService>();
-        serviceLocator.RegisterType<IFilterSchemeManager, FilterSchemeManager>();
+        serviceLocator.RegisterTypeIfNotYetRegistered<IReflectionService, ReflectionService>();
+        serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
 
         var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
         filterSchemeManager.Load();
