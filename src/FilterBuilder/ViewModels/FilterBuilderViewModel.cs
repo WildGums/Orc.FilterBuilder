@@ -31,7 +31,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool _appliedSelectedScheme;
         private Type _targetType;
-        private readonly FilterSchemes _filterSchemes;
+        private FilterSchemes _filterSchemes;
 
         #region Constructors
         public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager)
@@ -41,8 +41,6 @@ namespace Orc.FilterBuilder.ViewModels
 
             _uiVisualizerService = uiVisualizerService;
             _filterSchemeManager = filterSchemeManager;
-
-            _filterSchemes = filterSchemeManager.FilterSchemes;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
             EditSchemeCommand = new Command(OnEditSchemeExecute, OnEditSchemeCanExecute);
@@ -91,6 +89,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void UpdateFilters()
         {
+            _filterSchemes = _filterSchemeManager.FilterSchemes;
+
             if (RawCollection == null)
             {
                 _targetType = null;
@@ -206,10 +206,7 @@ namespace Orc.FilterBuilder.ViewModels
         {
             _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
 
-            if (AvailableSchemes != null)
-            {
-                SelectedFilterScheme = AvailableSchemes.FirstOrDefault();
-            }
+            UpdateFilters();
         }
 
         protected override void Close()
