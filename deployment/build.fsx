@@ -11,6 +11,8 @@ open Fake.MSTest
 // --------------------------------------------------------------------------------------
 // Definitions
 
+let versionPostFix = "-beta"
+
 let binProjectName = "Orc.FilterBuilder"
 let netVersions = ["NET40"]
 
@@ -21,8 +23,8 @@ let packagesDir = deploymentDir @@ "packages"
 let dllDeploymentDirs = netVersions |> List.map(fun v -> v, packagesDir @@ "work" @@ "lib" @@ v) |> dict
 let nuspecTemplatesDir = deploymentDir @@ "templates"
 
-let nugetExePath = @"..\src\.nuget\nuget.exe"
-let nugetRepositoryDir = srcDir @@ @"packages"
+let nugetExePath = @"..\tools\NuGet\NuGet.exe"
+let nugetRepositoryDir = srcDir @@ @"..\lib"
 let nugetAccessKey = if File.Exists(@"..\Nuget.key") then File.ReadAllText(@"..\Nuget.key") else ""
 let version = File.ReadAllLines(@".\version.txt").FirstOrDefault()
 
@@ -149,7 +151,7 @@ Target "NuGet" (fun _ ->
         NuGet (fun p -> 
             {p with
                 Project = binProjectName
-                Version = version
+                Version = sprintf "%s%s" version versionPostFix
                 ToolPath = nugetExePath
                 OutputPath = packagesDir
                 WorkingDir = packagesDir @@ "work"
