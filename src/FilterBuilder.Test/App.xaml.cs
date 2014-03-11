@@ -9,6 +9,8 @@ namespace Orc.FilterBuilder.Test
 {
     using System.Windows;
     using Catel.Logging;
+    using Orc.FilterBuilder.Services;
+    using Catel.IoC;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -20,6 +22,11 @@ namespace Orc.FilterBuilder.Test
 #if DEBUG
             //LogManager.AddDebugListener();
 #endif
+
+            var serviceLocator = ServiceLocator.Default;
+
+            var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
+            filterSchemeManager.Load();
 
             base.OnStartup(e);
         }

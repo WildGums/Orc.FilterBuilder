@@ -42,18 +42,6 @@ namespace Orc.FilterBuilder.Models
                 var propertyDataManager = PropertyDataManager.Default;
                 var catelTypeInfo = propertyDataManager.GetCatelTypeInfo(type);
                 catelProperties.AddRange(catelTypeInfo.GetCatelProperties().Values.Where(x => !x.IsModelBaseProperty));
-
-                // Remove Catel properties
-                RemoveCatelProperty(finalProperties, "BusinessRuleErrorCount");
-                RemoveCatelProperty(finalProperties, "BusinessRuleWarningCount");
-                RemoveCatelProperty(finalProperties, "FieldErrorCount");
-                RemoveCatelProperty(finalProperties, "FieldWarningCount");
-                RemoveCatelProperty(finalProperties, "HasErrors");
-                RemoveCatelProperty(finalProperties, "HasWarnings");
-                RemoveCatelProperty(finalProperties, "IsDirty");
-                RemoveCatelProperty(finalProperties, "IsEditable");
-                RemoveCatelProperty(finalProperties, "IsInEditSession");
-                RemoveCatelProperty(finalProperties, "IsReadOnly");
             }
 
             foreach (var property in catelProperties.Distinct())
@@ -74,14 +62,6 @@ namespace Orc.FilterBuilder.Models
             return (from property in Properties
                     where string.Equals(property.Name, propertyName)
                     select property).FirstOrDefault();
-        }
-
-        private void RemoveCatelProperty(Dictionary<string, IPropertyMetadata> properties, string propertyName)
-        {
-            if (properties.ContainsKey(propertyName))
-            {
-                properties.Remove(propertyName);
-            }
         }
         #endregion
     }

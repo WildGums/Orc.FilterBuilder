@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IReflectionService.cs" company="Orcomp development team">
+// <copyright file="IFilterCustomizationService.cs" company="Orcomp development team">
 //   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,13 +7,10 @@
 
 namespace Orc.FilterBuilder.Services
 {
-    using System;
     using Orc.FilterBuilder.Models;
 
-    public interface IReflectionService
+    public interface IFilterCustomizationService
     {
-        InstanceProperties GetInstanceProperties(Type targetType);
-
-        void ClearCache();
+        void CustomizeInstanceProperties(InstanceProperties instanceProperties);
     }
 }

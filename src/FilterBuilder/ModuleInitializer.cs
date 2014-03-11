@@ -22,8 +22,6 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterTypeIfNotYetRegistered<IReflectionService, ReflectionService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
-
-        var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
-        filterSchemeManager.Load();
+        serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
     }
 }
