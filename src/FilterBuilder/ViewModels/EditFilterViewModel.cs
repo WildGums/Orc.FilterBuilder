@@ -35,6 +35,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
+            EnableAutoCompletion = filterSchemeEditInfo.EnableAutoCompletion;
             AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
             EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
             
@@ -43,7 +44,6 @@ namespace Orc.FilterBuilder.ViewModels
             _originalFilterScheme = filterScheme;
             _reflectionService = reflectionService;
 
-            //SuspendValidation = true;
             DeferValidationUntilFirstSaveCall = true;
 
             InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
@@ -62,6 +62,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         public string FilterSchemeTitle { get; set; }
         public FilterScheme FilterScheme { get; private set; }
+        public bool EnableAutoCompletion { get; private set; }
         public bool AllowLivePreview { get; private set; }
         public bool EnableLivePreview { get; set; }
 

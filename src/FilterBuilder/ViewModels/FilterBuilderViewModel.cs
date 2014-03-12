@@ -53,7 +53,9 @@ namespace Orc.FilterBuilder.ViewModels
         public FilterScheme SelectedFilterScheme { get; set; }
 
         public bool AllowLivePreview { get; set; }
+        public bool EnableAutoCompletion { get; set; }
         public bool AutoApplyFilter { get; set; }
+
         public IEnumerable RawCollection { get; set; }
         public IList FilteredCollection { get; set; }
 
@@ -119,7 +121,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
 
             var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
             if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
@@ -152,7 +154,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnEditSchemeExecute()
         {
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(SelectedFilterScheme, RawCollection, AllowLivePreview);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(SelectedFilterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
             if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 _filterSchemeManager.UpdateFilters();

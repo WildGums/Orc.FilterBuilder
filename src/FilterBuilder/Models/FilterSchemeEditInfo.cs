@@ -13,7 +13,7 @@ namespace Orc.FilterBuilder.Models
     public class FilterSchemeEditInfo
     {
         #region Constructors
-        public FilterSchemeEditInfo(FilterScheme filterScheme, IEnumerable rawCollection, bool allowLivePreview)
+        public FilterSchemeEditInfo(FilterScheme filterScheme, IEnumerable rawCollection, bool allowLivePreview, bool enableAutoCompletion)
         {
             Argument.IsNotNull(() => filterScheme);
             Argument.IsNotNull(() => rawCollection);
@@ -21,6 +21,7 @@ namespace Orc.FilterBuilder.Models
             FilterScheme = filterScheme;
             RawCollection = rawCollection;
             AllowLivePreview = allowLivePreview;
+            EnableAutoCompletion = enableAutoCompletion;
         }
         #endregion
 
@@ -29,5 +30,7 @@ namespace Orc.FilterBuilder.Models
         public IEnumerable RawCollection { get; private set; }
 
         public bool AllowLivePreview { get; private set; }
+
+        public bool EnableAutoCompletion { get; private set; }
     }
 }

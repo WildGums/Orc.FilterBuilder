@@ -62,6 +62,16 @@ namespace Orc.FilterBuilder.Views
         public static readonly DependencyProperty AllowLivePreviewProperty =
             DependencyProperty.Register("AllowLivePreview", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public bool EnableAutoCompletion
+        {
+            get { return (bool)GetValue(EnableAutoCompletionProperty); }
+            set { SetValue(EnableAutoCompletionProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableAutoCompletionProperty =
+            DependencyProperty.Register("EnableAutoCompletion", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+
         
         #endregion
     }
