@@ -29,7 +29,6 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IFilterSchemeManager _filterSchemeManager;
 
-        private bool _appliedSelectedScheme;
         private Type _targetType;
         private FilterSchemes _filterSchemes;
 

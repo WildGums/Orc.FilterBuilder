@@ -65,7 +65,6 @@ namespace Orc.FilterBuilder.Services
 
             try
             {
-
                 if (File.Exists(fileName))
                 {
                     using (var stream = File.Open(fileName, FileMode.Open))

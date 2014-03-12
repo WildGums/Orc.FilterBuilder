@@ -11,12 +11,14 @@ namespace Orc.FilterBuilder.ViewModels
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using Catel;
     using Catel.Collections;
     using Catel.Data;
     using Catel.MVVM;
+    using Catel.Runtime.Serialization.Xml;
     using Orc.FilterBuilder.Models;
     using Orc.FilterBuilder.Services;
 
@@ -25,13 +27,15 @@ namespace Orc.FilterBuilder.ViewModels
         #region Fields
         private readonly FilterScheme _originalFilterScheme;
         private readonly IReflectionService _reflectionService;
+        private readonly IXmlSerializer _xmlSerializer;
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService)
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService, IXmlSerializer xmlSerializer)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
             Argument.IsNotNull(() => reflectionService);
+            Argument.IsNotNull(() => xmlSerializer);
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
@@ -43,12 +47,22 @@ namespace Orc.FilterBuilder.ViewModels
 
             _originalFilterScheme = filterScheme;
             _reflectionService = reflectionService;
+            _xmlSerializer = xmlSerializer;
 
             DeferValidationUntilFirstSaveCall = true;
 
             InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
 
-            FilterScheme = _originalFilterScheme.Copy();
+            // Serializing gives us a *real* deep clone, there was a bug in Copy()
+            //FilterScheme = _originalFilterScheme.Copy();
+
+            using (var memoryStream = new MemoryStream())
+            {
+                xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
+                memoryStream.Position = 0L;
+                FilterScheme = (FilterScheme) xmlSerializer.Deserialize(typeof (FilterScheme), memoryStream);
+            }
+
             FilterSchemeTitle = FilterScheme.Title;
 
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);

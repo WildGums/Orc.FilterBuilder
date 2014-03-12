@@ -9,9 +9,12 @@ namespace Orc.FilterBuilder.Views
 {
     using System.Windows.Controls;
     using System.Windows.Data;
+    using Catel.Data;
     using Catel.IoC;
+    using Catel.Reflection;
     using Catel.Windows;
     using Catel.Windows.Data;
+    using Orc.FilterBuilder.Converters;
     using Orc.FilterBuilder.Services;
     using Orc.FilterBuilder.ViewModels;
 
@@ -42,11 +45,28 @@ namespace Orc.FilterBuilder.Views
 
                     var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
                     var instanceProperties = reflectionService.GetInstanceProperties(targetType);
+
+                    var isModelBase = typeof (ModelBase).IsAssignableFromEx(targetType);
+
                     foreach (var instanceProperty in instanceProperties.Properties)
                     {
                         var column = new DataGridTextColumn();
                         column.Header = instanceProperty.Name;
-                        column.Binding = new Binding(instanceProperty.Name);
+
+                        Binding binding = null;
+
+                        if (isModelBase)
+                        {
+                            binding = new Binding();
+                            binding.Converter = new ObjectToValueConverter();
+                            binding.ConverterParameter = instanceProperty.Name;
+                        }
+                        else
+                        {
+                            binding = new Binding(instanceProperty.Name);
+                        }
+
+                        column.Binding = binding;
 
                         dataGrid.Columns.Add(column);
                     }

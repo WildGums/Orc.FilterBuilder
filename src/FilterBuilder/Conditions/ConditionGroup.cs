@@ -40,13 +40,6 @@ namespace Orc.FilterBuilder
             }
         }
 
-        protected override ConditionTreeItem CopyPlainItem()
-        {
-            var copiedGroup = new ConditionGroup();
-            copiedGroup.Type = Type;
-            return copiedGroup;
-        }
-
         public override string ToString()
         {
             return Type.ToString();

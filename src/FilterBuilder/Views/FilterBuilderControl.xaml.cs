@@ -71,8 +71,6 @@ namespace Orc.FilterBuilder.Views
 
         public static readonly DependencyProperty EnableAutoCompletionProperty =
             DependencyProperty.Register("EnableAutoCompletion", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
-
-        
         #endregion
     }
 }

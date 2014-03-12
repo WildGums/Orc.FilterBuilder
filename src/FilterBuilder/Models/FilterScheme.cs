@@ -48,7 +48,6 @@ namespace Orc.FilterBuilder.Models
             TargetType = targetType;
             Title = title;
             ConditionItems = new ObservableCollection<ConditionTreeItem>();
-            ConditionItems.CollectionChanged += OnConditionItemsCollectionChanged;
             ConditionItems.Add(root);
         }
         #endregion
@@ -90,6 +89,29 @@ namespace Orc.FilterBuilder.Models
             }
         }
 
+        private void OnConditionItemsChanged()
+        {
+            SubscribeToEvents();
+        }
+
+        protected override void OnDeserialized()
+        {
+            SubscribeToEvents();
+        }
+
+        private void SubscribeToEvents()
+        {
+            var items = ConditionItems;
+            if (items != null)
+            {
+                items.CollectionChanged += OnConditionItemsCollectionChanged;
+                foreach (var item in items)
+                {
+                    item.Updated += OnConditionUpdated;
+                }
+            }
+        }
+
         private void OnConditionUpdated(object sender, EventArgs e)
         {
             Updated.SafeInvoke(this);
@@ -100,11 +122,6 @@ namespace Orc.FilterBuilder.Models
             Argument.IsNotNull(() => entity);
 
             return Root.CalculateResult(entity);
-        }
-
-        public FilterScheme Copy()
-        {
-            return new FilterScheme(TargetType, Title, Root.Copy());
         }
 
         public void Update(FilterScheme otherScheme)

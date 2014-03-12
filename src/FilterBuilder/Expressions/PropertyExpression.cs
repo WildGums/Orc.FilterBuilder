@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.ComponentModel;
+    using Catel.Data;
     using Catel.Runtime.Serialization;
     using Orc.FilterBuilder.Models;
     using Orc.FilterBuilder.Runtime.Serialization;
@@ -73,6 +74,15 @@ namespace Orc.FilterBuilder
             }
         }
 
+        protected override void OnDeserialized()
+        {
+            var dataTypeExpression = DataTypeExpression;
+            if (dataTypeExpression != null)
+            {
+                dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
+            }
+        }
+
         private void OnDataTypeExpressionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             RaiseUpdated();
@@ -81,14 +91,6 @@ namespace Orc.FilterBuilder
         public override bool CalculateResult(object entity)
         {
             return DataTypeExpression.CalculateResult(Property, entity);
-        }
-
-        protected override ConditionTreeItem CopyPlainItem()
-        {
-            var copied = new PropertyExpression();
-            copied.Property = Property;
-            copied.DataTypeExpression = DataTypeExpression;
-            return copied;
         }
         #endregion
     }

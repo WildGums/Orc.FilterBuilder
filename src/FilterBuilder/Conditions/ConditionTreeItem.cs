@@ -22,7 +22,6 @@ namespace Orc.FilterBuilder
         protected ConditionTreeItem()
         {
             Items = new ObservableCollection<ConditionTreeItem>();
-            Items.CollectionChanged += OnConditionItemsCollectionChanged;
         }
         #endregion
 
@@ -56,6 +55,29 @@ namespace Orc.FilterBuilder
             }
         }
 
+        protected override void OnDeserialized()
+        {
+            SubscribeToEvents();
+        }
+
+        private void OnItemsChanged()
+        {
+            SubscribeToEvents();
+        }
+
+        private void SubscribeToEvents()
+        {
+            var items = Items;
+            if (items != null)
+            {
+                items.CollectionChanged += OnConditionItemsCollectionChanged;
+                foreach (var item in items)
+                {
+                    item.Updated += OnConditionUpdated;
+                }
+            }
+        }
+
         protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
@@ -74,22 +96,6 @@ namespace Orc.FilterBuilder
         }
 
         public abstract bool CalculateResult(object entity);
-
-        public ConditionTreeItem Copy()
-        {
-            var copiedItem = CopyPlainItem();
-
-            foreach (var childItem in Items)
-            {
-                var copiedChild = childItem.Copy();
-                copiedItem.Items.Add(copiedChild);
-                copiedChild.Parent = copiedItem;
-            }
-
-            return copiedItem;
-        }
-
-        protected abstract ConditionTreeItem CopyPlainItem();
         #endregion
     }
 }
