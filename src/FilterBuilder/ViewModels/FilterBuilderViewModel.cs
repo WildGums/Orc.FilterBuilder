@@ -52,6 +52,7 @@ namespace Orc.FilterBuilder.ViewModels
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 
+        public bool AllowLivePreview { get; set; }
         public bool AutoApplyFilter { get; set; }
         public IEnumerable RawCollection { get; set; }
         public IList FilteredCollection { get; set; }
@@ -118,8 +119,8 @@ namespace Orc.FilterBuilder.ViewModels
             }
 
             var filterScheme = new FilterScheme(_targetType);
-
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterScheme) ?? false)
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview);
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);
@@ -151,7 +152,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnEditSchemeExecute()
         {
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(SelectedFilterScheme) ?? false)
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(SelectedFilterScheme, RawCollection, AllowLivePreview);
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 _filterSchemeManager.UpdateFilters();
             }
@@ -179,27 +181,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnApplySchemeExecute()
         {
-            IDisposable suspendToken = null;
-            var filteredCollectionType = FilteredCollection.GetType();
-            if (filteredCollectionType.IsGenericTypeEx() && filteredCollectionType.GetGenericTypeDefinitionEx() == typeof(FastObservableCollection<>))
-            {
-                suspendToken = (IDisposable)filteredCollectionType.GetMethodEx("SuspendChangeNotifications").Invoke(FilteredCollection, null);
-            }
-
-            FilteredCollection.Clear();
-
-            foreach (object item in RawCollection)
-            {
-                if (SelectedFilterScheme.CalculateResult(item))
-                {
-                    FilteredCollection.Add(item);
-                }
-            }
-
-            if (suspendToken != null)
-            {
-                suspendToken.Dispose();
-            }
+            SelectedFilterScheme.Apply(RawCollection, FilteredCollection);
         }
 
         protected override void Initialize()

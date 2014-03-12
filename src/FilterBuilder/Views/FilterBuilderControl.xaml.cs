@@ -51,6 +51,18 @@ namespace Orc.FilterBuilder.Views
             get { return (bool)GetValue(AutoApplyFilterProperty); }
             set { SetValue(AutoApplyFilterProperty, value); }
         }
+
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AllowLivePreview
+        {
+            get { return (bool)GetValue(AllowLivePreviewProperty); }
+            set { SetValue(AllowLivePreviewProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowLivePreviewProperty =
+            DependencyProperty.Register("AllowLivePreview", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+
+        
         #endregion
     }
 }

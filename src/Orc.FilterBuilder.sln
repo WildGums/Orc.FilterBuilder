@@ -9,13 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder", "Filter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Test", "FilterBuilder.Test\Orc.FilterBuilder.Test.csproj", "{FDD8B37C-268C-41B6-8E64-EB49A827532D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7500ADA1-9CC0-4433-9FC7-A214CB36B823}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A8D1BDA5-71E1-4F19-8D0E-13289C5131F4}"
 	ProjectSection(SolutionItems) = preProject
 		..\lib\readme.txt = ..\lib\readme.txt

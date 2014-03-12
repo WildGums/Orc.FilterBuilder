@@ -8,10 +8,13 @@
 namespace Orc.FilterBuilder.ViewModels
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
     using Catel;
+    using Catel.Collections;
     using Catel.Data;
     using Catel.MVVM;
     using Orc.FilterBuilder.Models;
@@ -25,10 +28,17 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterScheme filterScheme, IReflectionService reflectionService)
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService)
         {
-            Argument.IsNotNull(() => filterScheme);
+            Argument.IsNotNull(() => filterSchemeEditInfo);
             Argument.IsNotNull(() => reflectionService);
+
+            PreviewItems = new FastObservableCollection<object>();
+            RawCollection = filterSchemeEditInfo.RawCollection;
+            AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
+            EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
+            
+            var filterScheme = filterSchemeEditInfo.FilterScheme;
 
             _originalFilterScheme = filterScheme;
             _reflectionService = reflectionService;
@@ -52,6 +62,11 @@ namespace Orc.FilterBuilder.ViewModels
 
         public string FilterSchemeTitle { get; set; }
         public FilterScheme FilterScheme { get; private set; }
+        public bool AllowLivePreview { get; private set; }
+        public bool EnableLivePreview { get; set; }
+
+        public IEnumerable RawCollection { get; private set; }
+        public FastObservableCollection<object> PreviewItems { get; private set; }
 
         public List<IPropertyMetadata> InstanceProperties { get; private set; }
 
@@ -59,8 +74,29 @@ namespace Orc.FilterBuilder.ViewModels
         public Command<ConditionGroup> AddExpressionCommand { get; private set; }
         public Command<ConditionTreeItem> DeleteConditionItem { get; private set; }
         #endregion
-        
+
         #region Methods
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            UpdatePreviewItems();
+
+            FilterScheme.Updated += OnFilterSchemeUpdated;
+        }
+
+        protected override void Close()
+        {
+            FilterScheme.Updated -= OnFilterSchemeUpdated;
+
+            base.Close();
+        }
+
+        private void OnFilterSchemeUpdated(object sender, EventArgs e)
+        {
+            UpdatePreviewItems();
+        }
+
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
             if (string.IsNullOrEmpty(FilterSchemeTitle))
@@ -75,7 +111,7 @@ namespace Orc.FilterBuilder.ViewModels
         {
             FilterScheme.Title = FilterSchemeTitle;
             _originalFilterScheme.Update(FilterScheme);
-            
+
             return true;
         }
 
@@ -104,6 +140,32 @@ namespace Orc.FilterBuilder.ViewModels
             var newGroup = new ConditionGroup();
             group.Items.Add(newGroup);
             newGroup.Parent = group;
+        }
+
+        private void OnEnableLivePreviewChanged()
+        {
+            UpdatePreviewItems();
+        }
+
+        private void UpdatePreviewItems()
+        {
+            if (FilterScheme == null || RawCollection == null)
+            {
+                return;
+            }
+
+            if (!AllowLivePreview)
+            {
+                return;
+            }
+
+            if (!EnableLivePreview)
+            {
+                PreviewItems.Clear();
+                return;
+            }
+
+            FilterScheme.Apply(RawCollection, PreviewItems);
         }
         #endregion
     }

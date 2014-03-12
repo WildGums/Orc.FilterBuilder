@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder
 {
     using System;
+    using System.ComponentModel;
     using Catel.Runtime.Serialization;
     using Orc.FilterBuilder.Models;
     using Orc.FilterBuilder.Runtime.Serialization;
@@ -24,6 +25,11 @@ namespace Orc.FilterBuilder
         #region Methods
         private void OnPropertyChanged()
         {
+            if (DataTypeExpression != null)
+            {
+                DataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
+            }
+
             if (Property.Type == typeof (int))
             {
                 DataTypeExpression = new IntegerExpression(false);
@@ -60,6 +66,16 @@ namespace Orc.FilterBuilder
             {
                 DataTypeExpression = new DecimalExpression(true);
             }
+
+            if (DataTypeExpression != null)
+            {
+                DataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
+            }
+        }
+
+        private void OnDataTypeExpressionPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RaiseUpdated();
         }
 
         public override bool CalculateResult(object entity)

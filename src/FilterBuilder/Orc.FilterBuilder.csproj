@@ -79,8 +79,10 @@
     <Compile Include="Expressions\DataTypeExpression.cs" />
     <Compile Include="Expressions\DateTimeExpression.cs" />
     <Compile Include="Expressions\DecimalExpression.cs" />
+    <Compile Include="Extensions\FilterSchemeExtensions.cs" />
     <Compile Include="Helpers\CollectionHelper.cs" />
     <Compile Include="Markup\EnumBinding.cs" />
+    <Compile Include="Models\FilterSchemeEditInfo.cs" />
     <Compile Include="Models\FilterSchemes.cs" />
     <Compile Include="Models\Interfaces\IPropertyMetadata.cs" />
     <Compile Include="Models\PropertyMetadata.cs" />

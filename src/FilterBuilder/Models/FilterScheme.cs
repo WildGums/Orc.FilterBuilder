@@ -8,7 +8,10 @@
 namespace Orc.FilterBuilder.Models
 {
     using System;
+    using System.Collections;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
     using System.Linq;
     using Catel;
     using Catel.Data;
@@ -45,6 +48,7 @@ namespace Orc.FilterBuilder.Models
             TargetType = targetType;
             Title = title;
             ConditionItems = new ObservableCollection<ConditionTreeItem>();
+            ConditionItems.CollectionChanged += OnConditionItemsCollectionChanged;
             ConditionItems.Add(root);
         }
         #endregion
@@ -63,7 +67,34 @@ namespace Orc.FilterBuilder.Models
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion
 
+        public event EventHandler<EventArgs> Updated;
+
         #region Methods
+        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    ((ConditionTreeItem)item).Updated -= OnConditionUpdated;
+                }
+            }
+
+            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList) sender : e.NewItems;
+            if (newCollection != null)
+            {
+                foreach (var item in newCollection)
+                {
+                    ((ConditionTreeItem)item).Updated += OnConditionUpdated;
+                }
+            }
+        }
+
+        private void OnConditionUpdated(object sender, EventArgs e)
+        {
+            Updated.SafeInvoke(this);
+        }
+
         public bool CalculateResult(object entity)
         {
             Argument.IsNotNull(() => entity);

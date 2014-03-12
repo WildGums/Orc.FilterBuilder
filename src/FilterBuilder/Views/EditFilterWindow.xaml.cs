@@ -7,7 +7,13 @@
 
 namespace Orc.FilterBuilder.Views
 {
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using Catel.IoC;
     using Catel.Windows;
+    using Catel.Windows.Data;
+    using Orc.FilterBuilder.Services;
+    using Orc.FilterBuilder.ViewModels;
 
     /// <summary>
     /// Interaction logic for EditFilterWindow.xaml
@@ -18,6 +24,34 @@ namespace Orc.FilterBuilder.Views
             : base(DataWindowMode.OkCancel, infoBarMessageControlGenerationMode: InfoBarMessageControlGenerationMode.None)
         {
             InitializeComponent();
+        }
+
+        protected override void OnViewModelChanged()
+        {
+            base.OnViewModelChanged();
+
+            dataGrid.Columns.Clear();
+
+            var vm = ViewModel as EditFilterViewModel;
+            if (vm != null)
+            {
+                if (vm.AllowLivePreview)
+                {
+                    var dependencyResolver = this.GetDependencyResolver();
+                    var reflectionService = dependencyResolver.Resolve<IReflectionService>();
+
+                    var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
+                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
+                    foreach (var instanceProperty in instanceProperties.Properties)
+                    {
+                        var column = new DataGridTextColumn();
+                        column.Header = instanceProperty.Name;
+                        column.Binding = new Binding(instanceProperty.Name);
+
+                        dataGrid.Columns.Add(column);
+                    }
+                }
+            }
         }
     }
 }

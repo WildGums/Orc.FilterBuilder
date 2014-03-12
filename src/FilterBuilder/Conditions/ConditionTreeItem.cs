@@ -7,7 +7,12 @@
 
 namespace Orc.FilterBuilder
 {
+    using System;
+    using System.Collections;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
@@ -17,6 +22,7 @@ namespace Orc.FilterBuilder
         protected ConditionTreeItem()
         {
             Items = new ObservableCollection<ConditionTreeItem>();
+            Items.CollectionChanged += OnConditionItemsCollectionChanged;
         }
         #endregion
 
@@ -24,10 +30,49 @@ namespace Orc.FilterBuilder
         [ExcludeFromSerialization]
         public ConditionTreeItem Parent { get; set; }
 
-        public ObservableCollection<ConditionTreeItem> Items { get; set; }
+        public ObservableCollection<ConditionTreeItem> Items { get; private set; }
         #endregion
 
+        public event EventHandler<EventArgs> Updated;
+
         #region Methods
+        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    ((ConditionTreeItem)item).Updated -= OnConditionUpdated;
+                }
+            }
+
+            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
+            if (newCollection != null)
+            {
+                foreach (var item in newCollection)
+                {
+                    ((ConditionTreeItem)item).Updated += OnConditionUpdated;
+                }
+            }
+        }
+
+        protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            RaiseUpdated();
+        }
+
+        protected void RaiseUpdated()
+        {
+            Updated.SafeInvoke(this);
+        }
+
+        private void OnConditionUpdated(object sender, EventArgs e)
+        {
+            RaiseUpdated();
+        }
+
         public abstract bool CalculateResult(object entity);
 
         public ConditionTreeItem Copy()
