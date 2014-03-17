@@ -19,6 +19,7 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.Data;
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
+    using Catel.Services;
     using Orc.FilterBuilder.Models;
     using Orc.FilterBuilder.Services;
 
@@ -28,14 +29,19 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly FilterScheme _originalFilterScheme;
         private readonly IReflectionService _reflectionService;
         private readonly IXmlSerializer _xmlSerializer;
+        private readonly IMessageService _messageService;
+
+        private bool _isFilterDirty;
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService, IXmlSerializer xmlSerializer)
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService, 
+            IXmlSerializer xmlSerializer, IMessageService messageService)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
             Argument.IsNotNull(() => reflectionService);
             Argument.IsNotNull(() => xmlSerializer);
+            Argument.IsNotNull(() => messageService);
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
@@ -48,6 +54,7 @@ namespace Orc.FilterBuilder.ViewModels
             _originalFilterScheme = filterScheme;
             _reflectionService = reflectionService;
             _xmlSerializer = xmlSerializer;
+            _messageService = messageService;
 
             DeferValidationUntilFirstSaveCall = true;
 
@@ -109,6 +116,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnFilterSchemeUpdated(object sender, EventArgs e)
         {
+            _isFilterDirty = true;
+
             UpdatePreviewItems();
         }
 
@@ -120,6 +129,20 @@ namespace Orc.FilterBuilder.ViewModels
             }
 
             base.ValidateFields(validationResults);
+        }
+
+        protected override bool Cancel()
+        {
+            if (_isFilterDirty)
+            {
+                if (_messageService.Show("The filter is dirty. Are you sure you want to close the editor without saving changes?", "Are you sure?",
+                    MessageButton.YesNo) == MessageResult.No)
+                {
+                    return false;
+                }
+            }
+
+            return base.Cancel();
         }
 
         protected override bool Save()
