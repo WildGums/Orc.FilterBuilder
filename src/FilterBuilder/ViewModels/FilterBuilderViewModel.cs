@@ -160,6 +160,8 @@ namespace Orc.FilterBuilder.ViewModels
             if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 _filterSchemeManager.UpdateFilters();
+
+                ApplyFilter();
             }
         }
 
