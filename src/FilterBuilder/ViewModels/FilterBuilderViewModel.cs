@@ -44,6 +44,7 @@ namespace Orc.FilterBuilder.ViewModels
             NewSchemeCommand = new Command(OnNewSchemeExecute);
             EditSchemeCommand = new Command(OnEditSchemeExecute, OnEditSchemeCanExecute);
             ApplySchemeCommand = new Command(OnApplySchemeExecute, OnApplySchemeCanExecute);
+            ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
         }
         #endregion
 
@@ -54,6 +55,7 @@ namespace Orc.FilterBuilder.ViewModels
         public bool AllowLivePreview { get; set; }
         public bool EnableAutoCompletion { get; set; }
         public bool AutoApplyFilter { get; set; }
+        public bool AllowReset { get; set; }
 
         public IEnumerable RawCollection { get; set; }
         public IList FilteredCollection { get; set; }
@@ -61,6 +63,7 @@ namespace Orc.FilterBuilder.ViewModels
         public Command NewSchemeCommand { get; private set; }
         public Command EditSchemeCommand { get; private set; }
         public Command ApplySchemeCommand { get; private set; }
+        public Command ResetSchemeCommand { get; private set; }
         #endregion
 
         #region Methods
@@ -183,6 +186,29 @@ namespace Orc.FilterBuilder.ViewModels
         private void OnApplySchemeExecute()
         {
             SelectedFilterScheme.Apply(RawCollection, FilteredCollection);
+        }
+
+        private bool OnResetSchemeCanExecute()
+        {
+            if (AvailableSchemes.Count == 0)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(SelectedFilterScheme, AvailableSchemes[0]))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void OnResetSchemeExecute()
+        {
+            if (AvailableSchemes.Count > 0)
+            {
+                SelectedFilterScheme = AvailableSchemes[0];
+            }
         }
 
         protected override void Initialize()
