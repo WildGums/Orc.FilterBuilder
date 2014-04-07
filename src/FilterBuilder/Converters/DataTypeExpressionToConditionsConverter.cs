@@ -8,8 +8,8 @@
 namespace Orc.FilterBuilder.Converters
 {
     using System;
+    using Catel.MVVM.Converters;
     using Catel.Reflection;
-    using Catel.Windows.Data.Converters;
 
     public class DataTypeExpressionToConditionsConverter : ValueConverterBase
     {

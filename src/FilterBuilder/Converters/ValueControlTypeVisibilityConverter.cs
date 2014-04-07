@@ -9,7 +9,7 @@ namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Windows;
-    using Catel.Windows.Data.Converters;
+    using Catel.MVVM.Converters;
 
     public class ValueControlTypeVisibilityConverter : ValueConverterBase
     {

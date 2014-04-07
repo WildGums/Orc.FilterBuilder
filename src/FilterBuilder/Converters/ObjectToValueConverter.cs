@@ -9,8 +9,8 @@ namespace Orc.FilterBuilder.Converters
 {
     using System;
     using Catel.Data;
+    using Catel.MVVM.Converters;
     using Catel.Reflection;
-    using Catel.Windows.Data.Converters;
 
     public class ObjectToValueConverter : ValueConverterBase
     {
