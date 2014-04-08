@@ -9,11 +9,14 @@ namespace Orc.FilterBuilder.Converters
 {
     using System;
     using Catel.Data;
+    using Catel.Logging;
     using Catel.MVVM.Converters;
     using Catel.Reflection;
 
     public class ObjectToValueConverter : ValueConverterBase
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         #region Methods
         protected override object Convert(object value, Type targetType, object parameter)
         {
@@ -23,15 +26,22 @@ namespace Orc.FilterBuilder.Converters
                 return null;
             }
 
-            var modelBase = value as IModelEditor;
-            if (modelBase != null)
+            try
             {
-                return modelBase.GetValue(propertyName);
-            }
+                var modelBase = value as IModelEditor;
+                if (modelBase != null)
+                {
+                    return modelBase.GetValue(propertyName);
+                }
 
-            if (value != null)
+                if (value != null)
+                {
+                    return PropertyHelper.GetPropertyValue(value, propertyName);
+                }
+            }
+            catch (Exception ex)
             {
-                return PropertyHelper.GetPropertyValue(value, propertyName);
+                Log.Error(ex, "Failed to get property value '{0}'", propertyName);
             }
 
             return null;
