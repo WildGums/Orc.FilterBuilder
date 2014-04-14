@@ -192,6 +192,11 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnResetSchemeCanExecute()
         {
+            if (AvailableSchemes == null)
+            {
+                return false;
+            }
+
             if (AvailableSchemes.Count == 0)
             {
                 return false;
