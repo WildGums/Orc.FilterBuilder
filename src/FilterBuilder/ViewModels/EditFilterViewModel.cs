@@ -10,18 +10,17 @@ namespace Orc.FilterBuilder.ViewModels
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Collections;
     using Catel.Data;
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
-    using Orc.FilterBuilder.Models;
-    using Orc.FilterBuilder.Services;
+    using Models;
+    using Services;
 
     public class EditFilterViewModel : ViewModelBase
     {
@@ -35,7 +34,7 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService, 
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService,
             IXmlSerializer xmlSerializer, IMessageService messageService)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
@@ -48,7 +47,7 @@ namespace Orc.FilterBuilder.ViewModels
             EnableAutoCompletion = filterSchemeEditInfo.EnableAutoCompletion;
             AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
             EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
-            
+
             var filterScheme = filterSchemeEditInfo.FilterScheme;
 
             _originalFilterScheme = filterScheme;
@@ -67,7 +66,7 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
                 memoryStream.Position = 0L;
-                FilterScheme = (FilterScheme) xmlSerializer.Deserialize(typeof (FilterScheme), memoryStream);
+                FilterScheme = (FilterScheme)xmlSerializer.Deserialize(typeof(FilterScheme), memoryStream);
             }
 
             FilterSchemeTitle = FilterScheme.Title;
@@ -107,11 +106,11 @@ namespace Orc.FilterBuilder.ViewModels
             FilterScheme.Updated += OnFilterSchemeUpdated;
         }
 
-        protected override void Close()
+        protected override async Task Close()
         {
             FilterScheme.Updated -= OnFilterSchemeUpdated;
 
-            base.Close();
+            await base.Close();
         }
 
         private void OnFilterSchemeUpdated(object sender, EventArgs e)
@@ -131,26 +130,28 @@ namespace Orc.FilterBuilder.ViewModels
             base.ValidateFields(validationResults);
         }
 
-        protected override bool Cancel()
+        protected override async Task<bool> Cancel()
         {
             if (_isFilterDirty)
             {
-                if (_messageService.Show("The filter has unsaved changes. Are you sure you want to close the editor without saving changes?", "Are you sure?",
-                    MessageButton.YesNo) == MessageResult.No)
+                if (await _messageService.Show("The filter has unsaved changes. Are you sure you want to close the editor without saving changes?", "Are you sure?", MessageButton.YesNo) == MessageResult.No)
                 {
                     return false;
                 }
             }
 
-            return base.Cancel();
+            return await base.Cancel();
         }
 
-        protected override bool Save()
+        protected override Task<bool> Save()
         {
-            FilterScheme.Title = FilterSchemeTitle;
-            _originalFilterScheme.Update(FilterScheme);
+            return Task.Factory.StartNew(() =>
+            {
+                FilterScheme.Title = FilterSchemeTitle;
+                _originalFilterScheme.Update(FilterScheme);
 
-            return true;
+                return true;
+            });
         }
 
         private void OnDeleteCondition(ConditionTreeItem item)

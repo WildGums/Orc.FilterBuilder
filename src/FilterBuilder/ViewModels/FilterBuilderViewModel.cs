@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Collections;
     using Catel.Logging;
@@ -114,7 +115,7 @@ namespace Orc.FilterBuilder.ViewModels
             SelectedFilterScheme = AvailableSchemes.FirstOrDefault();
         }
 
-        private void OnNewSchemeExecute()
+        private async void OnNewSchemeExecute()
         {
             if (_targetType == null)
             {
@@ -124,7 +125,8 @@ namespace Orc.FilterBuilder.ViewModels
 
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+
+            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);
@@ -154,10 +156,11 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnEditSchemeExecute()
+        private async void OnEditSchemeExecute()
         {
             var filterSchemeEditInfo = new FilterSchemeEditInfo(SelectedFilterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+
+            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 _filterSchemeManager.UpdateFilters();
 
@@ -225,11 +228,11 @@ namespace Orc.FilterBuilder.ViewModels
             UpdateFilters();
         }
 
-        protected override void Close()
+        protected override async Task Close()
         {
             _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
 
-            base.Close();
+            await base.Close();
         }
 
         private void OnFilterSchemeManagerLoaded(object sender, EventArgs eventArgs)
