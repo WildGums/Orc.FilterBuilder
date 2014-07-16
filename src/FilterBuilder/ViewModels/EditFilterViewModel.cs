@@ -59,9 +59,6 @@ namespace Orc.FilterBuilder.ViewModels
 
             InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
 
-            // Serializing gives us a *real* deep clone, there was a bug in Copy()
-            //FilterScheme = _originalFilterScheme.Copy();
-
             using (var memoryStream = new MemoryStream())
             {
                 xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
