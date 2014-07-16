@@ -9,6 +9,7 @@
             <Setter Property="Height" Value="24" />
             <Setter Property="Margin" Value="0,0,5,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="UseLayoutRounding" Value="True" />
         </Style>
     </UserControl.Resources>
 
