@@ -12,14 +12,40 @@
         <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
         <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
-
-        <Style TargetType="Image" x:Key="ImageIcon">
-            <Setter Property="Width" Value="24"/>
-            <Setter Property="Height" Value="24"/>
-        </Style>
     </Window.Resources>
 
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Height" Value="24" />
+                <Setter Property="Width" Value="24" />
+                <Setter Property="Margin" Value="4,6,4,6" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+
+            <Style TargetType="ComboBox">
+                <Setter Property="Width" Value="120" />
+                <Setter Property="Margin" Value="4,6,4,6" />
+            </Style>
+
+            <Style TargetType="DatePicker">
+                <Setter Property="Width" Value="120" />
+                <Setter Property="Margin" Value="4,6,4,6" />
+                <Setter Property="Height" Value="25" />
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Width" Value="120" />
+                <Setter Property="MinWidth" Value="120" />
+                <Setter Property="Margin" Value="4,6,4,6" />
+            </Style>
+
+            <Style TargetType="Image" x:Key="ImageIcon">
+                <Setter Property="Width" Value="16"/>
+                <Setter Property="Height" Value="16"/>
+            </Style>
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -32,38 +58,36 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Text="Name:" Margin="10"/>
-        <TextBox Grid.Column="1" Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" Margin="10">
+        <TextBlock Grid.Column="0" Text="Name:" />
+        <TextBox Grid.Column="1" Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <i:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </i:Interaction.Behaviors>
         </TextBox>
 
-        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="1" Margin="10,0,10,0" ItemsSource="{Binding FilterScheme.ConditionItems}">
+        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="1" ItemsSource="{Binding FilterScheme.ConditionItems}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="True" />
                 </Style>
             </TreeView.ItemContainerStyle>
+            
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                     <Grid>
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
 									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
-                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" MinWidth="80"/>
-                            <Button BorderThickness="0"  ToolTip="Add expression" Margin="3,0,0,0"
-									Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-									CommandParameter="{Binding}">
+                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
+                            
+                            <Button ToolTip="Add expression" Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_expression.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
-                            <Button BorderThickness="0" ToolTip="Add group" Margin="3,0,0,0"
-									Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-									CommandParameter="{Binding}">
+                            
+                            <Button ToolTip="Add group" Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_group.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
-                            <Button BorderThickness="0" ToolTip="Delete item" Margin="3,0,0,0"
-									Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-									CommandParameter="{Binding}">
+                            
+                            <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
                         </StackPanel>
@@ -71,17 +95,14 @@
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
 									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
                             <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
-									  DisplayMemberPath="Name"
-									  SelectedItem="{Binding Property}"
-									  Width="120"/>
+									  DisplayMemberPath="Name" SelectedItem="{Binding Property}" />
 
                             <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
-									  SelectedItem="{Binding DataTypeExpression.SelectedCondition}"
-									  MinWidth="80" Margin="3,0,0,0"/>
+									  SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
 
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
 								  Margin="3,0,0,0">
-                                <TextBox Text="{Binding DataTypeExpression.Value}" Width="120" 
+                                <TextBox Text="{Binding DataTypeExpression.Value}"
 										 Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
@@ -89,22 +110,21 @@
                                                                       IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>
                                     </i:Interaction.Behaviors>
                                 </TextBox>
-                                <DatePicker SelectedDate="{Binding DataTypeExpression.Value}" Width="120"
+                                
+                                <DatePicker SelectedDate="{Binding DataTypeExpression.Value}"
 											Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.DateTime}}"/>
-                                <ComboBox ItemsSource="{Binding DataTypeExpression.BooleanValues}" Width="120"
+
+                                <ComboBox ItemsSource="{Binding DataTypeExpression.BooleanValues}"
 										  SelectedValue="{Binding DataTypeExpression.Value}"
 										  Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Boolean}}"/>
 
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.TimeSpan}}">
-                                    <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}" Width="120"
-											  SelectedValue="{Binding DataTypeExpression.SelectedSpanType}"/>
-                                    <TextBox Text="{Binding DataTypeExpression.Amount}" Width="120" Margin="3,0,0,0" />
+                                    <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}" SelectedValue="{Binding DataTypeExpression.SelectedSpanType}" />
+                                    <TextBox Text="{Binding DataTypeExpression.Amount}" />
                                 </StackPanel>
                             </Grid>
 
-                            <Button BorderThickness="0" ToolTip="Delete item" Margin="3,0,0,0"
-									Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-									CommandParameter="{Binding}">
+                            <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
                         </StackPanel>

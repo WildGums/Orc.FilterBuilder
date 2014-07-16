@@ -13,6 +13,11 @@ namespace Orc.FilterBuilder.Converters
 
     public class DataTypeExpressionToConditionsConverter : ValueConverterBase
     {
+        public DataTypeExpressionToConditionsConverter()
+        {
+            
+        }
+
         #region Methods
         protected override object Convert(object value, Type targetType, object parameter)
         {
