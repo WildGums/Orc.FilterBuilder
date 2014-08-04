@@ -7,8 +7,8 @@
     <ProjectGuid>{FDD8B37C-268C-41B6-8E64-EB49A827532D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FilterBuilder.Test</RootNamespace>
-    <AssemblyName>FilterBuilder.Test</AssemblyName>
+    <RootNamespace>Orc.FilterBuilder.Example</RootNamespace>
+    <AssemblyName>Orc.FilterBuilder.Example</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\output\debug\NET40\Orc.FilterBuilder.Test\</OutputPath>
+    <OutputPath>..\..\output\debug\Orc.FilterBuilder.Example\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,7 +32,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\output\release\NET40\Orc.FilterBuilder.Test\</OutputPath>
+    <OutputPath>..\..\output\release\Orc.FilterBuilder.Example\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

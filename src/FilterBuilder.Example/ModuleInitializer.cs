@@ -2,7 +2,7 @@
 /// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
 /// </summary>
 using Catel.IoC;
-using FilterBuilder.Test.Services;
+using FilterBuilder.Example.Services;
 
 public static class ModuleInitializer
 {

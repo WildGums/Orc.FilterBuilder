@@ -10,9 +10,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("Orc.FilterBuilder.Test")]
-[assembly: AssemblyProduct("Orc.FilterBuilder.Test")]
-[assembly: AssemblyDescription("Orc.FilterBuilder.Test library")]
+[assembly: AssemblyTitle("Orc.FilterBuilder.Example")]
+[assembly: AssemblyProduct("Orc.FilterBuilder.Example")]
+[assembly: AssemblyDescription("Orc.FilterBuilder.Example library")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

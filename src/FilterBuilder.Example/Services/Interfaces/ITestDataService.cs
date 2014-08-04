@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace FilterBuilder.Test.Services
+namespace FilterBuilder.Example.Services
 {
     using System;
     using System.Collections.ObjectModel;

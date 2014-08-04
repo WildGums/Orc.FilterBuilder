@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Test
+namespace Orc.FilterBuilder.Example
 {
     using System.Windows;
     using Catel.Logging;

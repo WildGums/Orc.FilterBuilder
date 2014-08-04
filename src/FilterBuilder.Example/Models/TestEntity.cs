@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace FilterBuilder.Test.Models
+namespace FilterBuilder.Example.Models
 {
     using System;
     using Catel.Data;

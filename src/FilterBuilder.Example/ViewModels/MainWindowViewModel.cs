@@ -5,15 +5,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace FilterBuilder.Test.ViewModels
+namespace FilterBuilder.Example.ViewModels
 {
     using System;
     using System.Collections.ObjectModel;
     using Catel;
     using Catel.Collections;
     using Catel.MVVM;
-    using FilterBuilder.Test.Models;
-    using FilterBuilder.Test.Services;
+    using FilterBuilder.Example.Models;
+    using FilterBuilder.Example.Services;
 
     public class MainWindowViewModel : ViewModelBase
     {

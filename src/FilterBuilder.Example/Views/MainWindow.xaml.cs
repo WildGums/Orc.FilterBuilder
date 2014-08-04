@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace FilterBuilder.Test.Views
+namespace FilterBuilder.Example.Views
 {
     using Catel.Windows;
 
