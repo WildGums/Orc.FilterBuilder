@@ -134,7 +134,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FilterBuilder\Orc.FilterBuilder.csproj">
+    <ProjectReference Include="..\Orc.FilterBuilder\Orc.FilterBuilder.csproj">
       <Project>{6f5eb0c1-7e36-413d-8463-968b7f86fe53}</Project>
       <Name>Orc.FilterBuilder</Name>
     </ProjectReference>

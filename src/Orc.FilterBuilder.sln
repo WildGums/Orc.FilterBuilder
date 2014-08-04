@@ -5,9 +5,9 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23912551-289D-43BF-9B2D-5385308A09E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder", "FilterBuilder\Orc.FilterBuilder.csproj", "{6F5EB0C1-7E36-413D-8463-968B7F86FE53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder", "Orc.FilterBuilder\Orc.FilterBuilder.csproj", "{6F5EB0C1-7E36-413D-8463-968B7F86FE53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Example", "FilterBuilder.Example\Orc.FilterBuilder.Example.csproj", "{FDD8B37C-268C-41B6-8E64-EB49A827532D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Example", "Orc.FilterBuilder.Example\Orc.FilterBuilder.Example.csproj", "{FDD8B37C-268C-41B6-8E64-EB49A827532D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A8D1BDA5-71E1-4F19-8D0E-13289C5131F4}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,16 +16,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A8D1BDA5-71E
 		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FE201CA6-343E-4495-AACD-4EB7D88DA4A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Test", "Orc.FilterBuilder.Test\Orc.FilterBuilder.Test.csproj", "{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{06E243DF-38A5-4CC4-9C3D-7DC616604FBE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{F9F59E5A-A3B1-47AF-938E-35C8793BC341}"
 	ProjectSection(SolutionItems) = preProject
-		..\tools\NuGet\NuGet.exe = ..\tools\NuGet\NuGet.exe
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitVersion", "GitVersion", "{720AC33D-DF92-4E1B-8FF4-40A806FA3476}"
-	ProjectSection(SolutionItems) = preProject
-		..\tools\GitVersion\GitVersion.exe = ..\tools\GitVersion\GitVersion.exe
+		nuget.config = nuget.config
+		Orc.FilterBuilder.sln.DotSettings = Orc.FilterBuilder.sln.DotSettings
+		Settings.StyleCop = Settings.StyleCop
+		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Global
@@ -42,6 +40,10 @@ Global
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,7 +51,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6F5EB0C1-7E36-413D-8463-968B7F86FE53} = {23912551-289D-43BF-9B2D-5385308A09E4}
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D} = {23912551-289D-43BF-9B2D-5385308A09E4}
-		{06E243DF-38A5-4CC4-9C3D-7DC616604FBE} = {FE201CA6-343E-4495-AACD-4EB7D88DA4A4}
-		{720AC33D-DF92-4E1B-8FF4-40A806FA3476} = {FE201CA6-343E-4495-AACD-4EB7D88DA4A4}
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED} = {23912551-289D-43BF-9B2D-5385308A09E4}
 	EndGlobalSection
 EndGlobal
