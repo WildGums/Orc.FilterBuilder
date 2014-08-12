@@ -22,19 +22,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\output\debug\NET40\Orc.FilterBuilder\</OutputPath>
+    <OutputPath>..\..\output\debug\Orc.FilterBuilder\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\output\debug\Orc.FilterBuilder\Orc.FilterBuilder.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\output\release\NET40\Orc.FilterBuilder\</OutputPath>
+    <OutputPath>..\..\output\release\Orc.FilterBuilder\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\output\release\NET40\Orc.FilterBuilder\Orc.FilterBuilder.xml</DocumentationFile>
+    <DocumentationFile>..\..\output\release\Orc.FilterBuilder\Orc.FilterBuilder.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
