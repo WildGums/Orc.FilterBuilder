@@ -60,7 +60,7 @@ namespace Orc.FilterBuilder.Models
         [ExcludeFromSerialization]
         public ConditionTreeItem Root
         {
-            get { return ConditionItems.First(); }
+            get { return ConditionItems.FirstOrDefault(); }
         }
 
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
