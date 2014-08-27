@@ -8,13 +8,17 @@
 namespace Orc.FilterBuilder.Views
 {
     using System.Collections;
-    using System.Data;
     using System.Windows;
     using Catel.MVVM.Views;
 
     public partial class FilterBuilderControl
     {
         #region Constructors
+        static FilterBuilderControl()
+        {
+            typeof(FilterBuilderControl).AutoDetectViewPropertiesToSubscribe();
+        }
+
         public FilterBuilderControl()
         {
             InitializeComponent();

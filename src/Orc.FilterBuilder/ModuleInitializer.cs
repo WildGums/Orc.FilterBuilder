@@ -1,4 +1,5 @@
 ﻿using Catel.IoC;
+using Catel.MVVM.Views;
 using Orc.FilterBuilder.Services;
 
 /// <summary>

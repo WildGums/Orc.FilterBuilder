@@ -13,10 +13,9 @@ namespace Orc.FilterBuilder.Views
     using Catel.IoC;
     using Catel.Reflection;
     using Catel.Windows;
-    using Catel.Windows.Data;
-    using Orc.FilterBuilder.Converters;
-    using Orc.FilterBuilder.Services;
-    using Orc.FilterBuilder.ViewModels;
+    using Converters;
+    using Services;
+    using ViewModels;
 
     /// <summary>
     /// Interaction logic for EditFilterWindow.xaml
