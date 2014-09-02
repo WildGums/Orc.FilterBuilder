@@ -8,15 +8,10 @@
 namespace Orc.FilterBuilder.Services
 {
     using Catel;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     public class FilterCustomizationService : IFilterCustomizationService
     {
-        public FilterCustomizationService()
-        {
-
-        }
-
         public virtual void CustomizeInstanceProperties(InstanceProperties instanceProperties)
         {
             Argument.IsNotNull(() => instanceProperties);

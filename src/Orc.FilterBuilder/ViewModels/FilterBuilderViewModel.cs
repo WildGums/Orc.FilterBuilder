@@ -9,7 +9,6 @@ namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,8 +18,8 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.MVVM;
     using Catel.Reflection;
     using Catel.Services;
-    using Orc.FilterBuilder.Models;
-    using Orc.FilterBuilder.Services;
+    using Models;
+    using Services;
     using CollectionHelper = Orc.FilterBuilder.CollectionHelper;
 
     public class FilterBuilderViewModel : ViewModelBase
@@ -29,18 +28,23 @@ namespace Orc.FilterBuilder.ViewModels
 
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IFilterSchemeManager _filterSchemeManager;
+        private readonly IFilterService _filterService;
 
+        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "No filter");
         private Type _targetType;
         private FilterSchemes _filterSchemes;
 
         #region Constructors
-        public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager)
+        public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
+            IFilterService filterService)
         {
             Argument.IsNotNull(() => uiVisualizerService);
             Argument.IsNotNull(() => filterSchemeManager);
+            Argument.IsNotNull(() => filterService);
 
             _uiVisualizerService = uiVisualizerService;
             _filterSchemeManager = filterSchemeManager;
+            _filterService = filterService;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
             EditSchemeCommand = new Command(OnEditSchemeExecute, OnEditSchemeCanExecute);
@@ -70,6 +74,13 @@ namespace Orc.FilterBuilder.ViewModels
         #region Methods
         private void OnSelectedFilterSchemeChanged()
         {
+            if (SelectedFilterScheme == null || ReferenceEquals(SelectedFilterScheme, _filterService.SelectedFilter))
+            {
+                return;
+            }
+
+            _filterService.SelectedFilter = SelectedFilterScheme;
+
             if (AutoApplyFilter)
             {
                 ApplyFilter();
@@ -97,22 +108,27 @@ namespace Orc.FilterBuilder.ViewModels
         {
             _filterSchemes = _filterSchemeManager.FilterSchemes;
 
+            var newSchemes = new ObservableCollection<FilterScheme>();
+
             if (RawCollection == null)
             {
                 _targetType = null;
-                AvailableSchemes = new ObservableCollection<FilterScheme>();
             }
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
-                AvailableSchemes = new ObservableCollection<FilterScheme>((from scheme in _filterSchemes.Schemes
-                                                                           where _targetType.IsAssignableFromEx(scheme.TargetType)
-                                                                           select scheme));
+                newSchemes.AddRange((from scheme in _filterSchemes.Schemes
+                                     where _targetType.IsAssignableFromEx(scheme.TargetType)
+                                     select scheme));
             }
 
-            AvailableSchemes.Insert(0, new FilterScheme(typeof(object), "No filter"));
+            newSchemes.Insert(0, NoFilterFilter);
 
-            SelectedFilterScheme = AvailableSchemes.FirstOrDefault();
+            if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
+            {
+                AvailableSchemes = newSchemes;
+                SelectedFilterScheme = newSchemes.FirstOrDefault();
+            }
         }
 
         private async void OnNewSchemeExecute()
@@ -180,7 +196,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return false;
             }
 
-            if (FilteredCollection == null)
+            if (FilteredCollection != null)
             {
                 return false;
             }
@@ -190,11 +206,16 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnApplySchemeExecute()
         {
-            SelectedFilterScheme.Apply(RawCollection, FilteredCollection);
+            _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
         }
 
         private bool OnResetSchemeCanExecute()
         {
+            if (!AllowReset)
+            {
+                return false;
+            }
+
             if (AvailableSchemes == null)
             {
                 return false;

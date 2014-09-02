@@ -119,14 +119,14 @@ namespace Orc.FilterBuilder.Models
 
         public bool CalculateResult(object entity)
         {
-            Argument.IsNotNull(() => entity);
+            Argument.IsNotNull("entity", entity);
 
             return Root.CalculateResult(entity);
         }
 
         public void Update(FilterScheme otherScheme)
         {
-            Argument.IsNotNull(() => otherScheme);
+            Argument.IsNotNull("otherScheme", otherScheme);
 
             Title = otherScheme.Title;
             ConditionItems.Clear();

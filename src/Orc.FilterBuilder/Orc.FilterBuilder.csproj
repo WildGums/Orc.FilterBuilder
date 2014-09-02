@@ -110,7 +110,10 @@
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Runtime\Serialization\PropertyExpressionSerializerModifier.cs" />
     <Compile Include="Runtime\Serialization\FilterSchemeSerializerModifier.cs" />
+    <Compile Include="Services\Extensions\IFilterServiceExtensions.cs" />
     <Compile Include="Services\FilterCustomizationService.cs" />
+    <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="Services\Interfaces\IFilterCustomizationService.cs" />
     <Compile Include="Services\Interfaces\IFilterSchemeManager.cs" />
     <Compile Include="Services\Interfaces\IReflectionService.cs" />

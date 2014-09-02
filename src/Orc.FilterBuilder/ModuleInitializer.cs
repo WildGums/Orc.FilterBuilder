@@ -21,6 +21,7 @@ public static class ModuleInitializer
 
         var serviceLocator = ServiceLocator.Default;
 
+        serviceLocator.RegisterTypeIfNotYetRegistered<IFilterService, FilterService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IReflectionService, ReflectionService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
