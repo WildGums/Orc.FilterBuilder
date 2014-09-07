@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <views:FilterBuilderControl Grid.ColumnSpan="2" RawCollection="{Binding RawItems}" 
+        <views:FilterBuilderControl Grid.ColumnSpan="2" RawCollection="{Binding RawItems}" AutoApplyFilter="True"
                                     FilteredCollection="{Binding FilteredItems}" EnableAutoCompletion="True" />
 
         <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding RawItems}">

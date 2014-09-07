@@ -196,7 +196,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return false;
             }
 
-            if (FilteredCollection != null)
+            if (FilteredCollection == null)
             {
                 return false;
             }
