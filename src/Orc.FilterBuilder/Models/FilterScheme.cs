@@ -39,9 +39,9 @@ namespace Orc.FilterBuilder.Models
 
         public FilterScheme(Type targetType, string title, ConditionTreeItem root)
         {
-            Argument.IsNotNull("targetType", targetType);
-            Argument.IsNotNull("title", title);
-            Argument.IsNotNull("root", root);
+            Argument.IsNotNull(() => targetType);
+            Argument.IsNotNull(() => title);
+            Argument.IsNotNull(() => root);
 
             SuspendValidation = true;
 
@@ -119,14 +119,14 @@ namespace Orc.FilterBuilder.Models
 
         public bool CalculateResult(object entity)
         {
-            Argument.IsNotNull("entity", entity);
+            Argument.IsNotNull(() => entity);
 
             return Root.CalculateResult(entity);
         }
 
         public void Update(FilterScheme otherScheme)
         {
-            Argument.IsNotNull("otherScheme", otherScheme);
+            Argument.IsNotNull(() => otherScheme);
 
             Title = otherScheme.Title;
             ConditionItems.Clear();

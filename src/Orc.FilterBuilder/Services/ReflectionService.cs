@@ -30,7 +30,7 @@ namespace Orc.FilterBuilder.Services
         #region Methods
         public InstanceProperties GetInstanceProperties(Type targetType)
         {
-            Argument.IsNotNull("targetType", targetType);
+            Argument.IsNotNull(() => targetType);
 
             return _cache.GetFromCacheOrFetch(targetType, () =>
             {

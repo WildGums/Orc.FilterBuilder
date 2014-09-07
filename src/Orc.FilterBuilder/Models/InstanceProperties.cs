@@ -19,7 +19,7 @@ namespace Orc.FilterBuilder.Models
     {
         public InstanceProperties(Type type)
         {
-            Argument.IsNotNull("type", type);
+            Argument.IsNotNull(() => type);
 
             var finalProperties = new Dictionary<string, IPropertyMetadata>();
 

@@ -22,8 +22,8 @@ namespace Orc.FilterBuilder.Models
         #region Constructors
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
         {
-            Argument.IsNotNull("ownerType", ownerType);
-            Argument.IsNotNull("propertyInfo", propertyInfo);
+            Argument.IsNotNull(() => ownerType);
+            Argument.IsNotNull(() => propertyInfo);
 
             _propertyInfo = propertyInfo;
 
@@ -34,8 +34,8 @@ namespace Orc.FilterBuilder.Models
 
         public PropertyMetadata(Type ownerType, PropertyData propertyData)
         {
-            Argument.IsNotNull("ownerType", ownerType);
-            Argument.IsNotNull("propertyData", propertyData);
+            Argument.IsNotNull(() => ownerType);
+            Argument.IsNotNull(() => propertyData);
 
             _propertyData = propertyData;
 
@@ -56,7 +56,7 @@ namespace Orc.FilterBuilder.Models
         #region Methods
         public void SetValue(object instance, object value)
         {
-            Argument.IsNotNull("instance", instance);
+            Argument.IsNotNull(() => instance);
 
             if (_propertyInfo != null)
             {
@@ -80,7 +80,7 @@ namespace Orc.FilterBuilder.Models
 
         public TValue GetValue<TValue>(object instance)
         {
-            Argument.IsNotNull("instance", instance);
+            Argument.IsNotNull(() => instance);
 
             if (_propertyInfo != null)
             {

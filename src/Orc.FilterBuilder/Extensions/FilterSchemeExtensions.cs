@@ -18,9 +18,9 @@ namespace Orc.FilterBuilder
     {
         public static void Apply(this FilterScheme filterScheme, IEnumerable rawCollection, IList filteredCollection)
         {
-            Argument.IsNotNull("filterScheme", filterScheme);
-            Argument.IsNotNull("rawCollection", rawCollection);
-            Argument.IsNotNull("filteredCollection", filteredCollection);
+            Argument.IsNotNull(() => filterScheme);
+            Argument.IsNotNull(() => rawCollection);
+            Argument.IsNotNull(() => filteredCollection);
 
             IDisposable suspendToken = null;
             var filteredCollectionType = filteredCollection.GetType();
