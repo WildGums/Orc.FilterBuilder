@@ -245,6 +245,7 @@ namespace Orc.FilterBuilder.ViewModels
         protected override void Initialize()
         {
             _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
+            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
 
             UpdateFilters();
         }
@@ -252,6 +253,7 @@ namespace Orc.FilterBuilder.ViewModels
         protected override async Task Close()
         {
             _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
+            _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
 
             await base.Close();
         }
@@ -259,6 +261,18 @@ namespace Orc.FilterBuilder.ViewModels
         private void OnFilterSchemeManagerLoaded(object sender, EventArgs eventArgs)
         {
             UpdateFilters();
+        }
+
+        private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
+        {
+            if (_filterService.SelectedFilter == null)
+            {
+                SelectedFilterScheme = AvailableSchemes.First();
+            }
+            else
+            {
+                SelectedFilterScheme = _filterService.SelectedFilter;
+            }
         }
         #endregion
     }
