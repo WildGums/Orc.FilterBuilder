@@ -12,8 +12,8 @@ namespace FilterBuilder.Example.ViewModels
     using Catel;
     using Catel.Collections;
     using Catel.MVVM;
-    using FilterBuilder.Example.Models;
-    using FilterBuilder.Example.Services;
+    using Models;
+    using Services;
 
     public class MainWindowViewModel : ViewModelBase
     {
