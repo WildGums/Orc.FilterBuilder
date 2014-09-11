@@ -94,9 +94,9 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
-        protected override void Initialize()
+        protected override async Task Initialize()
         {
-            base.Initialize();
+            await base.Initialize();
 
             UpdatePreviewItems();
 

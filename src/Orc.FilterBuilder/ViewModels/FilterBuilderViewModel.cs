@@ -242,7 +242,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        protected override void Initialize()
+        protected override async Task Initialize()
         {
             _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
             _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
