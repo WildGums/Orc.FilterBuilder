@@ -140,27 +140,33 @@ namespace Orc.FilterBuilder.ViewModels
             return await base.Cancel();
         }
 
-        protected override Task<bool> Save()
+        protected override async Task<bool> Save()
         {
-            return Task.Factory.StartNew(() =>
-            {
-                FilterScheme.Title = FilterSchemeTitle;
-                _originalFilterScheme.Update(FilterScheme);
+            FilterScheme.Title = FilterSchemeTitle;
+            _originalFilterScheme.Update(FilterScheme);
 
-                return true;
-            });
+            return true;
         }
 
         private void OnDeleteCondition(ConditionTreeItem item)
         {
             if (item.Parent == null)
             {
-                item.Items.Clear();
+                FilterScheme.ConditionItems.Remove(item);
+                
+                foreach (var conditionItem in FilterScheme.ConditionItems)
+                {
+                    conditionItem.Items.Remove(item);
+                }
             }
             else
             {
                 item.Parent.Items.Remove(item);
             }
+
+            _isFilterDirty = true;
+
+            UpdatePreviewItems();
         }
 
         private void OnAddExpression(ConditionGroup group)

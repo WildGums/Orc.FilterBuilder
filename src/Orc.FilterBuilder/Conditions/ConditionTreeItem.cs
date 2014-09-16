@@ -96,6 +96,16 @@ namespace Orc.FilterBuilder
         }
 
         public abstract bool CalculateResult(object entity);
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(obj, this))
+            {
+                return true;
+            }
+
+            return base.Equals(obj);
+        }
         #endregion
     }
 }
