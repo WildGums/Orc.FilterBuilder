@@ -118,7 +118,7 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
                 newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                     where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
                                      select scheme));
             }
 
