@@ -9,9 +9,11 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using Catel.Runtime.Serialization;
     using Orc.FilterBuilder.Models;
 
+    [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class BooleanExpression : DataTypeExpression
     {
         #region Constructors

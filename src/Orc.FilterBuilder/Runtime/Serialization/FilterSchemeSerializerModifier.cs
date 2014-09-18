@@ -10,7 +10,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
     using System;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     public class FilterSchemeSerializerModifier : SerializerModifierBase<FilterScheme>
     {

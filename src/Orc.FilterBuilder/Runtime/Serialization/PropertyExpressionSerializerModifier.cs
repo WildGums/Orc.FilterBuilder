@@ -7,26 +7,13 @@
 
 namespace Orc.FilterBuilder.Runtime.Serialization
 {
-    using System;
-    using System.Reflection;
-    using Catel;
-    using Catel.Reflection;
+    using Catel.Data;
     using Catel.Runtime.Serialization;
-    using Orc.FilterBuilder.Models;
-    using Orc.FilterBuilder.Services;
+    using Models;
 
     public class PropertyExpressionSerializerModifier : SerializerModifierBase<PropertyExpression>
     {
         private const string Separator = "||";
-
-        private readonly IReflectionService _reflectionService;
-
-        public PropertyExpressionSerializerModifier(IReflectionService reflectionService)
-        {
-            Argument.IsNotNull(() => reflectionService);
-
-            _reflectionService = reflectionService;
-        }
 
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
@@ -47,18 +34,18 @@ namespace Orc.FilterBuilder.Runtime.Serialization
                 var propertyName = memberValue.Value as string;
                 if (propertyName != null)
                 {
-                    var splittedString = propertyName.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
-                    if (splittedString.Length == 2)
-                    {
-                        var type = TypeCache.GetType(splittedString[0]);
-                        if (type != null)
-                        {
-                            var typeProperties = _reflectionService.GetInstanceProperties(type);
-                            memberValue.Value = typeProperties.GetProperty(splittedString[1]);
-                        }
-                    }
+                    // We need to delay this
+                    ((PropertyExpression)context.Model).PropertySerializationValue = propertyName;
                 }
             }
+        }
+
+        public override void OnDeserialized(ISerializationContext context, IModel model)
+        {
+            base.OnDeserialized(context, model);
+
+            var propertyExpression = (PropertyExpression) context.Model;
+            propertyExpression.EnsureIntegrity();
         }
     }
 }

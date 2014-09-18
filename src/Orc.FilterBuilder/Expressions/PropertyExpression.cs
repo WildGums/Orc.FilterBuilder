@@ -9,15 +9,19 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.ComponentModel;
-    using Catel.Data;
+    using System.Diagnostics;
     using Catel.Runtime.Serialization;
-    using Orc.FilterBuilder.Models;
-    using Orc.FilterBuilder.Runtime.Serialization;
+    using Models;
+    using Runtime.Serialization;
 
+    [DebuggerDisplay("{Property} = {DataTypeExpression}")]
     [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
     public class PropertyExpression : ConditionTreeItem
     {
         #region Properties
+        [ExcludeFromSerialization]
+        internal string PropertySerializationValue { get; set; }
+
         public IPropertyMetadata Property { get; set; }
 
         public DataTypeExpression DataTypeExpression { get; set; }
@@ -33,45 +37,59 @@ namespace Orc.FilterBuilder
 
             if (Property.Type == typeof (int))
             {
-                DataTypeExpression = new IntegerExpression(false);
+                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(false));
             }
             else if (Property.Type == typeof (int?))
             {
-                DataTypeExpression = new IntegerExpression(true);
+                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(true));
             }
             else if (Property.Type == typeof (string))
             {
-                DataTypeExpression = new StringExpression();
+                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
             }
             else if (Property.Type == typeof (DateTime))
             {
-                DataTypeExpression = new DateTimeExpression(false);
+                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(false));
             }
             else if (Property.Type == typeof (DateTime?))
             {
-                DataTypeExpression = new DateTimeExpression(true);
+                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(true));
             }
             else if (Property.Type == typeof (bool))
             {
-                DataTypeExpression = new BooleanExpression();
+                CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
             }
             else if (Property.Type == typeof (TimeSpan))
             {
-                DataTypeExpression = new TimeSpanExpression();
+                CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression());
             }
             else if (Property.Type == typeof (decimal))
             {
-                DataTypeExpression = new DecimalExpression(false);
+                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(false));
             }
             else if (Property.Type == typeof (decimal?))
             {
-                DataTypeExpression = new DecimalExpression(true);
+                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
             }
 
             if (DataTypeExpression != null)
             {
                 DataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
             }
+        }
+
+        private void CreateDataTypeExpressionIfNotCompatible<TDataExpression>(Func<TDataExpression> createFunc)
+            where TDataExpression : DataTypeExpression
+        {
+            if (DataTypeExpression != null)
+            {
+                if (DataTypeExpression is TDataExpression)
+                {
+                    return;
+                }
+            }
+
+            DataTypeExpression = createFunc();
         }
 
         protected override void OnDeserialized()

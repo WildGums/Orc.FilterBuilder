@@ -10,11 +10,13 @@ namespace Orc.FilterBuilder
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using Catel.Data;
     using Catel.Runtime.Serialization;
     using Orc.FilterBuilder.Models;
 
+    [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class TimeSpanExpression : DataTypeExpression
     {
         #region Constants

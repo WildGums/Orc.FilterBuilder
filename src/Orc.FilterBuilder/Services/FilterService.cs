@@ -40,6 +40,10 @@ namespace Orc.FilterBuilder.Services
 
         public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
         {
+            Argument.IsNotNull(() => filter);
+
+            filter.EnsureIntegrity();
+
             if (filteredCollection == null)
             {
                 return;

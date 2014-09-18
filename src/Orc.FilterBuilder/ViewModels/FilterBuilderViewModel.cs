@@ -174,7 +174,10 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async void OnEditSchemeExecute()
         {
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(SelectedFilterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+            var filterScheme = SelectedFilterScheme;
+            filterScheme.EnsureIntegrity();
+
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
             if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {

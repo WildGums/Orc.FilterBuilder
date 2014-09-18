@@ -11,12 +11,11 @@ namespace Orc.FilterBuilder.Models
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.ComponentModel;
     using System.Linq;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
-    using Orc.FilterBuilder.Runtime.Serialization;
+    using Runtime.Serialization;
 
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase

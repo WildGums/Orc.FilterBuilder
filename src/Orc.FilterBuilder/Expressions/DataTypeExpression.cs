@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder
 {
+    using System.Diagnostics;
     using Catel.Data;
     using Orc.FilterBuilder.Models;
 

@@ -8,8 +8,10 @@
 namespace Orc.FilterBuilder
 {
     using System;
+    using System.Diagnostics;
     using Orc.FilterBuilder.Models;
 
+    [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class DateTimeExpression : DataTypeExpression
     {
         #region Constructors

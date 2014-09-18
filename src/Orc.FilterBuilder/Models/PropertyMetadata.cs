@@ -98,6 +98,27 @@ namespace Orc.FilterBuilder.Models
 
             return default(TValue);
         }
+
+        public override bool Equals(object obj)
+        {
+            var propertyMetaData = obj as PropertyMetadata;
+            if (propertyMetaData == null)
+            {
+                return false;
+            }
+
+            if (!string.Equals(Name, propertyMetaData.Name))
+            {
+                return false;
+            }
+
+            if (Type != propertyMetaData.Type)
+            {
+                return false;
+            }
+
+            return true;
+        }
         #endregion
     }
 }
