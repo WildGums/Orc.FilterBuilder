@@ -10,6 +10,7 @@ namespace Orc.FilterBuilder.ViewModels
     using System;
     using System.Collections;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
     using Catel;
@@ -106,7 +107,17 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void UpdateFilters()
         {
+            if (_filterSchemes != null)
+            {
+                _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
+            }
+
             _filterSchemes = _filterSchemeManager.FilterSchemes;
+
+            if (_filterSchemes != null)
+            {
+                _filterSchemes.Schemes.CollectionChanged += OnFilterSchemesCollectionChanged;
+            }
 
             var newSchemes = new ObservableCollection<FilterScheme>();
 
@@ -255,10 +266,20 @@ namespace Orc.FilterBuilder.ViewModels
 
         protected override async Task Close()
         {
+            if (_filterSchemes != null)
+            {
+                _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
+            }
+
             _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
             _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
 
             await base.Close();
+        }
+
+        private void OnFilterSchemesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateFilters();
         }
 
         private void OnFilterSchemeManagerLoaded(object sender, EventArgs eventArgs)
