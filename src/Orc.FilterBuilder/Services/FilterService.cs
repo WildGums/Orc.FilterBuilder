@@ -14,9 +14,19 @@ namespace Orc.FilterBuilder.Services
 
     public class FilterService : IFilterService
     {
+        private readonly IFilterSchemeManager _filterSchemeManager;
+
         #region Fields
         private FilterScheme _selectedFilter;
         #endregion
+
+        public FilterService(IFilterSchemeManager filterSchemeManager)
+        {
+            Argument.IsNotNull(() => filterSchemeManager);
+
+            _filterSchemeManager = filterSchemeManager;
+            _filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
+        }
 
         #region Properties
         public FilterScheme SelectedFilter
@@ -36,6 +46,14 @@ namespace Orc.FilterBuilder.Services
         }
         #endregion
 
+        /// <summary>
+        /// Occurs when any of the filters has been updated.
+        /// </summary>
+        public event EventHandler<EventArgs> FiltersUpdated;
+
+        /// <summary>
+        /// Occurs when the currently selected filter has changed.
+        /// </summary>
         public event EventHandler<EventArgs> SelectedFilterChanged;
 
         public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
@@ -49,7 +67,12 @@ namespace Orc.FilterBuilder.Services
                 return;
             }
 
-            filter.Apply(rawCollection, filteredCollection);            
+            filter.Apply(rawCollection, filteredCollection);
+        }
+
+        private void OnFilterSchemeManagerUpdated(object sender, EventArgs e)
+        {
+            FiltersUpdated.SafeInvoke(this);
         }
     }
 }
