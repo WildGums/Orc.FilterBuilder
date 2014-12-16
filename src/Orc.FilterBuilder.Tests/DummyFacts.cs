@@ -7,13 +7,13 @@
 
 namespace Orc.FilterBuilder.Test
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class DummyFacts
     {
         #region Methods
-        [TestMethod]
+        [Test]
         public void DummyTest()
         {
         }
