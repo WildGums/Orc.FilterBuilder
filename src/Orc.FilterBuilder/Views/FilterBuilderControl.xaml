@@ -33,6 +33,8 @@
                     Visibility="{Binding AutoApplyFilter, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=false}"/>
             <Button Content="Reset" Command="{Binding ResetSchemeCommand}"
                     Visibility="{Binding AllowReset, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=true}"/>
+            <Button Content="Delete" Command="{Binding DeleteSchemeCommand}"
+                    Visibility="{Binding AllowDelete, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=true}"/>
         </StackPanel>
     </Grid>
 </catel:UserControl>

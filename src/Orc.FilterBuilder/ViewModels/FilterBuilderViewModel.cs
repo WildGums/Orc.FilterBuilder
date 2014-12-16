@@ -30,6 +30,7 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IFilterSchemeManager _filterSchemeManager;
         private readonly IFilterService _filterService;
+        private readonly IMessageService _messageService;
 
         private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "No filter");
         private Type _targetType;
@@ -37,20 +38,23 @@ namespace Orc.FilterBuilder.ViewModels
 
         #region Constructors
         public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
-            IFilterService filterService)
+            IFilterService filterService, IMessageService messageService)
         {
             Argument.IsNotNull(() => uiVisualizerService);
             Argument.IsNotNull(() => filterSchemeManager);
             Argument.IsNotNull(() => filterService);
+            Argument.IsNotNull(() => messageService);
 
             _uiVisualizerService = uiVisualizerService;
             _filterSchemeManager = filterSchemeManager;
             _filterService = filterService;
+            _messageService = messageService;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
             EditSchemeCommand = new Command(OnEditSchemeExecute, OnEditSchemeCanExecute);
             ApplySchemeCommand = new Command(OnApplySchemeExecute, OnApplySchemeCanExecute);
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
+            DeleteSchemeCommand = new Command(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
         }
         #endregion
 
@@ -62,14 +66,174 @@ namespace Orc.FilterBuilder.ViewModels
         public bool EnableAutoCompletion { get; set; }
         public bool AutoApplyFilter { get; set; }
         public bool AllowReset { get; set; }
+        public bool AllowDelete { get; set; }
 
         public IEnumerable RawCollection { get; set; }
         public IList FilteredCollection { get; set; }
+        #endregion
 
+        #region Commands
         public Command NewSchemeCommand { get; private set; }
+
+        private async void OnNewSchemeExecute()
+        {
+            if (_targetType == null)
+            {
+                Log.Warning("Target type is unknown, cannot get any type information to create filters");
+                return;
+            }
+
+            var filterScheme = new FilterScheme(_targetType);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+
+            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            {
+                AvailableSchemes.Add(filterScheme);
+                _filterSchemes.Schemes.Add(filterScheme);
+                SelectedFilterScheme = filterScheme;
+
+                _filterSchemeManager.UpdateFilters();
+            }
+        }
+
         public Command EditSchemeCommand { get; private set; }
+
+        private bool OnEditSchemeCanExecute()
+        {
+            if (SelectedFilterScheme == null)
+            {
+                return false;
+            }
+
+            if (AvailableSchemes.Count == 0)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(AvailableSchemes[0], SelectedFilterScheme))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async void OnEditSchemeExecute()
+        {
+            var filterScheme = SelectedFilterScheme;
+            filterScheme.EnsureIntegrity();
+
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+
+            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            {
+                _filterSchemeManager.UpdateFilters();
+
+                ApplyFilter();
+            }
+        }
+
         public Command ApplySchemeCommand { get; private set; }
+
+        private bool OnApplySchemeCanExecute()
+        {
+            if (SelectedFilterScheme == null)
+            {
+                return false;
+            }
+
+            if (RawCollection == null)
+            {
+                return false;
+            }
+
+            if (FilteredCollection == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void OnApplySchemeExecute()
+        {
+            _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
+        }
+
         public Command ResetSchemeCommand { get; private set; }
+
+        private bool OnResetSchemeCanExecute()
+        {
+            if (!AllowReset)
+            {
+                return false;
+            }
+
+            if (AvailableSchemes == null)
+            {
+                return false;
+            }
+
+            if (AvailableSchemes.Count == 0)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(SelectedFilterScheme, AvailableSchemes[0]))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void OnResetSchemeExecute()
+        {
+            if (AvailableSchemes.Count > 0)
+            {
+                SelectedFilterScheme = AvailableSchemes[0];
+            }
+        }
+
+        public Command DeleteSchemeCommand { get; private set; }
+
+        private bool OnDeleteSchemeCanExecute()
+        {
+            if (!AllowDelete)
+            {
+                return false;
+            }
+
+            if (AvailableSchemes == null)
+            {
+                return false;
+            }
+
+            if (AvailableSchemes.Count == 0)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(SelectedFilterScheme, AvailableSchemes[0]))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async void OnDeleteSchemeExecute()
+        {
+            var filter = SelectedFilterScheme;
+            if (await _messageService.Show(string.Format("Are you sure you want to delete filter '{0}'?", filter.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
+            {
+                _filterSchemeManager.FilterSchemes.Schemes.Remove(filter);
+
+                SelectedFilterScheme = AvailableSchemes[0];
+
+                _filterSchemeManager.UpdateFilters();
+            }
+        }
         #endregion
 
         #region Methods
@@ -139,120 +303,6 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 AvailableSchemes = newSchemes;
                 SelectedFilterScheme = newSchemes.FirstOrDefault();
-            }
-        }
-
-        private async void OnNewSchemeExecute()
-        {
-            if (_targetType == null)
-            {
-                Log.Warning("Target type is unknown, cannot get any type information to create filters");
-                return;
-            }
-
-            var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-
-            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
-            {
-                AvailableSchemes.Add(filterScheme);
-                _filterSchemes.Schemes.Add(filterScheme);
-                SelectedFilterScheme = filterScheme;
-
-                _filterSchemeManager.UpdateFilters();
-            }
-        }
-
-        private bool OnEditSchemeCanExecute()
-        {
-            if (SelectedFilterScheme == null)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(AvailableSchemes[0], SelectedFilterScheme))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private async void OnEditSchemeExecute()
-        {
-            var filterScheme = SelectedFilterScheme;
-            filterScheme.EnsureIntegrity();
-
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-
-            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
-            {
-                _filterSchemeManager.UpdateFilters();
-
-                ApplyFilter();
-            }
-        }
-
-        private bool OnApplySchemeCanExecute()
-        {
-            if (SelectedFilterScheme == null)
-            {
-                return false;
-            }
-
-            if (RawCollection == null)
-            {
-                return false;
-            }
-
-            if (FilteredCollection == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void OnApplySchemeExecute()
-        {
-            _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
-        }
-
-        private bool OnResetSchemeCanExecute()
-        {
-            if (!AllowReset)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes == null)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(SelectedFilterScheme, AvailableSchemes[0]))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void OnResetSchemeExecute()
-        {
-            if (AvailableSchemes.Count > 0)
-            {
-                SelectedFilterScheme = AvailableSchemes[0];
             }
         }
 

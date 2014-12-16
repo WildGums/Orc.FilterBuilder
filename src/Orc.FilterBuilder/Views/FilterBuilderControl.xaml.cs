@@ -84,7 +84,17 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty AllowResetProperty =
-            DependencyProperty.Register("AllowReset", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));        
+            DependencyProperty.Register("AllowReset", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AllowDelete
+        {
+            get { return (bool)GetValue(AllowDeleteProperty); }
+            set { SetValue(AllowDeleteProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowDeleteProperty =
+            DependencyProperty.Register("AllowDelete", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
         #endregion
     }
 }
