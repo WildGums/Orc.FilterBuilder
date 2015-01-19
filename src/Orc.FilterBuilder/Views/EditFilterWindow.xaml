@@ -14,7 +14,7 @@
         <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
     </Window.Resources>
 
-    <Grid>       
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -73,22 +73,22 @@
                     <Setter Property="IsExpanded" Value="True" />
                 </Style>
             </TreeView.ItemContainerStyle>
-            
+
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                     <Grid>
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
 									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
                             <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
-                            
+
                             <Button ToolTip="Add expression" Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_expression.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
-                            
+
                             <Button ToolTip="Add group" Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_group.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
-                            
+
                             <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
@@ -97,7 +97,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
 									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
                             <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
-									  DisplayMemberPath="Name" SelectedItem="{Binding Property}" />
+									  DisplayMemberPath="DisplayName" SelectedItem="{Binding Property}" />
 
                             <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
 									  SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
@@ -112,7 +112,7 @@
                                                               IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>
                                     </i:Interaction.Behaviors>
                                 </TextBox>
-                                
+
                                 <DatePicker SelectedDate="{Binding DataTypeExpression.Value}"
 											Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.DateTime}}"/>
 

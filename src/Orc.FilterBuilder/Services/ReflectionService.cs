@@ -10,7 +10,7 @@ namespace Orc.FilterBuilder.Services
     using System;
     using Catel;
     using Catel.Caching;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     public class ReflectionService : IReflectionService
     {

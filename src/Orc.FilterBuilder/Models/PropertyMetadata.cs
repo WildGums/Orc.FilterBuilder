@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyMetadata.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+//     Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.FilterBuilder.Models
 {
@@ -16,10 +15,11 @@ namespace Orc.FilterBuilder.Models
     [DebuggerDisplay("{OwnerType}.{Name}")]
     public class PropertyMetadata : IPropertyMetadata
     {
-        private readonly PropertyInfo _propertyInfo;
         private readonly PropertyData _propertyData;
+        private readonly PropertyInfo _propertyInfo;
 
         #region Constructors
+
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
         {
             Argument.IsNotNull(() => ownerType);
@@ -43,61 +43,25 @@ namespace Orc.FilterBuilder.Models
             Name = propertyData.Name;
             Type = propertyData.Type;
         }
-        #endregion
+
+        #endregion Constructors
 
         #region Properties
-        public Type OwnerType { get; private set; }
+
+        /// <summary>
+        /// Display name of the property
+        /// </summary>
+        public string DisplayName { get; set; }
 
         public string Name { get; private set; }
 
+        public Type OwnerType { get; private set; }
+
         public Type Type { get; private set; }
-        #endregion
+
+        #endregion Properties
 
         #region Methods
-        public void SetValue(object instance, object value)
-        {
-            Argument.IsNotNull(() => instance);
-
-            if (_propertyInfo != null)
-            {
-                _propertyInfo.SetValue(instance, value, null);
-            }
-
-            if (_propertyData != null)
-            {
-                var modelEditor = instance as IModelEditor;
-                if (modelEditor != null)
-                {
-                    modelEditor.SetValue(_propertyData.Name, value);
-                }
-            }
-        }
-
-        public object GetValue(object instance)
-        {
-            return GetValue<object>(instance);
-        }
-
-        public TValue GetValue<TValue>(object instance)
-        {
-            Argument.IsNotNull(() => instance);
-
-            if (_propertyInfo != null)
-            {
-                return (TValue) _propertyInfo.GetValue(instance, null);
-            }
-
-            if (_propertyData != null)
-            {
-                var modelEditor = instance as IModelEditor;
-                if (modelEditor != null)
-                {
-                    return modelEditor.GetValue<TValue>(_propertyData.Name);
-                }
-            }
-
-            return default(TValue);
-        }
 
         public override bool Equals(object obj)
         {
@@ -119,6 +83,52 @@ namespace Orc.FilterBuilder.Models
 
             return true;
         }
-        #endregion
+
+        public object GetValue(object instance)
+        {
+            return GetValue<object>(instance);
+        }
+
+        public TValue GetValue<TValue>(object instance)
+        {
+            Argument.IsNotNull(() => instance);
+
+            if (_propertyInfo != null)
+            {
+                return (TValue)_propertyInfo.GetValue(instance, null);
+            }
+
+            if (_propertyData != null)
+            {
+                var modelEditor = instance as IModelEditor;
+                if (modelEditor != null)
+                {
+                    return modelEditor.GetValue<TValue>(_propertyData.Name);
+                }
+            }
+
+            return default(TValue);
+        }
+
+        public void SetValue(object instance, object value)
+        {
+            Argument.IsNotNull(() => instance);
+
+            if (_propertyInfo != null)
+            {
+                _propertyInfo.SetValue(instance, value, null);
+            }
+
+            if (_propertyData != null)
+            {
+                var modelEditor = instance as IModelEditor;
+                if (modelEditor != null)
+                {
+                    modelEditor.SetValue(_propertyData.Name, value);
+                }
+            }
+        }
+
+        #endregion Methods
     }
 }

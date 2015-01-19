@@ -11,11 +11,19 @@ namespace Orc.FilterBuilder.Models
 
     public interface IPropertyMetadata
     {
+        /// <summary>
+        /// Display name of the property
+        /// </summary>
+        string DisplayName { get; set; }
+
         string Name { get; }
-        Type Type { get; }
         Type OwnerType { get; }
-        void SetValue(object instance, object value);
+
+        Type Type { get; }
         object GetValue(object instance);
+
         TValue GetValue<TValue>(object instance);
+
+        void SetValue(object instance, object value);
     }
 }

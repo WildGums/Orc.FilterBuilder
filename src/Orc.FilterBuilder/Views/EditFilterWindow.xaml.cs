@@ -49,16 +49,20 @@ namespace Orc.FilterBuilder.Views
 
                     foreach (var instanceProperty in instanceProperties.Properties)
                     {
-                        var column = new DataGridTextColumn();
-                        column.Header = instanceProperty.Name;
+                        var column = new DataGridTextColumn
+                        {
+                            Header = instanceProperty.DisplayName
+                        };
 
-                        Binding binding = null;
+                        Binding binding;
 
                         if (isModelBase)
                         {
-                            binding = new Binding();
-                            binding.Converter = new ObjectToValueConverter();
-                            binding.ConverterParameter = instanceProperty.Name;
+                            binding = new Binding
+                            {
+                                Converter = new ObjectToValueConverter(),
+                                ConverterParameter = instanceProperty.Name
+                            };
                         }
                         else
                         {
