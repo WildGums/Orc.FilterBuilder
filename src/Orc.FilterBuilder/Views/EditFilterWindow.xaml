@@ -78,7 +78,7 @@
                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                     <Grid>
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
-									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
+                                    Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
                             <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
 
                             <Button ToolTip="Add expression" Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
@@ -95,17 +95,17 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
-									Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
+                                    Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
                             <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
-									  DisplayMemberPath="DisplayName" SelectedItem="{Binding Property}" />
+                                      DisplayMemberPath="DisplayNameOrName" SelectedItem="{Binding Property}" />
 
                             <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
-									  SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
+                                      SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
 
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
-								  Margin="3,0,0,0">
+                                  Margin="3,0,0,0">
                                 <TextBox Text="{Binding DataTypeExpression.Value}"
-										 Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
+                                         Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                         <catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
@@ -114,11 +114,11 @@
                                 </TextBox>
 
                                 <DatePicker SelectedDate="{Binding DataTypeExpression.Value}"
-											Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.DateTime}}"/>
+                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.DateTime}}"/>
 
                                 <ComboBox ItemsSource="{Binding DataTypeExpression.BooleanValues}"
-										  SelectedValue="{Binding DataTypeExpression.Value}"
-										  Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Boolean}}"/>
+                                          SelectedValue="{Binding DataTypeExpression.Value}"
+                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Boolean}}"/>
 
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.TimeSpan}}">
                                     <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}" SelectedValue="{Binding DataTypeExpression.SelectedSpanType}" />

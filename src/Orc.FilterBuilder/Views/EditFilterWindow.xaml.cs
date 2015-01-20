@@ -45,13 +45,13 @@ namespace Orc.FilterBuilder.Views
                     var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
                     var instanceProperties = reflectionService.GetInstanceProperties(targetType);
 
-                    var isModelBase = typeof (ModelBase).IsAssignableFromEx(targetType);
+                    var isModelBase = typeof(ModelBase).IsAssignableFromEx(targetType);
 
                     foreach (var instanceProperty in instanceProperties.Properties)
                     {
                         var column = new DataGridTextColumn
                         {
-                            Header = instanceProperty.DisplayName
+                            Header = instanceProperty.DisplayNameOrName
                         };
 
                         Binding binding;

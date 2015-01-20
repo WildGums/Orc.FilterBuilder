@@ -53,6 +53,17 @@ namespace Orc.FilterBuilder.Models
         /// </summary>
         public string DisplayName { get; set; }
 
+        /// <summary>
+        /// <see cref="DisplayName"/> or <see cref="Name"/> if first is null
+        /// </summary>
+        public string DisplayNameOrName
+        {
+            get
+            {
+                return DisplayName ?? Name;
+            }
+        }
+
         public string Name { get; private set; }
 
         public Type OwnerType { get; private set; }
