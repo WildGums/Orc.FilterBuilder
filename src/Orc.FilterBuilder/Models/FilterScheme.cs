@@ -120,10 +120,12 @@ namespace Orc.FilterBuilder.Models
         {
             Argument.IsNotNull(() => entity);
 
-            if (Root != null)
+            var root = Root;
+            if (root != null)
             {
-                return Root.CalculateResult(entity);
+                return root.CalculateResult(entity);
             }
+
             return true;
         }
 
