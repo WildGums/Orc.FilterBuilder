@@ -51,7 +51,7 @@ namespace Orc.FilterBuilder.Views
                     {
                         var column = new DataGridTextColumn
                         {
-                            Header = instanceProperty.DisplayNameOrName
+                            Header = instanceProperty.DisplayName
                         };
 
                         Binding binding;

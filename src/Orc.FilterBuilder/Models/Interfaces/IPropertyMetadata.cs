@@ -21,11 +21,6 @@ namespace Orc.FilterBuilder.Models
 
         Type Type { get; }
 
-        /// <summary>
-        /// <see cref="DisplayName"/> or <see cref="Name"/> if first is null
-        /// </summary>
-        string DisplayNameOrName { get; }
-
         object GetValue(object instance);
 
         TValue GetValue<TValue>(object instance);

@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.Models
     using System;
     using System.Diagnostics;
     using System.Reflection;
+    using System.Windows.Documents.DocumentStructures;
     using Catel;
     using Catel.Data;
 
@@ -29,6 +30,7 @@ namespace Orc.FilterBuilder.Models
 
             OwnerType = ownerType;
             Name = propertyInfo.Name;
+            DisplayName = Name;
             Type = propertyInfo.PropertyType;
         }
 
@@ -41,28 +43,14 @@ namespace Orc.FilterBuilder.Models
 
             OwnerType = ownerType;
             Name = propertyData.Name;
+            DisplayName = Name;
             Type = propertyData.Type;
         }
 
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Display name of the property
-        /// </summary>
         public string DisplayName { get; set; }
-
-        /// <summary>
-        /// <see cref="DisplayName"/> or <see cref="Name"/> if first is null
-        /// </summary>
-        public string DisplayNameOrName
-        {
-            get
-            {
-                return DisplayName ?? Name;
-            }
-        }
 
         public string Name { get; private set; }
 
