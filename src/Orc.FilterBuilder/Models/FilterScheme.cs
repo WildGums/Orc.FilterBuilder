@@ -78,7 +78,7 @@ namespace Orc.FilterBuilder.Models
                 }
             }
 
-            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList) sender : e.NewItems;
+            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
             if (newCollection != null)
             {
                 foreach (var item in newCollection)
@@ -120,7 +120,11 @@ namespace Orc.FilterBuilder.Models
         {
             Argument.IsNotNull(() => entity);
 
-            return Root.CalculateResult(entity);
+            if (Root != null)
+            {
+                return Root.CalculateResult(entity);
+            }
+            return true;
         }
 
         public void Update(FilterScheme otherScheme)
