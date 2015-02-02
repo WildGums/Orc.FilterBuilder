@@ -15,7 +15,7 @@ namespace Orc.FilterBuilder.Models
     using Catel.Data;
     using Catel.Reflection;
 
-    public class InstanceProperties
+    public class InstanceProperties : IPropertyCollection
     {
         public InstanceProperties(Type type)
         {
