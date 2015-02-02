@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder.Services
 
     public class FilterCustomizationService : IFilterCustomizationService
     {
-        public virtual void CustomizeInstanceProperties(InstanceProperties instanceProperties)
+        public virtual void CustomizeInstanceProperties(IPropertyCollection instanceProperties)
         {
             Argument.IsNotNull(() => instanceProperties);
 
@@ -29,7 +29,7 @@ namespace Orc.FilterBuilder.Services
             RemoveProperty(instanceProperties, "IsReadOnly");
         }
 
-        protected void RemoveProperty(InstanceProperties instanceProperties, string propertyName)
+        protected void RemoveProperty(IPropertyCollection instanceProperties, string propertyName)
         {
             for (int i = 0; i < instanceProperties.Properties.Count; i++)
             {

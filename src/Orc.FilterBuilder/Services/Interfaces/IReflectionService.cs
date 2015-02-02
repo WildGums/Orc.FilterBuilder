@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder.Services
 
     public interface IReflectionService
     {
-        InstanceProperties GetInstanceProperties(Type targetType);
+        IPropertyCollection GetInstanceProperties(Type targetType);
 
         void ClearCache();
     }

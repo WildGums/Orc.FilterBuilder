@@ -17,7 +17,7 @@ namespace Orc.FilterBuilder.Services
         private readonly IFilterCustomizationService _filterCustomizationService;
 
         #region Fields
-        private readonly ICacheStorage<Type, InstanceProperties> _cache = new CacheStorage<Type, InstanceProperties>();
+        private readonly ICacheStorage<Type, IPropertyCollection> _cache = new CacheStorage<Type, IPropertyCollection>();
         #endregion
 
         public ReflectionService(IFilterCustomizationService filterCustomizationService)
@@ -28,7 +28,7 @@ namespace Orc.FilterBuilder.Services
         }
 
         #region Methods
-        public InstanceProperties GetInstanceProperties(Type targetType)
+        public IPropertyCollection GetInstanceProperties(Type targetType)
         {
             Argument.IsNotNull(() => targetType);
 
