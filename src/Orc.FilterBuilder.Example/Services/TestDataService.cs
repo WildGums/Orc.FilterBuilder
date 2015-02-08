@@ -16,11 +16,21 @@ namespace FilterBuilder.Example.Services
     {
         #region Fields
         private readonly Random _random;
+        private ObservableCollection<TestEntity> _testItems;
         #endregion
 
         public TestDataService()
         {
             _random = new Random(DateTime.Now.Millisecond);
+        }
+
+        public ObservableCollection<TestEntity> GetTestItems()
+        {
+            if (_testItems == null)
+            {
+                _testItems = GenerateTestItems();
+            }
+            return _testItems;
         }
 
         public ObservableCollection<TestEntity> GenerateTestItems()

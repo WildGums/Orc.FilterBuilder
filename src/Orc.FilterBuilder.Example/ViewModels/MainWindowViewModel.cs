@@ -26,7 +26,7 @@ namespace FilterBuilder.Example.ViewModels
 
             _testDataService = testDataService;
 
-            RawItems = _testDataService.GenerateTestItems();
+            RawItems = _testDataService.GetTestItems();
             FilteredItems = new FastObservableCollection<TestEntity>();
 
             FilteredItems.CollectionChanged += (sender, e) => Console.WriteLine("Collection updated");
