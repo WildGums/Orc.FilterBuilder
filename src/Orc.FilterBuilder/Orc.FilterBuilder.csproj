@@ -175,11 +175,19 @@
   <ItemGroup>
     <Resource Include="Resources\Images\delete.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\edit.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\selected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
