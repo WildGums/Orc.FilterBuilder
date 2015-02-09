@@ -1,7 +1,8 @@
 ﻿<catel:UserControl x:Class="Orc.FilterBuilder.Views.FilterBuilderControl"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:catel="http://catel.codeplex.com">
+                   xmlns:catel="http://catel.codeplex.com"
+                   xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters">
 
     <UserControl.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -11,6 +12,7 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="UseLayoutRounding" Value="True" />
         </Style>
+        <converters:TriggerConverter x:Key="TriggerConverter" />
     </UserControl.Resources>
 
     <!--<Grid Margin="0">
@@ -63,13 +65,27 @@
                                    />
 
                             <Label Grid.Column="1" Content="{Binding Title}" />
-                            <Button Grid.Column="2" Width="24"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox, Mode=FindAncestor}, Path=DataContext.EditSchemeCommand }">
+                            <Button Grid.Column="2" Width="24" CommandParameter="{Binding }">
+                                <!-- NOTE: important to fix commands where command parameter is not yet available when
+                                     the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
+                                <Button.Command>
+                                    <MultiBinding Converter="{StaticResource TriggerConverter}">
+                                        <Binding Path="DataContext.EditSchemeCommand" ElementName="layoutRoot" />
+                                        <Binding />
+                                    </MultiBinding>
+                                </Button.Command>
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/edit.png" Stretch="None" />
                             </Button>
-                            <Button Grid.Column="4" Width="24"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox, Mode=FindAncestor}, Path=DataContext.DeleteSchemeCommand }"
+                            <Button Grid.Column="4" Width="24" CommandParameter="{Binding }"
                                     Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBox, Mode=FindAncestor}, Path=DataContext.AllowDelete , Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=true}">
+                                <!-- NOTE: important to fix commands where command parameter is not yet available when
+                                     the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
+                                <Button.Command>
+                                    <MultiBinding Converter="{StaticResource TriggerConverter}">
+                                        <Binding Path="DataContext.DeleteSchemeCommand" ElementName="layoutRoot" />
+                                        <Binding />
+                                    </MultiBinding>
+                                </Button.Command>
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/remove.png" Stretch="None" />
                             </Button>
                         </Grid>

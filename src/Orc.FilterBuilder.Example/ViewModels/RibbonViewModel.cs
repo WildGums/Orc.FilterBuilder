@@ -66,7 +66,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             }
 
             var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, false, false);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo (filterScheme, RawItems, true, true);
 
             if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
