@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="Conditions\Helpers\ConditionHelper.cs" />
     <Compile Include="Converters\DataTypeExpressionToConditionsConverter.cs" />
+    <Compile Include="Converters\IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToValueConverter.cs" />
     <Compile Include="Converters\TriggerConverter.cs" />
     <Compile Include="Expressions\BooleanExpression.cs" />
