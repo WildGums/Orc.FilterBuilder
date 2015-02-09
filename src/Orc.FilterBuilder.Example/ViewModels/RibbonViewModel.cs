@@ -86,6 +86,19 @@ namespace Orc.FilterBuilder.Example.ViewModels
             UpdateFilters();
         }
 
+        protected override async Task Close()
+        {
+            if (_filterSchemes != null)
+            {
+                _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
+            }
+
+            _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
+            _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
+
+            await base.Close();
+        }
+
         private void UpdateFilters()
         {
             if (_filterSchemes != null)
