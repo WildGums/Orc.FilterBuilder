@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -154,9 +155,9 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnApplySchemeExecute()
+        private async void OnApplySchemeExecute()
         {
-            _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
+            await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
         }
 
         public Command ResetSchemeCommand { get; private set; }
@@ -240,7 +241,7 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
-        private void OnSelectedFilterSchemeChanged()
+        private async void OnSelectedFilterSchemeChanged()
         {
             if (SelectedFilterScheme == null || ReferenceEquals(SelectedFilterScheme, _filterService.SelectedFilter))
             {
@@ -305,7 +306,9 @@ namespace Orc.FilterBuilder.ViewModels
             if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {
                 AvailableSchemes = newSchemes;
-                SelectedFilterScheme = newSchemes.FirstOrDefault();
+
+                var selectedFilter = _filterService.SelectedFilter ?? NoFilterFilter;
+                SelectedFilterScheme = selectedFilter;
             }
         }
 
