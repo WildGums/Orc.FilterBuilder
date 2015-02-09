@@ -3,6 +3,9 @@
 /// </summary>
 using Catel.IoC;
 using FilterBuilder.Example.Services;
+using Orc.FilterBuilder.Example.Services;
+using Orchestra.Services;
+using Orchestra.Shell.Services;
 
 public static class ModuleInitializer
 {
@@ -13,6 +16,8 @@ public static class ModuleInitializer
     {
         var serviceLocator = ServiceLocator.Default;
 
+        serviceLocator.RegisterType<IRibbonService, RibbonService>();
+        serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
         serviceLocator.RegisterType<ITestDataService, TestDataService>();
     }
 }

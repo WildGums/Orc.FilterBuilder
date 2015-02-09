@@ -1,25 +1,16 @@
-﻿<catel:DataWindow x:Class="FilterBuilder.Example.Views.MainWindow"
-                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:catel="http://catel.codeplex.com"
-                  xmlns:views="clr-namespace:Orc.FilterBuilder.Views;assembly=Orc.FilterBuilder"
-                  ShowInTaskbar="True" WindowState="Maximized" ResizeMode="CanResizeWithGrip">
+﻿<catel:UserControl x:Class="Orc.FilterBuilder.Example.Views.MainView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				   xmlns:catel="http://catel.codeplex.com">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <views:FilterBuilderControl Grid.ColumnSpan="2" RawCollection="{Binding RawItems}" AutoApplyFilter="True"
-                                    FilteredCollection="{Binding FilteredItems}" EnableAutoCompletion="True" />
-
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding RawItems}">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding RawItems}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" Width="*" />
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" />
@@ -33,7 +24,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding FilteredItems}">
+        <DataGrid  Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding FilteredItems}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" Width="*" />
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*" />
@@ -47,4 +38,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
-</catel:DataWindow>
+</catel:UserControl>

@@ -1,0 +1,22 @@
+﻿<catel:UserControl x:Class="Orc.FilterBuilder.Example.Views.RibbonView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				   xmlns:catel="http://catel.codeplex.com"
+				   xmlns:fluent="urn:fluent-ribbon"
+				   xmlns:orchestra="https://github.com/orcomp/orchestra"
+				   xmlns:ribbon="clr-namespace:Orc.FilterBuilder.Example"
+				   xmlns:views="clr-namespace:Orc.FilterBuilder.Views;assembly=Orc.FilterBuilder">
+    <fluent:Ribbon>
+        <fluent:Ribbon.Tabs>
+            <fluent:RibbonTabItem Header="Filter">
+                <fluent:RibbonGroupBox Header="Filter">
+                    <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" Command="{Binding NewSchemeCommand}"
+                                        LargeIcon="{orchestra:FontImage {x:Static ribbon:FontAwesome.Plus}}" >
+                        <views:FilterBuilderControl RawCollection="{Binding RawItems}" />
+                    </fluent:SplitButton>
+
+                </fluent:RibbonGroupBox>
+            </fluent:RibbonTabItem>
+        </fluent:Ribbon.Tabs>
+    </fluent:Ribbon>
+</catel:UserControl>

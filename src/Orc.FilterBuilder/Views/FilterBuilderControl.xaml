@@ -1,7 +1,8 @@
 ﻿<catel:UserControl x:Class="Orc.FilterBuilder.Views.FilterBuilderControl"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:catel="http://catel.codeplex.com">
+                   xmlns:catel="http://catel.codeplex.com"
+                   xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters">
 
     <UserControl.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -11,9 +12,11 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="UseLayoutRounding" Value="True" />
         </Style>
+        <converters:TriggerConverter x:Key="TriggerConverter" />
+        <converters:IsCurrentFilterSchemeToCollapsingVisibilityConverter x:Key="IsCurrentFilterSchemeToCollapsingVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="0">
+    <!--<Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -36,5 +39,68 @@
             <Button Content="Delete" Command="{Binding DeleteSchemeCommand}"
                     Visibility="{Binding AllowDelete, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=true}"/>
         </StackPanel>
+    </Grid>-->
+    <Grid x:Name="layoutRoot" Background="White">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
+            <ListBox x:Name="listBox" ItemsSource="{Binding AvailableSchemes}" SelectedItem="{Binding SelectedFilterScheme}"
+                     BorderThickness="0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Source="/Orc.FilterBuilder;component/Resources/Images/selected.png" Stretch="None"
+                                   Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image.Visibility>
+                                    <MultiBinding Converter="{StaticResource IsCurrentFilterSchemeToCollapsingVisibilityConverter}">
+                                        <Binding />
+                                        <Binding Path="DataContext.SelectedFilterScheme" ElementName="layoutRoot" />
+                                    </MultiBinding>
+                                </Image.Visibility>
+                            </Image>
+
+                            <Label Grid.Column="1" Content="{Binding Title}" />
+                            <Button Grid.Column="2" Width="24" CommandParameter="{Binding }"
+                                    Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
+                                <!-- NOTE: important to fix commands where command parameter is not yet available when
+                                     the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
+                                <Button.Command>
+                                    <MultiBinding Converter="{StaticResource TriggerConverter}">
+                                        <Binding Path="DataContext.EditSchemeCommand" ElementName="layoutRoot" />
+                                        <Binding />
+                                    </MultiBinding>
+                                </Button.Command>
+                                <Image Source="/Orc.FilterBuilder;component/Resources/Images/edit.png" Stretch="None" />
+                            </Button>
+                            <Button Grid.Column="4" Width="24" CommandParameter="{Binding }"
+                                    Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
+                                <!-- NOTE: important to fix commands where command parameter is not yet available when
+                                     the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
+                                <Button.Command>
+                                    <MultiBinding Converter="{StaticResource TriggerConverter}">
+                                        <Binding Path="DataContext.DeleteSchemeCommand" ElementName="layoutRoot" />
+                                        <Binding />
+                                    </MultiBinding>
+                                </Button.Command>
+                                <Image Source="/Orc.FilterBuilder;component/Resources/Images/remove.png" Stretch="None" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
     </Grid>
+    
 </catel:UserControl>

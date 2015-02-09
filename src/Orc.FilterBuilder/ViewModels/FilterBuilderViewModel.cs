@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -51,10 +52,10 @@ namespace Orc.FilterBuilder.ViewModels
             _messageService = messageService;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
-            EditSchemeCommand = new Command(OnEditSchemeExecute, OnEditSchemeCanExecute);
+            EditSchemeCommand = new Command<FilterScheme>(OnEditSchemeExecute, OnEditSchemeCanExecute);
             ApplySchemeCommand = new Command(OnApplySchemeExecute, OnApplySchemeCanExecute);
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
-            DeleteSchemeCommand = new Command(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
+            DeleteSchemeCommand = new Command<FilterScheme>(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
         }
         #endregion
 
@@ -96,11 +97,11 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command EditSchemeCommand { get; private set; }
+        public Command<FilterScheme> EditSchemeCommand { get; private set; }
 
-        private bool OnEditSchemeCanExecute()
+        private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
-            if (SelectedFilterScheme == null)
+            if (filterScheme == null)
             {
                 return false;
             }
@@ -110,7 +111,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return false;
             }
 
-            if (ReferenceEquals(AvailableSchemes[0], SelectedFilterScheme))
+            if (ReferenceEquals(AvailableSchemes[0], filterScheme))
             {
                 return false;
             }
@@ -118,9 +119,8 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private async void OnEditSchemeExecute()
+        private async void OnEditSchemeExecute(FilterScheme filterScheme)
         {
-            var filterScheme = SelectedFilterScheme;
             filterScheme.EnsureIntegrity();
 
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
@@ -155,9 +155,9 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnApplySchemeExecute()
+        private async void OnApplySchemeExecute()
         {
-            _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
+            await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
         }
 
         public Command ResetSchemeCommand { get; private set; }
@@ -195,10 +195,15 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command DeleteSchemeCommand { get; private set; }
+        public Command<FilterScheme> DeleteSchemeCommand { get; private set; }
 
-        private bool OnDeleteSchemeCanExecute()
+        private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
         {
+            if (filterScheme == null)
+            {
+                return false;
+            }
+
             if (!AllowDelete)
             {
                 return false;
@@ -214,7 +219,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return false;
             }
 
-            if (ReferenceEquals(SelectedFilterScheme, AvailableSchemes[0]))
+            if (ReferenceEquals(filterScheme, AvailableSchemes[0]))
             {
                 return false;
             }
@@ -222,12 +227,11 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private async void OnDeleteSchemeExecute()
+        private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
         {
-            var filter = SelectedFilterScheme;
-            if (await _messageService.Show(string.Format("Are you sure you want to delete filter '{0}'?", filter.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
+            if (await _messageService.Show(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
             {
-                _filterSchemeManager.FilterSchemes.Schemes.Remove(filter);
+                _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
 
                 SelectedFilterScheme = AvailableSchemes[0];
 
@@ -237,7 +241,7 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
-        private void OnSelectedFilterSchemeChanged()
+        private async void OnSelectedFilterSchemeChanged()
         {
             if (SelectedFilterScheme == null || ReferenceEquals(SelectedFilterScheme, _filterService.SelectedFilter))
             {
@@ -302,7 +306,9 @@ namespace Orc.FilterBuilder.ViewModels
             if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {
                 AvailableSchemes = newSchemes;
-                SelectedFilterScheme = newSchemes.FirstOrDefault();
+
+                var selectedFilter = _filterService.SelectedFilter ?? NoFilterFilter;
+                SelectedFilterScheme = selectedFilter;
             }
         }
 

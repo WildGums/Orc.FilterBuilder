@@ -13,6 +13,7 @@ namespace FilterBuilder.Example.Services
 
     public interface ITestDataService
     {
+        ObservableCollection<TestEntity> GetTestItems();
         ObservableCollection<TestEntity> GenerateTestItems();
         TestEntity GenerateRandomEntity();
         DateTime GetRandomDateTime();

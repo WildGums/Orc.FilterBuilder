@@ -92,7 +92,9 @@
     </Compile>
     <Compile Include="Conditions\Helpers\ConditionHelper.cs" />
     <Compile Include="Converters\DataTypeExpressionToConditionsConverter.cs" />
+    <Compile Include="Converters\IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToValueConverter.cs" />
+    <Compile Include="Converters\TriggerConverter.cs" />
     <Compile Include="Expressions\BooleanExpression.cs" />
     <Compile Include="Conditions\ConditionGroup.cs" />
     <Compile Include="Conditions\ConditionGroupType.cs" />
@@ -175,11 +177,19 @@
   <ItemGroup>
     <Resource Include="Resources\Images\delete.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\edit.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\selected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
