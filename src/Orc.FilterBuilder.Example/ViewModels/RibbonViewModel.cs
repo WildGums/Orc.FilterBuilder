@@ -53,7 +53,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "No filter");
+        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
 
         public Command NewSchemeCommand { get; private set; }
 

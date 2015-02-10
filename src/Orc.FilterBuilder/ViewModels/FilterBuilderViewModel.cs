@@ -33,7 +33,7 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IFilterService _filterService;
         private readonly IMessageService _messageService;
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "No filter");
+        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
         private Type _targetType;
         private FilterSchemes _filterSchemes;
 
