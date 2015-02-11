@@ -36,7 +36,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             RawItems = _testDataService.GetTestItems();
             FilteredItems = new FastObservableCollection<TestEntity>();
 
-            FilteredItems.CollectionChanged += (sender, e) => Console.WriteLine("Collection updated");
+            FilteredItems.CollectionChanged += (sender, e) => Log.Info("Collection updated");
         }
 
         private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)

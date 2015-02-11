@@ -16,30 +16,6 @@
         <converters:IsCurrentFilterSchemeToCollapsingVisibilityConverter x:Key="IsCurrentFilterSchemeToCollapsingVisibilityConverter" />
     </UserControl.Resources>
 
-    <!--<Grid Margin="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="175" />
-        </Grid.ColumnDefinitions>
-
-        <ComboBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding AvailableSchemes}" SelectedItem="{Binding SelectedFilterScheme}"
-                  DisplayMemberPath="Title" Margin="0,5,5,5"/>
-
-        <StackPanel Grid.Row="1" Grid.Column="0" x:Name="stackPanel" Orientation="Horizontal" Margin="0,5,0,5">
-            <Button Content="New" Command="{Binding NewSchemeCommand}" />
-            <Button Content="Edit" Command="{Binding EditSchemeCommand}"/>
-            <Button Content="Apply" Command="{Binding ApplySchemeCommand}"
-                    Visibility="{Binding AutoApplyFilter, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=false}"/>
-            <Button Content="Reset" Command="{Binding ResetSchemeCommand}"
-                    Visibility="{Binding AllowReset, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=true}"/>
-            <Button Content="Delete" Command="{Binding DeleteSchemeCommand}"
-                    Visibility="{Binding AllowDelete, Converter={catel:BooleanToCollapsingVisibilityConverter}, ConverterParameter=true}"/>
-        </StackPanel>
-    </Grid>-->
     <Grid x:Name="layoutRoot" Background="White">
         <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
             <ListBox x:Name="listBox" ItemsSource="{Binding AvailableSchemes}" SelectedItem="{Binding SelectedFilterScheme}"
