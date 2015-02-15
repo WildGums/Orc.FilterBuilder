@@ -61,6 +61,10 @@
     <Reference Include="Microsoft.Windows.Shell">
       <HintPath>..\..\lib\Fluent.Ribbon.3.3.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Orchestra.Core">
       <HintPath>..\..\lib\Orchestra.Core.2.1.0-unstable0084\lib\net40\Orchestra.Core.dll</HintPath>
       <Private>True</Private>
@@ -169,6 +173,9 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="readme.md" />
+    <Content Include="Resources\zips.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>
