@@ -18,7 +18,14 @@ namespace Orc.FilterBuilder.AlternativeExample.ViewModels
             Argument.IsNotNull(() => dataProvider);
 
             _dataProvider = dataProvider;
-            _dataProvider.GetData();
+        }
+
+        public IEnumerable<object> OriginalCollection
+        {
+            get
+            {
+                return _dataProvider.GetData();
+            }
         }
     }
 }

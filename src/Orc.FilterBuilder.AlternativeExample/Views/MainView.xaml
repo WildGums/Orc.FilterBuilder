@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:catel="http://catel.codeplex.com"
+             xmlns:controls="clr-namespace:Orc.FilterBuilder.AlternativeExample.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -11,7 +12,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0"> TBD </TextBlock>
+        <controls:JsonCollectionViewer Source="{Binding OriginalCollection}" />
         <TextBlock Grid.Column="1"> TBD</TextBlock>
     </Grid>
 </catel:UserControl>
