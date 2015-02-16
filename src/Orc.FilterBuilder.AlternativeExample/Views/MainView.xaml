@@ -13,6 +13,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <controls:JsonCollectionViewer Source="{Binding OriginalCollection}" />
-        <TextBlock Grid.Column="1"> TBD</TextBlock>
+        <controls:JsonCollectionViewer Grid.Column="1" Source="{Binding FilteredCollection}" />
     </Grid>
 </catel:UserControl>
