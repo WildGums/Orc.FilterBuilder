@@ -34,7 +34,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IFilterService _filterService;
 
-        private Type _targetType;
+        private IMetadataProvider _metadataProvider;
         private FilterSchemes _filterSchemes;
 
         public RibbonViewModel(ITestDataService testDataService, IFilterSchemeManager filterSchemeManager,
@@ -53,19 +53,19 @@ namespace Orc.FilterBuilder.Example.ViewModels
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
+        private readonly FilterScheme NoFilterFilter = new FilterScheme(new TypeMetadataProvider(typeof(object)), "Default");
 
         public Command NewSchemeCommand { get; private set; }
 
         private async void OnNewSchemeExecute()
         {
-            if (_targetType == null)
+            if (_metadataProvider == null)
             {
-                Log.Warning("Target type is unknown, cannot get any type information to create filters");
+                Log.Warning("Target data structure is unknown, cannot get any structure information to create filters");
                 return;
             }
 
-            var filterScheme = new FilterScheme(_targetType);
+            var filterScheme = new FilterScheme(_metadataProvider);
             var filterSchemeEditInfo = new FilterSchemeEditInfo (filterScheme, RawItems, true, true);
 
             if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
@@ -117,13 +117,15 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
             if (RawItems == null)
             {
-                _targetType = null;
+                _metadataProvider = null;
             }
             else
             {
-                _targetType = CollectionHelper.GetTargetType(RawItems);
+                // TODO refactor
+                var type = CollectionHelper.GetTargetType(RawItems);
+                _metadataProvider = new TypeMetadataProvider(type);
                 newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                     where _metadataProvider != null && _metadataProvider.IsAssignableFromEx(scheme.TargetDataDescriptor)
                                      select scheme));
             }
 

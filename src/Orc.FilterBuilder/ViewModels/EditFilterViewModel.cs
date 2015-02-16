@@ -57,7 +57,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             DeferValidationUntilFirstSaveCall = true;
 
-            InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
+            InstanceProperties = filterScheme.TargetDataDescriptor.Properties;
 
             using (var memoryStream = new MemoryStream())
             {

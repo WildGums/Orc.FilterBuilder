@@ -33,8 +33,8 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IFilterService _filterService;
         private readonly IMessageService _messageService;
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
-        private Type _targetType;
+        private readonly FilterScheme NoFilterFilter = new FilterScheme(new TypeMetadataProvider(typeof(object)), "Default");
+        private IMetadataProvider _metadataProvider;
         private FilterSchemes _filterSchemes;
 
         #region Constructors
@@ -78,13 +78,13 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async void OnNewSchemeExecute()
         {
-            if (_targetType == null)
+            if (_metadataProvider == null)
             {
-                Log.Warning("Target type is unknown, cannot get any type information to create filters");
+                Log.Warning("Target data structure is unknown, cannot get any structure information to create filters");
                 return;
             }
 
-            var filterScheme = new FilterScheme(_targetType);
+            var filterScheme = new FilterScheme(_metadataProvider);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
             if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
@@ -291,13 +291,16 @@ namespace Orc.FilterBuilder.ViewModels
 
             if (RawCollection == null)
             {
-                _targetType = null;
+                _metadataProvider = null;
             }
             else
             {
-                _targetType = CollectionHelper.GetTargetType(RawCollection);
+                // TODO we can not read type from the collection
+                var type = CollectionHelper.GetTargetType(RawCollection);
+                _metadataProvider = new TypeMetadataProvider(type);
+
                 newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                     where _metadataProvider != null && _metadataProvider.IsAssignableFromEx(scheme.TargetDataDescriptor)
                                      select scheme));
             }
 

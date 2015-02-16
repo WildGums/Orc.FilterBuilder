@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
     {
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
-            if (string.Equals(memberValue.Name, "TargetType"))
+            if (string.Equals(memberValue.Name, "TargetDataDescriptor"))
             {
                 var targetType = memberValue.Value as Type;
                 if (targetType != null)
@@ -28,7 +28,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
 
         public override void DeserializeMember(ISerializationContext context, MemberValue memberValue)
         {
-            if (string.Equals(memberValue.Name, "TargetType"))
+            if (string.Equals(memberValue.Name, "TargetDataDescriptor"))
             {
                 var targetTypeAsString = memberValue.Value as string;
                 if (targetTypeAsString != null)

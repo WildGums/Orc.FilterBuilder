@@ -108,9 +108,11 @@
     <Compile Include="Markup\EnumBinding.cs" />
     <Compile Include="Models\FilterSchemeEditInfo.cs" />
     <Compile Include="Models\FilterSchemes.cs" />
+    <Compile Include="Models\Interfaces\IMetadataProvider.cs" />
     <Compile Include="Models\Interfaces\IPropertyCollection.cs" />
     <Compile Include="Models\Interfaces\IPropertyMetadata.cs" />
     <Compile Include="Models\PropertyMetadata.cs" />
+    <Compile Include="Models\TypeMetadataProvider.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Runtime\Serialization\PropertyExpressionSerializerModifier.cs" />
     <Compile Include="Runtime\Serialization\FilterSchemeSerializerModifier.cs" />

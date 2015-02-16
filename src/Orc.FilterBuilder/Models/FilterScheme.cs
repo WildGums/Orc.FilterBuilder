@@ -21,30 +21,25 @@ namespace Orc.FilterBuilder.Models
     public class FilterScheme : ModelBase
     {
         #region Constructors
-        public FilterScheme()
-            : this(typeof(object))
+        public FilterScheme(IMetadataProvider targetDataDescriptor)
+            : this(targetDataDescriptor, string.Empty)
         {
         }
 
-        public FilterScheme(Type targetType)
-            : this(targetType, string.Empty)
+        public FilterScheme(IMetadataProvider targetDataDescriptor, string title)
+            : this(targetDataDescriptor, title, new ConditionGroup())
         {
         }
 
-        public FilterScheme(Type targetType, string title)
-            : this(targetType, title, new ConditionGroup())
+        public FilterScheme(IMetadataProvider targetDataDescriptor, string title, ConditionTreeItem root)
         {
-        }
-
-        public FilterScheme(Type targetType, string title, ConditionTreeItem root)
-        {
-            Argument.IsNotNull(() => targetType);
+            Argument.IsNotNull(() => targetDataDescriptor);
             Argument.IsNotNull(() => title);
             Argument.IsNotNull(() => root);
 
             SuspendValidation = true;
 
-            TargetType = targetType;
+            TargetDataDescriptor = targetDataDescriptor;
             Title = title;
             ConditionItems = new ObservableCollection<ConditionTreeItem>();
             ConditionItems.Add(root);
@@ -52,7 +47,7 @@ namespace Orc.FilterBuilder.Models
         #endregion
 
         #region Properties
-        public Type TargetType { get; private set; }
+        public IMetadataProvider TargetDataDescriptor { get; private set; }
 
         public string Title { get; set; }
 
