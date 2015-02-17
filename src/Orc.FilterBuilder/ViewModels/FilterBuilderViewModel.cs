@@ -22,6 +22,7 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.Services;
     using Models;
     using Services;
+    using Views;
     using CollectionHelper = Orc.FilterBuilder.CollectionHelper;
 
     public class FilterBuilderViewModel : ViewModelBase
@@ -71,6 +72,17 @@ namespace Orc.FilterBuilder.ViewModels
 
         public IEnumerable RawCollection { get; set; }
         public IList FilteredCollection { get; set; }
+
+        /// <summary>
+        /// Current <see cref="FilterBuilderControl"/> mode
+        /// </summary>
+        public FilterBuilderMode Mode { get; set; }
+
+        /// <summary>
+        /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
+        /// <see cref="FilterBuilderMode.FilteringFunction"/>
+        /// </summary>
+        public Func<object,bool> FilteringFunc { get; set; }
         #endregion
 
         #region Commands
@@ -157,7 +169,16 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async void OnApplySchemeExecute()
         {
-            await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
+            //build filtered collection only if current mode is Collection
+            if (Mode == FilterBuilderMode.Collection)
+            {
+                FilteringFunc = null;
+                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
+            }
+            else
+            {
+                FilteringFunc = SelectedFilterScheme.CalculateResult;
+            }
         }
 
         public Command ResetSchemeCommand { get; private set; }

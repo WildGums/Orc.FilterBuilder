@@ -138,6 +138,7 @@
     <Compile Include="TimeSpanType.cs" />
     <Compile Include="ValueControlType.cs" />
     <Compile Include="Converters\ValueControlTypeVisibilityConverter.cs" />
+    <Compile Include="FilterBuilderMode.cs" />
     <Page Include="Views\EditFilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
