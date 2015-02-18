@@ -18,10 +18,10 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             if (string.Equals(memberValue.Name, "TargetDataDescriptor"))
             {
-                var targetType = memberValue.Value as Type;
-                if (targetType != null)
+                var provider = memberValue.Value as TypeMetadataProvider;
+                if (provider != null)
                 {
-                    memberValue.Value = targetType.FullName;
+                    memberValue.Value = provider.TargetType.FullName;
                 }
             }
         }
@@ -33,7 +33,8 @@ namespace Orc.FilterBuilder.Runtime.Serialization
                 var targetTypeAsString = memberValue.Value as string;
                 if (targetTypeAsString != null)
                 {
-                    memberValue.Value = TypeCache.GetType(targetTypeAsString);
+                    var targetType = TypeCache.GetType(targetTypeAsString);
+                    memberValue.Value = new TypeMetadataProvider(targetType);
                 }
             }
         }

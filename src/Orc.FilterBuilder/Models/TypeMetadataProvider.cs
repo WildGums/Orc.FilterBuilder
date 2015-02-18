@@ -2,14 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Xml.Serialization;
     using Catel;
     using Catel.IoC;
+    using Catel.Reflection;
+    using Catel.Runtime.Serialization;
+    using Runtime.Serialization;
     using Services;
-
+    
     public class TypeMetadataProvider: IMetadataProvider
     {
-        private Type _targetType;
-
         private IReflectionService _reflectionService;
 
         public TypeMetadataProvider(Type targetType) : this(targetType, ServiceLocator.Default.ResolveType<IReflectionService>())
@@ -20,18 +22,31 @@
         {
             Argument.IsNotNull(() => targetType);
             Argument.IsNotNull(() => reflectionService);
-            _targetType = targetType;
+            
+            TargetType = targetType;
             _reflectionService = reflectionService;
         }
 
+        public Type TargetType { get; private set; }
+
+        [XmlIgnore]
         public List<IPropertyMetadata> Properties
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return _reflectionService.GetInstanceProperties(TargetType).Properties;
+            }
         }
 
         public bool IsAssignableFromEx(IMetadataProvider otherProvider)
         {
-            throw new NotImplementedException();
+            if (!(otherProvider is TypeMetadataProvider))
+            {
+                return false;
+            }
+
+            var secondProvider = otherProvider as TypeMetadataProvider;
+            return TargetType.IsAssignableFromEx(secondProvider.TargetType);
         }
     }
 }

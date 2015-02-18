@@ -21,6 +21,11 @@ namespace Orc.FilterBuilder.Models
     public class FilterScheme : ModelBase
     {
         #region Constructors
+        // Parameterless constructor for deserialization purposes
+        public FilterScheme()
+        {
+        }
+
         public FilterScheme(IMetadataProvider targetDataDescriptor)
             : this(targetDataDescriptor, string.Empty)
         {
