@@ -106,6 +106,8 @@
     <Compile Include="Extensions\FilterSchemeExtensions.cs" />
     <Compile Include="Helpers\CollectionHelper.cs" />
     <Compile Include="Markup\EnumBinding.cs" />
+    <Compile Include="Models\DictionaryEntryMetadata.cs" />
+    <Compile Include="Models\DictionaryMetadataProvider.cs" />
     <Compile Include="Models\FilterSchemeEditInfo.cs" />
     <Compile Include="Models\FilterSchemes.cs" />
     <Compile Include="Models\Interfaces\IMetadataProvider.cs" />

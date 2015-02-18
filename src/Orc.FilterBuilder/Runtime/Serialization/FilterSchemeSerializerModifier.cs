@@ -18,6 +18,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             if (string.Equals(memberValue.Name, "TargetDataDescriptor"))
             {
+                // TODO there are possibility of different types here so logic should be smarter
                 var provider = memberValue.Value as TypeMetadataProvider;
                 if (provider != null)
                 {

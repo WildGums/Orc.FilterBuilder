@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Net.Mime;
+    using Models;
     using Newtonsoft.Json;
     using Path = Catel.IO.Path;
 
@@ -18,9 +19,9 @@
             return _zips;
         }
 
-        public Dictionary<string, Type> GetMetadata()
+        public IMetadataProvider GetMetadata()
         {
-            return new Dictionary<string, Type>
+            var schema = new Dictionary<string, Type>
             {
                 {"city", typeof(string)},
                 {"loc", typeof(Array)},
@@ -28,6 +29,8 @@
                 {"state", typeof(string)},
                 {"_id", typeof(string)}
             };
+
+            return new DictionaryMetadataProvider(schema);
         }
 
         private void AssertZipsContent()

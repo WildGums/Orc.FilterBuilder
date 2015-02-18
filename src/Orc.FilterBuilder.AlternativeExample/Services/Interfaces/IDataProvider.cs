@@ -3,11 +3,12 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Models;
 
     public interface IDataProvider
     {
         IEnumerable<object> GetData();
 
-        Dictionary<string, Type> GetMetadata();
+        IMetadataProvider GetMetadata();
     }
 }
