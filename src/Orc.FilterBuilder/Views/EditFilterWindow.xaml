@@ -108,8 +108,9 @@
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        <catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>
+                                        <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" 
+                                                              ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
+                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
                                     </i:Interaction.Behaviors>
                                 </TextBox>
 
