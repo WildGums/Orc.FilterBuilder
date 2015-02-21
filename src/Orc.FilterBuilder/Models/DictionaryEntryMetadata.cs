@@ -19,7 +19,7 @@ namespace Orc.FilterBuilder.Models
             Argument.IsNotNull(() => expectedType);
             _key = key;
             DisplayName = key;
-            _expectedType = _expectedType;
+            _expectedType = expectedType;
         }
 
         public string DisplayName {  get; set; }

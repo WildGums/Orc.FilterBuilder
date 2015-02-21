@@ -10,5 +10,9 @@ namespace Orc.FilterBuilder.Models
         List<IPropertyMetadata> Properties { get; }
 
         bool IsAssignableFromEx(IMetadataProvider otherProvider);
+
+        string SerializeState();
+
+        void DeserializeState(string contentAsString);
     }
 }

@@ -14,6 +14,11 @@
     {
         private IReflectionService _reflectionService;
 
+        public TypeMetadataProvider()
+        {
+            _reflectionService = ServiceLocator.Default.ResolveType<IReflectionService>();
+        }
+
         public TypeMetadataProvider(Type targetType) : this(targetType, ServiceLocator.Default.ResolveType<IReflectionService>())
         {
         }
@@ -47,6 +52,16 @@
 
             var secondProvider = otherProvider as TypeMetadataProvider;
             return TargetType.IsAssignableFromEx(secondProvider.TargetType);
+        }
+
+        public string SerializeState()
+        {
+            return TargetType.FullName;
+        }
+
+        public void DeserializeState(string contentAsString)
+        {
+            TargetType = TypeCache.GetType(contentAsString);
         }
     }
 }

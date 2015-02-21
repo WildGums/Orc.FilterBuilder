@@ -34,17 +34,17 @@
 
         private async void OnNewSchemeExecute()
         {
-            //var filterScheme = new FilterScheme(_targetType);
-            //var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, true, true);
+            var filterScheme = new FilterScheme(_dataProvider.GetMetadata());
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, _dataProvider.GetData(), false, true);
 
-            //if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
-            //{
-            //    AvailableSchemes.Add(filterScheme);
-            //    _filterSchemes.Schemes.Add(filterScheme);
-            //    SelectedFilterScheme = filterScheme;
+            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            {
+                //AvailableSchemes.Add(filterScheme);
+                //_filterSchemes.Schemes.Add(filterScheme);
+                //SelectedFilterScheme = filterScheme;
 
-            //    _filterSchemeManager.UpdateFilters();
-            //}
+                _filterSchemeManager.UpdateFilters();
+            }
         }
     }
 }

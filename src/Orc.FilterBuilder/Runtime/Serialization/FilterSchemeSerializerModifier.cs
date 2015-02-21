@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder.Runtime.Serialization
 {
     using System;
+    using System.Collections.Generic;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
     using Models;
@@ -19,10 +20,10 @@ namespace Orc.FilterBuilder.Runtime.Serialization
             if (string.Equals(memberValue.Name, "TargetDataDescriptor"))
             {
                 // TODO there are possibility of different types here so logic should be smarter
-                var provider = memberValue.Value as TypeMetadataProvider;
+                var provider = memberValue.Value as IMetadataProvider;
                 if (provider != null)
                 {
-                    memberValue.Value = provider.TargetType.FullName;
+                    memberValue.Value = string.Format("{0}|{1}", provider.GetType().FullName, provider.SerializeState());
                 }
             }
         }
@@ -31,11 +32,14 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             if (string.Equals(memberValue.Name, "TargetDataDescriptor"))
             {
-                var targetTypeAsString = memberValue.Value as string;
-                if (targetTypeAsString != null)
+                var providerAsString = memberValue.Value as string;
+                if (providerAsString != null)
                 {
-                    var targetType = TypeCache.GetType(targetTypeAsString);
-                    memberValue.Value = new TypeMetadataProvider(targetType);
+                    var kvp = providerAsString.Split('|');
+                    var type = TypeCache.GetType(kvp[0]);
+                    var provider = (IMetadataProvider)Activator.CreateInstance(type);
+                    provider.DeserializeState(kvp[1]);
+                    memberValue.Value = provider;
                 }
             }
         }
