@@ -169,6 +169,9 @@
     <Content Include="Resources\zips.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\small_zips.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>

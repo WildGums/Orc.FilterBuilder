@@ -40,7 +40,8 @@
                 return;
             }
 
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "zips.json");
+            // Use "zips.json" in order to see how it works with larger datasets
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "small_zips.json");
             string[] lines = File.ReadAllLines(path);
 
             var collection = new List<Dictionary<string, object>>();
