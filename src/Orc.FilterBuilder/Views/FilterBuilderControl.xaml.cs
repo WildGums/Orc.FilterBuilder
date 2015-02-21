@@ -10,6 +10,8 @@ namespace Orc.FilterBuilder.Views
     using System.Collections;
     using System.Windows;
     using Catel.MVVM.Views;
+    using Models;
+    using PropertyMetadata = System.Windows.PropertyMetadata;
 
     public partial class FilterBuilderControl
     {
@@ -34,6 +36,15 @@ namespace Orc.FilterBuilder.Views
         {
             get { return (IEnumerable)GetValue(RawCollectionProperty); }
             set { SetValue(RawCollectionProperty, value); }
+        }
+
+        public static readonly DependencyProperty MetadataProviderProperty = DependencyProperty.Register("MetadataProvider", typeof(IMetadataProvider), typeof(FilterBuilderControl));
+        
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public IMetadataProvider MetadataProvider
+        {
+            get { return (IMetadataProvider)GetValue(MetadataProviderProperty); }
+            set { SetValue(MetadataProviderProperty, value); }
         }
 
         public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register("FilteredCollection", typeof(IList),

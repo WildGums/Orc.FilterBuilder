@@ -45,11 +45,13 @@ namespace Orc.FilterBuilder.Example.ViewModels
             _filterService = filterService;
             _uiVisualizerService = uiVisualizerService;
             RawItems = _testDataService.GetTestItems();
+            MetadataProvider = new TypeMetadataProvider(typeof(TestEntity));
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
         }
 
         public ObservableCollection<TestEntity> RawItems { get; private set; }
+        public IMetadataProvider MetadataProvider { get; private set; }
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 

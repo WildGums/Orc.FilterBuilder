@@ -34,7 +34,6 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IMessageService _messageService;
 
         private readonly FilterScheme NoFilterFilter = new FilterScheme(new TypeMetadataProvider(typeof(object)), "Default");
-        private IMetadataProvider _metadataProvider;
         private FilterSchemes _filterSchemes;
 
         #region Constructors
@@ -70,6 +69,7 @@ namespace Orc.FilterBuilder.ViewModels
         public bool AllowDelete { get; set; }
 
         public IEnumerable RawCollection { get; set; }
+        public IMetadataProvider MetadataProvider { get; set; }
         public IList FilteredCollection { get; set; }
         #endregion
 
@@ -78,13 +78,13 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async void OnNewSchemeExecute()
         {
-            if (_metadataProvider == null)
+            if (MetadataProvider == null)
             {
                 Log.Warning("Target data structure is unknown, cannot get any structure information to create filters");
                 return;
             }
 
-            var filterScheme = new FilterScheme(_metadataProvider);
+            var filterScheme = new FilterScheme(MetadataProvider);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
             if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
@@ -263,6 +263,13 @@ namespace Orc.FilterBuilder.ViewModels
             ApplyFilter();
         }
 
+        private void OnMetadataProviderChanged()
+        {
+            UpdateFilters();
+
+            ApplyFilter();
+        }
+
         private void OnFilteredCollectionChanged()
         {
             ApplyFilter();
@@ -289,18 +296,10 @@ namespace Orc.FilterBuilder.ViewModels
 
             var newSchemes = new ObservableCollection<FilterScheme>();
 
-            if (RawCollection == null)
+            if (RawCollection != null && MetadataProvider != null)
             {
-                _metadataProvider = null;
-            }
-            else
-            {
-                // TODO we can not read type from the collection
-                var type = CollectionHelper.GetTargetType(RawCollection);
-                _metadataProvider = new TypeMetadataProvider(type);
-
                 newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where _metadataProvider != null && _metadataProvider.IsAssignableFromEx(scheme.TargetDataDescriptor)
+                                     where MetadataProvider.IsAssignableFromEx(scheme.TargetDataDescriptor)
                                      select scheme));
             }
 
