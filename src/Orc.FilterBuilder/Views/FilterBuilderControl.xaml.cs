@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder.Views
 {
+    using System;
     using System.Collections;
     using System.Windows;
     using Catel.MVVM.Views;
@@ -49,6 +50,42 @@ namespace Orc.FilterBuilder.Views
 
         public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register("FilteredCollection", typeof(IList),
             typeof(FilterBuilderControl));
+
+        /// <summary>
+        /// Current <see cref="FilterBuilderControl"/> mode
+        /// </summary>
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public FilterBuilderMode Mode
+        {
+            get { return (FilterBuilderMode) GetValue(ModeProperty); }
+            set { SetValue(ModeProperty, value); }
+        }
+
+        /// <summary>
+        /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
+        /// <see cref="FilterBuilderMode.FilteringFunction"/>
+        /// </summary>
+        public static readonly DependencyProperty FilteringFuncProperty =
+            DependencyProperty.Register("FilteringFunc", typeof (Func<object,bool>), 
+            typeof (FilterBuilderControl), new PropertyMetadata(default(Func<object,bool>)));
+
+        /// <summary>
+        /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
+        /// <see cref="FilterBuilderMode.FilteringFunction"/>
+        /// </summary>
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public Func<object,bool> FilteringFunc
+        {
+            get { return (Func<object,bool>) GetValue(FilteringFuncProperty); }
+            set { SetValue(FilteringFuncProperty, value); }
+        }
+        /// <summary>
+        /// Current <see cref="FilterBuilderControl"/> mode
+        /// </summary>
+        public static readonly DependencyProperty ModeProperty =
+            DependencyProperty.Register("ModeProperty", typeof(FilterBuilderMode),
+            typeof(FilterBuilderControl),
+            new PropertyMetadata(default(FilterBuilderMode)));
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public IList FilteredCollection
