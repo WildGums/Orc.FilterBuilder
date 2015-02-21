@@ -30,10 +30,20 @@ namespace Orc.FilterBuilder
         #region Methods
         private void OnPropertyChanged()
         {
+            if (Property == null)
+            {
+                // TODO Ask for help 
+                // I don't know why and where null is being assigned to the property in some [External Code]
+                this.EnsureIntegrity();
+                return;
+            }
+
             if (DataTypeExpression != null)
             {
                 DataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
             }
+
+            
 
             if (Property.Type == typeof (int))
             {

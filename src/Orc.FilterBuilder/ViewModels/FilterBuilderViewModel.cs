@@ -14,6 +14,7 @@ namespace Orc.FilterBuilder.ViewModels
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows;
     using Catel;
     using Catel.Collections;
     using Catel.Logging;
@@ -138,6 +139,11 @@ namespace Orc.FilterBuilder.ViewModels
         private bool OnApplySchemeCanExecute()
         {
             if (SelectedFilterScheme == null)
+            {
+                return false;
+            }
+
+            if (MetadataProvider == null)
             {
                 return false;
             }

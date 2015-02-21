@@ -6,12 +6,17 @@ using System.Text;
 namespace Orc.FilterBuilder.Models
 {
     using Catel;
+    using Catel.Reflection;
 
     public class DictionaryEntryMetadata : IPropertyMetadata
     {
         private string _key;
 
         private Type _expectedType;
+
+        public DictionaryEntryMetadata()
+        {
+        }
 
         public DictionaryEntryMetadata(string key, Type expectedType)
         {
@@ -27,14 +32,6 @@ namespace Orc.FilterBuilder.Models
         public string Name
         {
             get { return _key; }
-        }
-
-        public Type OwnerType
-        {
-            get
-            {
-                return typeof(IDictionary<string, object>);
-            }
         }
 
         public Type Type
@@ -66,6 +63,19 @@ namespace Orc.FilterBuilder.Models
             }
 
             dictionary.Add(_key, value);
+        }
+
+        public string SerializeState()
+        {
+            return string.Format("{0}:{1}", _key, _expectedType.FullName);
+        }
+
+        public void DeserializeState(string contentAsString)
+        {
+            var kvp = contentAsString.Split(':');
+            _key = kvp[0];
+            _expectedType = TypeCache.GetType(kvp[1]);
+            DisplayName = _key;
         }
     }
 }

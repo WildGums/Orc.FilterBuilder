@@ -17,8 +17,6 @@ namespace Orc.FilterBuilder.Models
 
         string Name { get; }
 
-        Type OwnerType { get; }
-
         Type Type { get; }
 
         object GetValue(object instance);
@@ -26,5 +24,9 @@ namespace Orc.FilterBuilder.Models
         TValue GetValue<TValue>(object instance);
 
         void SetValue(object instance, object value);
+
+        string SerializeState();
+
+        void DeserializeState(string contentAsString);
     }
 }

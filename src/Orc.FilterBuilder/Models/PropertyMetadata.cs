@@ -8,18 +8,25 @@ namespace Orc.FilterBuilder.Models
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
     using System.Windows.Documents.DocumentStructures;
     using Catel;
     using Catel.Data;
+    using Catel.Reflection;
 
     [DebuggerDisplay("{OwnerType}.{Name}")]
     public class PropertyMetadata : IPropertyMetadata
     {
         private readonly PropertyData _propertyData;
-        private readonly PropertyInfo _propertyInfo;
+        private PropertyInfo _propertyInfo;
 
         #region Constructors
+
+        public PropertyMetadata()
+        {
+            
+        }
 
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
         {
@@ -128,6 +135,21 @@ namespace Orc.FilterBuilder.Models
             }
         }
 
+        public string SerializeState()
+        {
+            return string.Format("{0}:{1}", Name, OwnerType.FullName);
+        }
+
+        public void DeserializeState(string contentAsString)
+        {
+            var kvp = contentAsString.Split(':');
+            Name = kvp[0];
+            OwnerType = TypeCache.GetType(kvp[1]);
+            DisplayName = Name;
+            _propertyInfo = OwnerType.GetProperties().FirstOrDefault(p => p.Name == Name);
+            Type = _propertyInfo.PropertyType;
+
+        }
         #endregion Methods
     }
 }

@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
+    using System.Linq;
     using Catel;
     using Catel.Collections;
     using Catel.IoC;
@@ -50,23 +51,16 @@ namespace Orc.FilterBuilder
 
         public static void EnsureIntegrity(this PropertyExpression propertyExpression)
         {
-            Argument.IsNotNull(() => propertyExpression);
-
             if (propertyExpression.Property == null)
             {
                 var serializationValue = propertyExpression.PropertySerializationValue;
                 if (!string.IsNullOrWhiteSpace(serializationValue))
                 {
-                    var splittedString = serializationValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-                    if (splittedString.Length == 2)
-                    {
-                        var type = TypeCache.GetType(splittedString[0]);
-                        if (type != null)
-                        {
-                            var typeProperties = _reflectionService.GetInstanceProperties(type);
-                            propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
-                        }
-                    }
+                    var kvp = serializationValue.Split('|');
+                    var type = TypeCache.GetType(kvp[0]);
+                    var provider = (IPropertyMetadata)Activator.CreateInstance(type);
+                    provider.DeserializeState(kvp[1]);
+                    propertyExpression.Property = provider;
                 }
             }
         }

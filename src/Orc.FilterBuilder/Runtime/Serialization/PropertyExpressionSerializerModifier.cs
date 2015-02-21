@@ -7,14 +7,14 @@
 
 namespace Orc.FilterBuilder.Runtime.Serialization
 {
+    using System;
     using Catel.Data;
+    using Catel.Reflection;
     using Catel.Runtime.Serialization;
     using Models;
 
     public class PropertyExpressionSerializerModifier : SerializerModifierBase<PropertyExpression>
     {
-        private const string Separator = "||";
-
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
             if (string.Equals(memberValue.Name, "Property"))
@@ -22,7 +22,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
                 var propertyInfo = memberValue.Value as IPropertyMetadata;
                 if (propertyInfo != null)
                 {
-                    memberValue.Value = string.Format("{0}{1}{2}", propertyInfo.OwnerType.FullName, Separator, propertyInfo.Name);
+                    memberValue.Value = string.Format("{0}|{1}", propertyInfo.GetType().FullName, propertyInfo.SerializeState());
                 }
             }
         }
@@ -31,11 +31,11 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             if (string.Equals(memberValue.Name, "Property"))
             {
-                var propertyName = memberValue.Value as string;
-                if (propertyName != null)
+                var propertyInfoAsString = memberValue.Value as string;
+                if (propertyInfoAsString != null)
                 {
                     // We need to delay this
-                    ((PropertyExpression)context.Model).PropertySerializationValue = propertyName;
+                    ((PropertyExpression)context.Model).PropertySerializationValue = propertyInfoAsString;
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             base.OnDeserialized(context, model);
 
-            var propertyExpression = (PropertyExpression) context.Model;
+            var propertyExpression = (PropertyExpression)context.Model;
             propertyExpression.EnsureIntegrity();
         }
     }
