@@ -60,7 +60,7 @@
         {
             var filterScheme = new FilterScheme(_dataProvider.GetMetadata());
             // TODO Unfortunately autocompletion would not work until catel:AutoCompletion is ready to work with metadata separated from the data
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, _dataProvider.GetData(), false, false);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, _dataProvider.GetData(), true, false);
 
             if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {

@@ -2,6 +2,7 @@
 /// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
 /// </summary>
 using Catel.IoC;
+using Orc.FilterBuilder.Services;
 using Orc.FilterBuilder.AlternativeExample.Services;
 using Orchestra.Services;
 using Orchestra.Shell.Services;
@@ -17,6 +18,7 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
+        serviceLocator.RegisterType<IPreviewGeneratorService, JsonPreviewGeneratorService>();
         serviceLocator.RegisterType<IDataProvider, ZipCodeDataProvider>();
     }
 }

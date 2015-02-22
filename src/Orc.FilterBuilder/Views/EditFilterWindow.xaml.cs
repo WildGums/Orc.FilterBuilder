@@ -28,11 +28,13 @@ namespace Orc.FilterBuilder.Views
             InitializeComponent();
         }
 
+
+
         protected override void OnViewModelChanged()
         {
             base.OnViewModelChanged();
 
-            dataGrid.Columns.Clear();
+            previewPlaceholder.Content = null;
 
             var vm = ViewModel as EditFilterViewModel;
             if (vm != null)
@@ -40,39 +42,8 @@ namespace Orc.FilterBuilder.Views
                 if (vm.AllowLivePreview)
                 {
                     var dependencyResolver = this.GetDependencyResolver();
-                    var reflectionService = dependencyResolver.Resolve<IReflectionService>();
-
-                    var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
-                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
-
-                    var isModelBase = typeof(ModelBase).IsAssignableFromEx(targetType);
-
-                    foreach (var instanceProperty in instanceProperties.Properties)
-                    {
-                        var column = new DataGridTextColumn
-                        {
-                            Header = instanceProperty.DisplayName
-                        };
-
-                        Binding binding;
-
-                        if (isModelBase)
-                        {
-                            binding = new Binding
-                            {
-                                Converter = new ObjectToValueConverter(),
-                                ConverterParameter = instanceProperty.Name
-                            };
-                        }
-                        else
-                        {
-                            binding = new Binding(instanceProperty.Name);
-                        }
-
-                        column.Binding = binding;
-
-                        dataGrid.Columns.Add(column);
-                    }
+                    var previewGeneratorService = dependencyResolver.Resolve<IPreviewGeneratorService>();
+                    previewPlaceholder.Content = previewGeneratorService.GeneratePreviewControl(vm.FilterScheme.TargetDataDescriptor, vm, "PreviewItems");
                 }
             }
         }

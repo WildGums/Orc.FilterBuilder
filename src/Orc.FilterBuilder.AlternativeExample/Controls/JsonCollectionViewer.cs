@@ -4,6 +4,7 @@
 namespace Orc.FilterBuilder.AlternativeExample.Controls
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
     using System.Windows;
@@ -65,8 +66,24 @@ namespace Orc.FilterBuilder.AlternativeExample.Controls
                 return;
             }
 
+            if (e.OldValue is ObservableCollection<object>)
+            {
+                var oldCollection = e.OldValue as ObservableCollection<object>;
+                oldCollection.CollectionChanged -= viewer.OnSourceCollectionChanged;
+            }
+
+            if (e.NewValue is ObservableCollection<object>)
+            {
+                var newCollection = e.NewValue as ObservableCollection<object>;
+                newCollection.CollectionChanged += viewer.OnSourceCollectionChanged;
+            }
 
             viewer.UpdateTree();
+        }
+
+        private void OnSourceCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.UpdateTree();
         }
 
         private void UpdateTree()

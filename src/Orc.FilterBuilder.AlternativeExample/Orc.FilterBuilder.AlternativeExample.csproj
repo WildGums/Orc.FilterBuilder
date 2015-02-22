@@ -109,6 +109,7 @@
     <Compile Include="Controls\JsonCollectionViewer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\Interfaces\IDataProvider.cs" />
+    <Compile Include="Services\JsonPreviewGeneratorService.cs" />
     <Compile Include="Services\RibbonService.cs" />
     <Compile Include="Services\ZipCodeDataProvider.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

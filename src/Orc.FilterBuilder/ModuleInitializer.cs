@@ -24,6 +24,7 @@ public static class ModuleInitializer
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterService, FilterService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IReflectionService, ReflectionService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
+        serviceLocator.RegisterTypeIfNotYetRegistered<IPreviewGeneratorService, TypedPreviewGeneratorService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
     }
 }

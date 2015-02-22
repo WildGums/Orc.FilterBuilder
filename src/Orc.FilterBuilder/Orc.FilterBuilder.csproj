@@ -123,8 +123,10 @@
     <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="Services\Interfaces\IFilterCustomizationService.cs" />
     <Compile Include="Services\Interfaces\IFilterSchemeManager.cs" />
+    <Compile Include="Services\Interfaces\IPreviewGeneratorService.cs" />
     <Compile Include="Services\Interfaces\IReflectionService.cs" />
     <Compile Include="Services\ReflectionService.cs" />
+    <Compile Include="Services\TypedPreviewGeneratorService.cs" />
     <Compile Include="Views\EditFilterWindow.xaml.cs">
       <DependentUpon>EditFilterWindow.xaml</DependentUpon>
     </Compile>

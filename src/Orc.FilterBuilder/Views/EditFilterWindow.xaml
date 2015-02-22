@@ -139,7 +139,12 @@
         <CheckBox Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding EnableLivePreview}" Content="Enable live preview"
                   Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10" />
 
-        <DataGrid x:Name="dataGrid" Grid.Row="3" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
-                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10" />
+        <ScrollViewer x:Name="previewPlaceholder" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" 
+                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <DataGrid x:Name="dataGrid"  AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}" />
+        </ScrollViewer>
+
+        
     </Grid>
 </catel:DataWindow>
