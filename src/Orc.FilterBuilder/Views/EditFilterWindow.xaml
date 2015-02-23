@@ -6,6 +6,7 @@
                   xmlns:catel="http://catel.codeplex.com"
                   xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup"
                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                  xmlns:interactivity="clr-namespace:Orc.FilterBuilder.Interactivity"
                   SizeToContent="Manual" ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
@@ -108,9 +109,10 @@
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" 
+                                        <interactivity:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" 
                                                               ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
+                                                              MetadataProvider="{Binding DataContext.MetadataProvider, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>
                                     </i:Interaction.Behaviors>
                                 </TextBox>
 

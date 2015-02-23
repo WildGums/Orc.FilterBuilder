@@ -104,6 +104,7 @@
     <Compile Include="Expressions\DecimalExpression.cs" />
     <Compile Include="Extensions\FilterSchemeExtensions.cs" />
     <Compile Include="Helpers\CollectionHelper.cs" />
+    <Compile Include="Interactivity\AutoCompletion.cs" />
     <Compile Include="Markup\EnumBinding.cs" />
     <Compile Include="Models\DictionaryEntryMetadata.cs" />
     <Compile Include="Models\DictionaryMetadataProvider.cs" />
@@ -117,9 +118,11 @@
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Runtime\Serialization\PropertyExpressionSerializerModifier.cs" />
     <Compile Include="Runtime\Serialization\FilterSchemeSerializerModifier.cs" />
+    <Compile Include="Services\AutoCompletionService.cs" />
     <Compile Include="Services\Extensions\IFilterServiceExtensions.cs" />
     <Compile Include="Services\FilterCustomizationService.cs" />
     <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Services\Interfaces\IAutoCompletionService.cs" />
     <Compile Include="Services\Interfaces\IFilterService.cs" />
     <Compile Include="Services\Interfaces\IFilterCustomizationService.cs" />
     <Compile Include="Services\Interfaces\IFilterSchemeManager.cs" />

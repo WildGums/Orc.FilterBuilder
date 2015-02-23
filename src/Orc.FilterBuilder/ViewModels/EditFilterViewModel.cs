@@ -44,6 +44,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
+            MetadataProvider = filterSchemeEditInfo.FilterScheme.TargetDataDescriptor;
             EnableAutoCompletion = filterSchemeEditInfo.EnableAutoCompletion;
             AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
             EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
@@ -84,6 +85,7 @@ namespace Orc.FilterBuilder.ViewModels
         public bool EnableLivePreview { get; set; }
 
         public IEnumerable RawCollection { get; private set; }
+        public IMetadataProvider MetadataProvider { get; private set; }
         public FastObservableCollection<object> PreviewItems { get; private set; }
 
         public List<IPropertyMetadata> InstanceProperties { get; private set; }
