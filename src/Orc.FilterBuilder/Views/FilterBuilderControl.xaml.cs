@@ -45,7 +45,7 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(ModeProperty, value); }
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("ModeProperty", typeof(FilterBuilderMode), 
+        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("Mode", typeof(FilterBuilderMode), 
             typeof(FilterBuilderControl), new PropertyMetadata(default(FilterBuilderMode)));
 
 
