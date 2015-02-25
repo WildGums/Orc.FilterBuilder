@@ -27,9 +27,6 @@ namespace Orc.FilterBuilder.Views
         #endregion
 
         #region Properties
-        public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register("RawCollection", typeof(IEnumerable),
-            typeof(FilterBuilderControl));
-
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public IEnumerable RawCollection
         {
@@ -37,12 +34,10 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(RawCollectionProperty, value); }
         }
 
-        public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register("FilteredCollection", typeof(IList),
+        public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register("RawCollection", typeof(IEnumerable),
             typeof(FilterBuilderControl));
 
-        /// <summary>
-        /// Current <see cref="FilterBuilderControl"/> mode
-        /// </summary>
+
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public FilterBuilderMode Mode
         {
@@ -50,31 +45,20 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(ModeProperty, value); }
         }
 
-        /// <summary>
-        /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
-        /// <see cref="FilterBuilderMode.FilteringFunction"/>
-        /// </summary>
-        public static readonly DependencyProperty FilteringFuncProperty =
-            DependencyProperty.Register("FilteringFunc", typeof (Func<object,bool>), 
-            typeof (FilterBuilderControl), new PropertyMetadata(default(Func<object,bool>)));
+        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("ModeProperty", typeof(FilterBuilderMode), 
+            typeof(FilterBuilderControl), new PropertyMetadata(default(FilterBuilderMode)));
 
-        /// <summary>
-        /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
-        /// <see cref="FilterBuilderMode.FilteringFunction"/>
-        /// </summary>
+
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public Func<object,bool> FilteringFunc
         {
             get { return (Func<object,bool>) GetValue(FilteringFuncProperty); }
             set { SetValue(FilteringFuncProperty, value); }
         }
-        /// <summary>
-        /// Current <see cref="FilterBuilderControl"/> mode
-        /// </summary>
-        public static readonly DependencyProperty ModeProperty =
-            DependencyProperty.Register("ModeProperty", typeof(FilterBuilderMode),
-            typeof(FilterBuilderControl),
-            new PropertyMetadata(default(FilterBuilderMode)));
+
+        public static readonly DependencyProperty FilteringFuncProperty = DependencyProperty.Register("FilteringFunc", typeof (Func<object,bool>), 
+            typeof (FilterBuilderControl), new PropertyMetadata(default(Func<object,bool>)));
+
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public IList FilteredCollection
@@ -83,8 +67,9 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(FilteredCollectionProperty, value); }
         }
 
-        public static readonly DependencyProperty AutoApplyFilterProperty =
-            DependencyProperty.Register("AutoApplyFilter", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register("FilteredCollection", typeof(IList),
+                    typeof(FilterBuilderControl));
+
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public bool AutoApplyFilter
@@ -92,6 +77,10 @@ namespace Orc.FilterBuilder.Views
             get { return (bool)GetValue(AutoApplyFilterProperty); }
             set { SetValue(AutoApplyFilterProperty, value); }
         }
+
+        public static readonly DependencyProperty AutoApplyFilterProperty = DependencyProperty.Register("AutoApplyFilter", typeof(bool), 
+            typeof(FilterBuilderControl), new PropertyMetadata(true));
+
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public bool AllowLivePreview
@@ -103,6 +92,7 @@ namespace Orc.FilterBuilder.Views
         public static readonly DependencyProperty AllowLivePreviewProperty =
             DependencyProperty.Register("AllowLivePreview", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
+
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public bool EnableAutoCompletion
         {
@@ -112,6 +102,7 @@ namespace Orc.FilterBuilder.Views
 
         public static readonly DependencyProperty EnableAutoCompletionProperty =
             DependencyProperty.Register("EnableAutoCompletion", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public bool AllowReset
@@ -123,6 +114,7 @@ namespace Orc.FilterBuilder.Views
         public static readonly DependencyProperty AllowResetProperty =
             DependencyProperty.Register("AllowReset", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
+
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public bool AllowDelete
         {
@@ -130,8 +122,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(AllowDeleteProperty, value); }
         }
 
-        public static readonly DependencyProperty AllowDeleteProperty =
-            DependencyProperty.Register("AllowDelete", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty AllowDeleteProperty = DependencyProperty.Register("AllowDelete", typeof(bool), 
+            typeof(FilterBuilderControl), new PropertyMetadata(true));
         #endregion
     }
 }
