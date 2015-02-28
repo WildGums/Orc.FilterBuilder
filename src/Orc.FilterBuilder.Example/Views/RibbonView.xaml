@@ -10,8 +10,10 @@
         <fluent:Ribbon.Tabs>
             <fluent:RibbonTabItem Header="Filter">
                 <fluent:RibbonGroupBox Header="Filter">
+                    
                     <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" Command="{Binding NewSchemeCommand}"
-                                        LargeIcon="{orchestra:FontImage {x:Static ribbon:FontAwesome.Plus}}" >
+                                        LargeIcon="{orchestra:FontImage {x:Static ribbon:FontAwesome.Plus}}" 
+                                        ClosePopupOnMouseDown="True">
                         <views:FilterBuilderControl RawCollection="{Binding RawItems}" />
                     </fluent:SplitButton>
 
