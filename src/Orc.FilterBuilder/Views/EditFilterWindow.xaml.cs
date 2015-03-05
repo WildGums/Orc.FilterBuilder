@@ -54,20 +54,11 @@ namespace Orc.FilterBuilder.Views
                             Header = instanceProperty.DisplayName
                         };
 
-                        Binding binding;
-
-                        if (isModelBase)
+                        var binding = new Binding
                         {
-                            binding = new Binding
-                            {
-                                Converter = new ObjectToValueConverter(),
-                                ConverterParameter = instanceProperty.Name
-                            };
-                        }
-                        else
-                        {
-                            binding = new Binding(instanceProperty.Name);
-                        }
+                            Converter = new ObjectToValueConverter(instanceProperty),
+                            ConverterParameter = instanceProperty.Name
+                        };
 
                         column.Binding = binding;
 

@@ -16,6 +16,7 @@ namespace Orc.FilterBuilder.ViewModels
     using System.Threading.Tasks;
     using Catel;
     using Catel.Collections;
+    using Catel.Data;
     using Catel.Logging;
     using Catel.MVVM;
     using Catel.Reflection;
@@ -82,7 +83,7 @@ namespace Orc.FilterBuilder.ViewModels
         /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
         /// <see cref="FilterBuilderMode.FilteringFunction"/>
         /// </summary>
-        public Func<object,bool> FilteringFunc { get; set; }
+        public Func<object, bool> FilteringFunc { get; set; }
         #endregion
 
         #region Commands
@@ -159,7 +160,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return false;
             }
 
-            if (FilteredCollection == null)
+            if (FilteredCollection == null && Mode == FilterBuilderMode.Collection)
             {
                 return false;
             }

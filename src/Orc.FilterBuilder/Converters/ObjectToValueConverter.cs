@@ -12,9 +12,22 @@ namespace Orc.FilterBuilder.Converters
     using Catel.Logging;
     using Catel.MVVM.Converters;
     using Catel.Reflection;
+    using Models;
 
     public class ObjectToValueConverter : ValueConverterBase
     {
+        private readonly IPropertyMetadata _propertyMetadata;
+
+        public ObjectToValueConverter(IPropertyMetadata propertyMetadata)
+        {
+            _propertyMetadata = propertyMetadata;
+        }
+
+        public ObjectToValueConverter()
+        {
+
+        }
+
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         #region Methods
@@ -32,6 +45,11 @@ namespace Orc.FilterBuilder.Converters
                 if (modelBase != null)
                 {
                     return modelBase.GetValue(propertyName);
+                }
+
+                if (_propertyMetadata != null)
+                {
+                    return _propertyMetadata.GetValue(value);
                 }
 
                 if (value != null)

@@ -108,8 +108,8 @@
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        <catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>
+                                        <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
+                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
                                     </i:Interaction.Behaviors>
                                 </TextBox>
 
@@ -138,7 +138,9 @@
         <CheckBox Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding EnableLivePreview}" Content="Enable live preview"
                   Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10" />
 
-        <DataGrid x:Name="dataGrid" Grid.Row="3" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
-                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10" />
+        <DataGrid x:Name="dataGrid" Grid.Row="3" Grid.ColumnSpan="2" 
+                  AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
+                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10">
+        </DataGrid>
     </Grid>
 </catel:DataWindow>

@@ -18,6 +18,7 @@ namespace Orc.FilterBuilder.Models
     {
         private readonly PropertyData _propertyData;
         private readonly PropertyInfo _propertyInfo;
+        private string _displayName;
 
         #region Constructors
 
@@ -50,7 +51,18 @@ namespace Orc.FilterBuilder.Models
         #endregion Constructors
 
         #region Properties
-        public string DisplayName { get; set; }
+        public string DisplayName
+        {
+            get
+            {
+                if (_displayName!=null)
+                {
+                    return _displayName; 
+                }
+                return Name;
+            }
+            set { _displayName = value; }
+        }
 
         public string Name { get; private set; }
 

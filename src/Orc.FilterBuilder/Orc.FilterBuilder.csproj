@@ -99,10 +99,12 @@
     <Compile Include="Conditions\ConditionGroup.cs" />
     <Compile Include="Conditions\ConditionGroupType.cs" />
     <Compile Include="Converters\ConditionTreeItemConverter.cs" />
+    <Compile Include="Expressions\NumericExpression.cs" />
     <Compile Include="Expressions\DataTypeExpression.cs" />
     <Compile Include="Expressions\DateTimeExpression.cs" />
     <Compile Include="Expressions\DecimalExpression.cs" />
     <Compile Include="Extensions\FilterSchemeExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Helpers\CollectionHelper.cs" />
     <Compile Include="Markup\EnumBinding.cs" />
     <Compile Include="Models\FilterSchemeEditInfo.cs" />

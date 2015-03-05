@@ -11,6 +11,8 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using Catel.Runtime.Serialization;
+    using Expressions;
+    using Extensions;
     using Models;
     using Runtime.Serialization;
 
@@ -35,39 +37,43 @@ namespace Orc.FilterBuilder
                 DataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
             }
 
-            if (Property.Type == typeof (int))
+            if (Property.Type.GetNonNullable() == typeof(uint))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new NumericExpression(Property.Type));
+            }
+            else if (Property.Type == typeof(int))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(false));
             }
-            else if (Property.Type == typeof (int?))
+            else if (Property.Type == typeof(int?))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(true));
             }
-            else if (Property.Type == typeof (string))
+            else if (Property.Type == typeof(string))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
             }
-            else if (Property.Type == typeof (DateTime))
+            else if (Property.Type == typeof(DateTime))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(false));
             }
-            else if (Property.Type == typeof (DateTime?))
+            else if (Property.Type == typeof(DateTime?))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(true));
             }
-            else if (Property.Type == typeof (bool))
+            else if (Property.Type == typeof(bool))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
             }
-            else if (Property.Type == typeof (TimeSpan))
+            else if (Property.Type == typeof(TimeSpan))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression());
             }
-            else if (Property.Type == typeof (decimal))
+            else if (Property.Type == typeof(decimal))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(false));
             }
-            else if (Property.Type == typeof (decimal?))
+            else if (Property.Type == typeof(decimal?))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
             }
@@ -98,6 +104,10 @@ namespace Orc.FilterBuilder
             if (dataTypeExpression != null)
             {
                 dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
+            }
+            else
+            {
+                OnPropertyChanged(); 
             }
         }
 
