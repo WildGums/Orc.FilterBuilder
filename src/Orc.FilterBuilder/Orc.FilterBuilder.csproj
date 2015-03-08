@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Catel.MVVM.4.1.0-unstable0101\lib\net40\Catel.MVVM.dll</HintPath>
     </Reference>
+    <Reference Include="MethodTimer">
+      <HintPath>..\..\lib\MethodTimer.Fody.1.15.2.0\Lib\portable-net4+sl5+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\MethodTimer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
@@ -106,6 +110,7 @@
     <Compile Include="Helpers\CollectionHelper.cs" />
     <Compile Include="Interactivity\AutoCompletion.cs" />
     <Compile Include="Markup\EnumBinding.cs" />
+    <Compile Include="MethodTimeLogger.cs" />
     <Compile Include="Models\DictionaryEntryMetadata.cs" />
     <Compile Include="Models\DictionaryMetadataProvider.cs" />
     <Compile Include="Models\FilterSchemeEditInfo.cs" />

@@ -10,6 +10,7 @@ namespace Orc.FilterBuilder.Services
     using System;
     using System.Collections;
     using Catel;
+    using MethodTimer;
     using Models;
 
     public class FilterService : IFilterService
@@ -56,6 +57,7 @@ namespace Orc.FilterBuilder.Services
         /// </summary>
         public event EventHandler<EventArgs> SelectedFilterChanged;
 
+        [Time]
         public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
         {
             Argument.IsNotNull(() => filter);

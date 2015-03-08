@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Markup
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Windows.Markup;

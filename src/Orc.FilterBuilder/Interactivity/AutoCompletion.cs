@@ -5,7 +5,7 @@
 // 2. Changing Catel.AutoComplete may become too big breaking change.
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Orc.FilterBuilder.Interactivity
+namespace Orc.FilterBuilder
 {
     using System.Collections;
     using System.Collections.Generic;

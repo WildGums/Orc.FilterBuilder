@@ -4,6 +4,7 @@
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
     using Catel.IoC;
+    using Catel.Logging;
     using Catel.Windows;
     using FilterBuilder.Services;
     using Orchestra.Services;
@@ -18,7 +19,7 @@
         protected override async void OnStartup(StartupEventArgs e)
         {
 #if DEBUG
-            //LogManager.AddDebugListener();
+            LogManager.AddDebugListener();
 #endif
 
             //Log.Info("Starting application");
