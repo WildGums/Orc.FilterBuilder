@@ -110,6 +110,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Controls\JsonCollectionViewer.cs" />
     <Compile Include="Services\ApplicationInitializationService.cs" />
     <Compile Include="Services\Interfaces\IDataProvider.cs" />
