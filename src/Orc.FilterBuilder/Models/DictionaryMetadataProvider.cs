@@ -14,7 +14,7 @@ namespace Orc.FilterBuilder.Models
 
     public class DictionaryMetadataProvider : IMetadataProvider
     {
-        private List<IPropertyMetadata> _properties;
+        private readonly List<IPropertyMetadata> _properties;
 
         public DictionaryMetadataProvider()
         {
@@ -24,6 +24,7 @@ namespace Orc.FilterBuilder.Models
         public DictionaryMetadataProvider(Dictionary<string, Type> dictionarySchema)
         {
             Argument.IsNotNull(() => dictionarySchema);
+
             _properties = dictionarySchema.Select(kvp => new DictionaryEntryMetadata(kvp.Key, kvp.Value)).Cast<IPropertyMetadata>().ToList();
         }
 
@@ -48,13 +49,13 @@ namespace Orc.FilterBuilder.Models
                 propsPresentation.Add(string.Format("{0}:{1}", prop.Name, prop.Type.FullName)); 
             }
 
-
             return string.Join(";", propsPresentation);
         }
 
         public void DeserializeState(string contentAsString)
         {
             _properties.Clear();
+
             var entries = contentAsString.Split(';');
             foreach (var sentry in entries)
             {

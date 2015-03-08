@@ -10,7 +10,6 @@ namespace Orc.FilterBuilder.Models
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using System.Windows.Documents.DocumentStructures;
     using Catel;
     using Catel.Data;
     using Catel.Reflection;
@@ -29,6 +28,7 @@ namespace Orc.FilterBuilder.Models
         }
 
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
+            : this()
         {
             Argument.IsNotNull(() => ownerType);
             Argument.IsNotNull(() => propertyInfo);
@@ -42,6 +42,7 @@ namespace Orc.FilterBuilder.Models
         }
 
         public PropertyMetadata(Type ownerType, PropertyData propertyData)
+            :this()
         {
             Argument.IsNotNull(() => ownerType);
             Argument.IsNotNull(() => propertyData);

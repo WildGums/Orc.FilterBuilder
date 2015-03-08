@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPropertyMetadata.cs" company="Orcomp development team">
-//     Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="IPropertyMetadata.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.FilterBuilder.Models
 {
@@ -16,17 +17,11 @@ namespace Orc.FilterBuilder.Models
         string DisplayName { get; set; }
 
         string Name { get; }
-
         Type Type { get; }
-
         object GetValue(object instance);
-
         TValue GetValue<TValue>(object instance);
-
         void SetValue(object instance, object value);
-
         string SerializeState();
-
         void DeserializeState(string contentAsString);
     }
 }

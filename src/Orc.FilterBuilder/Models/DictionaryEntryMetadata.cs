@@ -1,33 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DictionaryEntryMetadata.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.FilterBuilder.Models
 {
+    using System;
+    using System.Collections.Generic;
     using Catel;
     using Catel.Reflection;
 
     public class DictionaryEntryMetadata : IPropertyMetadata
     {
-        private string _key;
-
         private Type _expectedType;
+        private string _key;
 
         public DictionaryEntryMetadata()
         {
         }
 
         public DictionaryEntryMetadata(string key, Type expectedType)
+            : this()
         {
             Argument.IsNotNull(() => key);
             Argument.IsNotNull(() => expectedType);
+
             _key = key;
             DisplayName = key;
             _expectedType = expectedType;
         }
 
-        public string DisplayName {  get; set; }
+        public string DisplayName { get; set; }
 
         public string Name
         {
@@ -41,9 +46,15 @@ namespace Orc.FilterBuilder.Models
 
         public object GetValue(object instance)
         {
-            Argument.IsOfType(() => instance, typeof(IDictionary<string, object>));
+            Argument.IsOfType(() => instance, typeof (IDictionary<string, object>));
+
             object result = null;
-            (instance as IDictionary<string, object>).TryGetValue(_key, out result);
+
+            var dictionary = instance as IDictionary<string, object>;
+            if (dictionary != null)
+            {
+                dictionary.TryGetValue(_key, out result);
+            }
 
             return result;
         }
@@ -55,14 +66,15 @@ namespace Orc.FilterBuilder.Models
 
         public void SetValue(object instance, object value)
         {
-            Argument.IsOfType(() => instance, typeof(IDictionary<string, object>));
+            Argument.IsOfType(() => instance, typeof (IDictionary<string, object>));
+
             var dictionary = instance as IDictionary<string, object>;
-            if (dictionary.ContainsKey(_key))
+            if (dictionary == null)
             {
-                dictionary.Remove(_key);
+                return;
             }
 
-            dictionary.Add(_key, value);
+            dictionary[_key] = value;
         }
 
         public string SerializeState()

@@ -18,6 +18,7 @@ namespace Orc.FilterBuilder.AlternativeExample.Services
         public FrameworkElement GeneratePreviewControl(IMetadataProvider metadataProvider, object bindingSource, string path)
         {
             Argument.IsOfType(() => metadataProvider, typeof(DictionaryMetadataProvider));
+
             var jsonViewer = new JsonCollectionViewer();
             BindingOperations.SetBinding(jsonViewer, JsonCollectionViewer.SourceProperty, new Binding(path) { Source = bindingSource });
 
