@@ -57,7 +57,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         public Command NewSchemeCommand { get; private set; }
 
-        private async void OnNewSchemeExecute()
+        private void OnNewSchemeExecute()
         {
             if (_targetType == null)
             {
@@ -68,7 +68,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo (filterScheme, RawItems, true, true);
 
-            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);

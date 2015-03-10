@@ -89,7 +89,7 @@ namespace Orc.FilterBuilder.ViewModels
         #region Commands
         public Command NewSchemeCommand { get; private set; }
 
-        private async void OnNewSchemeExecute()
+        private void OnNewSchemeExecute()
         {
             if (_targetType == null)
             {
@@ -100,7 +100,7 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
-            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);
@@ -132,13 +132,13 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private async void OnEditSchemeExecute(FilterScheme filterScheme)
+        private void OnEditSchemeExecute(FilterScheme filterScheme)
         {
             filterScheme.EnsureIntegrity();
 
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
-            if (await _uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 _filterSchemeManager.UpdateFilters();
 
