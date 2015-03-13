@@ -5,11 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Expressions
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
-    using Extensions;
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]

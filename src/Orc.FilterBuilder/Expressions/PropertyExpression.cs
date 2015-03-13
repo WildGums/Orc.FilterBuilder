@@ -11,8 +11,6 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using Catel.Runtime.Serialization;
-    using Expressions;
-    using Extensions;
     using Models;
     using Runtime.Serialization;
 

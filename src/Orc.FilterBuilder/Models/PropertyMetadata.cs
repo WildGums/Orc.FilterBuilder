@@ -9,7 +9,6 @@ namespace Orc.FilterBuilder.Models
     using System;
     using System.Diagnostics;
     using System.Reflection;
-    using System.Windows.Documents.DocumentStructures;
     using Catel;
     using Catel.Data;
 

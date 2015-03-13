@@ -1,13 +1,21 @@
-﻿using System;
-using System.Linq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TypeExtensions.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace Orc.FilterBuilder.Extensions
+
+namespace Orc.FilterBuilder
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Type class extensions methods
     /// </summary>
     internal static class TypeExtensions
     {
+        #region Methods
         /// <summary>
         /// Gets non nullable type used to create nullable type.
         /// </summary>
@@ -26,7 +34,8 @@ namespace Orc.FilterBuilder.Extensions
         /// <returns></returns>
         internal static bool IsNullable(this Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>);
         }
+        #endregion
     }
 }
