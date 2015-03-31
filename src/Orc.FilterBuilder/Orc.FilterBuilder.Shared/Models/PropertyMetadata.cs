@@ -94,6 +94,11 @@ namespace Orc.FilterBuilder.Models
             return true;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public object GetValue(object instance)
         {
             return GetValue<object>(instance);

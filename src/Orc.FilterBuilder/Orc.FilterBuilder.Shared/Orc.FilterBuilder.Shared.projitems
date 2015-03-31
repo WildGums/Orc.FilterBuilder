@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>050cea5d-dacb-41c0-bdb7-2149dfcc53a1</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Orc.FilterBuilder.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Conditions\Condition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroupType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionTreeItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Conditions\Helpers\ConditionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ConditionTreeItemConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DataTypeExpressionToConditionsConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ObjectToValueConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\TriggerConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueControlTypeVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\BooleanExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\DataTypeExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\DateTimeExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\DecimalExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\IntegerExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\NumericExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\PropertyExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\StringExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\TimeSpanExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\FilterSchemeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FilterBuilderMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CollectionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Markup\EnumBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\FilterScheme.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemeEditInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\InstanceProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Interfaces\IPropertyCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Interfaces\IPropertyMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PropertyMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ModuleInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Runtime\Serialization\FilterSchemeSerializerModifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Runtime\Serialization\PropertyExpressionSerializerModifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Extensions\IFilterServiceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FilterCustomizationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FilterSchemeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FilterService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFilterCustomizationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFilterSchemeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFilterService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IReflectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ReflectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeSpanType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValueControlType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EditFilterViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterBuilderViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml.cs">
+      <DependentUpon>EditFilterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>FilterBuilderControl.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Images\add_expression.png" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Images\add_group.png" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Images\delete.png" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Images\edit.png" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Images\remove.png" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Images\selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Properties\Resources.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

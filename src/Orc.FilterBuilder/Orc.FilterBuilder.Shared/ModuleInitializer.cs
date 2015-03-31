@@ -1,5 +1,11 @@
-﻿using Catel.IoC;
-using Catel.MVVM.Views;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModuleInitializer.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+using Catel.IoC;
 using Orc.FilterBuilder.Services;
 
 /// <summary>
@@ -7,18 +13,12 @@ using Orc.FilterBuilder.Services;
 /// </summary>
 public static class ModuleInitializer
 {
-    private static bool _initialized;
-
+    #region Methods
     /// <summary>
     /// Initializes the module.
     /// </summary>
     public static void Initialize()
     {
-        if (_initialized)
-        {
-            return;
-        }
-
         var serviceLocator = ServiceLocator.Default;
 
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterService, FilterService>();
@@ -26,4 +26,5 @@ public static class ModuleInitializer
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
     }
+    #endregion
 }
