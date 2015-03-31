@@ -191,9 +191,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orc.FilterBuilder\Orc.FilterBuilder.csproj">
+    <ProjectReference Include="..\Orc.FilterBuilder\Orc.FilterBuilder.NET40\Orc.FilterBuilder.NET40.csproj">
       <Project>{6f5eb0c1-7e36-413d-8463-968b7f86fe53}</Project>
-      <Name>Orc.FilterBuilder</Name>
+      <Name>Orc.FilterBuilder.NET40</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
