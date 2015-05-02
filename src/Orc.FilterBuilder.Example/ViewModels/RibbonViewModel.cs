@@ -71,8 +71,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
             if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
+
                 _filterSchemes.Schemes.Add(filterScheme);
-                SelectedFilterScheme = filterScheme;
+                _filterService.SelectedFilter = filterScheme;
 
                 _filterSchemeManager.UpdateFilters();
             }
