@@ -318,9 +318,12 @@ namespace Orc.FilterBuilder.ViewModels
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
-                newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                     select scheme));
+                if (_targetType != null)
+                {
+                    newSchemes.AddRange((from scheme in _filterSchemes.Schemes
+                                         where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                         select scheme));
+                }
             }
 
             newSchemes.Insert(0, NoFilterFilter);
