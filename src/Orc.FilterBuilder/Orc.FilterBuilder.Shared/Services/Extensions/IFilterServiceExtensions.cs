@@ -10,19 +10,20 @@ namespace Orc.FilterBuilder.Services
     using System.Collections;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Catel.Threading;
     using Models;
 
     public static class IFilterServiceExtensions
     {
         #region Methods
-        public static async Task FilterCollectionAsync(this IFilterService filterService, FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+        public static Task FilterCollectionAsync(this IFilterService filterService, FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
         {
-            await Task.Factory.StartNew(() => filterService.FilterCollection(filter, rawCollection, filteredCollection));
+            return TaskHelper.Run(() => filterService.FilterCollection(filter, rawCollection, filteredCollection));
         }
 
-        public static async Task<IEnumerable<TItem>> FilterCollectionAsync<TItem>(this IFilterService filterService, FilterScheme filter, IEnumerable<TItem> rawCollection)
+        public static Task<IEnumerable<TItem>> FilterCollectionAsync<TItem>(this IFilterService filterService, FilterScheme filter, IEnumerable<TItem> rawCollection)
         {
-            return await Task.Factory.StartNew(() => filterService.FilterCollection<TItem>(filter, rawCollection));
+            return TaskHelper.Run(() => filterService.FilterCollection<TItem>(filter, rawCollection));
         }
 
         public static IEnumerable<TItem> FilterCollection<TItem>(this IFilterService filterService, FilterScheme filter, IEnumerable<TItem> rawCollection)
