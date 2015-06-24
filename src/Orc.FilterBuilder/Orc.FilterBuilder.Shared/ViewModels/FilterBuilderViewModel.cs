@@ -38,6 +38,7 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
         private Type _targetType;
         private FilterSchemes _filterSchemes;
+        private bool _applyingFilter;
 
         #region Constructors
         public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
@@ -104,7 +105,8 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);
-                SelectedFilterScheme = filterScheme;
+
+                ApplyFilterScheme(filterScheme, true);
 
                 _filterSchemeManager.UpdateFilters();
             }
@@ -263,19 +265,42 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
-        private async void OnSelectedFilterSchemeChanged()
+        private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
         {
-            if (SelectedFilterScheme == null || ReferenceEquals(SelectedFilterScheme, _filterService.SelectedFilter))
+            if (filterScheme == null || _applyingFilter)
             {
                 return;
             }
 
-            _filterService.SelectedFilter = SelectedFilterScheme;
+            _applyingFilter = true;
 
-            if (AutoApplyFilter)
+            var selectedFilterIsDifferent = !ReferenceEquals(SelectedFilterScheme, filterScheme);
+            var filterServiceSelectedFilterIsDifferent = !ReferenceEquals(filterScheme, _filterService.SelectedFilter);
+
+            if (selectedFilterIsDifferent)
             {
-                ApplyFilter();
+                SelectedFilterScheme = filterScheme;
             }
+
+            if (filterServiceSelectedFilterIsDifferent)
+            {
+                _filterService.SelectedFilter = filterScheme;
+            }
+
+            if (force || selectedFilterIsDifferent || filterServiceSelectedFilterIsDifferent)
+            {
+                if (AutoApplyFilter)
+                {
+                    ApplyFilter();
+                }
+            }
+
+            _applyingFilter = false;
+        }
+
+        private void OnSelectedFilterSchemeChanged()
+        {
+            ApplyFilterScheme(SelectedFilterScheme);
         }
 
         private void OnRawCollectionChanged()
@@ -370,14 +395,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
         {
-            if (_filterService.SelectedFilter == null)
-            {
-                SelectedFilterScheme = AvailableSchemes.First();
-            }
-            else
-            {
-                SelectedFilterScheme = _filterService.SelectedFilter;
-            }
+            var newFilterScheme = _filterService.SelectedFilter ?? AvailableSchemes.First();
+            ApplyFilterScheme(newFilterScheme);
         }
         #endregion
     }
