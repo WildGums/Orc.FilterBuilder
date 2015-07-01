@@ -70,7 +70,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
-            DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition);
+            DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
         }
         #endregion
 
@@ -146,6 +146,26 @@ namespace Orc.FilterBuilder.ViewModels
             _originalFilterScheme.Update(FilterScheme);
 
             return true;
+        }
+
+        private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (!item.IsRoot())
+            {
+                return true;
+            }
+
+            if (FilterScheme.ConditionItems.Count > 1)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void OnDeleteCondition(ConditionTreeItem item)

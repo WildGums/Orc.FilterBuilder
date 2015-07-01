@@ -11,8 +11,6 @@ namespace Orc.FilterBuilder
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.ComponentModel;
-    using System.Text;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
@@ -42,7 +40,14 @@ namespace Orc.FilterBuilder
             {
                 foreach (var item in e.OldItems)
                 {
-                    ((ConditionTreeItem)item).Updated -= OnConditionUpdated;
+                    var conditionTreeItem = (ConditionTreeItem)item;
+
+                    if (ReferenceEquals(conditionTreeItem, this))
+                    {
+                        conditionTreeItem.Parent = null;
+                    }
+
+                    conditionTreeItem.Updated -= OnConditionUpdated;
                 }
             }
 
@@ -51,7 +56,10 @@ namespace Orc.FilterBuilder
             {
                 foreach (var item in newCollection)
                 {
-                    ((ConditionTreeItem)item).Updated += OnConditionUpdated;
+                    var conditionTreeItem = (ConditionTreeItem)item;
+
+                    conditionTreeItem.Parent = this;
+                    conditionTreeItem.Updated += OnConditionUpdated;
                 }
             }
         }
@@ -59,6 +67,11 @@ namespace Orc.FilterBuilder
         protected override void OnDeserialized()
         {
             SubscribeToEvents();
+
+            foreach (var item in Items)
+            {
+                item.Parent = this;
+            }
         }
 
         private void OnItemsChanged()

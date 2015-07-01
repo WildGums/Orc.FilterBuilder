@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\StringExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\TimeSpanExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionTreeItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FilterSchemeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterBuilderMode.cs" />
