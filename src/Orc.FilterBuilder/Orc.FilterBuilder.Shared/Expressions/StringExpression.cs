@@ -35,19 +35,19 @@ namespace Orc.FilterBuilder
             switch (SelectedCondition)
             {
                 case Condition.Contains:
-                    return entityValue != null && entityValue.Contains(Value);
+                    return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1;
 
                 case Condition.EndsWith:
-                    return entityValue != null && entityValue.EndsWith(Value);
+                    return entityValue != null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.EqualTo:
                     return entityValue == Value;
 
                 case Condition.GreaterThan:
-                    return string.Compare(entityValue, Value) > 0;
+                    return string.Compare(entityValue, Value, StringComparison.InvariantCultureIgnoreCase) > 0;
 
                 case Condition.GreaterThanOrEqualTo:
-                    return string.Compare(entityValue, Value) >= 0;
+                    return string.Compare(entityValue, Value, StringComparison.InvariantCultureIgnoreCase) >= 0;
 
                 case Condition.IsEmpty:
                     return entityValue == string.Empty;
@@ -56,10 +56,10 @@ namespace Orc.FilterBuilder
                     return entityValue == null;
 
                 case Condition.LessThan:
-                    return string.Compare(entityValue, Value) < 0;
+                    return string.Compare(entityValue, Value, StringComparison.InvariantCultureIgnoreCase) < 0;
 
                 case Condition.LessThanOrEqualTo:
-                    return string.Compare(entityValue, Value) <= 0;
+                    return string.Compare(entityValue, Value, StringComparison.InvariantCultureIgnoreCase) <= 0;
 
                 case Condition.NotEqualTo:
                     return entityValue != Value;
@@ -71,7 +71,7 @@ namespace Orc.FilterBuilder
                     return entityValue != null;
 
                 case Condition.StartsWith:
-                    return entityValue != null && entityValue.StartsWith(Value);
+                    return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
