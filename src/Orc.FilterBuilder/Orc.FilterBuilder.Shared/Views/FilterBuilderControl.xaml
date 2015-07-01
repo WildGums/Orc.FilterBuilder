@@ -28,7 +28,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid ToolTip="{Binding}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="14" />
                                 <ColumnDefinition Width="200" />

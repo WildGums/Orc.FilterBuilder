@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Text;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;

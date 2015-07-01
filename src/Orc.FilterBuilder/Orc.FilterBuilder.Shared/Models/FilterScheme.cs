@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder.Models
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Text;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
@@ -136,6 +137,23 @@ namespace Orc.FilterBuilder.Models
             Title = otherScheme.Title;
             ConditionItems.Clear();
             ConditionItems.Add(otherScheme.Root);
+        }
+
+        public override string ToString()
+        {
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder.AppendLine(Title);
+
+            var rootString = Root.ToString();
+            if (rootString.StartsWith("((") && rootString.EndsWith("))"))
+            {
+                rootString = rootString.Substring(1, rootString.Length - 2);
+            }
+
+            stringBuilder.Append(rootString);
+
+            return stringBuilder.ToString();
         }
         #endregion
     }

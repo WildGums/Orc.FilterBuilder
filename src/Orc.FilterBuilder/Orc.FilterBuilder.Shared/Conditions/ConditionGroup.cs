@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder
 {
     using System.Linq;
+    using System.Text;
 
     public class ConditionGroup : ConditionTreeItem
     {
@@ -42,7 +43,35 @@ namespace Orc.FilterBuilder
 
         public override string ToString()
         {
-            return Type.ToString();
+            var stringBuilder = new StringBuilder();
+
+            var groupType = Type.ToString().ToLower();
+
+            var itemCount = Items.Count;
+
+            if (itemCount > 1)
+            {
+                stringBuilder.Append("(");
+            }
+
+            for (var i = 0; i < itemCount; i++)
+            {
+                if (i > 0)
+                {
+                    stringBuilder.AppendFormat(" {0} ", groupType);
+                }
+
+                var item = Items[i];
+                var itemString = item.ToString();
+                stringBuilder.Append(itemString);
+            }
+
+            if (itemCount > 1)
+            {
+                stringBuilder.Append(")");
+            }
+
+            return stringBuilder.ToString();
         }
         #endregion
     }

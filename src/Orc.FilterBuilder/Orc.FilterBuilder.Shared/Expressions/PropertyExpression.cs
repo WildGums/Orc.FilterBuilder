@@ -118,6 +118,23 @@ namespace Orc.FilterBuilder
         {
             return DataTypeExpression.CalculateResult(Property, entity);
         }
+
+        public override string ToString()
+        {
+            var property = Property;
+            if (property == null)
+            {
+                return string.Empty;
+            }
+
+            var dataTypeExpression = DataTypeExpression;
+            if (dataTypeExpression == null)
+            {
+                return string.Empty;
+            }
+
+            return string.Format("{0} {1}", property.DisplayName ?? property.Name, DataTypeExpression);
+        }
         #endregion
     }
 }

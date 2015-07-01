@@ -112,6 +112,11 @@ namespace Orc.FilterBuilder
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
+        }
         #endregion
     }
 }

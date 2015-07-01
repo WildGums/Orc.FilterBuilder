@@ -6,11 +6,14 @@
     <SharedGUID>32932ba3-f415-428e-9196-40d6cdcc7d50</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Orc.FilterBuilder.Tests.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Orc.FilterBuilder.Tests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DummyFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemeFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Helpers\FilterSchemeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TestFilterModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
   </ItemGroup>
 </Project>
