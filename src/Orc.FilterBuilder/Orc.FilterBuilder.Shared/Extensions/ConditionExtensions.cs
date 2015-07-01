@@ -55,7 +55,7 @@ namespace Orc.FilterBuilder
                     return "is not null";
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
+                    throw new ArgumentOutOfRangeException("condition", condition, null);
             }
         }
     }
