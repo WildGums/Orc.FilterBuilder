@@ -13,6 +13,7 @@ namespace Orc.FilterBuilder.Views
     using Catel.IoC;
     using Catel.Reflection;
     using Catel.Windows;
+    using Catel.Windows.Threading;
     using Converters;
     using Services;
     using ViewModels;
@@ -63,6 +64,9 @@ namespace Orc.FilterBuilder.Views
                         dataGrid.Columns.Add(column);
                     }
                 }
+
+                // Fix for SA-144
+                Dispatcher.BeginInvoke(() => Focus());
             }
         }
     }
