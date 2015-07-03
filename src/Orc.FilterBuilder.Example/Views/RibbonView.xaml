@@ -13,7 +13,7 @@
                     
                     <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" Command="{Binding NewSchemeCommand}"
                                         LargeIcon="{orchestra:FontImage {x:Static ribbon:FontAwesome.Plus}}" 
-                                        ClosePopupOnMouseDown="True">
+                                        ToolTip="{Binding SelectedFilterScheme}" ClosePopupOnMouseDown="True">
                         <views:FilterBuilderControl RawCollection="{Binding RawItems}" CloseViewModelOnUnloaded="False" />
                     </fluent:SplitButton>
 
