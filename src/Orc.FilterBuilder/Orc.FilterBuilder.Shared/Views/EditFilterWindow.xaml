@@ -18,7 +18,7 @@
     <Grid>
         <i:Interaction.Behaviors>
             <!-- Fix for SA-144 -->
-            <catel:Focus FocusDelay="500" FocusMoment="Loaded" />
+            <catel:Focus FocusDelay="1000" FocusMoment="Loaded" />
         </i:Interaction.Behaviors>
         
         <Grid.RowDefinitions>
