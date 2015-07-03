@@ -6,6 +6,7 @@
                   xmlns:catel="http://catel.codeplex.com"
                   xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup"
                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                  xmlns:behaviors="clr-namespace:Orc.FilterBuilder.Behaviors"
                   SizeToContent="Manual" ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
@@ -35,6 +36,10 @@
         </TextBox>
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="1" ItemsSource="{Binding FilterScheme.ConditionItems}">
+            <i:Interaction.Behaviors>
+                <behaviors:DisableSelectionInTreeView />
+            </i:Interaction.Behaviors>
+            
             <TreeView.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Height" Value="24" />
@@ -76,7 +81,7 @@
 
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
-                    <Grid>
+                    <Grid HorizontalAlignment="Stretch" Background="Transparent">
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
                             <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
@@ -89,7 +94,8 @@
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_group.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
 
-                            <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
+                            <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}"
+                                    Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
                                 <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
                         </StackPanel>
