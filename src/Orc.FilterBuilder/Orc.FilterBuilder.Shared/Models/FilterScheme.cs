@@ -143,7 +143,7 @@ namespace Orc.FilterBuilder.Models
         {
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.AppendLine(Title);
+            stringBuilder.Append(Title);
 
             var rootString = Root.ToString();
             if (rootString.StartsWith("((") && rootString.EndsWith("))"))
@@ -151,7 +151,11 @@ namespace Orc.FilterBuilder.Models
                 rootString = rootString.Substring(1, rootString.Length - 2);
             }
 
-            stringBuilder.Append(rootString);
+            if (!string.IsNullOrEmpty(rootString))
+            {
+                stringBuilder.AppendLine();
+                stringBuilder.Append(rootString);
+            }
 
             return stringBuilder.ToString();
         }

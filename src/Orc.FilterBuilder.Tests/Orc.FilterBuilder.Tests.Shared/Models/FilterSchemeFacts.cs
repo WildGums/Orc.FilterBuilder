@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder.Tests.Shared.Models
 {
+    using FilterBuilder.Models;
     using NUnit.Framework;
     using Tests.Models;
 
@@ -16,7 +17,21 @@ namespace Orc.FilterBuilder.Tests.Shared.Models
         public class TheToStringMethod
         {
             [TestCase]
-            public void WorksCorrectly()
+            public void WorksCorrectlyOnEmptyFilterScheme()
+            {
+                var filterScheme = new FilterScheme
+                {
+                    Title = "Default"
+                };
+
+                var actual = filterScheme.ToString();
+                var expected = @"Default";
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestCase]
+            public void WorksCorrectlyOnLargeFilterScheme()
             {
                 var filterScheme = FilterSchemeHelper.GenerateFilterScheme();
 
