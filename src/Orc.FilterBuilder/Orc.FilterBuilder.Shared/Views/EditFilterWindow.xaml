@@ -16,6 +16,11 @@
     </Window.Resources>
 
     <Grid>
+        <i:Interaction.Behaviors>
+            <!-- Fix for SA-144 -->
+            <catel:Focus FocusDelay="500" FocusMoment="Loaded" />
+        </i:Interaction.Behaviors>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
