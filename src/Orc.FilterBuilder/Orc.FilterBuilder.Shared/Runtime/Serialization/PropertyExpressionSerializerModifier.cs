@@ -40,7 +40,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
             }
         }
 
-        public override void OnDeserialized(ISerializationContext context, IModel model)
+        public override void OnDeserialized(ISerializationContext context, object model)
         {
             base.OnDeserialized(context, model);
 
