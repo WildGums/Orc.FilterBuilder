@@ -28,23 +28,28 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Text="Name:" />
-        <TextBox Grid.Column="1" Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
+        <TextBox Grid.Column="1" Height="24" Margin="4 2 4 2"
+                 Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <i:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </i:Interaction.Behaviors>
         </TextBox>
+        <ToggleButton Grid.Row="0" Grid.Column="2" Height="24" Padding="4 0 4 0"
+                      IsChecked="{Binding EnableLivePreview}" Content="Live Preview" Margin="2 4 2 4"
+                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-        <TreeView Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="1" ItemsSource="{Binding FilterScheme.ConditionItems}">
+        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="4" BorderBrush="Transparent"
+                  ItemsSource="{Binding FilterScheme.ConditionItems}">
             <i:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
             </i:Interaction.Behaviors>
@@ -142,13 +147,10 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-
-        <CheckBox Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding EnableLivePreview}" Content="Enable live preview"
-                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10" />
-
-        <DataGrid x:Name="dataGrid" Grid.Row="3" Grid.ColumnSpan="2" 
+        
+        <DataGrid x:Name="dataGrid" Grid.Row="2" Grid.ColumnSpan="3" Margin="4" BorderBrush="LightGray"
                   AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
-                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" Margin="10">
+                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
         </DataGrid>
     </Grid>
 </catel:DataWindow>

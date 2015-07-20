@@ -112,15 +112,15 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" TargetName="PathGrid" Value="{StaticResource FilterBuilderAccentBrush}" />
-                                                        <Setter Property="BorderBrush" TargetName="Chrome" Value="{StaticResource FilterBuilderAccentBrush}" />
+                                                        <Setter Property="Background" TargetName="PathGrid" Value="{DynamicResource FilterBuilderAccentBrush}" />
+                                                        <Setter Property="BorderBrush" TargetName="Chrome" Value="{DynamicResource FilterBuilderAccentBrush}" />
                                                         <Setter Property="Fill" TargetName="Arrow" Value="White" />
                                                     </Trigger>
                                                     <Trigger Property="IsChecked" Value="True">
-                                                        <Setter Property="Background" TargetName="PathGrid" Value="{StaticResource FilterBuilderAccentBrush}" />
+                                                        <Setter Property="Background" TargetName="PathGrid" Value="{DynamicResource FilterBuilderAccentBrush}" />
                                                         <Setter Property="Background" TargetName="Chrome" Value="White" />
                                                         <Setter Property="Fill" TargetName="Arrow" Value="White" />
-                                                        <Setter Property="BorderBrush" TargetName="Chrome" Value="{StaticResource FilterBuilderAccentBrush}" />
+                                                        <Setter Property="BorderBrush" TargetName="Chrome" Value="{DynamicResource FilterBuilderAccentBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsEnabled" Value="False">
                                                         <Setter Property="Fill" TargetName="Arrow" Value="#FFAFAFAF"/>
@@ -178,7 +178,7 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsHighlighted" Value="true">
-                                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource FilterBuilderHighlightBrush}"/>
+                                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource FilterBuilderHighlightBrush}"/>
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="false">
                                                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
@@ -217,12 +217,12 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="Chrome" Value="{StaticResource FilterBuilderHighlightBrush}"/>
+                            <Setter Property="Background" TargetName="Chrome" Value="{DynamicResource FilterBuilderHighlightBrush}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="Chrome" Value="{StaticResource FilterBuilderAccentBrush}"/>
+                            <Setter Property="Background" TargetName="Chrome" Value="{DynamicResource FilterBuilderAccentBrush}"/>
                             <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="BorderBrush" TargetName="Chrome" Value="{StaticResource FilterBuilderAccentBrush}"/>
+                            <Setter Property="BorderBrush" TargetName="Chrome" Value="{DynamicResource FilterBuilderAccentBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" TargetName="Filter" Value="WhiteSmoke"/>
@@ -257,6 +257,40 @@
                             <Setter Property="Background" TargetName="Border" Value="{DynamicResource FilterBuilderAccentBrush}"/>
                             <Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource FilterBuilderAccentBrush}"/>
                             <Setter Property="Fill" TargetName="Path" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="Filter" Value="WhiteSmoke"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="Border" BorderBrush="LightGray" BorderThickness="1" Background="#FFF4F4F4" SnapsToDevicePixels="True">
+                        <Grid>
+                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <Grid x:Name="Filter" Background="Transparent" Opacity="0.7"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource FilterBuilderHighlightBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource FilterBuilderAccentBrush}" />
+                            <Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource FilterBuilderAccentBrush}" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" TargetName="Filter" Value="WhiteSmoke"/>
