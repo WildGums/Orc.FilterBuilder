@@ -13,8 +13,12 @@
         <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
         <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
-    </Window.Resources>
 
+        <Geometry x:Key="AddGeometry">M431.704,432l0,260.501l-96,0l0,-260.501l-260.501,-5.68434e-14l1.42109e-14,-96l260.501,5.68434e-14l0,-260.501l96,0l0,260.501l260.501,0l0,96l-260.501,0Z</Geometry>
+        <Geometry x:Key="AddGroupGeometry">M265.81,677.779L85.81,677.779L85.81,497.779L135.81,497.779L135.81,627.779L265.81,627.779L265.81,677.779ZM502.19,677.779L682.19,677.779L682.19,497.779L632.19,497.779L632.19,627.779L502.19,627.779L502.19,677.779ZM413.734,354.266L578.025,354.266L578.025,413.734L413.734,413.734L413.734,578.025L354.266,578.025L354.266,413.734L189.975,413.734L189.975,354.266L354.266,354.266L354.266,189.975L413.734,189.975L413.734,354.266ZM502.19,90.221L682.19,90.221L682.19,270.221L632.19,270.221L632.19,140.221L502.19,140.221L502.19,90.221ZM265.81,90.221L85.81,90.221L85.81,270.221L135.81,270.221L135.81,140.221L265.81,140.221L265.81,90.221Z</Geometry>
+        <Geometry x:Key="DeleteGeometry">M453.423,396.115L676.033,618.725L618.721,676.037L396.111,453.427L173.501,676.037L116.188,618.725L338.798,396.115L116.188,173.505L173.501,116.193L396.111,338.803L618.721,116.193L676.033,173.505L453.423,396.115Z</Geometry>
+    </Window.Resources>
+    
     <Grid>
         <i:Interaction.Behaviors>
             <!-- Fix for SA-144 -->
@@ -46,14 +50,6 @@
             </i:Interaction.Behaviors>
             
             <TreeView.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Height" Value="24" />
-                    <Setter Property="Width" Value="24" />
-                    <Setter Property="Margin" Value="4,6,4,6" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Background" Value="Transparent" />
-                </Style>
-
                 <Style TargetType="ComboBox">
                     <Setter Property="Width" Value="120" />
                     <Setter Property="Margin" Value="4,6,4,6" />
@@ -71,11 +67,7 @@
                     <Setter Property="Margin" Value="4,6,4,6" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
-
-                <Style TargetType="Image" x:Key="ImageIcon">
-                    <Setter Property="Width" Value="16"/>
-                    <Setter Property="Height" Value="16"/>
-                </Style>
+               
             </TreeView.Resources>
 
             <TreeView.ItemContainerStyle>
@@ -91,17 +83,20 @@
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
                             <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
 
-                            <Button ToolTip="Add expression" Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
-                                <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_expression.png" Style="{StaticResource ImageIcon}"/>
+                            <Button ToolTip="Add expression" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
+                                    Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                                    CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Add group" Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
-                                <Image Source="/Orc.FilterBuilder;component/Resources/Images/add_group.png" Style="{StaticResource ImageIcon}"/>
+                            <Button ToolTip="Add group" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
+                                    Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                                    CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}"
+                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                                    Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                                    CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
-                                <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
                             </Button>
                         </StackPanel>
 
@@ -137,8 +132,9 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Button ToolTip="Delete item" Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" CommandParameter="{Binding}">
-                                <Image Source="/Orc.FilterBuilder;component/Resources/Images/delete.png" Style="{StaticResource ImageIcon}"/>
+                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                                    Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                                    CommandParameter="{Binding}">
                             </Button>
                         </StackPanel>
                     </Grid>
