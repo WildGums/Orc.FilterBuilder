@@ -147,8 +147,11 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        
-        <DataGrid x:Name="dataGrid" Grid.Row="2" Grid.ColumnSpan="3" Margin="4" BorderBrush="LightGray"
+
+        <GridSplitter Grid.Row="2" Grid.ColumnSpan="3" MinHeight="1" VerticalAlignment="Center"
+                      Background="LightGray" HorizontalAlignment="Stretch"/>
+
+        <DataGrid x:Name="dataGrid" Grid.Row="3" Grid.ColumnSpan="3" Margin="0" BorderThickness="1 0 1 1" BorderBrush="LightGray"
                   AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
                   Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
         </DataGrid>
