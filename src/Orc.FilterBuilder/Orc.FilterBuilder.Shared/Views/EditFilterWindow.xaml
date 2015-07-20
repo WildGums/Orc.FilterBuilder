@@ -58,20 +58,20 @@
             <TreeView.Resources>
                 <Style TargetType="DatePicker">
                     <Setter Property="Width" Value="120" />
-                    <Setter Property="Margin" Value="2 4 2 4" />
+                    <Setter Property="Margin" Value="2" />
                     <Setter Property="Height" Value="24" />
                 </Style>
 
                 <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                     <Setter Property="Width" Value="120" />
                     <Setter Property="Height" Value="24" />
-                    <Setter Property="Margin" Value="2 4 2 4" />
+                    <Setter Property="Margin" Value="2" />
                 </Style>
 
                 <Style TargetType="TextBox">
                     <Setter Property="Width" Value="120" />
                     <Setter Property="MinWidth" Value="120" />
-                    <Setter Property="Margin" Value="2 4 2 4" />
+                    <Setter Property="Margin" Value="2" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
                
@@ -86,7 +86,7 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                     <Grid HorizontalAlignment="Stretch" Background="Transparent">
-                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
+                        <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
                             <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
 
@@ -107,7 +107,7 @@
                             </Button>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0"
+                        <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
                             <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                       DisplayMemberPath="DisplayName" SelectedItem="{Binding Property}" />
@@ -116,7 +116,7 @@
                                       SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
 
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
-                                  Margin="3,0,0,0">
+                                  Margin="0">
                                 <TextBox Text="{Binding DataTypeExpression.Value}"
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>

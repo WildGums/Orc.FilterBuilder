@@ -15,7 +15,7 @@
     <Style TargetType="{x:Type ComboBox}">
         <Setter Property="Width" Value="120" />
         <Setter Property="Height" Value="24" />
-        <Setter Property="Margin" Value="2 4 2 4" />
+        <Setter Property="Margin" Value="2" />
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
@@ -153,7 +153,7 @@
     </Style>
 
     <Style TargetType="{x:Type Button}">
-        <Setter Property="Margin" Value="2 4 2 4"/>
+        <Setter Property="Margin" Value="2"/>
         <Setter Property="Height" Value="24"/>
         <Setter Property="Width" Value="24"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
