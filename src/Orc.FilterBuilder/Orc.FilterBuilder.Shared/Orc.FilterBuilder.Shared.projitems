@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ConditionTreeItemConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\DataTypeExpressionToConditionsConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LeftMarginMultiplierConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ObjectToValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TriggerConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueControlTypeVisibilityConverter.cs" />
@@ -35,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionTreeItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FilterSchemeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterBuilderMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CollectionHelper.cs" />

@@ -78,9 +78,7 @@
             </TreeView.Resources>
 
             <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
-                    <Setter Property="IsExpanded" Value="True" />
-                </Style>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeViewItemStyle}"/>
             </TreeView.ItemContainerStyle>
 
             <TreeView.ItemTemplate>
