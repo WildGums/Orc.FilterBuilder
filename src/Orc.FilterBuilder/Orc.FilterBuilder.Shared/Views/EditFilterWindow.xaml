@@ -7,7 +7,7 @@
                   xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup"
                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                   xmlns:behaviors="clr-namespace:Orc.FilterBuilder.Behaviors"
-                  SizeToContent="Manual" ResizeMode="CanResizeWithGrip">
+                  SizeToContent="Manual" ResizeMode="CanResizeWithGrip" MinHeight="350" MinWidth="550">
 
     <Window.Resources>
         <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
