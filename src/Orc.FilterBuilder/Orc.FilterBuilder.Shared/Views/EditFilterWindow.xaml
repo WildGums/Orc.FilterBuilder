@@ -39,17 +39,17 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Text="Name:" />
-        <TextBox Grid.Column="1" Height="24" Margin="4 2 4 2"
+        <TextBox Grid.Column="1" Height="26" Margin="4 2 4 2"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <i:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </i:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" Grid.Column="2" Height="24" Padding="4 0 4 0"
+        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0"
                       IsChecked="{Binding EnableLivePreview}" Content="Live Preview" Margin="2 4 2 4"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="4" BorderBrush="Transparent"
+        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="4 4 4 0" BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
             <i:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
@@ -59,12 +59,12 @@
                 <Style TargetType="DatePicker">
                     <Setter Property="Width" Value="120" />
                     <Setter Property="Margin" Value="2" />
-                    <Setter Property="Height" Value="24" />
+                    <Setter Property="Height" Value="26" />
                 </Style>
 
                 <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                     <Setter Property="Width" Value="120" />
-                    <Setter Property="Height" Value="24" />
+                    <Setter Property="Height" Value="26" />
                     <Setter Property="Margin" Value="2" />
                 </Style>
 
@@ -98,7 +98,7 @@
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
