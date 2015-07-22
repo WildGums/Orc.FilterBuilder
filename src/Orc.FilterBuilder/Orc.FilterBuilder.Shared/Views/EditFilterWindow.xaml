@@ -17,6 +17,49 @@
         <Geometry x:Key="AddGeometry">M431.704,432l0,260.501l-96,0l0,-260.501l-260.501,-5.68434e-14l1.42109e-14,-96l260.501,5.68434e-14l0,-260.501l96,0l0,260.501l260.501,0l0,96l-260.501,0Z</Geometry>
         <Geometry x:Key="AddGroupGeometry">M265.81,677.779L85.81,677.779L85.81,497.779L135.81,497.779L135.81,627.779L265.81,627.779L265.81,677.779ZM502.19,677.779L682.19,677.779L682.19,497.779L632.19,497.779L632.19,627.779L502.19,627.779L502.19,677.779ZM413.734,354.266L578.025,354.266L578.025,413.734L413.734,413.734L413.734,578.025L354.266,578.025L354.266,413.734L189.975,413.734L189.975,354.266L354.266,354.266L354.266,189.975L413.734,189.975L413.734,354.266ZM502.19,90.221L682.19,90.221L682.19,270.221L632.19,270.221L632.19,140.221L502.19,140.221L502.19,90.221ZM265.81,90.221L85.81,90.221L85.81,270.221L135.81,270.221L135.81,140.221L265.81,140.221L265.81,90.221Z</Geometry>
         <Geometry x:Key="DeleteGeometry">M453.423,396.115L676.033,618.725L618.721,676.037L396.111,453.427L173.501,676.037L116.188,618.725L338.798,396.115L116.188,173.505L173.501,116.193L396.111,338.803L618.721,116.193L676.033,173.505L453.423,396.115Z</Geometry>
+
+        <Style x:Key="RowDefinition3Style" TargetType="{x:Type RowDefinition}">
+            <Setter Property="Height" Value="1.5*" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AllowLivePreview}" Value="False">
+                    <Setter Property="Height" Value="Auto" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding AllowLivePreview}" Value="True" />
+                        <Condition Binding="{Binding EnableLivePreview}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Height" Value="Auto" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="dataGridContainerStyle" TargetType="{x:Type Grid}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding AllowLivePreview}" Value="True" />
+                        <Condition Binding="{Binding EnableLivePreview}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="gridSpliterStyle" TargetType="{x:Type GridSplitter}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding AllowLivePreview}" Value="True" />
+                        <Condition Binding="{Binding EnableLivePreview}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding AllowLivePreview}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     
     <Grid Margin="6 6 6 0">
@@ -29,7 +72,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Style="{StaticResource RowDefinition3Style}"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -49,7 +92,7 @@
                       IsChecked="{Binding EnableLivePreview}" Content="Live Preview" Margin="2 4 2 4"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="4 4 4 0" BorderBrush="Transparent"
+        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
             <i:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
@@ -147,12 +190,14 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <GridSplitter Grid.Row="2" Grid.ColumnSpan="3" MinHeight="1" VerticalAlignment="Center"
-                      Background="LightGray" HorizontalAlignment="Stretch"/>
+        <GridSplitter x:Name="gridSplitter" Grid.Row="2" Grid.ColumnSpan="3" MinHeight="1" VerticalAlignment="Center" Background="LightGray"
+                      HorizontalAlignment="Stretch" Style="{StaticResource gridSpliterStyle}"/>
 
-        <DataGrid x:Name="dataGrid" Grid.Row="3" Grid.ColumnSpan="3" Margin="0" BorderThickness="1 0 1 1" BorderBrush="LightGray"
-                  AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
-                  Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
-        </DataGrid>
+        <Grid x:Name="dataGridContainer" Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource dataGridContainerStyle}">
+            <DataGrid x:Name="dataGrid" Margin="0" BorderThickness="1 0 1 1" BorderBrush="LightGray"
+                      AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
+                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
+            </DataGrid>
+        </Grid>
     </Grid>
 </catel:DataWindow>
