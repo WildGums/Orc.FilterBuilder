@@ -19,7 +19,7 @@
         <Geometry x:Key="DeleteGeometry">M453.423,396.115L676.033,618.725L618.721,676.037L396.111,453.427L173.501,676.037L116.188,618.725L338.798,396.115L116.188,173.505L173.501,116.193L396.111,338.803L618.721,116.193L676.033,173.505L453.423,396.115Z</Geometry>
     </Window.Resources>
     
-    <Grid>
+    <Grid Margin="6 6 6 0">
         <i:Interaction.Behaviors>
             <!-- Fix for SA-144 -->
             <catel:Focus FocusDelay="1000" FocusMoment="Loaded" />

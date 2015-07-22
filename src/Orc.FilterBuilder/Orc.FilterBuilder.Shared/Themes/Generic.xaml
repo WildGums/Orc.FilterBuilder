@@ -298,7 +298,6 @@
     <!--Default ColmnHeaderStyle-->
     <Style x:Key="DefaultColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Padding" Value="3"/>
-        <Setter Property="Margin" Value="-1 -3 0 0"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
@@ -309,9 +308,9 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="BackgroundBorder" BorderThickness="1" Height="30" Grid.ColumnSpan="2"
+                        <Border x:Name="BackgroundBorder" BorderThickness="0 0 1 1" Height="28" Grid.ColumnSpan="2"
                                 Background="{StaticResource DataGridHeaderBackgroundBrush}" />
-                        <ContentPresenter Margin="3 6 3 3" VerticalAlignment="Center" />
+                        <ContentPresenter Margin="3 0 3 0" VerticalAlignment="Center" />
                         <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
                                             Grid.Column="1" Width="8" Height="6" Fill="Black" Margin="0,2,6,0" 
                                             VerticalAlignment="Center" RenderTransformOrigin="0.5,0.4" />
@@ -379,6 +378,9 @@
                 <Setter Property="Foreground" Value="Black" />
                 <Setter Property="Background" Value="{DynamicResource FilterBuilderAccentBrush}" />
             </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
 
@@ -388,7 +390,6 @@
 
     <!--Default DataGrid Style-->
     <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
-        <Setter Property="Margin" Value="-2 -1 0 0" />
         <Setter Property="BorderBrush" Value="LightGray" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="SelectionMode" Value="Single" />
