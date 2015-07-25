@@ -65,18 +65,18 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Text="Name:" />
-        <TextBox Grid.Column="1" Height="26" Margin="4 2 4 2"
+        <TextBlock Grid.Column="0" Text="Name:" Width="33" Margin="0" />
+        <TextBox Grid.Column="1" Height="26" Margin="4 0 4 0"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <i:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </i:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0"
-                      IsChecked="{Binding EnableLivePreview}" Content="Live Preview" Margin="2 4 2 4"
+        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0"
+                      IsChecked="{Binding EnableLivePreview}" Content="Live Preview"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" BorderBrush="Transparent"
+        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
             <i:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
@@ -84,20 +84,20 @@
             
             <TreeView.Resources>
                 <Style TargetType="DatePicker">
-                    <Setter Property="Width" Value="120" />
+                    <Setter Property="Width" Value="123" />
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="Height" Value="26" />
                 </Style>
 
                 <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                    <Setter Property="Width" Value="120" />
+                    <Setter Property="Width" Value="123" />
                     <Setter Property="Height" Value="26" />
                     <Setter Property="Margin" Value="2" />
                 </Style>
 
                 <Style TargetType="TextBox">
-                    <Setter Property="Width" Value="120" />
-                    <Setter Property="MinWidth" Value="120" />
+                    <Setter Property="Width" Value="123" />
+                    <Setter Property="MinWidth" Value="123" />
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
