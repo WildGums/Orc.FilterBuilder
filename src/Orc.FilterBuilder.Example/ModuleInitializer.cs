@@ -5,7 +5,7 @@ using Catel.IoC;
 using FilterBuilder.Example.Services;
 using Orc.FilterBuilder.Example.Services;
 using Orchestra.Services;
-using Orchestra.Shell.Services;
+using Orchestra.Services;
 
 public static class ModuleInitializer
 {

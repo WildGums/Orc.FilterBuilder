@@ -8,7 +8,7 @@
 namespace Orc.FilterBuilder.Example.Services
 {
     using System.Windows;
-    using Orchestra.Shell.Services;
+    using Orchestra.Services;
     using Views;
 
     public class RibbonService : IRibbonService
