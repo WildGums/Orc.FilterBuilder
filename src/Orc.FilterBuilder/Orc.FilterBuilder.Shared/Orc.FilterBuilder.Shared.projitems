@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DataTypeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DateTimeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DecimalExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\DoubleExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\IntegerExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\NumericExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\PropertyExpression.cs" />

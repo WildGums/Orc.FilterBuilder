@@ -75,6 +75,14 @@ namespace Orc.FilterBuilder
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
             }
+            else if (Property.Type == typeof(double))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(false));
+            }
+            else if (Property.Type == typeof(double?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(true));
+            }
 
             if (DataTypeExpression != null)
             {
