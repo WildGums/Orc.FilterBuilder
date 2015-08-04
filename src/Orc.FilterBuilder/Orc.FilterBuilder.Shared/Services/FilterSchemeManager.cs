@@ -73,7 +73,7 @@ namespace Orc.FilterBuilder.Services
                     }
                 }
 
-                Log.Info("Loaded filter schemes from '{0}'", fileName);
+                Log.Debug("Loaded filter schemes from '{0}'", fileName);
             }
             catch (Exception ex)
             {
