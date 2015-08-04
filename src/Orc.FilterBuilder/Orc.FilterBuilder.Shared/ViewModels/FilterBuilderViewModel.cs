@@ -9,7 +9,6 @@ namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -176,7 +175,7 @@ namespace Orc.FilterBuilder.ViewModels
             if (Mode == FilterBuilderMode.Collection)
             {
                 FilteringFunc = null;
-                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
+                await Task.Factory.StartNew(() => _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection));
             }
             else
             {
@@ -362,15 +361,17 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
+            await base.InitializeAsync();
+
             _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
             _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
 
             UpdateFilters();
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             if (_filterSchemes != null)
             {
@@ -380,7 +381,7 @@ namespace Orc.FilterBuilder.ViewModels
             _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
             _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
 
-            await base.Close();
+            await base.CloseAsync();
         }
 
         private void OnFilterSchemesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

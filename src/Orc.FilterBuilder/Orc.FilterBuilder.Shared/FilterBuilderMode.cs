@@ -1,4 +1,11 @@
-﻿namespace Orc.FilterBuilder
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FilterBuilderMode.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+namespace Orc.FilterBuilder
 {
     using Views;
 
@@ -11,6 +18,7 @@
         /// <see cref="FilterBuilderControl"/> creates filtered collection
         /// </summary>
         Collection,
+
         /// <summary>
         /// <see cref="FilterBuilderControl"/> creates filtering function
         /// </summary>

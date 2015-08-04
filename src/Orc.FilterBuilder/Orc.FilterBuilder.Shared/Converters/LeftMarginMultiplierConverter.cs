@@ -11,7 +11,6 @@ namespace Orc.FilterBuilder.Converters
     using System.Windows;
     using System.Windows.Controls;
     using Catel.MVVM.Converters;
-    using Extensions;
 
     public class LeftMarginMultiplierConverter : ValueConverterBase
     {

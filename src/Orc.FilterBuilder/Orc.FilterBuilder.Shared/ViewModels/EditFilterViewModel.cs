@@ -94,20 +94,20 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
-        protected override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
-            await base.Initialize();
+            await base.InitializeAsync();
 
             UpdatePreviewItems();
 
             FilterScheme.Updated += OnFilterSchemeUpdated;
         }
 
-        protected override async Task Close()
+        protected override async Task CloseAsync()
         {
             FilterScheme.Updated -= OnFilterSchemeUpdated;
 
-            await base.Close();
+            await base.CloseAsync();
         }
 
         private void OnFilterSchemeUpdated(object sender, EventArgs e)
@@ -127,7 +127,7 @@ namespace Orc.FilterBuilder.ViewModels
             base.ValidateFields(validationResults);
         }
 
-        protected override async Task<bool> Cancel()
+        protected override async Task<bool> CancelAsync()
         {
             if (_isFilterDirty)
             {
@@ -137,10 +137,10 @@ namespace Orc.FilterBuilder.ViewModels
                 }
             }
 
-            return await base.Cancel();
+            return await base.CancelAsync();
         }
 
-        protected override async Task<bool> Save()
+        protected override async Task<bool> SaveAsync()
         {
             FilterScheme.Title = FilterSchemeTitle;
             _originalFilterScheme.Update(FilterScheme);

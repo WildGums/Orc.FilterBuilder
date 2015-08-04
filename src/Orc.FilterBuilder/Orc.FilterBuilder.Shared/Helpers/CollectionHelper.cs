@@ -11,7 +11,6 @@ namespace Orc.FilterBuilder
     using System.Collections;
     using Catel;
     using Catel.Logging;
-    using Catel.Reflection;
 
     public static class CollectionHelper
     {

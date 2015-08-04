@@ -9,7 +9,6 @@ namespace Orc.FilterBuilder.Services
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using Models;
 
     public interface IFilterService

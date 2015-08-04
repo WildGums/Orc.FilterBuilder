@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Extensions
+namespace Orc.FilterBuilder
 {
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -15,10 +15,12 @@ namespace Orc.FilterBuilder.Extensions
         public static int GetDepth(this TreeViewItem item)
         {
             TreeViewItem parent;
+
             while ((parent = GetParent(item)) != null)
             {
                 return GetDepth(parent) + 1;
             }
+
             return 0;
         }
 
@@ -31,6 +33,7 @@ namespace Orc.FilterBuilder.Extensions
                 if (parent == null) return null;
                 parent = VisualTreeHelper.GetParent(parent);
             }
+
             return parent as TreeViewItem;
         }
     }

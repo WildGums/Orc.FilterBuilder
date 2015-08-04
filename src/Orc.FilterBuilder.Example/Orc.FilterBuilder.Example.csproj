@@ -77,11 +77,13 @@
       <HintPath>..\..\lib\Orc.Controls.1.0.0-unstable0307\lib\net40\Orc.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Core, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Orchestra.Core.2.2.0-unstable0147\lib\net40\Orchestra.Core.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Orchestra.Core.2.2.0-unstable0148\lib\net40\Orchestra.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Orchestra.Shell.Ribbon.Fluent, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.2.0-unstable0147\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Orchestra.Shell.Ribbon.Fluent.2.2.0-unstable0148\lib\net40\Orchestra.Shell.Ribbon.Fluent.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
