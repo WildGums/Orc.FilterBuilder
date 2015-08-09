@@ -72,7 +72,7 @@
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </i:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0"
+        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0" Style="{DynamicResource FilterBuilderToggleButtonStyle}"
                       IsChecked="{Binding EnableLivePreview}" Content="Live Preview"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
@@ -89,11 +89,7 @@
                     <Setter Property="Height" Value="26" />
                 </Style>
 
-                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                    <Setter Property="Width" Value="123" />
-                    <Setter Property="Height" Value="26" />
-                    <Setter Property="Margin" Value="2" />
-                </Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource FilterBuilderComboBoxStyle}"/>
 
                 <Style TargetType="TextBox">
                     <Setter Property="Width" Value="123" />

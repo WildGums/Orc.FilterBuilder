@@ -8,18 +8,13 @@
     
     <Geometry x:Key="ExpanderToggleButtonArrow">M5,-0 L9,5 1,5 z</Geometry>
 
-    <Style TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Background" Value="Transparent" />
-        <Style.Resources>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource FilterBuilderHighlightColor}"/>
-        </Style.Resources>
-    </Style>
-
-    <Style TargetType="{x:Type ComboBox}">
-        <Setter Property="Width" Value="120" />
+    <Style x:Key="FilterBuilderComboBoxStyle"  TargetType="{x:Type ComboBox}">
+        <Setter Property="Width" Value="123" />
         <Setter Property="Height" Value="26" />
         <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="4 2 4 2" />
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -36,7 +31,7 @@
                                             MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                                 <Border x:Name="DropDownBorder" BorderBrush="#FFADADAD" BorderThickness="1"
                                                 Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
-                                    <ScrollViewer x:Name="DropDownScrollViewer">
+                                    <ScrollViewer x:Name="DropDownScrollViewer" VerticalScrollBarVisibility="Auto">
                                         <Grid RenderOptions.ClearTypeHint="Enabled">
                                             <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
                                                 <Rectangle x:Name="OpaqueRect" Fill="{Binding Background, ElementName=DropDownBorder}"
@@ -50,10 +45,10 @@
                                 </Border>
                             </Border>
                         </Popup>
-                        <ToggleButton Grid.ColumnSpan="2"
-                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                              Background="{TemplateBinding Background}"
-                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ToggleButton Grid.ColumnSpan="2" 
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      Background="{TemplateBinding Background}"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <ToggleButton.Style>
                                 <Style TargetType="{x:Type ToggleButton}">
                                     <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -155,11 +150,13 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}">
+    <Style x:Key="FilterBuilderButtonStyle"  TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Height" Value="26"/>
         <Setter Property="Width" Value="26"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -193,8 +190,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="IconButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+
+    <Style x:Key="IconButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource FilterBuilderButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -228,7 +225,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type ToggleButton}">
+    <Style x:Key="FilterBuilderToggleButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
