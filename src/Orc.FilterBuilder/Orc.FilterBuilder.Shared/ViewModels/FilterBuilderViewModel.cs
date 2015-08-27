@@ -252,7 +252,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
         {
-            if (await _messageService.Show(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
+            if (await _messageService.ShowAsync(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
             {
                 _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
 

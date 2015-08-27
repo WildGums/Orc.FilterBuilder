@@ -131,7 +131,7 @@ namespace Orc.FilterBuilder.ViewModels
         {
             if (_isFilterDirty)
             {
-                if (await _messageService.Show("The filter has unsaved changes. Are you sure you want to close the editor without saving changes?", "Are you sure?", MessageButton.YesNo) == MessageResult.No)
+                if (await _messageService.ShowAsync("The filter has unsaved changes. Are you sure you want to close the editor without saving changes?", "Are you sure?", MessageButton.YesNo) == MessageResult.No)
                 {
                     return false;
                 }

@@ -26,7 +26,7 @@ namespace Orc.FilterBuilder.Example.Services
             _serviceLocator = serviceLocator;
         }
 
-        public override async Task InitializeBeforeCreatingShell()
+        public override async Task InitializeBeforeCreatingShellAsync()
         {
             await InitializeFonts();
         }
