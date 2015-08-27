@@ -1,12 +1,11 @@
-﻿/// <summary>
-/// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
-/// </summary>
-using Catel.IoC;
+﻿using Catel.IoC;
 using FilterBuilder.Example.Services;
 using Orc.FilterBuilder.Example.Services;
 using Orchestra.Services;
-using Orchestra.Services;
 
+/// <summary>
+/// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
+/// </summary>
 public static class ModuleInitializer
 {
     /// <summary>

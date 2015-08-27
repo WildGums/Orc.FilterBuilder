@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder.Example.Services
     using System.Windows.Media;
     using Catel;
     using Catel.IoC;
+    using Catel.Threading;
     using Orchestra.Markup;
     using Orchestra.Services;
 
@@ -31,12 +32,14 @@ namespace Orc.FilterBuilder.Example.Services
             await InitializeFonts();
         }
 
-        private async Task InitializeFonts()
+        private Task InitializeFonts()
         {
             FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
 
             FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
             FontImage.DefaultFontFamily = "FontAwesome";
+
+            return TaskHelper.Completed;
         }
     }
 }
