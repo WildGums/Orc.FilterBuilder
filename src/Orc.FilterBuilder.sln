@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23912551-289D-43BF-9B2D-5385308A09E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder", "FilterBuilder\Orc.FilterBuilder.csproj", "{6F5EB0C1-7E36-413D-8463-968B7F86FE53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.NET40", "Orc.FilterBuilder\Orc.FilterBuilder.NET40\Orc.FilterBuilder.NET40.csproj", "{6F5EB0C1-7E36-413D-8463-968B7F86FE53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Test", "FilterBuilder.Test\Orc.FilterBuilder.Test.csproj", "{FDD8B37C-268C-41B6-8E64-EB49A827532D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Example", "Orc.FilterBuilder.Example\Orc.FilterBuilder.Example.csproj", "{FDD8B37C-268C-41B6-8E64-EB49A827532D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A8D1BDA5-71E1-4F19-8D0E-13289C5131F4}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,19 +16,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A8D1BDA5-71E
 		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FE201CA6-343E-4495-AACD-4EB7D88DA4A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET40", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.NET40\Orc.FilterBuilder.Tests.NET40.csproj", "{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{06E243DF-38A5-4CC4-9C3D-7DC616604FBE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{F9F59E5A-A3B1-47AF-938E-35C8793BC341}"
 	ProjectSection(SolutionItems) = preProject
-		..\tools\NuGet\NuGet.exe = ..\tools\NuGet\NuGet.exe
+		nuget.config = nuget.config
+		Orc.FilterBuilder.sln.DotSettings = Orc.FilterBuilder.sln.DotSettings
+		Settings.StyleCop = Settings.StyleCop
+		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitVersion", "GitVersion", "{720AC33D-DF92-4E1B-8FF4-40A806FA3476}"
-	ProjectSection(SolutionItems) = preProject
-		..\tools\GitVersion\GitVersion.exe = ..\tools\GitVersion\GitVersion.exe
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EF646E4B-A54F-4160-AAD6-4142E6736489}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{6B402D49-4EA5-49E0-B717-F957A9415915}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C5407F4F-E6E4-426D-9E39-1D8AE2303080}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FilterBuilder.Shared", "Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.shproj", "{050CEA5D-DACB-41C0-BDB7-2149DFCC53A1}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FilterBuilder.Tests.Shared", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.shproj", "{32932BA3-F415-428E-9196-40D6CDCC7D50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.NET45", "Orc.FilterBuilder\Orc.FilterBuilder.NET45\Orc.FilterBuilder.NET45.csproj", "{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET45", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.NET45\Orc.FilterBuilder.Tests.NET45.csproj", "{5A88454A-D65B-49BF-8165-7E2CDAE446B0}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{32932ba3-f415-428e-9196-40d6cdcc7d50}*SharedItemsImports = 13
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{6f5eb0c1-7e36-413d-8463-968b7f86fe53}*SharedItemsImports = 4
+		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{1e4a6610-74f8-477b-bb07-a9c2cc6763ed}*SharedItemsImports = 4
+		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{5a88454a-d65b-49bf-8165-7e2cdae446b0}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{050cea5d-dacb-41c0-bdb7-2149dfcc53a1}*SharedItemsImports = 13
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{df2fdbdc-f137-419d-a0ae-451b70b0b9e8}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -42,14 +62,32 @@ Global
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDD8B37C-268C-41B6-8E64-EB49A827532D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A88454A-D65B-49BF-8165-7E2CDAE446B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A88454A-D65B-49BF-8165-7E2CDAE446B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A88454A-D65B-49BF-8165-7E2CDAE446B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A88454A-D65B-49BF-8165-7E2CDAE446B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6F5EB0C1-7E36-413D-8463-968B7F86FE53} = {23912551-289D-43BF-9B2D-5385308A09E4}
-		{FDD8B37C-268C-41B6-8E64-EB49A827532D} = {23912551-289D-43BF-9B2D-5385308A09E4}
-		{06E243DF-38A5-4CC4-9C3D-7DC616604FBE} = {FE201CA6-343E-4495-AACD-4EB7D88DA4A4}
-		{720AC33D-DF92-4E1B-8FF4-40A806FA3476} = {FE201CA6-343E-4495-AACD-4EB7D88DA4A4}
+		{6F5EB0C1-7E36-413D-8463-968B7F86FE53} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
+		{FDD8B37C-268C-41B6-8E64-EB49A827532D} = {6B402D49-4EA5-49E0-B717-F957A9415915}
+		{1E4A6610-74F8-477B-BB07-A9C2CC6763ED} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
+		{EF646E4B-A54F-4160-AAD6-4142E6736489} = {23912551-289D-43BF-9B2D-5385308A09E4}
+		{6B402D49-4EA5-49E0-B717-F957A9415915} = {23912551-289D-43BF-9B2D-5385308A09E4}
+		{C5407F4F-E6E4-426D-9E39-1D8AE2303080} = {23912551-289D-43BF-9B2D-5385308A09E4}
+		{050CEA5D-DACB-41C0-BDB7-2149DFCC53A1} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
+		{32932BA3-F415-428E-9196-40D6CDCC7D50} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
+		{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
+		{5A88454A-D65B-49BF-8165-7E2CDAE446B0} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
 	EndGlobalSection
 EndGlobal

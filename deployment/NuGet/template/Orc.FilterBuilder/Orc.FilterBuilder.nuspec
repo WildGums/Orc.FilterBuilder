@@ -1,0 +1,30 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Orc.FilterBuilder</id>
+    <version>[VERSION]</version>
+    <title>Orc.FilterBuilder</title>
+    <authors>OrchestraDevs</authors>
+    <owners>OrchestraDevs</owners>
+
+	<description>
+        WPF UI to help users build collection filters.
+	</description>
+	<summary>
+	</summary>
+
+    <tags>wpf silverlight orcomp collection filter builder</tags>
+
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright Wild Gums 2010 - 2015</copyright>
+
+	<language>en-US</language>
+	<projectUrl>https://github.com/WildGums/Orc.FilterBuilder</projectUrl>
+	<!--<licenseUrl>http://catel.codeplex.com/license</licenseUrl>-->
+	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
+    
+    <dependencies>
+      <dependency id="Catel.MVVM" version="[replaced]" />
+    </dependencies>    
+  </metadata>
+</package>
