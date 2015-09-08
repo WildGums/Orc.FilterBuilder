@@ -29,7 +29,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid ToolTip="{Binding}">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="14" />
                                 <ColumnDefinition Width="200" />
@@ -48,7 +48,10 @@
                                 </Image.Visibility>
                             </Image>
 
-                            <Label Grid.Column="1" Content="{Binding Title}" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Label Content="{Binding Title}" ToolTip="{Binding}" />
+                            </StackPanel>
+
                             <Button Grid.Column="2" Width="24" CommandParameter="{Binding }" Style="{DynamicResource FilterBuilderButtonStyle}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
                                 <!-- NOTE: important to fix commands where command parameter is not yet available when
