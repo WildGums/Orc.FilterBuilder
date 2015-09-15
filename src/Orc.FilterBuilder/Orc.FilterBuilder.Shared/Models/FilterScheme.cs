@@ -137,6 +137,7 @@ namespace Orc.FilterBuilder.Models
             Title = otherScheme.Title;
             ConditionItems.Clear();
             ConditionItems.Add(otherScheme.Root);
+            Updated.SafeInvoke(this);
         }
 
         public override string ToString()
