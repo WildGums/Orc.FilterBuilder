@@ -114,7 +114,7 @@ namespace Orc.FilterBuilder.Models
 
         private void OnConditionUpdated(object sender, EventArgs e)
         {
-            Updated.SafeInvoke(this);
+            RaiseUpdated();
         }
 
         public bool CalculateResult(object entity)
@@ -137,6 +137,13 @@ namespace Orc.FilterBuilder.Models
             Title = otherScheme.Title;
             ConditionItems.Clear();
             ConditionItems.Add(otherScheme.Root);
+
+            RaiseUpdated();
+        }
+
+        protected void RaiseUpdated()
+        {
+            Updated.SafeInvoke(this);
         }
 
         public override string ToString()
