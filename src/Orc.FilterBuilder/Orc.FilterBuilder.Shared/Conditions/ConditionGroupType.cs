@@ -5,11 +5,16 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System.ComponentModel.DataAnnotations;
+using Orc.FilterBuilder.Properties;
+
 namespace Orc.FilterBuilder
 {
     public enum ConditionGroupType
     {
+        [Display(Name = "And", ResourceType = typeof(Strings))]
         And,
+        [Display(Name = "Or", ResourceType = typeof(Strings))]
         Or
     }
 }

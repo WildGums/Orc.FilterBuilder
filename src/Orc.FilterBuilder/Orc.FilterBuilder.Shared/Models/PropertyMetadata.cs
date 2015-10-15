@@ -20,7 +20,7 @@ namespace Orc.FilterBuilder.Models
         private string _displayName;
 
         #region Constructors
-
+        
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
         {
             Argument.IsNotNull(() => ownerType);
@@ -30,7 +30,7 @@ namespace Orc.FilterBuilder.Models
 
             OwnerType = ownerType;
             Name = propertyInfo.Name;
-            DisplayName = Name;
+            DisplayName = propertyInfo.GetDisplayName() ?? Name;
             Type = propertyInfo.PropertyType;
         }
 
@@ -43,7 +43,7 @@ namespace Orc.FilterBuilder.Models
 
             OwnerType = ownerType;
             Name = propertyData.Name;
-            DisplayName = Name;
+            DisplayName = ownerType.GetProperty(Name).GetDisplayName() ?? Name;
             Type = propertyData.Type;
         }
 

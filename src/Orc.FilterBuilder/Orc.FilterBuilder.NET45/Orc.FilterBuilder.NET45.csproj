@@ -53,6 +53,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\lib\Catel.MVVM.4.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -66,9 +67,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
@@ -92,6 +91,32 @@
       <Link>Resources\Images\selected.png</Link>
     </Resource>
     <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.NET40\Properties\Strings.resx">
+      <Link>Properties\Strings.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.NET40\Properties\Strings.zh-Hans.resx">
+      <Link>Properties\Strings.zh-Hans.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.zh-Hans.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Orc.FilterBuilder.NET40\Properties\Strings.Designer.cs">
+      <Link>Properties\Strings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Orc.FilterBuilder.NET40\Properties\Strings.zh-Hans.Designer.cs">
+      <Link>Properties\Strings.zh-Hans.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.zh-Hans.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems" Label="Shared" Condition="Exists('..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
