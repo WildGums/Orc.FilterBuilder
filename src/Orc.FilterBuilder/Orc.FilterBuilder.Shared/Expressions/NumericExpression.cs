@@ -16,12 +16,17 @@ namespace Orc.FilterBuilder
     {
         private double _value;
 
-        public NumericExpression(Type type)
+        public NumericExpression()
         {
-            IsNullable = type.IsNullable();
             SelectedCondition = Condition.EqualTo;
             Value = 0d;
             ValueControlType = ValueControlType.Text;
+        }
+
+        public NumericExpression(Type type)
+            : this()
+        {
+            IsNullable = type.IsNullable();
         }
 
         #region Properties
