@@ -63,6 +63,9 @@ namespace Orc.FilterBuilder.Models
             get { return ConditionItems.FirstOrDefault(); }
         }
 
+        [ExcludeFromSerialization]
+        public object Tag { get; set; }
+
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion
 
@@ -165,6 +168,22 @@ namespace Orc.FilterBuilder.Models
             }
 
             return stringBuilder.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var filterScheme = obj as FilterScheme;
+            if (filterScheme == null)
+            {
+                return false;
+            }
+
+            return string.Equals(filterScheme.Title, Title);
+        }
+
+        public override int GetHashCode()
+        {
+            return Title.GetHashCode();
         }
         #endregion
     }
