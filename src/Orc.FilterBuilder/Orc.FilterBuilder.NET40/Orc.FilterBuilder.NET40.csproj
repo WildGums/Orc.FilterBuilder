@@ -43,16 +43,19 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Catel.Core, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Catel.Core.4.3.0\lib\net40\Catel.Core.dll</HintPath>
+    <Reference Include="Catel.Core, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Catel.Core.4.4.0-unstable0052\lib\net40\Catel.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Catel.Fody.Attributes, Version=2.10.0.0, Culture=neutral, PublicKeyToken=1c8163524cbe02e6, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Catel.Fody.2.10.0\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
+    <Reference Include="Catel.Fody.Attributes, Version=2.11.0.0, Culture=neutral, PublicKeyToken=1c8163524cbe02e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Catel.Fody.2.11.0\lib\portable-net4+sl4+wp7+win8+wpa81+MonoAndroid14+MonoTouch40\Catel.Fody.Attributes.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Catel.MVVM, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Catel.MVVM.4.3.0\lib\net40\Catel.MVVM.dll</HintPath>
+    <Reference Include="Catel.MVVM, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Catel.MVVM.4.4.0-unstable0052\lib\net40\Catel.MVVM.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
@@ -65,6 +68,7 @@
       <HintPath>..\..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO">
       <HintPath>..\..\..\lib\Microsoft.Bcl.1.1.10\lib\net40\System.IO.dll</HintPath>
@@ -77,7 +81,7 @@
       <HintPath>..\..\..\lib\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Catel.MVVM.4.3.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\..\lib\Catel.MVVM.4.4.0-unstable0052\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -104,9 +108,7 @@
       <SubType>Designer</SubType>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="..\Orc.FilterBuilder.Shared\Resources\Images\add_expression.png">
       <Link>Resources\Images\add_expression.png</Link>
@@ -126,6 +128,28 @@
     <Resource Include="..\Orc.FilterBuilder.Shared\Resources\Images\selected.png">
       <Link>Resources\Images\selected.png</Link>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Strings.zh-Hans.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.zh-Hans.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Strings.zh-Hans.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.zh-Hans.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems" Label="Shared" Condition="Exists('..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

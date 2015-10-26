@@ -21,9 +21,11 @@ namespace Orc.FilterBuilder.Models
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
+        private static readonly Type _defaultTargetType = typeof(object);
+
         #region Constructors
         public FilterScheme()
-            : this(typeof(object))
+            : this(_defaultTargetType)
         {
         }
 
