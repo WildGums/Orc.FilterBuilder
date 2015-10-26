@@ -61,6 +61,24 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add expression.
+        /// </summary>
+        internal static string AddExpression {
+            get {
+                return ResourceManager.GetString("AddExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add group.
+        /// </summary>
+        internal static string AddGroup {
+            get {
+                return ResourceManager.GetString("AddGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to And.
         /// </summary>
         internal static string And {
@@ -75,6 +93,15 @@ namespace Orc.FilterBuilder.Properties {
         internal static string Contains {
             get {
                 return ResourceManager.GetString("Contains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete item.
+        /// </summary>
+        internal static string DeleteItem {
+            get {
+                return ResourceManager.GetString("DeleteItem", resourceCulture);
             }
         }
         
@@ -147,6 +174,24 @@ namespace Orc.FilterBuilder.Properties {
         internal static string LessThanOrEqualTo {
             get {
                 return ResourceManager.GetString("LessThanOrEqualTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live preview.
+        /// </summary>
+        internal static string LivePreview {
+            get {
+                return ResourceManager.GetString("LivePreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         

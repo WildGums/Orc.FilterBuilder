@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddExpression" xml:space="preserve">
+    <value>Expressie toevoegen</value>
+  </data>
+  <data name="AddGroup" xml:space="preserve">
+    <value>Groep toevoegen</value>
+  </data>
   <data name="And" xml:space="preserve">
     <value>En</value>
   </data>
   <data name="Contains" xml:space="preserve">
     <value>Bevat</value>
+  </data>
+  <data name="DeleteItem" xml:space="preserve">
+    <value>Verwijder</value>
   </data>
   <data name="EndsWith" xml:space="preserve">
     <value>Eindigt met</value>
@@ -146,6 +155,12 @@
   </data>
   <data name="LessThanOrEqualTo" xml:space="preserve">
     <value>Kleiner dan of gelijk aan</value>
+  </data>
+  <data name="LivePreview" xml:space="preserve">
+    <value>Live voorbeeld</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Naam</value>
   </data>
   <data name="NotEqualTo" xml:space="preserve">
     <value>Niet gelijk aan</value>

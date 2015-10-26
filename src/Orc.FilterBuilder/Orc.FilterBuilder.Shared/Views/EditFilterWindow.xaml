@@ -66,7 +66,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Text="Name:" Width="33" Margin="0" />
+        <TextBlock Grid.Column="0" Text="{catel:LanguageBinding Name}" Width="33" Margin="0" />
         <TextBox Grid.Column="1" Height="26" Margin="4 0 4 0"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <i:Interaction.Behaviors>
@@ -74,7 +74,7 @@
             </i:Interaction.Behaviors>
         </TextBox>
         <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0" Style="{DynamicResource FilterBuilderToggleButtonStyle}"
-                      IsChecked="{Binding EnableLivePreview}" Content="Live Preview"
+                      IsChecked="{Binding EnableLivePreview}" Content="{catel:LanguageBinding LivePreview}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
@@ -118,17 +118,17 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <Button ToolTip="Add expression" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding AddExpression}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
                                     Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Add group" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding AddGroup}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
                                     Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
+                            <Button ToolTip="{catel:LanguageBinding DeleteItem}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
@@ -173,7 +173,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                            <Button ToolTip="{catel:LanguageBinding DeleteItem}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
