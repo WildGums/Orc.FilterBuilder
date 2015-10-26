@@ -13,6 +13,7 @@
         <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
         <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
+        <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter"/>
 
         <Geometry x:Key="AddGeometry">M431.704,432l0,260.501l-96,0l0,-260.501l-260.501,-5.68434e-14l1.42109e-14,-96l260.501,5.68434e-14l0,-260.501l96,0l0,260.501l260.501,0l0,96l-260.501,0Z</Geometry>
         <Geometry x:Key="AddGroupGeometry">M265.81,677.779L85.81,677.779L85.81,497.779L135.81,497.779L135.81,627.779L265.81,627.779L265.81,677.779ZM502.19,677.779L682.19,677.779L682.19,497.779L632.19,497.779L632.19,627.779L502.19,627.779L502.19,677.779ZM413.734,354.266L578.025,354.266L578.025,413.734L413.734,413.734L413.734,578.025L354.266,578.025L354.266,413.734L189.975,413.734L189.975,354.266L354.266,354.266L354.266,189.975L413.734,189.975L413.734,354.266ZM502.19,90.221L682.19,90.221L682.19,270.221L632.19,270.221L632.19,140.221L502.19,140.221L502.19,90.221ZM265.81,90.221L85.81,90.221L85.81,270.221L135.81,270.221L135.81,140.221L265.81,140.221L265.81,90.221Z</Geometry>
@@ -109,7 +110,13 @@
                     <Grid HorizontalAlignment="Stretch" Background="Transparent">
                         <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
-                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
+                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
                             <Button ToolTip="Add expression" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
                                     Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
@@ -134,7 +141,13 @@
                                       DisplayMemberPath="DisplayName" SelectedItem="{Binding Property}" />
 
                             <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
-                                      SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
+                                      SelectedItem="{Binding DataTypeExpression.SelectedCondition}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
                                   Margin="0">

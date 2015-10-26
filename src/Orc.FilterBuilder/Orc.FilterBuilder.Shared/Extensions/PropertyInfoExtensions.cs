@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text;
+using Catel.Reflection;
 
 namespace Orc.FilterBuilder
 {
@@ -12,8 +14,12 @@ namespace Orc.FilterBuilder
         {
             if (propertyInfo != null)
             {
-                var dispAttr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));
-                if (dispAttr != null)
+                DisplayNameAttribute dispNameAttr;
+                if (AttributeHelper.TryGetAttribute(propertyInfo, out dispNameAttr))
+                    return dispNameAttr.DisplayName;
+
+                DisplayAttribute dispAttr;
+                if (AttributeHelper.TryGetAttribute(propertyInfo, out dispAttr))
                     return dispAttr.GetName();
             }
             return null;

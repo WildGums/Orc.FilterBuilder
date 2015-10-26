@@ -6,37 +6,38 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Catel.ComponentModel;
 using Orc.FilterBuilder.Properties;
 
 namespace Orc.FilterBuilder
 {
     public enum Condition
     {
-        [Display(Name = "Contains", ResourceType = typeof(Strings))]
+        [DisplayName("Contains")]
         Contains,
-        [Display(Name = "StartsWith", ResourceType = typeof(Strings))]
+        [DisplayName("StartsWith")]
         StartsWith,
-        [Display(Name = "EndsWith", ResourceType = typeof(Strings))]
+        [DisplayName("EndsWith")]
         EndsWith,
-        [Display(Name = "EqualTo", ResourceType = typeof(Strings))]
+        [DisplayName("EqualTo")]
         EqualTo,
-        [Display(Name = "NotEqualTo", ResourceType = typeof(Strings))]
+        [DisplayName("NotEqualTo")]
         NotEqualTo,
-        [Display(Name = "GreaterThan", ResourceType = typeof(Strings))]
+        [DisplayName("GreaterThan")]
         GreaterThan,
-        [Display(Name = "LessThan", ResourceType = typeof(Strings))]
+        [DisplayName("LessThan")]
         LessThan,
-        [Display(Name = "GreaterThanOrEqualTo", ResourceType = typeof(Strings))]
+        [DisplayName("GreaterThanOrEqualTo")]
         GreaterThanOrEqualTo,
-        [Display(Name = "LessThanOrEqualTo", ResourceType = typeof(Strings))]
+        [DisplayName("LessThanOrEqualTo")]
         LessThanOrEqualTo,
-        [Display(Name = "IsEmpty", ResourceType = typeof(Strings))]
+        [DisplayName("IsEmpty")]
         IsEmpty,
-        [Display(Name = "NotIsEmpty", ResourceType = typeof(Strings))]
+        [DisplayName("NotIsEmpty")]
         NotIsEmpty,
-        [Display(Name = "IsNull", ResourceType = typeof(Strings))]
+        [DisplayName("IsNull")]
         IsNull,
-        [Display(Name = "NotIsNull", ResourceType = typeof(Strings))]
+        [DisplayName("NotIsNull")]
         NotIsNull
     }
 }

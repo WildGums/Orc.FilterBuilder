@@ -6,6 +6,9 @@
 
 
 using Catel.IoC;
+using Catel.Services;
+using Catel.Services.Models;
+using Orc.FilterBuilder.Properties;
 using Orc.FilterBuilder.Services;
 
 /// <summary>
@@ -25,6 +28,15 @@ public static class ModuleInitializer
         serviceLocator.RegisterTypeIfNotYetRegistered<IReflectionService, ReflectionService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
+
+        RegisterLanguageSources(serviceLocator);
+    }
+
+    private static void RegisterLanguageSources(IServiceLocator serviceLocator)
+    {
+        var languageService = serviceLocator.TryResolveType<ILanguageService>();
+        var stringsResourceType = typeof(Strings);
+        languageService.RegisterLanguageSource(new LanguageResourceSource(stringsResourceType.Assembly.FullName, stringsResourceType.Namespace, stringsResourceType.Name));
     }
     #endregion
 }
