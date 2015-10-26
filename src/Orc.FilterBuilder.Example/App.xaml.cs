@@ -7,12 +7,14 @@
 
 namespace Orc.FilterBuilder.Example
 {
+    using System.Threading;
     using System.Windows;
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
     using Catel.Logging;
     using Orc.FilterBuilder.Services;
     using Catel.IoC;
+    using Catel.Services;
     using Catel.Windows;
     using Orchestra.Services;
     using Orchestra.Views;
@@ -27,6 +29,9 @@ namespace Orc.FilterBuilder.Example
 #if DEBUG
             //LogManager.AddDebugListener();
 #endif
+
+            var languageService = ServiceLocator.Default.ResolveType<ILanguageService>();
+            languageService.PreferredCulture = Thread.CurrentThread.CurrentCulture;
 
             //Log.Info("Starting application");
 

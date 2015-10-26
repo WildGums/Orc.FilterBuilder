@@ -108,7 +108,26 @@
       <SubType>Designer</SubType>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl-NL.Designer.cs">
+      <Link>Properties\Resources.nl-NL.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.nl-NL.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.zh-Hans.Designer.cs">
+      <Link>Properties\Resources.zh-Hans.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.zh-Hans.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="..\Orc.FilterBuilder.Shared\Resources\Images\add_expression.png">
       <Link>Resources\Images\add_expression.png</Link>
@@ -130,26 +149,21 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Strings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl-NL.resx">
+      <Link>Properties\Resources.nl-NL.resx</Link>
+      <Generator>ResxFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.nl-NL.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Strings.zh-Hans.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.zh-Hans.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>ResxFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Strings.zh-Hans.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.zh-Hans.resx</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.zh-Hans.resx">
+      <Link>Properties\Resources.zh-Hans.resx</Link>
+      <Generator>ResxFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.zh-Hans.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems" Label="Shared" Condition="Exists('..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -35,7 +35,7 @@ public static class ModuleInitializer
     private static void RegisterLanguageSources(IServiceLocator serviceLocator)
     {
         var languageService = serviceLocator.TryResolveType<ILanguageService>();
-        var stringsResourceType = typeof(Strings);
+        var stringsResourceType = typeof(Resources);
         languageService.RegisterLanguageSource(new LanguageResourceSource(stringsResourceType.Assembly.FullName, stringsResourceType.Namespace, stringsResourceType.Name));
     }
     #endregion

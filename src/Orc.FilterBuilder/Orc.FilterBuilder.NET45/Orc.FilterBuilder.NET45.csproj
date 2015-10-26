@@ -70,7 +70,26 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl-NL.Designer.cs">
+      <Link>Properties\Resources.nl-NL.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.nl-NL.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.zh-Hans.Designer.cs">
+      <Link>Properties\Resources.zh-Hans.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.zh-Hans.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
@@ -96,30 +115,21 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Orc.FilterBuilder.NET40\Properties\Strings.resx">
-      <Link>Properties\Strings.resx</Link>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl-NL.resx">
+      <Link>Properties\Resources.nl-NL.resx</Link>
+      <Generator>ResxFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.nl-NL.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Orc.FilterBuilder.NET40\Properties\Strings.zh-Hans.resx">
-      <Link>Properties\Strings.zh-Hans.resx</Link>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.zh-Hans.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>ResxFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Orc.FilterBuilder.NET40\Properties\Strings.Designer.cs">
-      <Link>Properties\Strings.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="..\Orc.FilterBuilder.NET40\Properties\Strings.zh-Hans.Designer.cs">
-      <Link>Properties\Strings.zh-Hans.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.zh-Hans.resx</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.zh-Hans.resx">
+      <Link>Properties\Resources.zh-Hans.resx</Link>
+      <Generator>ResxFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.zh-Hans.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems" Label="Shared" Condition="Exists('..\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
