@@ -13,6 +13,7 @@ namespace Orc.FilterBuilder
     using Catel.Collections;
     using Catel.IoC;
     using Catel.Reflection;
+    using MethodTimer;
     using Models;
     using Services;
 
@@ -71,6 +72,7 @@ namespace Orc.FilterBuilder
             }
         }
 
+        [Time]
         public static void Apply(this FilterScheme filterScheme, IEnumerable rawCollection, IList filteredCollection)
         {
             Argument.IsNotNull(() => filterScheme);
@@ -86,7 +88,7 @@ namespace Orc.FilterBuilder
 
             filteredCollection.Clear();
 
-            foreach (object item in rawCollection)
+            foreach (var item in rawCollection)
             {
                 if (filterScheme.CalculateResult(item))
                 {

@@ -169,13 +169,15 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private async void OnApplySchemeExecute()
+        private void OnApplySchemeExecute()
         {
+            Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
+
             //build filtered collection only if current mode is Collection
             if (Mode == FilterBuilderMode.Collection)
             {
                 FilteringFunc = null;
-                await Task.Factory.StartNew(() => _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection));
+                _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
             }
             else
             {
@@ -304,6 +306,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnRawCollectionChanged()
         {
+            Log.Debug("Raw collection changed");
+
             UpdateFilters();
 
             ApplyFilter();
@@ -311,6 +315,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnFilteredCollectionChanged()
         {
+            Log.Debug("Filtered collection changed");
+
             ApplyFilter();
         }
 
@@ -321,6 +327,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void UpdateFilters()
         {
+            Log.Debug("Updating filters");
+
             if (_filterSchemes != null)
             {
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
