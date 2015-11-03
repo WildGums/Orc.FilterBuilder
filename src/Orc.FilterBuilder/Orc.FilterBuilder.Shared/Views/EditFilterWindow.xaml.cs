@@ -7,13 +7,14 @@
 
 namespace Orc.FilterBuilder.Views
 {
+    using System;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Threading;
     using Catel.Data;
     using Catel.IoC;
     using Catel.Reflection;
     using Catel.Windows;
-    using Catel.Windows.Threading;
     using Converters;
     using Services;
     using ViewModels;
@@ -29,7 +30,7 @@ namespace Orc.FilterBuilder.Views
             InitializeComponent();
         }
 
-        protected override void OnViewModelChanged()
+        protected override async void OnViewModelChanged()
         {
             base.OnViewModelChanged();
 
@@ -44,7 +45,7 @@ namespace Orc.FilterBuilder.Views
                     var reflectionService = dependencyResolver.Resolve<IReflectionService>();
 
                     var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
-                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
+                    var instanceProperties = await reflectionService.GetInstancePropertiesAsync(targetType);
 
                     foreach (var instanceProperty in instanceProperties.Properties)
                     {
@@ -66,7 +67,7 @@ namespace Orc.FilterBuilder.Views
                 }
 
                 // Fix for SA-144
-                Dispatcher.BeginInvoke(() => Focus());
+                var dispatcherOperation = Dispatcher.BeginInvoke(new Action(() => Focus()));
             }
         }
     }

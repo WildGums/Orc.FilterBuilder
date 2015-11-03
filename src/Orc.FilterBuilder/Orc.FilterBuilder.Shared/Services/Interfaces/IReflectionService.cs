@@ -8,11 +8,15 @@
 namespace Orc.FilterBuilder.Services
 {
     using System;
+    using System.Threading.Tasks;
     using Orc.FilterBuilder.Models;
 
     public interface IReflectionService
     {
+        [ObsoleteEx(ReplacementTypeOrMember = "GetInstancePropertiesAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         IPropertyCollection GetInstanceProperties(Type targetType);
+
+        Task<IPropertyCollection> GetInstancePropertiesAsync(Type targetType);
 
         void ClearCache();
     }

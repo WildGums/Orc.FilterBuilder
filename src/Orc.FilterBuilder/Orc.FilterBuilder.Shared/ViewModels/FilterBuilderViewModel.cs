@@ -54,8 +54,8 @@ namespace Orc.FilterBuilder.ViewModels
             _messageService = messageService;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
-            EditSchemeCommand = new Command<FilterScheme>(OnEditSchemeExecute, OnEditSchemeCanExecute);
-            ApplySchemeCommand = new Command(OnApplySchemeExecute, OnApplySchemeCanExecute);
+            EditSchemeCommand = new TaskCommand<FilterScheme>(OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
+            ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
             DeleteSchemeCommand = new Command<FilterScheme>(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
         }
@@ -111,7 +111,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command<FilterScheme> EditSchemeCommand { get; private set; }
+        public TaskCommand<FilterScheme> EditSchemeCommand { get; private set; }
 
         private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
@@ -133,9 +133,9 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnEditSchemeExecute(FilterScheme filterScheme)
+        private async Task OnEditSchemeExecuteAsync(FilterScheme filterScheme)
         {
-            filterScheme.EnsureIntegrity();
+            await filterScheme.EnsureIntegrityAsync();
 
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
@@ -147,7 +147,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command ApplySchemeCommand { get; private set; }
+        public TaskCommand ApplySchemeCommand { get; private set; }
 
         private bool OnApplySchemeCanExecute()
         {
@@ -169,7 +169,7 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnApplySchemeExecute()
+        private async Task OnApplySchemeExecuteAsync()
         {
             Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
 
@@ -177,7 +177,7 @@ namespace Orc.FilterBuilder.ViewModels
             if (Mode == FilterBuilderMode.Collection)
             {
                 FilteringFunc = null;
-                _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection);
+                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
             }
             else
             {

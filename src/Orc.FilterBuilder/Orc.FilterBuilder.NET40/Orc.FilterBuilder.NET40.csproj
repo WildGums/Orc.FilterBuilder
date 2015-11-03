@@ -28,7 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\output\debug\NET40\Orc.FilterBuilder\Orc.FilterBuilder.XML</DocumentationFile>
-    <NoWarn>1591;1998</NoWarn>
+    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -71,6 +71,10 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
       <HintPath>..\..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Obsolete">
+      <HintPath>..\..\..\lib\Obsolete.Fody.4.0.3\Lib\portable-net4+sl5+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\Obsolete.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

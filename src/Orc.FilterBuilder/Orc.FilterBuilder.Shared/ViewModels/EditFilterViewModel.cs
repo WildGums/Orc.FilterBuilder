@@ -19,6 +19,7 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
+    using Catel.Threading;
     using Models;
     using Services;
 
@@ -56,8 +57,6 @@ namespace Orc.FilterBuilder.ViewModels
             _messageService = messageService;
 
             DeferValidationUntilFirstSaveCall = true;
-
-            InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
 
             using (var memoryStream = new MemoryStream())
             {
@@ -97,6 +96,8 @@ namespace Orc.FilterBuilder.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+
+            InstanceProperties = (await _reflectionService.GetInstancePropertiesAsync(_originalFilterScheme.TargetType)).Properties;
 
             UpdatePreviewItems();
 
@@ -140,12 +141,12 @@ namespace Orc.FilterBuilder.ViewModels
             return await base.CancelAsync();
         }
 
-        protected override async Task<bool> SaveAsync()
+        protected override Task<bool> SaveAsync()
         {
             FilterScheme.Title = FilterSchemeTitle;
             _originalFilterScheme.Update(FilterScheme);
 
-            return true;
+            return TaskHelper<bool>.FromResult(true);
         }
 
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)

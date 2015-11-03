@@ -22,7 +22,7 @@
     <DefineConstants>TRACE;DEBUG;NET;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;1998</NoWarn>
+    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>..\..\..\output\debug\NET45\Orc.FilterBuilder\Orc.FilterBuilder.XML</DocumentationFile>
   </PropertyGroup>
@@ -57,6 +57,10 @@
       <HintPath>..\..\..\lib\MethodTimer.Fody.1.15.7.0\lib\dotnet\MethodTimer.dll</HintPath>
       <Private>True</Private>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Obsolete, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Obsolete.Fody.4.0.3\Lib\portable-net4+sl5+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\Obsolete.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

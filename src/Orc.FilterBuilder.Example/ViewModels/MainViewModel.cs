@@ -39,13 +39,13 @@ namespace Orc.FilterBuilder.Example.ViewModels
             FilteredItems.CollectionChanged += (sender, e) => Log.Info("Collection updated");
         }
 
-        private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
+        private async void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
         {
             using (FilteredItems.SuspendChangeNotifications())
             {
                 var filter = _filterService.SelectedFilter;
                 var items = RawItems;
-                var result = _filterService.FilterCollection(filter, items);
+                var result = await _filterService.FilterCollectionAsync(filter, items);
                 FilteredItems.ReplaceRange(result);
             }
         }

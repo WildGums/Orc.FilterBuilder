@@ -3,4 +3,5 @@
   <ModuleInit />
   <Catel />
   <MethodTimer />
+  <Obsolete />
 </Weavers>

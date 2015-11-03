@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.Services
 {
     using System;
     using System.Collections;
+    using System.Threading.Tasks;
     using Models;
 
     public interface IFilterService
@@ -18,6 +19,8 @@ namespace Orc.FilterBuilder.Services
         #endregion
 
         #region Methods
+        Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection);
+
         void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection);
         #endregion
 
