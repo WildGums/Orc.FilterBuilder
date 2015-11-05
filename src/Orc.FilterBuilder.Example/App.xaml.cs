@@ -44,7 +44,7 @@ namespace Orc.FilterBuilder.Example
             await shellService.CreateWithSplashAsync<ShellWindow>();
 
             var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
-            filterSchemeManager.Load();
+            await filterSchemeManager.LoadAsync();
 
             base.OnStartup(e);
         }

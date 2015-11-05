@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeManager.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="FilterSchemeManager.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,22 +9,28 @@ namespace Orc.FilterBuilder.Services
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Catel;
     using Catel.Logging;
     using Catel.Runtime.Serialization.Xml;
-    using Orc.FilterBuilder.Models;
+    using Catel.Threading;
+    using Models;
 
     public class FilterSchemeManager : IFilterSchemeManager
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
         #region Constants
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
         private static readonly string DefaultFileName = Path.Combine(Catel.IO.Path.GetApplicationDataDirectory(), "FilterSchemes.xml");
         #endregion
 
+        #region Fields
         private readonly IXmlSerializer _xmlSerializer;
         private string _lastFileName;
+        private readonly AsyncLock _lockObject = new AsyncLock();
+        #endregion
 
+        #region Constructors
         public FilterSchemeManager(IXmlSerializer xmlSerializer)
         {
             Argument.IsNotNull(() => xmlSerializer);
@@ -34,11 +40,14 @@ namespace Orc.FilterBuilder.Services
             AutoSave = true;
             FilterSchemes = new FilterSchemes();
         }
+        #endregion
 
+        #region Properties
         public bool AutoSave { get; set; }
-
         public FilterSchemes FilterSchemes { get; private set; }
+        #endregion
 
+        #region IFilterSchemeManager Members
         public event EventHandler<EventArgs> Updated;
 
         public event EventHandler<EventArgs> Loaded;
@@ -55,33 +64,35 @@ namespace Orc.FilterBuilder.Services
             }
         }
 
+        [ObsoleteEx(ReplacementTypeOrMember = "LoadAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public void Load(string fileName = null)
         {
-            fileName = GetFileName(fileName);
-
-            Log.Info("Loading filter schemes from '{0}'", fileName);
-
-            FilterSchemes = new FilterSchemes();
-
-            try
+            if (TryLoad(fileName))
             {
-                if (File.Exists(fileName))
+                Loaded.SafeInvoke(this);
+                Updated.SafeInvoke(this);
+            }
+        }
+
+        public async Task<bool> LoadAsync(string fileName = null)
+        {
+            using (await _lockObject.LockAsync())
+            {
+                if (TryLoad(fileName))
                 {
-                    using (var stream = File.Open(fileName, FileMode.Open))
+                    foreach (var filterScheme in FilterSchemes.Schemes.ToList())
                     {
-                        _xmlSerializer.Deserialize(FilterSchemes, stream);
+                        await filterScheme.EnsureIntegrityAsync();
                     }
+
+                    Loaded.SafeInvoke(this);
+                    Updated.SafeInvoke(this);
+
+                    return true;
                 }
-
-                Log.Debug("Loaded filter schemes from '{0}'", fileName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to load filter schemes");
             }
 
-            Loaded.SafeInvoke(this);
-            Updated.SafeInvoke(this);
+            return false;
         }
 
         public void Save(string fileName = null)
@@ -106,22 +117,49 @@ namespace Orc.FilterBuilder.Services
                 Log.Error(ex, "Failed to save filter schemes");
             }
         }
+        #endregion
+
+        #region Methods
+        private bool TryLoad(string fileName = null)
+        {
+            fileName = GetFileName(fileName);
+
+            Log.Info("Loading filter schemes from '{0}'", fileName);
+
+            FilterSchemes = new FilterSchemes();
+
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    using (var stream = File.Open(fileName, FileMode.Open))
+                    {
+                        _xmlSerializer.Deserialize(FilterSchemes, stream);
+                    }
+                }
+
+                Log.Debug("Loaded filter schemes from '{0}'", fileName);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to load filter schemes");
+                return false;
+            }
+
+            return true;
+        }
 
         private string GetFileName(string fileName)
         {
-            if (fileName == null)
+            if (string.IsNullOrWhiteSpace(fileName))
             {
-                fileName = _lastFileName;
-
-                if (fileName == null)
-                {
-                    fileName = DefaultFileName;
-                }
+                fileName = _lastFileName ?? DefaultFileName;
             }
 
             _lastFileName = fileName;
 
             return fileName;
         }
+        #endregion
     }
 }

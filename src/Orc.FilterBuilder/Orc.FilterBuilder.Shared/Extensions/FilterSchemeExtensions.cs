@@ -24,14 +24,19 @@ namespace Orc.FilterBuilder
         private const string Separator = "||";
 
         private static readonly IReflectionService _reflectionService = ServiceLocator.Default.ResolveType<IReflectionService>();
+        private static readonly AsyncLock LockFilterScheme = new AsyncLock();
+        private static readonly AsyncLock LockPropertyExpression = new AsyncLock();
 
         public static async Task EnsureIntegrityAsync(this FilterScheme filterScheme)
         {
             Argument.IsNotNull(() => filterScheme);
 
-            foreach (var item in filterScheme.ConditionItems)
+            using (await LockFilterScheme.LockAsync())
             {
-                await item.EnsureIntegrityAsync();
+                foreach (var item in filterScheme.ConditionItems)
+                {
+                    await item.EnsureIntegrityAsync();
+                }
             }
         }
 
@@ -85,17 +90,20 @@ namespace Orc.FilterBuilder
 
             if (propertyExpression.Property == null)
             {
-                var serializationValue = propertyExpression.PropertySerializationValue;
-                if (!string.IsNullOrWhiteSpace(serializationValue))
+                using (await LockPropertyExpression.LockAsync())
                 {
-                    var splittedString = serializationValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-                    if (splittedString.Length == 2)
+                    var serializationValue = propertyExpression.PropertySerializationValue;
+                    if (!string.IsNullOrWhiteSpace(serializationValue))
                     {
-                        var type = TypeCache.GetType(splittedString[0]);
-                        if (type != null)
+                        var splittedString = serializationValue.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
+                        if (splittedString.Length == 2)
                         {
-                            var typeProperties = await _reflectionService.GetInstancePropertiesAsync(type);
-                            propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
+                            var type = TypeCache.GetType(splittedString[0]);
+                            if (type != null)
+                            {
+                                var typeProperties = await _reflectionService.GetInstancePropertiesAsync(type);
+                                propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
+                            }
                         }
                     }
                 }
