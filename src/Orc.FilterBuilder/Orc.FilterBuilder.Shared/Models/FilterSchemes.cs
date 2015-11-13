@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.Models
 {   
     using System.Collections.ObjectModel;
     using Catel.Data;
+    using Catel.Runtime.Serialization;
 
     public class FilterSchemes : ModelBase
     {
@@ -20,6 +21,8 @@ namespace Orc.FilterBuilder.Models
         #endregion
 
         #region Properties
+        [ExcludeFromSerialization]
+        public object Tag { get; set; }
         public ObservableCollection<FilterScheme> Schemes { get; private set; }
         #endregion
     }

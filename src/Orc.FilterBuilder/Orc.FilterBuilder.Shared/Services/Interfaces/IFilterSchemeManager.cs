@@ -16,6 +16,7 @@ namespace Orc.FilterBuilder.Services
         #region Properties
         bool AutoSave { get; set; }
         FilterSchemes FilterSchemes { get; }
+        object Tag { get; set; }
         #endregion
 
         event EventHandler<EventArgs> Updated;

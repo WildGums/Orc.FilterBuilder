@@ -45,6 +45,8 @@ namespace Orc.FilterBuilder.Services
         #region Properties
         public bool AutoSave { get; set; }
         public FilterSchemes FilterSchemes { get; private set; }
+
+        public object Tag { get; set; }
         #endregion
 
         #region IFilterSchemeManager Members
@@ -145,6 +147,8 @@ namespace Orc.FilterBuilder.Services
                 Log.Error(ex, "Failed to load filter schemes");
                 return false;
             }
+
+            FilterSchemes.Tag = Tag;
 
             return true;
         }
