@@ -16,6 +16,7 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel;
     using Catel.Collections;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
@@ -30,18 +31,19 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IReflectionService _reflectionService;
         private readonly IXmlSerializer _xmlSerializer;
         private readonly IMessageService _messageService;
+        private readonly IServiceLocator _serviceLocator;
 
         private bool _isFilterDirty;
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService,
-            IXmlSerializer xmlSerializer, IMessageService messageService)
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer, 
+            IMessageService messageService, IServiceLocator serviceLocator)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
-            Argument.IsNotNull(() => reflectionService);
             Argument.IsNotNull(() => xmlSerializer);
             Argument.IsNotNull(() => messageService);
+            Argument.IsNotNull(() => serviceLocator);
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
@@ -52,9 +54,11 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = filterSchemeEditInfo.FilterScheme;
 
             _originalFilterScheme = filterScheme;
-            _reflectionService = reflectionService;
             _xmlSerializer = xmlSerializer;
             _messageService = messageService;
+            _serviceLocator = serviceLocator;
+
+            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(filterScheme.Tag);
 
             DeferValidationUntilFirstSaveCall = true;
 
@@ -63,6 +67,7 @@ namespace Orc.FilterBuilder.ViewModels
                 xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
                 memoryStream.Position = 0L;
                 FilterScheme = (FilterScheme)xmlSerializer.Deserialize(typeof(FilterScheme), memoryStream);
+                FilterScheme.Tag = filterScheme.Tag;
             }
 
             FilterSchemeTitle = FilterScheme.Title;

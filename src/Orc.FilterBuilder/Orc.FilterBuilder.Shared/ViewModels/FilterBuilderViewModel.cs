@@ -32,7 +32,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private readonly IUIVisualizerService _uiVisualizerService;
         private IFilterSchemeManager _filterSchemeManager;
-        private readonly IFilterService _filterService;
+        private IFilterService _filterService;
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
 
@@ -243,6 +243,8 @@ namespace Orc.FilterBuilder.ViewModels
 
             _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(ManagerTag);
             _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
+
+            _filterService = _serviceLocator.ResolveType<IFilterService>(ManagerTag);
             _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
 
             UpdateFilters();

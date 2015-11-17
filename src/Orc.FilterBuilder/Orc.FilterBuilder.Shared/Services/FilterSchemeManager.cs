@@ -150,6 +150,11 @@ namespace Orc.FilterBuilder.Services
 
             FilterSchemes.Tag = Tag;
 
+            foreach (var filterScheme in FilterSchemes.Schemes)
+            {
+                filterScheme.Tag = Tag;
+            }
+
             return true;
         }
 

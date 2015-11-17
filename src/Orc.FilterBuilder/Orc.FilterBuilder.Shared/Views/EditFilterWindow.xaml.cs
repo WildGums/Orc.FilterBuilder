@@ -42,7 +42,7 @@ namespace Orc.FilterBuilder.Views
                 if (vm.AllowLivePreview)
                 {
                     var dependencyResolver = this.GetDependencyResolver();
-                    var reflectionService = dependencyResolver.Resolve<IReflectionService>();
+                    var reflectionService = dependencyResolver.Resolve<IReflectionService>(vm.FilterScheme.Tag);
 
                     var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
                     var instanceProperties = await reflectionService.GetInstancePropertiesAsync(targetType);

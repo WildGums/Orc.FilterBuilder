@@ -31,11 +31,13 @@ namespace Orc.FilterBuilder
         {
             Argument.IsNotNull(() => filterScheme);
 
+            var reflectionService = ServiceLocator.Default.ResolveType<IReflectionService>(filterScheme.Tag);
+
             using (await LockFilterScheme.LockAsync())
             {
                 foreach (var item in filterScheme.ConditionItems)
                 {
-                    await item.EnsureIntegrityAsync();
+                    await item.EnsureIntegrityAsync(reflectionService);
                 }
             }
         }
@@ -51,19 +53,19 @@ namespace Orc.FilterBuilder
             }
         }
 
-        public static async Task EnsureIntegrityAsync(this ConditionTreeItem conditionTreeItem)
+        public static async Task EnsureIntegrityAsync(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService = null)
         {
             Argument.IsNotNull(() => conditionTreeItem);
 
             var propertyExpression = conditionTreeItem as PropertyExpression;
             if (propertyExpression != null)
             {
-                await propertyExpression.EnsureIntegrityAsync();
+                await propertyExpression.EnsureIntegrityAsync(reflectionService);
             }
 
             foreach (var item in conditionTreeItem.Items)
             {
-                await item.EnsureIntegrityAsync();
+                await item.EnsureIntegrityAsync(reflectionService);
             }
         }
 
@@ -84,9 +86,14 @@ namespace Orc.FilterBuilder
             }
         }
 
-        public static async Task EnsureIntegrityAsync(this PropertyExpression propertyExpression)
+        public static async Task EnsureIntegrityAsync(this PropertyExpression propertyExpression, IReflectionService reflectionService = null)
         {
             Argument.IsNotNull(() => propertyExpression);
+
+            if (reflectionService == null)
+            {
+                reflectionService = _reflectionService;
+            }
 
             if (propertyExpression.Property == null)
             {
@@ -101,7 +108,7 @@ namespace Orc.FilterBuilder
                             var type = TypeCache.GetType(splittedString[0]);
                             if (type != null)
                             {
-                                var typeProperties = await _reflectionService.GetInstancePropertiesAsync(type);
+                                var typeProperties = await reflectionService.GetInstancePropertiesAsync(type);
                                 propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
                             }
                         }

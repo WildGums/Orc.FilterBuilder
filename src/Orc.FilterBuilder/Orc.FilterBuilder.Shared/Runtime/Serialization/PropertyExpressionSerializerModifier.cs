@@ -39,13 +39,5 @@ namespace Orc.FilterBuilder.Runtime.Serialization
                 }
             }
         }
-
-        public override async void OnDeserialized(ISerializationContext context, object model)
-        {
-            base.OnDeserialized(context, model);
-
-            var propertyExpression = (PropertyExpression) context.Model;
-            await propertyExpression.EnsureIntegrityAsync();
-        }
     }
 }
