@@ -80,23 +80,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.Designer.cs">
-      <Link>Properties\Resources.Designer.cs</Link>
+    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.NET45.Designer.cs">
+      <Link>Properties\Resources.NET45.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl-NL.Designer.cs">
-      <Link>Properties\Resources.nl-NL.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.nl-NL.resx</DependentUpon>
-    </Compile>
-    <Compile Include="..\Orc.FilterBuilder.Shared\Properties\Resources.zh-Hans.Designer.cs">
-      <Link>Properties\Resources.zh-Hans.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.zh-Hans.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -124,19 +112,28 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl-NL.resx">
-      <Link>Properties\Resources.nl-NL.resx</Link>
-      <Generator>ResxFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.nl-NL.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.de.resx">
+      <Link>Properties\Resources.de.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.es.resx">
+      <Link>Properties\Resources.es.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.fr.resx">
+      <Link>Properties\Resources.fr.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.nl.resx">
+      <Link>Properties\Resources.nl.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.resx">
       <Link>Properties\Resources.resx</Link>
       <Generator>ResxFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.NET45.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.ru.resx">
+      <Link>Properties\Resources.ru.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.zh-Hans.resx">
       <Link>Properties\Resources.zh-Hans.resx</Link>
-      <Generator>ResxFileCodeGenerator</Generator>
       <LastGenOutput>Resources.zh-Hans.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

@@ -29,14 +29,8 @@ public static class ModuleInitializer
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSchemeManager, FilterSchemeManager>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
 
-        RegisterLanguageSources(serviceLocator);
-    }
-
-    private static void RegisterLanguageSources(IServiceLocator serviceLocator)
-    {
-        var languageService = serviceLocator.TryResolveType<ILanguageService>();
-        var stringsResourceType = typeof(Resources);
-        languageService.RegisterLanguageSource(new LanguageResourceSource(stringsResourceType.Assembly.FullName, stringsResourceType.Namespace, stringsResourceType.Name));
+        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.FilterBuilder", "Orc.FilterBuilder.Properties", "Resources"));
     }
     #endregion
 }
