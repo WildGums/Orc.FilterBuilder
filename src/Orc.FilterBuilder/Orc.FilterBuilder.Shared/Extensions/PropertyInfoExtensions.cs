@@ -20,19 +20,19 @@ namespace Orc.FilterBuilder
             if (propertyInfo != null)
             {
                 DisplayNameAttribute catelDispNameAttr;
-                if (AttributeHelper.TryGetAttribute(propertyInfo, out catelDispNameAttr))
+                if (propertyInfo.TryGetAttribute(out catelDispNameAttr))
                 {
                     return catelDispNameAttr.DisplayName;
                 }
 
                 DisplayNameAttribute dispNameAttr;
-                if (AttributeHelper.TryGetAttribute(propertyInfo, out dispNameAttr))
+                if (propertyInfo.TryGetAttribute(out dispNameAttr))
                 {
                     return dispNameAttr.DisplayName;
                 }
 
                 DisplayAttribute dispAttr;
-                if (AttributeHelper.TryGetAttribute(propertyInfo, out dispAttr))
+                if (propertyInfo.TryGetAttribute(out dispAttr))
                 {
                     return dispAttr.GetName();
                 }
