@@ -26,9 +26,9 @@ namespace Orc.FilterBuilder.Converters
             {
                 bool isNullable = false;
 
-                if (PropertyHelper.IsPropertyAvailable(dataTypeExpression, "IsNullable"))
+                if (PropertyHelper.IsPropertyAvailable(dataTypeExpression, "IsNullable", false))
                 {
-                    isNullable = PropertyHelper.GetPropertyValue<bool>(dataTypeExpression, "IsNullable");
+                    isNullable = PropertyHelper.GetPropertyValue<bool>(dataTypeExpression, "IsNullable", false);
                 }
 
                 object conditions = isNullable ? ConditionHelper.GetNullableValueConditions() : ConditionHelper.GetValueConditions();

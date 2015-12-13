@@ -7,12 +7,15 @@
 
 namespace Orc.FilterBuilder.Example
 {
+    using System.Globalization;
+    using System.Threading;
     using System.Windows;
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
     using Catel.Logging;
     using Orc.FilterBuilder.Services;
     using Catel.IoC;
+    using Catel.Services;
     using Catel.Windows;
     using Orchestra.Services;
     using Orchestra.Views;
@@ -28,6 +31,14 @@ namespace Orc.FilterBuilder.Example
             //LogManager.AddDebugListener();
 #endif
 
+            var languageService = ServiceLocator.Default.ResolveType<ILanguageService>();
+
+            // Note: it's best to use .CurrentUICulture in actual apps since it will use the preferred language
+            // of the user. But in order to demo multilingual features for devs (who mostly have en-US as .CurrentUICulture),
+            // we use .CurrentCulture for the sake of the demo
+            languageService.PreferredCulture = CultureInfo.CurrentCulture;
+            languageService.FallbackCulture = new CultureInfo("en-US");
+
             //Log.Info("Starting application");
 
             StyleHelper.CreateStyleForwardersForDefaultStyles();
@@ -39,7 +50,7 @@ namespace Orc.FilterBuilder.Example
             await shellService.CreateWithSplashAsync<ShellWindow>();
 
             var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
-            filterSchemeManager.Load();
+            await filterSchemeManager.LoadAsync();
 
             base.OnStartup(e);
         }

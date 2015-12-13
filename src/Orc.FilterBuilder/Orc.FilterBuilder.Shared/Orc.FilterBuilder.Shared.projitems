@@ -37,6 +37,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionTreeItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FilterSchemeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyInfoExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterBuilderMode.cs" />
@@ -52,11 +53,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ModuleInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Runtime\Serialization\FilterSchemeSerializerModifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Runtime\Serialization\PropertyExpressionSerializerModifier.cs" />
@@ -93,11 +89,5 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Properties\Resources.resx">
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>

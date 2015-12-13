@@ -16,6 +16,7 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel;
     using Catel.Collections;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.Logging;
     using Catel.MVVM;
     using Catel.Reflection;
@@ -30,9 +31,10 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly IUIVisualizerService _uiVisualizerService;
-        private readonly IFilterSchemeManager _filterSchemeManager;
-        private readonly IFilterService _filterService;
+        private IFilterSchemeManager _filterSchemeManager;
+        private IFilterService _filterService;
         private readonly IMessageService _messageService;
+        private readonly IServiceLocator _serviceLocator;
 
         private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
         private Type _targetType;
@@ -41,21 +43,23 @@ namespace Orc.FilterBuilder.ViewModels
 
         #region Constructors
         public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
-            IFilterService filterService, IMessageService messageService)
+            IFilterService filterService, IMessageService messageService, IServiceLocator serviceLocator)
         {
             Argument.IsNotNull(() => uiVisualizerService);
             Argument.IsNotNull(() => filterSchemeManager);
             Argument.IsNotNull(() => filterService);
             Argument.IsNotNull(() => messageService);
+            Argument.IsNotNull(() => serviceLocator);
 
             _uiVisualizerService = uiVisualizerService;
             _filterSchemeManager = filterSchemeManager;
             _filterService = filterService;
             _messageService = messageService;
+            _serviceLocator = serviceLocator;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
-            EditSchemeCommand = new Command<FilterScheme>(OnEditSchemeExecute, OnEditSchemeCanExecute);
-            ApplySchemeCommand = new Command(OnApplySchemeExecute, OnApplySchemeCanExecute);
+            EditSchemeCommand = new TaskCommand<FilterScheme>(OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
+            ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
             DeleteSchemeCommand = new Command<FilterScheme>(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
         }
@@ -84,6 +88,8 @@ namespace Orc.FilterBuilder.ViewModels
         /// <see cref="FilterBuilderMode.FilteringFunction"/>
         /// </summary>
         public Func<object, bool> FilteringFunc { get; set; }
+
+        public object ManagerTag { get; set; }
         #endregion
 
         #region Commands
@@ -111,7 +117,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command<FilterScheme> EditSchemeCommand { get; private set; }
+        public TaskCommand<FilterScheme> EditSchemeCommand { get; private set; }
 
         private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
@@ -133,9 +139,9 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnEditSchemeExecute(FilterScheme filterScheme)
+        private async Task OnEditSchemeExecuteAsync(FilterScheme filterScheme)
         {
-            filterScheme.EnsureIntegrity();
+            await filterScheme.EnsureIntegrityAsync();
 
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
@@ -147,7 +153,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command ApplySchemeCommand { get; private set; }
+        public TaskCommand ApplySchemeCommand { get; private set; }
 
         private bool OnApplySchemeCanExecute()
         {
@@ -169,13 +175,15 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private async void OnApplySchemeExecute()
+        private async Task OnApplySchemeExecuteAsync()
         {
+            Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
+
             //build filtered collection only if current mode is Collection
             if (Mode == FilterBuilderMode.Collection)
             {
                 FilteringFunc = null;
-                await Task.Factory.StartNew(() => _filterService.FilterCollection(SelectedFilterScheme, RawCollection, FilteredCollection));
+                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
             }
             else
             {
@@ -187,27 +195,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnResetSchemeCanExecute()
         {
-            if (!AllowReset)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes == null)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(SelectedFilterScheme, AvailableSchemes[0]))
-            {
-                return false;
-            }
-
-            return true;
+            return AllowReset && ReadyForResetOrDeleteScheme(SelectedFilterScheme);
         }
 
         private void OnResetSchemeExecute()
@@ -222,33 +210,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
         {
-            if (filterScheme == null)
-            {
-                return false;
-            }
-
-            if (!AllowDelete)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes == null)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(filterScheme, AvailableSchemes[0]))
-            {
-                return false;
-            }
-
-            return true;
-        }
+            return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
+        }        
 
         private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
         {
@@ -264,6 +227,29 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Methods
+        private bool ReadyForResetOrDeleteScheme(FilterScheme filterScheme)
+        {
+            return filterScheme != null && AvailableSchemes != null && AvailableSchemes.Any()
+                   && !ReferenceEquals(filterScheme, AvailableSchemes[0]);
+        }
+
+        private void OnManagerTagChanged()
+        {
+            if (_filterSchemeManager != null)
+            {
+                _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
+                _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
+            }
+
+            _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(ManagerTag);
+            _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
+
+            _filterService = _serviceLocator.ResolveType<IFilterService>(ManagerTag);
+            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
+
+            UpdateFilters();
+        }
+
         private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
         {
             if (filterScheme == null || _applyingFilter)
@@ -304,6 +290,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnRawCollectionChanged()
         {
+            Log.Debug("Raw collection changed");
+
             UpdateFilters();
 
             ApplyFilter();
@@ -311,6 +299,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnFilteredCollectionChanged()
         {
+            Log.Debug("Filtered collection changed");
+
             ApplyFilter();
         }
 
@@ -321,6 +311,8 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void UpdateFilters()
         {
+            Log.Debug("Updating filters");
+
             if (_filterSchemes != null)
             {
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;

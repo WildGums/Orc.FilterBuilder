@@ -54,7 +54,7 @@ namespace Orc.FilterBuilder.Converters
 
                 if (value != null)
                 {
-                    return PropertyHelper.GetPropertyValue(value, propertyName);
+                    return PropertyHelper.GetPropertyValue(value, propertyName, false);
                 }
             }
             catch (Exception ex)

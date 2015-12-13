@@ -118,63 +118,63 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddExpression" xml:space="preserve">
-    <value>Add expression</value>
+    <value>Expressie toevoegen</value>
   </data>
   <data name="AddGroup" xml:space="preserve">
-    <value>Add group</value>
+    <value>Groep toevoegen</value>
   </data>
   <data name="And" xml:space="preserve">
-    <value>And</value>
+    <value>En</value>
   </data>
   <data name="Contains" xml:space="preserve">
-    <value>Contains</value>
+    <value>Bevat</value>
   </data>
   <data name="DeleteItem" xml:space="preserve">
-    <value>Delete item</value>
+    <value>Verwijder</value>
   </data>
   <data name="EndsWith" xml:space="preserve">
-    <value>EndsWith</value>
+    <value>Eindigt met</value>
   </data>
   <data name="EqualTo" xml:space="preserve">
-    <value>EqualTo</value>
+    <value>Gelijk aan</value>
   </data>
   <data name="GreaterThan" xml:space="preserve">
-    <value>GreaterThan</value>
+    <value>Groter dan</value>
   </data>
   <data name="GreaterThanOrEqualTo" xml:space="preserve">
-    <value>GreaterThanOrEqualTo</value>
+    <value>Groter dan of gelijk aan</value>
   </data>
   <data name="IsEmpty" xml:space="preserve">
-    <value>IsEmpty</value>
+    <value>Is leeg</value>
   </data>
   <data name="IsNull" xml:space="preserve">
-    <value>IsNull</value>
+    <value>Is null</value>
   </data>
   <data name="LessThan" xml:space="preserve">
-    <value>LessThan</value>
+    <value>Kleiner dan</value>
   </data>
   <data name="LessThanOrEqualTo" xml:space="preserve">
-    <value>LessThanOrEqualTo</value>
+    <value>Kleiner dan of gelijk aan</value>
   </data>
   <data name="LivePreview" xml:space="preserve">
-    <value>Live preview</value>
+    <value>Live voorbeeld</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Naam</value>
   </data>
   <data name="NotEqualTo" xml:space="preserve">
-    <value>NotEqualTo</value>
+    <value>Niet gelijk aan</value>
   </data>
   <data name="NotIsEmpty" xml:space="preserve">
-    <value>NotIsEmpty</value>
+    <value>Is niet leeg</value>
   </data>
   <data name="NotIsNull" xml:space="preserve">
-    <value>NotIsNull</value>
+    <value>Is niet null</value>
   </data>
   <data name="Or" xml:space="preserve">
-    <value>Or</value>
+    <value>Of</value>
   </data>
   <data name="StartsWith" xml:space="preserve">
-    <value>StartsWith</value>
+    <value>Begint met</value>
   </data>
 </root>

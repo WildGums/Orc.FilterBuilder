@@ -13,6 +13,7 @@
         <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
         <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
+        <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter"/>
 
         <Geometry x:Key="AddGeometry">M431.704,432l0,260.501l-96,0l0,-260.501l-260.501,-5.68434e-14l1.42109e-14,-96l260.501,5.68434e-14l0,-260.501l96,0l0,260.501l260.501,0l0,96l-260.501,0Z</Geometry>
         <Geometry x:Key="AddGroupGeometry">M265.81,677.779L85.81,677.779L85.81,497.779L135.81,497.779L135.81,627.779L265.81,627.779L265.81,677.779ZM502.19,677.779L682.19,677.779L682.19,497.779L632.19,497.779L632.19,627.779L502.19,627.779L502.19,677.779ZM413.734,354.266L578.025,354.266L578.025,413.734L413.734,413.734L413.734,578.025L354.266,578.025L354.266,413.734L189.975,413.734L189.975,354.266L354.266,354.266L354.266,189.975L413.734,189.975L413.734,354.266ZM502.19,90.221L682.19,90.221L682.19,270.221L632.19,270.221L632.19,140.221L502.19,140.221L502.19,90.221ZM265.81,90.221L85.81,90.221L85.81,270.221L135.81,270.221L135.81,140.221L265.81,140.221L265.81,90.221Z</Geometry>
@@ -65,7 +66,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Text="Name:" Width="33" Margin="0" />
+        <TextBlock Grid.Column="0" Text="{catel:LanguageBinding Name}" Width="33" Margin="0" />
         <TextBox Grid.Column="1" Height="26" Margin="4 0 4 0"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <i:Interaction.Behaviors>
@@ -73,7 +74,7 @@
             </i:Interaction.Behaviors>
         </TextBox>
         <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0" Style="{DynamicResource FilterBuilderToggleButtonStyle}"
-                      IsChecked="{Binding EnableLivePreview}" Content="Live Preview"
+                      IsChecked="{Binding EnableLivePreview}" Content="{catel:LanguageBinding LivePreview}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
@@ -109,19 +110,25 @@
                     <Grid HorizontalAlignment="Stretch" Background="Transparent">
                         <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
-                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}" />
+                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type net40:ConditionGroupType}}" SelectedItem="{Binding Type}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
-                            <Button ToolTip="Add expression" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding AddExpression}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
                                     Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Add group" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding AddGroup}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
                                     Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
+                            <Button ToolTip="{catel:LanguageBinding DeleteItem}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
@@ -134,7 +141,13 @@
                                       DisplayMemberPath="DisplayName" SelectedItem="{Binding Property}" />
 
                             <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
-                                      SelectedItem="{Binding DataTypeExpression.SelectedCondition}" />
+                                      SelectedItem="{Binding DataTypeExpression.SelectedCondition}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
                                   Margin="0">
@@ -160,7 +173,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Button ToolTip="Delete item" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                            <Button ToolTip="{catel:LanguageBinding DeleteItem}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>

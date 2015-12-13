@@ -9,7 +9,10 @@ namespace Orc.FilterBuilder.Services
 {
     using System;
     using System.Collections;
+    using System.Threading.Tasks;
     using Catel;
+    using Catel.Threading;
+    using MethodTimer;
     using Models;
 
     public class FilterService : IFilterService
@@ -56,6 +59,22 @@ namespace Orc.FilterBuilder.Services
         /// </summary>
         public event EventHandler<EventArgs> SelectedFilterChanged;
 
+        public async Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+        {
+            Argument.IsNotNull(() => filter);
+
+            await filter.EnsureIntegrityAsync();
+
+            if (filteredCollection == null)
+            {
+                return;
+            }
+
+            filter.Apply(rawCollection, filteredCollection);
+        }
+
+        [Time]
+        [ObsoleteEx(ReplacementTypeOrMember = "FilterCollectionAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
         {
             Argument.IsNotNull(() => filter);

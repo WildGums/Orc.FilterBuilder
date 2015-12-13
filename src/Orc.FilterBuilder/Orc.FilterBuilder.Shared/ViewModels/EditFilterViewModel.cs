@@ -16,9 +16,11 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel;
     using Catel.Collections;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
+    using Catel.Threading;
     using Models;
     using Services;
 
@@ -29,18 +31,19 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IReflectionService _reflectionService;
         private readonly IXmlSerializer _xmlSerializer;
         private readonly IMessageService _messageService;
+        private readonly IServiceLocator _serviceLocator;
 
         private bool _isFilterDirty;
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IReflectionService reflectionService,
-            IXmlSerializer xmlSerializer, IMessageService messageService)
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer, 
+            IMessageService messageService, IServiceLocator serviceLocator)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
-            Argument.IsNotNull(() => reflectionService);
             Argument.IsNotNull(() => xmlSerializer);
             Argument.IsNotNull(() => messageService);
+            Argument.IsNotNull(() => serviceLocator);
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
@@ -51,19 +54,20 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = filterSchemeEditInfo.FilterScheme;
 
             _originalFilterScheme = filterScheme;
-            _reflectionService = reflectionService;
             _xmlSerializer = xmlSerializer;
             _messageService = messageService;
+            _serviceLocator = serviceLocator;
+
+            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(filterScheme.Tag);
 
             DeferValidationUntilFirstSaveCall = true;
-
-            InstanceProperties = _reflectionService.GetInstanceProperties(filterScheme.TargetType).Properties;
 
             using (var memoryStream = new MemoryStream())
             {
                 xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
                 memoryStream.Position = 0L;
                 FilterScheme = (FilterScheme)xmlSerializer.Deserialize(typeof(FilterScheme), memoryStream);
+                FilterScheme.Tag = filterScheme.Tag;
             }
 
             FilterSchemeTitle = FilterScheme.Title;
@@ -97,6 +101,8 @@ namespace Orc.FilterBuilder.ViewModels
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+
+            InstanceProperties = (await _reflectionService.GetInstancePropertiesAsync(_originalFilterScheme.TargetType)).Properties;
 
             UpdatePreviewItems();
 
@@ -140,12 +146,12 @@ namespace Orc.FilterBuilder.ViewModels
             return await base.CancelAsync();
         }
 
-        protected override async Task<bool> SaveAsync()
+        protected override Task<bool> SaveAsync()
         {
             FilterScheme.Title = FilterSchemeTitle;
             _originalFilterScheme.Update(FilterScheme);
 
-            return true;
+            return TaskHelper<bool>.FromResult(true);
         }
 
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)

@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder.Views
     using System.Windows;
     using System.Windows.Media;
     using Catel.MVVM.Views;
+    using ViewModels;
 
     public partial class FilterBuilderControl
     {
@@ -144,6 +145,29 @@ namespace Orc.FilterBuilder.Views
             base.OnApplyTemplate();
 
             AccentColorBrush = TryFindResource("AccentColorBrush") as SolidColorBrush;
+        }
+
+        public static readonly DependencyProperty ManagerTagProperty =
+           DependencyProperty.Register("ManagerTag", typeof(object), typeof(FilterBuilderControl), new FrameworkPropertyMetadata(OnManagerTagChanged));
+
+        private static void OnManagerTagChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var workspacesView = d as FilterBuilderControl;
+            if (workspacesView != null)
+            {
+                var viewModel = (FilterBuilderViewModel)workspacesView.ViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.ManagerTag = workspacesView.ManagerTag;
+                }
+            }
+        }
+
+        [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
+        public object ManagerTag
+        {
+            get { return GetValue(ManagerTagProperty); }
+            set { SetValue(ManagerTagProperty, value); }
         }
         #endregion
     }

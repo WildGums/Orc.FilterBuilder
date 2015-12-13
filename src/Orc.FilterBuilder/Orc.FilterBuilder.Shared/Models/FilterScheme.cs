@@ -21,9 +21,11 @@ namespace Orc.FilterBuilder.Models
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
+        private static readonly Type _defaultTargetType = typeof(object);
+
         #region Constructors
         public FilterScheme()
-            : this(typeof(object))
+            : this(_defaultTargetType)
         {
         }
 
@@ -62,6 +64,9 @@ namespace Orc.FilterBuilder.Models
         {
             get { return ConditionItems.FirstOrDefault(); }
         }
+
+        [ExcludeFromSerialization]
+        public object Tag { get; set; }
 
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion
@@ -114,7 +119,7 @@ namespace Orc.FilterBuilder.Models
 
         private void OnConditionUpdated(object sender, EventArgs e)
         {
-            Updated.SafeInvoke(this);
+            RaiseUpdated();
         }
 
         public bool CalculateResult(object entity)
@@ -137,6 +142,13 @@ namespace Orc.FilterBuilder.Models
             Title = otherScheme.Title;
             ConditionItems.Clear();
             ConditionItems.Add(otherScheme.Root);
+
+            RaiseUpdated();
+        }
+
+        protected void RaiseUpdated()
+        {
+            Updated.SafeInvoke(this);
         }
 
         public override string ToString()
@@ -158,6 +170,22 @@ namespace Orc.FilterBuilder.Models
             }
 
             return stringBuilder.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var filterScheme = obj as FilterScheme;
+            if (filterScheme == null)
+            {
+                return false;
+            }
+
+            return string.Equals(filterScheme.Title, Title);
+        }
+
+        public override int GetHashCode()
+        {
+            return Title.GetHashCode();
         }
         #endregion
     }

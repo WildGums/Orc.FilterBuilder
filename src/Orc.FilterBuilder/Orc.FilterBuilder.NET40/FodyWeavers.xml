@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Weavers VerifyAssembly="true">
-  <ModuleInit/>
-  <Catel/>
+  <ModuleInit />
+  <Catel />
+  <MethodTimer />
+  <Obsolete />
 </Weavers>

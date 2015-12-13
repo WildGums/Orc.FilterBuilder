@@ -124,6 +124,11 @@ namespace Orc.FilterBuilder
 
         public override bool CalculateResult(object entity)
         {
+            if (Property == null)
+            {
+                return false;
+            }
+
             return DataTypeExpression.CalculateResult(Property, entity);
         }
 
