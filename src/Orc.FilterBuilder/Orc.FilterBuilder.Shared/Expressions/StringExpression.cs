@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
+    using Catel.Reflection;
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -31,6 +32,14 @@ namespace Orc.FilterBuilder
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             var entityValue = propertyMetadata.GetValue<string>(entity);
+            if (entityValue == null && propertyMetadata.Type.IsEnumEx())
+            {
+                var entityValueAsObject = propertyMetadata.GetValue(entity);
+                if (entityValueAsObject != null)
+                {
+                    entityValue = entityValueAsObject.ToString();
+                }
+            }
 
             switch (SelectedCondition)
             {

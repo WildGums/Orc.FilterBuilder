@@ -10,6 +10,7 @@ namespace Orc.FilterBuilder
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using Catel.Reflection;
     using Catel.Runtime.Serialization;
     using Models;
     using Runtime.Serialization;
@@ -35,7 +36,11 @@ namespace Orc.FilterBuilder
                 DataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
             }
 
-            if (Property.Type.GetNonNullable() == typeof(uint))
+            if (Property.Type.IsEnumEx())
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+            }
+            else if (Property.Type.GetNonNullable() == typeof(uint))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new NumericExpression(Property.Type));
             }
