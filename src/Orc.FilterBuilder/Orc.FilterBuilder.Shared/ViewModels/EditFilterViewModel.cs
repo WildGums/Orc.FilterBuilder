@@ -69,7 +69,7 @@ namespace Orc.FilterBuilder.ViewModels
                 FilterScheme = (FilterScheme)xmlSerializer.Deserialize(typeof(FilterScheme), memoryStream);
                 FilterScheme.Tag = filterScheme.Tag;
             }
-
+            FilterScheme.EnsureIntegrity();
             FilterSchemeTitle = FilterScheme.Title;
 
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
