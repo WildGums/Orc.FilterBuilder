@@ -23,6 +23,7 @@ namespace Orc.FilterBuilder.Models
         #region Properties
         [ExcludeFromSerialization]
         public object Tag { get; set; }
+
         public ObservableCollection<FilterScheme> Schemes { get; private set; }
         #endregion
     }

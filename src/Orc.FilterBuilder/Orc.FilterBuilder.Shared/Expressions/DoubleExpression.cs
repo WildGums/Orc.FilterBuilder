@@ -31,6 +31,7 @@ namespace Orc.FilterBuilder
 
         #region Properties
         public bool IsNullable { get; set; }
+
         public double Value { get; set; }
         #endregion
 

@@ -20,7 +20,6 @@ namespace Orc.FilterBuilder.Markup
         #region Constructors
         public EnumBinding()
         {
-            
         }
 
         public EnumBinding(Type enumType)
@@ -55,10 +54,12 @@ namespace Orc.FilterBuilder.Markup
         }
         #endregion
 
+        #region Methods
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var enumValues = Enum.GetValues(EnumType);
             return enumValues;
         }
+        #endregion
     }
 }

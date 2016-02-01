@@ -6,7 +6,6 @@
 
 
 using Catel.ComponentModel;
-using Orc.FilterBuilder.Properties;
 
 namespace Orc.FilterBuilder
 {

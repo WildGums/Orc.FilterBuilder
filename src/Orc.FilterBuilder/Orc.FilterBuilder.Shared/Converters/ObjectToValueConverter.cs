@@ -25,7 +25,6 @@ namespace Orc.FilterBuilder.Converters
 
         public ObjectToValueConverter()
         {
-
         }
 
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();

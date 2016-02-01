@@ -25,6 +25,7 @@ namespace Orc.FilterBuilder.Models
         }
         #endregion
 
+        #region Properties
         public FilterScheme FilterScheme { get; private set; }
 
         public IEnumerable RawCollection { get; private set; }
@@ -32,5 +33,6 @@ namespace Orc.FilterBuilder.Models
         public bool AllowLivePreview { get; private set; }
 
         public bool EnableAutoCompletion { get; private set; }
+        #endregion
     }
 }

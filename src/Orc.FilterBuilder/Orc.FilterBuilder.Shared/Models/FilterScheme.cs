@@ -21,7 +21,9 @@ namespace Orc.FilterBuilder.Models
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
+        #region Fields
         private static readonly Type _defaultTargetType = typeof(object);
+        #endregion
 
         #region Constructors
         public FilterScheme()
@@ -71,7 +73,9 @@ namespace Orc.FilterBuilder.Models
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion
 
+        #region Events
         public event EventHandler<EventArgs> Updated;
+        #endregion
 
         #region Methods
         private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

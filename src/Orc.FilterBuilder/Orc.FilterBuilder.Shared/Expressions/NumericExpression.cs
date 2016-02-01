@@ -14,8 +14,7 @@ namespace Orc.FilterBuilder
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class NumericExpression : DataTypeExpression
     {
-        private double _value;
-
+        #region Constructors
         public NumericExpression()
         {
             SelectedCondition = Condition.EqualTo;
@@ -28,15 +27,12 @@ namespace Orc.FilterBuilder
         {
             IsNullable = type.IsNullable();
         }
+        #endregion
 
         #region Properties
         public bool IsNullable { get; set; }
 
-        public double Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public double Value { get; set; }
         #endregion
 
         #region Methods

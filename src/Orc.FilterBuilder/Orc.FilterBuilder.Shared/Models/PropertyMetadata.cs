@@ -20,7 +20,6 @@ namespace Orc.FilterBuilder.Models
         private string _displayName;
 
         #region Constructors
-        
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
         {
             Argument.IsNotNull(() => ownerType);
@@ -46,7 +45,6 @@ namespace Orc.FilterBuilder.Models
             DisplayName = ownerType.GetProperty(Name).GetDisplayName() ?? Name;
             Type = propertyData.Type;
         }
-
         #endregion Constructors
 
         #region Properties
@@ -68,11 +66,9 @@ namespace Orc.FilterBuilder.Models
         public Type OwnerType { get; private set; }
 
         public Type Type { get; private set; }
-
         #endregion Properties
 
         #region Methods
-
         public override bool Equals(object obj)
         {
             var propertyMetaData = obj as PropertyMetadata;
@@ -143,7 +139,6 @@ namespace Orc.FilterBuilder.Models
                 }
             }
         }
-
         #endregion Methods
     }
 }

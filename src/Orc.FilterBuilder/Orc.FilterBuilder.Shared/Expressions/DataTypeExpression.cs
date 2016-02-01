@@ -7,17 +7,17 @@
 
 namespace Orc.FilterBuilder
 {
-    using System.Diagnostics;
-    using System.Text;
     using Catel.Data;
     using Orc.FilterBuilder.Models;
 
     public abstract class DataTypeExpression : ModelBase
     {
+        #region Constructors
         protected DataTypeExpression()
         {
             IsValueRequired = true;
         }
+        #endregion
 
         #region Properties
         public Condition SelectedCondition { get; set; }

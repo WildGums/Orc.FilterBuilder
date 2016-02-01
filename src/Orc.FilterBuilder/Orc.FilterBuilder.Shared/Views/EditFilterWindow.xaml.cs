@@ -11,9 +11,7 @@ namespace Orc.FilterBuilder.Views
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Threading;
-    using Catel.Data;
     using Catel.IoC;
-    using Catel.Reflection;
     using Catel.Windows;
     using Converters;
     using Services;
@@ -24,12 +22,15 @@ namespace Orc.FilterBuilder.Views
     /// </summary>
     public partial class EditFilterWindow
     {
+        #region Constructors
         public EditFilterWindow()
             : base(DataWindowMode.OkCancel, infoBarMessageControlGenerationMode: InfoBarMessageControlGenerationMode.None)
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region Methods
         protected override async void OnViewModelChanged()
         {
             base.OnViewModelChanged();
@@ -70,5 +71,6 @@ namespace Orc.FilterBuilder.Views
                 var dispatcherOperation = Dispatcher.BeginInvoke(new Action(() => Focus()));
             }
         }
+        #endregion
     }
 }
