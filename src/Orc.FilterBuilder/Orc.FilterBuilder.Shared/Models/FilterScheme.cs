@@ -99,8 +99,9 @@ namespace Orc.FilterBuilder.Models
             SubscribeToEvents();
         }
 
-        protected override void OnDeserialized()
+        protected async override void OnDeserialized()
         {
+            await this.EnsureIntegrityAsync();
             SubscribeToEvents();
         }
 
