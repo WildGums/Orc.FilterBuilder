@@ -42,7 +42,6 @@ namespace Orc.FilterBuilder
             }
         }
 
-        [ObsoleteEx(ReplacementTypeOrMember = "EnsureIntegrityAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public static void EnsureIntegrity(this FilterScheme filterScheme)
         {
             Argument.IsNotNull(() => filterScheme);
@@ -69,7 +68,6 @@ namespace Orc.FilterBuilder
             }
         }
 
-        [ObsoleteEx(ReplacementTypeOrMember = "EnsureIntegrityAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem)
         {
             Argument.IsNotNull(() => conditionTreeItem);
@@ -117,7 +115,6 @@ namespace Orc.FilterBuilder
             }
         }
 
-        [ObsoleteEx(ReplacementTypeOrMember = "EnsureIntegrityAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public static void EnsureIntegrity(this PropertyExpression propertyExpression)
         {
             Argument.IsNotNull(() => propertyExpression);

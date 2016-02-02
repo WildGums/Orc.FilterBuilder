@@ -101,6 +101,7 @@ namespace Orc.FilterBuilder.Models
 
         protected override void OnDeserialized()
         {
+            this.EnsureIntegrity();
             SubscribeToEvents();
         }
 
