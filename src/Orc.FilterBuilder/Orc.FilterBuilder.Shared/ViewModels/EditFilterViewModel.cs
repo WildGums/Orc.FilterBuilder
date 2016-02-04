@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EditFilterViewModel.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="EditFilterViewModel.cs" company="Wild Gums">
+//   Copyright (c) 2008 - 2016 Wild Gums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -29,7 +29,6 @@ namespace Orc.FilterBuilder.ViewModels
         #region Fields
         private readonly FilterScheme _originalFilterScheme;
         private readonly IReflectionService _reflectionService;
-        private readonly IXmlSerializer _xmlSerializer;
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
 
@@ -37,7 +36,7 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Constructors
-        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer, 
+        public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer,
             IMessageService messageService, IServiceLocator serviceLocator)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
@@ -54,7 +53,6 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = filterSchemeEditInfo.FilterScheme;
 
             _originalFilterScheme = filterScheme;
-            _xmlSerializer = xmlSerializer;
             _messageService = messageService;
             _serviceLocator = serviceLocator;
 
@@ -62,13 +60,15 @@ namespace Orc.FilterBuilder.ViewModels
 
             DeferValidationUntilFirstSaveCall = true;
 
+            FilterScheme = new FilterScheme();
             using (var memoryStream = new MemoryStream())
             {
                 xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
                 memoryStream.Position = 0L;
-                FilterScheme = (FilterScheme)xmlSerializer.Deserialize(typeof(FilterScheme), memoryStream);
-                FilterScheme.Tag = filterScheme.Tag;
+                xmlSerializer.Deserialize(FilterScheme, memoryStream);                
             }
+
+            FilterScheme.Tag = filterScheme.Tag;
 
             FilterSchemeTitle = FilterScheme.Title;
 
@@ -79,7 +79,10 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Properties
-        public override string Title { get { return "Filter scheme"; } }
+        public override string Title
+        {
+            get { return "Filter scheme"; }
+        }
 
         public string FilterSchemeTitle { get; set; }
         public FilterScheme FilterScheme { get; private set; }
@@ -179,7 +182,7 @@ namespace Orc.FilterBuilder.ViewModels
             if (item.Parent == null)
             {
                 FilterScheme.ConditionItems.Remove(item);
-                
+
                 foreach (var conditionItem in FilterScheme.ConditionItems)
                 {
                     conditionItem.Items.Remove(item);

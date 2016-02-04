@@ -13,6 +13,8 @@ namespace Orc.FilterBuilder.Models
 
     public class FilterSchemes : ModelBase
     {
+        private object _tag;
+
         #region Constructors
         public FilterSchemes()
         {
@@ -22,7 +24,19 @@ namespace Orc.FilterBuilder.Models
 
         #region Properties
         [ExcludeFromSerialization]
-        public object Tag { get; set; }
+        public object Tag
+        {
+            get { return _tag; }
+            set
+            {
+                _tag = value;
+                foreach (var filterScheme in Schemes)
+                {
+                    filterScheme.Tag = Tag;
+                }
+            }
+        }
+
         public ObservableCollection<FilterScheme> Schemes { get; private set; }
         #endregion
     }

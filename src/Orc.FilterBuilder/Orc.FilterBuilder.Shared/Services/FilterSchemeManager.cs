@@ -9,9 +9,9 @@ namespace Orc.FilterBuilder.Services
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using Catel;
+    using Catel.IoC;
     using Catel.Logging;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Threading;
@@ -28,6 +28,7 @@ namespace Orc.FilterBuilder.Services
         private readonly IXmlSerializer _xmlSerializer;
         private string _lastFileName;
         private readonly AsyncLock _lockObject = new AsyncLock();
+        private object _tag;
         #endregion
 
         #region Constructors
@@ -46,7 +47,15 @@ namespace Orc.FilterBuilder.Services
         public bool AutoSave { get; set; }
         public FilterSchemes FilterSchemes { get; private set; }
 
-        public object Tag { get; set; }
+        public object Tag
+        {
+            get { return _tag; }
+            set
+            {
+                _tag = value;
+                FilterSchemes.Tag = _tag;
+            }
+        }
         #endregion
 
         #region IFilterSchemeManager Members
@@ -65,15 +74,16 @@ namespace Orc.FilterBuilder.Services
                 Save();
             }
         }
-
-        [ObsoleteEx(ReplacementTypeOrMember = "LoadAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
+        
         public void Load(string fileName = null)
         {
-            if (TryLoad(fileName))
+            if (!TryLoad(fileName))
             {
-                Loaded.SafeInvoke(this);
-                Updated.SafeInvoke(this);
+                throw Log.ErrorAndCreateException<FileLoadException>("Unable to load filters from file '{0}'", GetFileName(fileName));
             }
+
+            Loaded.SafeInvoke(this);
+            Updated.SafeInvoke(this);
         }
 
         public async Task<bool> LoadAsync(string fileName = null)
@@ -82,11 +92,6 @@ namespace Orc.FilterBuilder.Services
             {
                 if (TryLoad(fileName))
                 {
-                    foreach (var filterScheme in FilterSchemes.Schemes.ToList())
-                    {
-                        await filterScheme.EnsureIntegrityAsync();
-                    }
-
                     Loaded.SafeInvoke(this);
                     Updated.SafeInvoke(this);
 
@@ -149,12 +154,6 @@ namespace Orc.FilterBuilder.Services
             }
 
             FilterSchemes.Tag = Tag;
-
-            foreach (var filterScheme in FilterSchemes.Schemes)
-            {
-                filterScheme.Tag = Tag;
-            }
-
             return true;
         }
 

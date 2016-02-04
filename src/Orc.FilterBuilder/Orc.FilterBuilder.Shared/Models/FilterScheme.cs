@@ -15,13 +15,16 @@ namespace Orc.FilterBuilder.Models
     using System.Text;
     using Catel;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.Runtime.Serialization;
     using Runtime.Serialization;
+    using Services;
 
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
         private static readonly Type _defaultTargetType = typeof(object);
+        private object _tag;
 
         #region Constructors
         public FilterScheme()
@@ -66,7 +69,19 @@ namespace Orc.FilterBuilder.Models
         }
 
         [ExcludeFromSerialization]
-        public object Tag { get; set; }
+        public object Tag
+        {
+            get { return _tag; }
+            set
+            {
+                _tag = value;
+                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_tag);
+                if (reflectionService != null)
+                {
+                    this.EnsureIntegrity(reflectionService);
+                }
+            }
+        }
 
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion

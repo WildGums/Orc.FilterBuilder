@@ -24,8 +24,7 @@ namespace Orc.FilterBuilder.Services
         event EventHandler<EventArgs> Saved;
 
         #region Methods
-        void UpdateFilters();
-        [ObsoleteEx(ReplacementTypeOrMember = "LoadAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
+        void UpdateFilters();        
         void Load(string fileName = null);
         Task<bool> LoadAsync(string fileName = null);
         void Save(string fileName = null);
