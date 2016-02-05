@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterService.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2016 Wild Gums. All rights reserved.
+// <copyright file="FilterService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 

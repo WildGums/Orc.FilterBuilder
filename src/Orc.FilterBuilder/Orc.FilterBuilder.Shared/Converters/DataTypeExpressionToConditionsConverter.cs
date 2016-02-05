@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTypeToConditionsConverter.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="DataTypeToConditionsConverter.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 

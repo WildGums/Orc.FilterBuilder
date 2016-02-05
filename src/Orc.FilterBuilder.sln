@@ -1,20 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23912551-289D-43BF-9B2D-5385308A09E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.NET40", "Orc.FilterBuilder\Orc.FilterBuilder.NET40\Orc.FilterBuilder.NET40.csproj", "{6F5EB0C1-7E36-413D-8463-968B7F86FE53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Example", "Orc.FilterBuilder.Example\Orc.FilterBuilder.Example.csproj", "{FDD8B37C-268C-41B6-8E64-EB49A827532D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A8D1BDA5-71E1-4F19-8D0E-13289C5131F4}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\readme.txt = ..\lib\readme.txt
-		..\lib\repositories.config = ..\lib\repositories.config
-		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET40", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.NET40\Orc.FilterBuilder.Tests.NET40.csproj", "{1E4A6610-74F8-477B-BB07-A9C2CC6763ED}"
 EndProject
