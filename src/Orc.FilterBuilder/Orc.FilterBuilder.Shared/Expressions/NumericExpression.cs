@@ -20,7 +20,7 @@ namespace Orc.FilterBuilder
         {
             SelectedCondition = Condition.EqualTo;
             Value = 0d;
-            ValueControlType = ValueControlType.Text;
+            ValueControlType = ValueControlType.Numeric;
         }
 
         public NumericExpression(Type type)

@@ -25,7 +25,7 @@ namespace Orc.FilterBuilder
             IsNullable = isNullable;
             SelectedCondition = Condition.EqualTo;
             Value = 0;
-            ValueControlType = ValueControlType.Text;
+            ValueControlType = ValueControlType.Integer;
         }
         #endregion
 
