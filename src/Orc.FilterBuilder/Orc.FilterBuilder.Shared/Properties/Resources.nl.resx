@@ -127,34 +127,34 @@
     <value>En</value>
   </data>
   <data name="Contains" xml:space="preserve">
-    <value>Bevat</value>
+    <value>bevat</value>
   </data>
   <data name="DeleteItem" xml:space="preserve">
     <value>Verwijder</value>
   </data>
   <data name="EndsWith" xml:space="preserve">
-    <value>Eindigt met</value>
+    <value>eindigt met</value>
   </data>
   <data name="EqualTo" xml:space="preserve">
-    <value>Gelijk aan</value>
+    <value>is gelijk aan</value>
   </data>
   <data name="GreaterThan" xml:space="preserve">
-    <value>Groter dan</value>
+    <value>is groter dan</value>
   </data>
   <data name="GreaterThanOrEqualTo" xml:space="preserve">
-    <value>Groter dan of gelijk aan</value>
+    <value>is groter dan of gelijk aan</value>
   </data>
   <data name="IsEmpty" xml:space="preserve">
-    <value>Is leeg</value>
+    <value>is leeg</value>
   </data>
   <data name="IsNull" xml:space="preserve">
-    <value>Is null</value>
+    <value>is niets</value>
   </data>
   <data name="LessThan" xml:space="preserve">
-    <value>Kleiner dan</value>
+    <value>is kleiner dan</value>
   </data>
   <data name="LessThanOrEqualTo" xml:space="preserve">
-    <value>Kleiner dan of gelijk aan</value>
+    <value>is kleiner dan of gelijk aan</value>
   </data>
   <data name="LivePreview" xml:space="preserve">
     <value>Live voorbeeld</value>
@@ -163,18 +163,18 @@
     <value>Naam</value>
   </data>
   <data name="NotEqualTo" xml:space="preserve">
-    <value>Niet gelijk aan</value>
+    <value>is niet gelijk aan</value>
   </data>
   <data name="NotIsEmpty" xml:space="preserve">
-    <value>Is niet leeg</value>
+    <value>is niet leeg</value>
   </data>
   <data name="NotIsNull" xml:space="preserve">
-    <value>Is niet null</value>
+    <value>is niet niets</value>
   </data>
   <data name="Or" xml:space="preserve">
     <value>Of</value>
   </data>
   <data name="StartsWith" xml:space="preserve">
-    <value>Begint met</value>
+    <value>begint met</value>
   </data>
 </root>

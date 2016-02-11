@@ -88,7 +88,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains.
+        ///   Looks up a localized string similar to contains.
         /// </summary>
         internal static string Contains {
             get {
@@ -106,7 +106,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EndsWith.
+        ///   Looks up a localized string similar to ends with.
         /// </summary>
         internal static string EndsWith {
             get {
@@ -115,7 +115,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EqualTo.
+        ///   Looks up a localized string similar to is equal to.
         /// </summary>
         internal static string EqualTo {
             get {
@@ -124,7 +124,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GreaterThan.
+        ///   Looks up a localized string similar to is greater than.
         /// </summary>
         internal static string GreaterThan {
             get {
@@ -133,7 +133,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GreaterThanOrEqualTo.
+        ///   Looks up a localized string similar to is greater than or equal to.
         /// </summary>
         internal static string GreaterThanOrEqualTo {
             get {
@@ -142,7 +142,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsEmpty.
+        ///   Looks up a localized string similar to is empty.
         /// </summary>
         internal static string IsEmpty {
             get {
@@ -151,7 +151,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IsNull.
+        ///   Looks up a localized string similar to is null.
         /// </summary>
         internal static string IsNull {
             get {
@@ -160,7 +160,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LessThan.
+        ///   Looks up a localized string similar to less than.
         /// </summary>
         internal static string LessThan {
             get {
@@ -169,7 +169,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LessThanOrEqualTo.
+        ///   Looks up a localized string similar to less than or equal to.
         /// </summary>
         internal static string LessThanOrEqualTo {
             get {
@@ -196,7 +196,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NotEqualTo.
+        ///   Looks up a localized string similar to is not equal to.
         /// </summary>
         internal static string NotEqualTo {
             get {
@@ -205,7 +205,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NotIsEmpty.
+        ///   Looks up a localized string similar to is not empty.
         /// </summary>
         internal static string NotIsEmpty {
             get {
@@ -214,7 +214,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NotIsNull.
+        ///   Looks up a localized string similar to is not null.
         /// </summary>
         internal static string NotIsNull {
             get {
@@ -232,7 +232,7 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StartsWith.
+        ///   Looks up a localized string similar to starts with.
         /// </summary>
         internal static string StartsWith {
             get {
