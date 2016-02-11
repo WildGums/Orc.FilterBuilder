@@ -58,6 +58,7 @@ namespace Orc.FilterBuilder.Models
                 {
                     return _displayName;
                 }
+
                 return Name;
             }
             set { _displayName = value; }

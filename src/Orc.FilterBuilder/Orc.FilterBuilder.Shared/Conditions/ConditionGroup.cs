@@ -48,7 +48,6 @@ namespace Orc.FilterBuilder
             var groupType = Type.ToString().ToLower();
 
             var itemCount = Items.Count;
-
             if (itemCount > 1)
             {
                 stringBuilder.Append("(");
