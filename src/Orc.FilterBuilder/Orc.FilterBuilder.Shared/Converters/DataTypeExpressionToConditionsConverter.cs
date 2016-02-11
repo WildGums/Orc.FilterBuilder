@@ -35,20 +35,27 @@ namespace Orc.FilterBuilder.Converters
 
                 switch (dataTypeExpression.ValueControlType)
                 {
-                    case ValueControlType.Text:
-                        conditions = ConditionHelper.GetStringConditions();
+                    case ValueControlType.Boolean:
+                        conditions = ConditionHelper.GetBooleanConditions();
                         break;
 
                     case ValueControlType.DateTime:
                         // No custom conditions
                         break;
-
-                    case ValueControlType.Boolean:
-                        conditions = ConditionHelper.GetBooleanConditions();
+                    
+                    case ValueControlType.Integer:
+                    case ValueControlType.Decimal:
+                    case ValueControlType.Double:
+                    case ValueControlType.Numeric:
+                        // No custom conditions
                         break;
 
                     case ValueControlType.TimeSpan:
                         // No custom conditions
+                        break;
+
+                    case ValueControlType.Text:
+                        conditions = ConditionHelper.GetStringConditions();
                         break;
 
                     default:

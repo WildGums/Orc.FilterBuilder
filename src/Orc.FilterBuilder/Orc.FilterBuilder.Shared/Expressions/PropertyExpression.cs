@@ -38,75 +38,61 @@ namespace Orc.FilterBuilder
 
             if (Property.Type.IsEnumEx())
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+                DataTypeExpression = new StringExpression();
             }
             else if (Property.Type.GetNonNullable() == typeof(uint))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new NumericExpression(Property.Type));
+                DataTypeExpression = new NumericExpression(Property.Type);
             }
             else if (Property.Type == typeof(int))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(false));
+                DataTypeExpression = new IntegerExpression(false);
             }
             else if (Property.Type == typeof(int?))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(true));
+                DataTypeExpression = new IntegerExpression(true);
             }
             else if (Property.Type == typeof(string))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+                DataTypeExpression = new StringExpression();
             }
             else if (Property.Type == typeof(DateTime))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(false));
+                DataTypeExpression = new DateTimeExpression(false);
             }
             else if (Property.Type == typeof(DateTime?))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(true));
+                DataTypeExpression = new DateTimeExpression(true);
             }
             else if (Property.Type == typeof(bool))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
+                DataTypeExpression = new BooleanExpression();
             }
             else if (Property.Type == typeof(TimeSpan))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression());
+                DataTypeExpression = new TimeSpanExpression();
             }
             else if (Property.Type == typeof(decimal))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(false));
+                DataTypeExpression = new DecimalExpression(false);
             }
             else if (Property.Type == typeof(decimal?))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
+                DataTypeExpression = new DecimalExpression(true);
             }
             else if (Property.Type == typeof(double))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(false));
+                DataTypeExpression = new DoubleExpression(false);
             }
             else if (Property.Type == typeof(double?))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(true));
+                DataTypeExpression = new DoubleExpression(true);
             }
 
             if (DataTypeExpression != null)
             {
                 DataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
             }
-        }
-
-        private void CreateDataTypeExpressionIfNotCompatible<TDataExpression>(Func<TDataExpression> createFunc)
-            where TDataExpression : DataTypeExpression
-        {
-            if (DataTypeExpression != null)
-            {
-                if (DataTypeExpression is TDataExpression)
-                {
-                    return;
-                }
-            }
-
-            DataTypeExpression = createFunc();
         }
 
         protected override void OnDeserialized()

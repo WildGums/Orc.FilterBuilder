@@ -12,6 +12,10 @@ namespace Orc.FilterBuilder
         Text,
         DateTime,
         Boolean,
-        TimeSpan
+        TimeSpan,
+        Decimal,
+        Double,
+        Integer,
+        Numeric
     }
 }

@@ -21,8 +21,8 @@ namespace Orc.FilterBuilder
                 Condition.EqualTo,
                 Condition.NotEqualTo,
                 Condition.LessThan,
-                Condition.GreaterThan,
                 Condition.LessThanOrEqualTo,
+                Condition.GreaterThan,
                 Condition.GreaterThanOrEqualTo
             };
         }
@@ -35,16 +35,27 @@ namespace Orc.FilterBuilder
             return conditions;
         }
 
-        public static List<Condition> GetStringConditions()
-        {
-            return Enum.GetValues(typeof (Condition)).Cast<Condition>().ToList();
-        }
-
         public static List<Condition> GetBooleanConditions()
         {
             return new List<Condition>
             {
                 Condition.EqualTo
+            };
+        }
+        
+        public static List<Condition> GetStringConditions()
+        {
+            return new List<Condition>
+            {
+                Condition.Contains,
+                Condition.StartsWith,
+                Condition.EndsWith,
+                Condition.EqualTo,
+                Condition.NotEqualTo,
+                Condition.IsEmpty,
+                Condition.NotIsEmpty,
+                Condition.IsNull,
+                Condition.NotIsNull
             };
         }
 
