@@ -15,29 +15,29 @@ namespace Orc.FilterBuilder
     {
         [DisplayName("Contains")]
         Contains,
-        [DisplayName("Starts With")]
+        [DisplayName("StartsWith")]
         StartsWith,
-        [DisplayName("Ends With")]
+        [DisplayName("EndsWith")]
         EndsWith,
-        [DisplayName("Equal To")]
+        [DisplayName("EqualTo")]
         EqualTo,
-        [DisplayName("Not Equal To")]
+        [DisplayName("NotEqualTo")]
         NotEqualTo,
-        [DisplayName("Greater Than")]
+        [DisplayName("GreaterThan")]
         GreaterThan,
-        [DisplayName("Less Than")]
+        [DisplayName("LessThan")]
         LessThan,
-        [DisplayName("Greater Than Or Equal To")]
+        [DisplayName("GreaterThanOrEqualTo")]
         GreaterThanOrEqualTo,
-        [DisplayName("Less Than Or Equal To")]
+        [DisplayName("LessThanOrEqualTo")]
         LessThanOrEqualTo,
-        [DisplayName("Is Empty")]
+        [DisplayName("IsEmpty")]
         IsEmpty,
-        [DisplayName("Not Is Empty")]
+        [DisplayName("NotIsEmpty")]
         NotIsEmpty,
-        [DisplayName("Is Null")]
+        [DisplayName("IsNull")]
         IsNull,
-        [DisplayName("Not Is Null")]
+        [DisplayName("NotIsNull")]
         NotIsNull
     }
 }
