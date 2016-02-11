@@ -101,12 +101,19 @@ namespace Orc.FilterBuilder
              where TDataExpression : DataTypeExpression
         {
             var dataTypeExpression = DataTypeExpression;
-            if (dataTypeExpression != null)
+            if (dataTypeExpression != null && dataTypeExpression is TDataExpression)
             {
-                if (dataTypeExpression is TDataExpression)
+                if (dataTypeExpression is NullableDataTypeExpression
+                    && typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)))
                 {
-                    return;
+                    var oldDataTypeExpression = dataTypeExpression as NullableDataTypeExpression;
+                    var newDataTypeExpression = createFunc() as NullableDataTypeExpression;
+                    if(newDataTypeExpression.IsNullable != oldDataTypeExpression.IsNullable)
+                    {
+                        DataTypeExpression = newDataTypeExpression;
+                    }
                 }
+                return;
             }
 
             DataTypeExpression = createFunc();

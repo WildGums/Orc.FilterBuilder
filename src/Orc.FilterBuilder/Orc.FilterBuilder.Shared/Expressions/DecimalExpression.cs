@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class DecimalExpression : DataTypeExpression
+    public class DecimalExpression : NullableDataTypeExpression
     {
         #region Constructors
         public DecimalExpression()
@@ -30,8 +30,6 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Properties
-        public bool IsNullable { get; set; }
-
         public decimal Value { get; set; }
         #endregion
 

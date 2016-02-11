@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class DateTimeExpression : DataTypeExpression
+    public class DateTimeExpression : NullableDataTypeExpression
     {
         #region Constructors
         public DateTimeExpression()
@@ -30,8 +30,6 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Properties
-        public bool IsNullable { get; set; }
-
         public DateTime Value { get; set; }
         #endregion
 
