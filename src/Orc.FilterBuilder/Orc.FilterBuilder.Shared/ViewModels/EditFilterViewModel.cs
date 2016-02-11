@@ -31,18 +31,24 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IReflectionService _reflectionService;
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
+        private readonly ILanguageService _languageService;
 
         private bool _isFilterDirty;
         #endregion
 
         #region Constructors
         public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer,
-            IMessageService messageService, IServiceLocator serviceLocator)
+            IMessageService messageService, IServiceLocator serviceLocator, ILanguageService languageService)
         {
             Argument.IsNotNull(() => filterSchemeEditInfo);
             Argument.IsNotNull(() => xmlSerializer);
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => serviceLocator);
+            Argument.IsNotNull(() => languageService);
+
+            _messageService = messageService;
+            _serviceLocator = serviceLocator;
+            _languageService = languageService;
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
@@ -51,10 +57,7 @@ namespace Orc.FilterBuilder.ViewModels
             EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
 
             var filterScheme = filterSchemeEditInfo.FilterScheme;
-
             _originalFilterScheme = filterScheme;
-            _messageService = messageService;
-            _serviceLocator = serviceLocator;
 
             _reflectionService = _serviceLocator.ResolveType<IReflectionService>(filterScheme.Tag);
 
@@ -130,7 +133,7 @@ namespace Orc.FilterBuilder.ViewModels
         {
             if (string.IsNullOrEmpty(FilterSchemeTitle))
             {
-                validationResults.Add(FieldValidationResult.CreateError("FilterSchemeTitle", "Field is required"));
+                validationResults.Add(FieldValidationResult.CreateError("FilterSchemeTitle", _languageService.GetString("FilterBuilder_FieldIsRequired")));
             }
 
             base.ValidateFields(validationResults);
@@ -140,7 +143,8 @@ namespace Orc.FilterBuilder.ViewModels
         {
             if (_isFilterDirty)
             {
-                if (await _messageService.ShowAsync("The filter has unsaved changes. Are you sure you want to close the editor without saving changes?", "Are you sure?", MessageButton.YesNo) == MessageResult.No)
+                if (await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_DiscardChanges"),
+                    _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
                 {
                     return false;
                 }

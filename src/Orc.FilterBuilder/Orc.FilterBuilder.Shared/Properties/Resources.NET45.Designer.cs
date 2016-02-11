@@ -63,180 +63,207 @@ namespace Orc.FilterBuilder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Add expression.
         /// </summary>
-        internal static string AddExpression {
+        internal static string FilterBuilder_AddExpression {
             get {
-                return ResourceManager.GetString("AddExpression", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_AddExpression", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add group.
         /// </summary>
-        internal static string AddGroup {
+        internal static string FilterBuilder_AddGroup {
             get {
-                return ResourceManager.GetString("AddGroup", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_AddGroup", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to And.
         /// </summary>
-        internal static string And {
+        internal static string FilterBuilder_And {
             get {
-                return ResourceManager.GetString("And", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_And", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        internal static string FilterBuilder_AreYouSure {
+            get {
+                return ResourceManager.GetString("FilterBuilder_AreYouSure", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to contains.
         /// </summary>
-        internal static string Contains {
+        internal static string FilterBuilder_Contains {
             get {
-                return ResourceManager.GetString("Contains", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Contains", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete item.
         /// </summary>
-        internal static string DeleteItem {
+        internal static string FilterBuilder_DeleteItem {
             get {
-                return ResourceManager.GetString("DeleteItem", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_DeleteItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The filter has unsaved changes. Are you sure you want to close the editor without saving changes?.
+        /// </summary>
+        internal static string FilterBuilder_DiscardChanges {
+            get {
+                return ResourceManager.GetString("FilterBuilder_DiscardChanges", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ends with.
         /// </summary>
-        internal static string EndsWith {
+        internal static string FilterBuilder_EndsWith {
             get {
-                return ResourceManager.GetString("EndsWith", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_EndsWith", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is equal to.
         /// </summary>
-        internal static string EqualTo {
+        internal static string FilterBuilder_EqualTo {
             get {
-                return ResourceManager.GetString("EqualTo", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_EqualTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field is required.
+        /// </summary>
+        internal static string FilterBuilder_FieldIsRequired {
+            get {
+                return ResourceManager.GetString("FilterBuilder_FieldIsRequired", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is greater than.
         /// </summary>
-        internal static string GreaterThan {
+        internal static string FilterBuilder_GreaterThan {
             get {
-                return ResourceManager.GetString("GreaterThan", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_GreaterThan", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is greater than or equal to.
         /// </summary>
-        internal static string GreaterThanOrEqualTo {
+        internal static string FilterBuilder_GreaterThanOrEqualTo {
             get {
-                return ResourceManager.GetString("GreaterThanOrEqualTo", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_GreaterThanOrEqualTo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is empty.
         /// </summary>
-        internal static string IsEmpty {
+        internal static string FilterBuilder_IsEmpty {
             get {
-                return ResourceManager.GetString("IsEmpty", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_IsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is null.
         /// </summary>
-        internal static string IsNull {
+        internal static string FilterBuilder_IsNull {
             get {
-                return ResourceManager.GetString("IsNull", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_IsNull", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to less than.
         /// </summary>
-        internal static string LessThan {
+        internal static string FilterBuilder_LessThan {
             get {
-                return ResourceManager.GetString("LessThan", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_LessThan", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to less than or equal to.
         /// </summary>
-        internal static string LessThanOrEqualTo {
+        internal static string FilterBuilder_LessThanOrEqualTo {
             get {
-                return ResourceManager.GetString("LessThanOrEqualTo", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_LessThanOrEqualTo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Live preview.
         /// </summary>
-        internal static string LivePreview {
+        internal static string FilterBuilder_LivePreview {
             get {
-                return ResourceManager.GetString("LivePreview", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_LivePreview", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string Name {
+        internal static string FilterBuilder_Name {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is not equal to.
         /// </summary>
-        internal static string NotEqualTo {
+        internal static string FilterBuilder_NotEqualTo {
             get {
-                return ResourceManager.GetString("NotEqualTo", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_NotEqualTo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is not empty.
         /// </summary>
-        internal static string NotIsEmpty {
+        internal static string FilterBuilder_NotIsEmpty {
             get {
-                return ResourceManager.GetString("NotIsEmpty", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_NotIsEmpty", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is not null.
         /// </summary>
-        internal static string NotIsNull {
+        internal static string FilterBuilder_NotIsNull {
             get {
-                return ResourceManager.GetString("NotIsNull", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_NotIsNull", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Or.
         /// </summary>
-        internal static string Or {
+        internal static string FilterBuilder_Or {
             get {
-                return ResourceManager.GetString("Or", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Or", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to starts with.
         /// </summary>
-        internal static string StartsWith {
+        internal static string FilterBuilder_StartsWith {
             get {
-                return ResourceManager.GetString("StartsWith", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_StartsWith", resourceCulture);
             }
         }
     }

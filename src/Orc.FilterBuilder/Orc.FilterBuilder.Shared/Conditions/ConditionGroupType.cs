@@ -12,9 +12,9 @@ namespace Orc.FilterBuilder
 {
     public enum ConditionGroupType
     {
-        [DisplayName("And")]
+        [DisplayName("FilterBuilder_And")]
         And,
-        [DisplayName("Or")]
+        [DisplayName("FilterBuilder_Or")]
         Or
     }
 }
