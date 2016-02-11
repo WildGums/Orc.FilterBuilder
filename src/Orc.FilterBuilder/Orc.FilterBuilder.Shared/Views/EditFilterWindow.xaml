@@ -47,13 +47,13 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
+
     <Grid Margin="6 6 6 0">
         <i:Interaction.Behaviors>
             <!-- Fix for SA-144 -->
             <catel:Focus FocusDelay="1000" FocusMoment="Loaded" />
         </i:Interaction.Behaviors>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -82,7 +82,7 @@
             <i:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
             </i:Interaction.Behaviors>
-            
+
             <TreeView.Resources>
                 <Style TargetType="DatePicker">
                     <Setter Property="Width" Value="123" />
@@ -98,7 +98,7 @@
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
-               
+
             </TreeView.Resources>
 
             <TreeView.ItemContainerStyle>
@@ -157,6 +157,24 @@
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                         <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
                                                               IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+
+                                <TextBox Text="{Binding DataTypeExpression.Value}">
+                                    <TextBox.Visibility>
+                                        <Binding Path="DataTypeExpression.ValueControlType" Converter="{StaticResource ValueControlTypeVisibilityConverter}">
+                                            <Binding.ConverterParameter>
+                                                <x:Array Type="{x:Type net40:ValueControlType}">
+                                                    <net40:ValueControlType>Integer</net40:ValueControlType>
+                                                    <net40:ValueControlType>Decimal</net40:ValueControlType>
+                                                    <net40:ValueControlType>Double</net40:ValueControlType>
+                                                    <net40:ValueControlType>Numeric</net40:ValueControlType>
+                                                </x:Array>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </TextBox.Visibility>
+                                    <i:Interaction.Behaviors>
+                                        <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
 
