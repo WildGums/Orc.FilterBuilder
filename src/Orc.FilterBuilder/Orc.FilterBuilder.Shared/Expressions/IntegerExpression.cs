@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class IntegerExpression : DataTypeExpression
+    public class IntegerExpression : NullableDataTypeExpression
     {
         #region Constructors
         public IntegerExpression()
@@ -30,8 +30,6 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Properties
-        public bool IsNullable { get; set; }
-
         public int Value { get; set; }
         #endregion
 

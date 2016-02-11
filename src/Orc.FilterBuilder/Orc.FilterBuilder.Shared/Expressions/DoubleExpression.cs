@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class DoubleExpression : DataTypeExpression
+    public class DoubleExpression : NullableDataTypeExpression
     {
         #region Constructors
         public DoubleExpression()
@@ -30,7 +30,6 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Properties
-        public bool IsNullable { get; set; }
         public double Value { get; set; }
         #endregion
 
