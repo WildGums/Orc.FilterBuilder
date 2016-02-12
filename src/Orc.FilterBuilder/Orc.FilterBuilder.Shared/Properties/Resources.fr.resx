@@ -160,10 +160,10 @@
     <value>is null</value>
   </data>
   <data name="FilterBuilder_LessThan" xml:space="preserve">
-    <value>less than</value>
+    <value>is less than</value>
   </data>
   <data name="FilterBuilder_LessThanOrEqualTo" xml:space="preserve">
-    <value>less than or equal to</value>
+    <value>is less than or equal to</value>
   </data>
   <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live preview</value>
