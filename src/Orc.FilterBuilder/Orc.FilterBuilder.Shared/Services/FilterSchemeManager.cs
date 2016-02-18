@@ -28,7 +28,7 @@ namespace Orc.FilterBuilder.Services
         private readonly IXmlSerializer _xmlSerializer;
         private string _lastFileName;
         private readonly AsyncLock _lockObject = new AsyncLock();
-        private object _tag;
+        private object _scope;
         #endregion
 
         #region Constructors
@@ -47,13 +47,13 @@ namespace Orc.FilterBuilder.Services
         public bool AutoSave { get; set; }
         public FilterSchemes FilterSchemes { get; private set; }
 
-        public object Tag
+        public object Scope
         {
-            get { return _tag; }
+            get { return _scope; }
             set
             {
-                _tag = value;
-                FilterSchemes.Tag = _tag;
+                _scope = value;
+                FilterSchemes.Scope = _scope;
             }
         }
         #endregion
@@ -153,7 +153,7 @@ namespace Orc.FilterBuilder.Services
                 return false;
             }
 
-            FilterSchemes.Tag = Tag;
+            FilterSchemes.Scope = Scope;
             return true;
         }
 

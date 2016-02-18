@@ -59,7 +59,7 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = filterSchemeEditInfo.FilterScheme;
             _originalFilterScheme = filterScheme;
 
-            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(filterScheme.Tag);
+            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(filterScheme.Scope);
 
             DeferValidationUntilFirstSaveCall = true;
 
@@ -71,7 +71,7 @@ namespace Orc.FilterBuilder.ViewModels
                 xmlSerializer.Deserialize(FilterScheme, memoryStream);                
             }
 
-            FilterScheme.Tag = filterScheme.Tag;
+            FilterScheme.Scope = filterScheme.Scope;
 
             FilterSchemeTitle = FilterScheme.Title;
 

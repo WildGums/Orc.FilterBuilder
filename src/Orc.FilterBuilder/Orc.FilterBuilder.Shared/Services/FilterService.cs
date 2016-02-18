@@ -28,8 +28,8 @@ namespace Orc.FilterBuilder.Services
         {
             Argument.IsNotNull(() => filterSchemeManager);
 
-            var tag = filterSchemeManager.Tag;
-            _reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(tag);
+            var scope = filterSchemeManager.Scope;
+            _reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(scope);
             
             filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
         }

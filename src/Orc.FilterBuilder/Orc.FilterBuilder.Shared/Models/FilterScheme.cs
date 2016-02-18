@@ -24,7 +24,7 @@ namespace Orc.FilterBuilder.Models
     public class FilterScheme : ModelBase
     {
         private static readonly Type _defaultTargetType = typeof(object);
-        private object _tag;
+        private object _scope;
 
         #region Constructors
         public FilterScheme()
@@ -69,13 +69,13 @@ namespace Orc.FilterBuilder.Models
         }
 
         [ExcludeFromSerialization]
-        public object Tag
+        public object Scope
         {
-            get { return _tag; }
+            get { return _scope; }
             set
             {
-                _tag = value;
-                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_tag);
+                _scope = value;
+                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
                 if (reflectionService != null)
                 {
                     this.EnsureIntegrity(reflectionService);

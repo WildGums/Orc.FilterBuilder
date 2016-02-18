@@ -93,7 +93,7 @@ namespace Orc.FilterBuilder.ViewModels
         /// </summary>
         public Func<object, bool> FilteringFunc { get; set; }
 
-        public object ManagerTag { get; set; }
+        public object Scope { get; set; }
         #endregion
 
         #region Methods
@@ -103,7 +103,7 @@ namespace Orc.FilterBuilder.ViewModels
                    && !ReferenceEquals(filterScheme, AvailableSchemes[0]);
         }
 
-        private void OnManagerTagChanged()
+        private void OnScopeChanged()
         {
             if (_filterSchemeManager != null)
             {
@@ -111,14 +111,14 @@ namespace Orc.FilterBuilder.ViewModels
                 _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
             }
 
-            var tag = ManagerTag;
-            _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(tag);
+            var scope = Scope;
+            _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(scope);
             _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
 
-            _filterService = _serviceLocator.ResolveType<IFilterService>(tag);
+            _filterService = _serviceLocator.ResolveType<IFilterService>(scope);
             _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
 
-            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(tag);
+            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(scope);
 
             UpdateFilters();
         }
