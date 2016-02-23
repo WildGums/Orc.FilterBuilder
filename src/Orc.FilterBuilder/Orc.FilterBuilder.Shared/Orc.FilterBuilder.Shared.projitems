@@ -30,10 +30,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DoubleExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\IntegerExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\NullableDataTypeExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\NumericExpression.generic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\NumericExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\PropertyExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\StringExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\TimeSpanExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\ValueDataTypeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ColorExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionTreeItemExtensions.cs" />
