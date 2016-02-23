@@ -16,6 +16,14 @@ namespace Orc.FilterBuilder
         Decimal,
         Double,
         Integer,
-        Numeric
+        Numeric,
+        UnsignedInteger,
+        Byte,
+        SByte,
+        Short,
+        UnsignedShort,
+        Long,
+        UnsignedLong,
+        Float
     }
 }
