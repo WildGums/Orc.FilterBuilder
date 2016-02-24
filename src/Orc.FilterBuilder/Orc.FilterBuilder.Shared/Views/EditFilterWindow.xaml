@@ -182,6 +182,9 @@
                                         </Binding>
                                     </TextBox.Visibility>
                                     <i:Interaction.Behaviors>
+                                        <catel:NumericTextBox IsDecimalAllowed="{Binding DataTypeExpression.IsDecimal}"
+                                                              IsNegativeAllowed="{Binding DataTypeExpression.IsSigned}"
+                                                              UpdateBindingOnTextChanged="False" />
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
