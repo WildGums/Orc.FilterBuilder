@@ -53,6 +53,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterBuilderMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CollectionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\InstancePropertyHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Markup\EnumBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\FilterScheme.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemeEditInfo.cs" />

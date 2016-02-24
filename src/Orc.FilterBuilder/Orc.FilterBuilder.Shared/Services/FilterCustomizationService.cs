@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.Services
 {
     using Catel;
     using Models;
+    using System.Linq;
 
     public class FilterCustomizationService : IFilterCustomizationService
     {
@@ -16,28 +17,24 @@ namespace Orc.FilterBuilder.Services
         {
             Argument.IsNotNull(() => instanceProperties);
 
-            // Remove Catel properties
-            RemoveProperty(instanceProperties, "BusinessRuleErrorCount");
-            RemoveProperty(instanceProperties, "BusinessRuleWarningCount");
-            RemoveProperty(instanceProperties, "FieldErrorCount");
-            RemoveProperty(instanceProperties, "FieldWarningCount");
-            RemoveProperty(instanceProperties, "HasErrors");
-            RemoveProperty(instanceProperties, "HasWarnings");
-            RemoveProperty(instanceProperties, "IsDirty");
-            RemoveProperty(instanceProperties, "IsEditable");
-            RemoveProperty(instanceProperties, "IsInEditSession");
-            RemoveProperty(instanceProperties, "IsReadOnly");
-        }
+            var catelProperties = new string[] {
+                "BusinessRuleErrorCount",
+                "BusinessRuleWarningCount",
+                "FieldErrorCount",
+                "FieldWarningCount",
+                "HasErrors",
+                "HasWarnings",
+                "IsDirty",
+                "IsEditable",
+                "IsInEditSession",
+                "IsReadOnly"
+            };
 
-        protected void RemoveProperty(IPropertyCollection instanceProperties, string propertyName)
-        {
-            for (int i = 0; i < instanceProperties.Properties.Count; i++)
-            {
-                if (string.Equals(instanceProperties.Properties[i].Name, propertyName))
-                {
-                    instanceProperties.Properties.RemoveAt(i--);
-                }
-            }
+            // Remove Catel properties
+            instanceProperties.Properties.RemoveAll(x => catelProperties.Contains(x.Name));
+
+            // Remove unsupported type properties
+            instanceProperties.Properties.RemoveAll(x => !InstancePropertyHelper.HasSupportedType(x));
         }
     }
 }
