@@ -7,10 +7,14 @@
 
 namespace Orc.FilterBuilder
 {
-    using System;
-    using System.Diagnostics;
     using Catel.Reflection;
     using Orc.FilterBuilder.Models;
+    using System;
+    using System.Diagnostics;
+    using System.Text.RegularExpressions;
+    using Catel.Data;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
@@ -81,6 +85,12 @@ namespace Orc.FilterBuilder
 
                 case Condition.StartsWith:
                     return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.MatchesTo:
+                    return entityValue != null && Regex.IsMatch(entityValue, Value, RegexOptions.Compiled);
+
+                case Condition.NotMatchesTo:
+                    return entityValue != null && !Regex.IsMatch(entityValue, Value, RegexOptions.Compiled);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));

@@ -168,6 +168,9 @@
   <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live preview</value>
   </data>
+  <data name="FilterBuilder_MatchesTo" xml:space="preserve">
+    <value>matches to</value>
+  </data>
   <data name="FilterBuilder_Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="FilterBuilder_NotIsNull" xml:space="preserve">
     <value>is not null</value>
+  </data>
+  <data name="FilterBuilder_NotMatchesTo" xml:space="preserve">
+    <value>not matches to</value>
   </data>
   <data name="FilterBuilder_Or" xml:space="preserve">
     <value>Or</value>
