@@ -12,6 +12,8 @@ namespace Orc.FilterBuilder
     using System;
     using System.Diagnostics;
     using System.Text.RegularExpressions;
+    using Catel.Caching;
+    using Catel.Caching.Policies;
     using Catel.Data;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -19,7 +21,16 @@ namespace Orc.FilterBuilder
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
     {
+        #region Fields
+        private static readonly CacheStorage<string, Regex> _regexCache;
+        #endregion
+
         #region Constructors
+        static StringExpression()
+        {
+            _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+        }
+
         public StringExpression()
         {
             SelectedCondition = Condition.Contains;
@@ -87,10 +98,10 @@ namespace Orc.FilterBuilder
                     return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.Matches:
-                    return entityValue != null && Regex.IsMatch(entityValue, Value, RegexOptions.Compiled);
+                    return entityValue != null && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 case Condition.DoesNotMatch:
-                    return entityValue != null && !Regex.IsMatch(entityValue, Value, RegexOptions.Compiled);
+                    return entityValue != null && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
