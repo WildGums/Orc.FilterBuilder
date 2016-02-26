@@ -124,6 +124,15 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to does not match.
+        /// </summary>
+        internal static string FilterBuilder_DoesNotMatch {
+            get {
+                return ResourceManager.GetString("FilterBuilder_DoesNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ends with.
         /// </summary>
         internal static string FilterBuilder_EndsWith {
@@ -214,11 +223,11 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to matches to.
+        ///   Looks up a localized string similar to matches.
         /// </summary>
-        internal static string FilterBuilder_MatchesTo {
+        internal static string FilterBuilder_Matches {
             get {
-                return ResourceManager.GetString("FilterBuilder_MatchesTo", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Matches", resourceCulture);
             }
         }
         
@@ -255,15 +264,6 @@ namespace Orc.FilterBuilder.Properties {
         internal static string FilterBuilder_NotIsNull {
             get {
                 return ResourceManager.GetString("FilterBuilder_NotIsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to not matches to.
-        /// </summary>
-        internal static string FilterBuilder_NotMatchesTo {
-            get {
-                return ResourceManager.GetString("FilterBuilder_NotMatchesTo", resourceCulture);
             }
         }
         

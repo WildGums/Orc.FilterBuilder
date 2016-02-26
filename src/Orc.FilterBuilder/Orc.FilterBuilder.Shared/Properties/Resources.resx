@@ -138,6 +138,9 @@
   <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
     <value>The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</value>
   </data>
+  <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
+    <value>does not match</value>
+  </data>
   <data name="FilterBuilder_EndsWith" xml:space="preserve">
     <value>ends with</value>
   </data>
@@ -168,8 +171,8 @@
   <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live preview</value>
   </data>
-  <data name="FilterBuilder_MatchesTo" xml:space="preserve">
-    <value>matches to</value>
+  <data name="FilterBuilder_Matches" xml:space="preserve">
+    <value>matches</value>
   </data>
   <data name="FilterBuilder_Name" xml:space="preserve">
     <value>Name</value>
@@ -182,9 +185,6 @@
   </data>
   <data name="FilterBuilder_NotIsNull" xml:space="preserve">
     <value>is not null</value>
-  </data>
-  <data name="FilterBuilder_NotMatchesTo" xml:space="preserve">
-    <value>not matches to</value>
   </data>
   <data name="FilterBuilder_Or" xml:space="preserve">
     <value>Or</value>

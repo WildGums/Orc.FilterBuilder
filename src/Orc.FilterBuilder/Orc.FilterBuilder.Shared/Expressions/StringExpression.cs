@@ -86,10 +86,10 @@ namespace Orc.FilterBuilder
                 case Condition.StartsWith:
                     return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
-                case Condition.MatchesTo:
+                case Condition.Matches:
                     return entityValue != null && Regex.IsMatch(entityValue, Value, RegexOptions.Compiled);
 
-                case Condition.NotMatchesTo:
+                case Condition.DoesNotMatch:
                     return entityValue != null && !Regex.IsMatch(entityValue, Value, RegexOptions.Compiled);
 
                 default:

@@ -37,9 +37,9 @@ namespace Orc.FilterBuilder
         IsNull,
         [DisplayName("FilterBuilder_NotIsNull")]
         NotIsNull,
-        [DisplayName("FilterBuilder_MatchesTo")]
-        MatchesTo,
-        [DisplayName("FilterBuilder_NotMatchesTo")]
-        NotMatchesTo
+        [DisplayName("FilterBuilder_Matches")]
+        Matches,
+        [DisplayName("FilterBuilder_DoesNotMatch")]
+        DoesNotMatch
     }
 }
