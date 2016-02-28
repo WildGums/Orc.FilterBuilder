@@ -138,6 +138,9 @@
   <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
     <value>De filter heeft niet opgeslagen wijzigingen. Weet je zeker dat je het bewerken wilt stoppen zonder op te slaan?</value>
   </data>
+  <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
+    <value>does not match</value>
+  </data>
   <data name="FilterBuilder_EndsWith" xml:space="preserve">
     <value>eindigt met</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live voorbeeld</value>
+  </data>
+  <data name="FilterBuilder_Matches" xml:space="preserve">
+    <value>matches</value>
   </data>
   <data name="FilterBuilder_Name" xml:space="preserve">
     <value>Naam</value>
