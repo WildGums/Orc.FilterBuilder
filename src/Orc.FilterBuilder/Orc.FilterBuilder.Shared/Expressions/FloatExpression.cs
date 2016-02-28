@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DecimalExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+// <copyright file="FloatExpression.cs" company="WildGums">
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,23 +9,23 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class DecimalExpression : NumericExpression<decimal>
+    public class FloatExpression : NumericExpression<float>
     {
         #region Constructors
-        public DecimalExpression()
+        public FloatExpression()
             : this(false)
         {
         }
 
-        public DecimalExpression(bool isNullable)
+        public FloatExpression(bool isNullable)
         {
             IsDecimal = true;
             IsNullable = isNullable;
             IsSigned = true;
-            ValueControlType = ValueControlType.Decimal;
+            ValueControlType = ValueControlType.Float;
         }
         #endregion
     }

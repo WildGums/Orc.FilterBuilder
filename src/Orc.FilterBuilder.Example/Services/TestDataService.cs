@@ -57,6 +57,7 @@ namespace FilterBuilder.Example.Services
             testEntity.Price = (decimal)(_random.NextDouble() * 1000 - 500);
             testEntity.NullablePrice = (_random.Next(10) >= 5 ? (decimal?)(_random.NextDouble() * 1000 - 500) : null);
             testEntity.EnumValue = (MyEnum)_random.Next(1, 3);
+            testEntity.Description = new Description(GetRandomString());
             return testEntity;
         }
 

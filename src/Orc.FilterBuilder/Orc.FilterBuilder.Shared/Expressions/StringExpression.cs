@@ -7,15 +7,32 @@
 
 namespace Orc.FilterBuilder
 {
-    using System;
-    using System.Diagnostics;
     using Catel.Reflection;
     using Orc.FilterBuilder.Models;
+    using System;
+    using System.Diagnostics;
+    using System.Text.RegularExpressions;
+    using Catel.Caching;
+    using Catel.Caching.Policies;
+    using Catel.Data;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
     {
+        #region Fields
+        private static readonly CacheStorage<string, Regex> _regexCache;
+        private static readonly CacheStorage<string, bool> _regexIsValidCache;
+        #endregion
+
         #region Constructors
+        static StringExpression()
+        {
+            _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+            _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+        }
+
         public StringExpression()
         {
             SelectedCondition = Condition.Contains;
@@ -81,6 +98,16 @@ namespace Orc.FilterBuilder
 
                 case Condition.StartsWith:
                     return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.Matches:
+                    return entityValue != null
+                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
+                        && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
+
+                case Condition.DoesNotMatch:
+                    return entityValue != null
+                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
+                        && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));

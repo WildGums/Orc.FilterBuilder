@@ -41,9 +41,45 @@ namespace Orc.FilterBuilder
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
             }
-            else if (Property.Type.GetNonNullable() == typeof(uint))
+            else if (Property.Type == typeof(byte))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new NumericExpression(Property.Type));
+                CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(false));
+            }
+            else if (Property.Type == typeof(byte?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(true));
+            }
+            else if (Property.Type == typeof(sbyte))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(false));
+            }
+            else if (Property.Type == typeof(sbyte?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(true));
+            }
+            else if (Property.Type == typeof(ushort))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(false));
+            }
+            else if (Property.Type == typeof(ushort?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(true));
+            }
+            else if (Property.Type == typeof(short))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(false));
+            }
+            else if (Property.Type == typeof(short?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(true));
+            }
+            else if (Property.Type == typeof(uint))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(false));
+            }
+            else if (Property.Type == typeof(uint?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(true));
             }
             else if (Property.Type == typeof(int))
             {
@@ -52,6 +88,22 @@ namespace Orc.FilterBuilder
             else if (Property.Type == typeof(int?))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(true));
+            }
+            else if (Property.Type == typeof(ulong))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(false));
+            }
+            else if (Property.Type == typeof(ulong?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(true));
+            }
+            else if(Property.Type == typeof(long))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(false));
+            }
+            else if (Property.Type == typeof(long?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(true));
             }
             else if (Property.Type == typeof(string))
             {
@@ -80,6 +132,14 @@ namespace Orc.FilterBuilder
             else if (Property.Type == typeof(decimal?))
             {
                 CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
+            }
+            else if (Property.Type == typeof(float))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(false));
+            }
+            else if (Property.Type == typeof(float?))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(true));
             }
             else if (Property.Type == typeof(double))
             {

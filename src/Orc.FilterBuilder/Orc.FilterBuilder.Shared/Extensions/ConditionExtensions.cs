@@ -54,6 +54,12 @@ namespace Orc.FilterBuilder
                 case Condition.NotIsNull:
                     return "is not null";
 
+                case Condition.Matches:
+                    return "matches";
+
+                case Condition.DoesNotMatch:
+                    return "does not match";
+
                 default:
                     throw new ArgumentOutOfRangeException("condition", condition, null);
             }

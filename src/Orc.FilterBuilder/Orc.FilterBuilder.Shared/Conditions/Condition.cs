@@ -36,6 +36,10 @@ namespace Orc.FilterBuilder
         [DisplayName("FilterBuilder_IsNull")]
         IsNull,
         [DisplayName("FilterBuilder_NotIsNull")]
-        NotIsNull
+        NotIsNull,
+        [DisplayName("FilterBuilder_Matches")]
+        Matches,
+        [DisplayName("FilterBuilder_DoesNotMatch")]
+        DoesNotMatch
     }
 }

@@ -138,6 +138,9 @@
   <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
     <value>The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</value>
   </data>
+  <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
+    <value>does not match</value>
+  </data>
   <data name="FilterBuilder_EndsWith" xml:space="preserve">
     <value>ends with</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live preview</value>
+  </data>
+  <data name="FilterBuilder_Matches" xml:space="preserve">
+    <value>matches</value>
   </data>
   <data name="FilterBuilder_Name" xml:space="preserve">
     <value>Name</value>

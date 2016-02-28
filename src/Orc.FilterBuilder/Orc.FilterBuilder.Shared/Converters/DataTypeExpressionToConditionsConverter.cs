@@ -42,9 +42,17 @@ namespace Orc.FilterBuilder.Converters
                     case ValueControlType.DateTime:
                         // No custom conditions
                         break;
-                    
+
+                    case ValueControlType.Byte:
+                    case ValueControlType.SByte:
+                    case ValueControlType.Short:
+                    case ValueControlType.UnsignedShort:
                     case ValueControlType.Integer:
+                    case ValueControlType.UnsignedInteger:
+                    case ValueControlType.Long:
+                    case ValueControlType.UnsignedLong:
                     case ValueControlType.Decimal:
+                    case ValueControlType.Float:
                     case ValueControlType.Double:
                     case ValueControlType.Numeric:
                         // No custom conditions

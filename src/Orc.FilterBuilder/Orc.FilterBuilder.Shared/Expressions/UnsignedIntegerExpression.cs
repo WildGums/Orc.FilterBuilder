@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DecimalExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+// <copyright file="UnsignedIntegerExpression.cs" company="WildGums">
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,23 +9,23 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class DecimalExpression : NumericExpression<decimal>
+    public class UnsignedIntegerExpression : NumericExpression<uint>
     {
         #region Constructors
-        public DecimalExpression()
+        public UnsignedIntegerExpression()
             : this(false)
         {
         }
 
-        public DecimalExpression(bool isNullable)
+        public UnsignedIntegerExpression(bool isNullable)
         {
-            IsDecimal = true;
+            IsDecimal = false;
             IsNullable = isNullable;
-            IsSigned = true;
-            ValueControlType = ValueControlType.Decimal;
+            IsSigned = false;
+            ValueControlType = ValueControlType.UnsignedInteger;
         }
         #endregion
     }
