@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DecimalExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+// <copyright file="UnsignedLongExpression.cs" company="WildGums">
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,23 +9,23 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class DecimalExpression : NumericExpression<decimal>
+    public class UnsignedLongExpression : NumericExpression<ulong>
     {
         #region Constructors
-        public DecimalExpression()
+        public UnsignedLongExpression()
             : this(false)
         {
         }
 
-        public DecimalExpression(bool isNullable)
+        public UnsignedLongExpression(bool isNullable)
         {
-            IsDecimal = true;
+            IsDecimal = false;
             IsNullable = isNullable;
-            IsSigned = true;
-            ValueControlType = ValueControlType.Decimal;
+            IsSigned = false;
+            ValueControlType = ValueControlType.UnsignedLong;
         }
         #endregion
     }

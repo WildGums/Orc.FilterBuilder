@@ -165,8 +165,16 @@
                                         <Binding Path="DataTypeExpression.ValueControlType" Converter="{StaticResource ValueControlTypeVisibilityConverter}">
                                             <Binding.ConverterParameter>
                                                 <x:Array Type="{x:Type net40:ValueControlType}">
+                                                    <net40:ValueControlType>Byte</net40:ValueControlType>
+                                                    <net40:ValueControlType>SByte</net40:ValueControlType>
+                                                    <net40:ValueControlType>Short</net40:ValueControlType>
+                                                    <net40:ValueControlType>UnsignedShort</net40:ValueControlType>
                                                     <net40:ValueControlType>Integer</net40:ValueControlType>
+                                                    <net40:ValueControlType>UnsignedInteger</net40:ValueControlType>
+                                                    <net40:ValueControlType>Long</net40:ValueControlType>
+                                                    <net40:ValueControlType>UnsignedLong</net40:ValueControlType>
                                                     <net40:ValueControlType>Decimal</net40:ValueControlType>
+                                                    <net40:ValueControlType>Float</net40:ValueControlType>
                                                     <net40:ValueControlType>Double</net40:ValueControlType>
                                                     <net40:ValueControlType>Numeric</net40:ValueControlType>
                                                 </x:Array>
@@ -174,6 +182,9 @@
                                         </Binding>
                                     </TextBox.Visibility>
                                     <i:Interaction.Behaviors>
+                                        <catel:NumericTextBox IsDecimalAllowed="{Binding DataTypeExpression.IsDecimal}"
+                                                              IsNegativeAllowed="{Binding DataTypeExpression.IsSigned}"
+                                                              UpdateBindingOnTextChanged="False" />
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>

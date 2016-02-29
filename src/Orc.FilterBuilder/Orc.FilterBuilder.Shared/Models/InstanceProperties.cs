@@ -24,12 +24,7 @@ namespace Orc.FilterBuilder.Models
             var finalProperties = new Dictionary<string, IPropertyMetadata>();
 
             var regularProperties = new List<PropertyInfo>();
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && m.PropertyType == typeof(string)));
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && (m.PropertyType == typeof(int) || m.PropertyType == typeof(int?))));
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && (m.PropertyType == typeof(DateTime) || m.PropertyType == typeof(DateTime?))));
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && m.PropertyType == typeof(bool)));
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && m.PropertyType == typeof(TimeSpan)));
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && (m.PropertyType == typeof(decimal) || m.PropertyType == typeof(decimal?))));
+            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && InstancePropertyHelper.HasSupportedType(m)));
 
             foreach (var property in regularProperties.Distinct())
             {

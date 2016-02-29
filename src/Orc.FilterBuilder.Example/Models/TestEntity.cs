@@ -32,6 +32,7 @@ namespace FilterBuilder.Example.Models
         public decimal Price { get; set; }
         public decimal? NullablePrice { get; set; }
         public MyEnum EnumValue { get; set; }
+        public Description Description { get; set; }
         #endregion
     }
 }
