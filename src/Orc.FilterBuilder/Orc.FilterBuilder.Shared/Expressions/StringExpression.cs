@@ -22,17 +22,11 @@ namespace Orc.FilterBuilder
     public class StringExpression : DataTypeExpression
     {
         #region Fields
-        private static readonly CacheStorage<string, Regex> _regexCache;
-        private static readonly CacheStorage<string, bool> _regexIsValidCache;
+        private static readonly CacheStorage<string, Regex> _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+        private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
         #endregion
 
         #region Constructors
-        static StringExpression()
-        {
-            _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
-            _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
-        }
-
         public StringExpression()
         {
             SelectedCondition = Condition.Contains;
