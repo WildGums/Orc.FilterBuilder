@@ -52,6 +52,8 @@ namespace Orc.FilterBuilder
                 Condition.EndsWith,
                 Condition.EqualTo,
                 Condition.NotEqualTo,
+                Condition.Matches,
+                Condition.DoesNotMatch,
                 Condition.IsEmpty,
                 Condition.NotIsEmpty,
                 Condition.IsNull,
@@ -70,7 +72,9 @@ namespace Orc.FilterBuilder
                 condition == Condition.LessThanOrEqualTo ||
                 condition == Condition.Contains ||
                 condition == Condition.EndsWith ||
-                condition == Condition.StartsWith;
+                condition == Condition.StartsWith ||
+                condition == Condition.Matches ||
+                condition == Condition.DoesNotMatch;
         }
         #endregion
     }
