@@ -53,14 +53,14 @@ namespace Orc.FilterBuilder
             };
         }
 
-        public static bool HasSupportedType(IPropertyMetadata property)
+        public static bool IsSupportedType(IPropertyMetadata property)
         {
             Argument.IsNotNull(() => property);
 
             return _supportedTypes.Contains(property.Type) || property.Type.IsEnumEx();
         }
 
-        public static bool HasSupportedType(PropertyInfo property)
+        public static bool IsSupportedType(PropertyInfo property)
         {
             Argument.IsNotNull(() => property);
 

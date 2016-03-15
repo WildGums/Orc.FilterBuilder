@@ -35,7 +35,7 @@ namespace Orc.FilterBuilder.Services
             instanceProperties.Properties.RemoveAll(x => catelProperties.Contains(x.Name));
 
             // Remove unsupported type properties
-            instanceProperties.Properties.RemoveAll(x => !InstancePropertyHelper.HasSupportedType(x));
+            instanceProperties.Properties.RemoveAll(x => !InstancePropertyHelper.IsSupportedType(x));
         }
     }
 }

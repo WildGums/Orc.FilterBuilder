@@ -24,7 +24,7 @@ namespace Orc.FilterBuilder.Models
             var finalProperties = new Dictionary<string, IPropertyMetadata>();
 
             var regularProperties = new List<PropertyInfo>();
-            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && InstancePropertyHelper.HasSupportedType(m)));
+            regularProperties.AddRange(type.GetProperties().Where(m => m.CanRead && InstancePropertyHelper.IsSupportedType(m)));
 
             foreach (var property in regularProperties.Distinct())
             {
