@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder.Services
 {
+    using System.Collections.Generic;
     using Catel;
     using Models;
     using System.Linq;
@@ -17,7 +18,7 @@ namespace Orc.FilterBuilder.Services
         {
             Argument.IsNotNull(() => instanceProperties);
 
-            var catelProperties = new string[] {
+            var catelProperties = new HashSet<string> {
                 "BusinessRuleErrorCount",
                 "BusinessRuleWarningCount",
                 "FieldErrorCount",

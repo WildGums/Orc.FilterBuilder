@@ -11,16 +11,17 @@ namespace Orc.FilterBuilder
     using Catel.Reflection;
     using Models;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
     public static class InstancePropertyHelper
     {
-        private static Type[] _supportedTypes;
+        private static HashSet<Type> _supportedTypes;
 
         static InstancePropertyHelper()
         {
-            _supportedTypes = new Type[]
+            _supportedTypes = new HashSet<Type>
             {
                 typeof(bool),
                 typeof(byte),
