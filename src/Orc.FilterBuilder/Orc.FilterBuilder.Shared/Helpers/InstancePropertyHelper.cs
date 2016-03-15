@@ -17,7 +17,7 @@ namespace Orc.FilterBuilder
 
     public static class InstancePropertyHelper
     {
-        private static HashSet<Type> _supportedTypes;
+        private static readonly HashSet<Type> _supportedTypes;
 
         static InstancePropertyHelper()
         {
@@ -53,18 +53,25 @@ namespace Orc.FilterBuilder
             };
         }
 
-        public static bool IsSupportedType(IPropertyMetadata property)
+        public static bool IsSupportedType(this IPropertyMetadata property)
         {
             Argument.IsNotNull(() => property);
 
-            return _supportedTypes.Contains(property.Type) || property.Type.IsEnumEx();
+            return IsSupportedType(property.Type);
         }
 
-        public static bool IsSupportedType(PropertyInfo property)
+        public static bool IsSupportedType(this PropertyInfo property)
         {
             Argument.IsNotNull(() => property);
 
-            return _supportedTypes.Contains(property.PropertyType) || property.PropertyType.IsEnumEx();
+            return IsSupportedType(property.PropertyType);
+        }
+
+        public static bool IsSupportedType(this Type type)
+        {
+            Argument.IsNotNull(() => type);
+
+            return _supportedTypes.Contains(type) || type.IsEnumEx();
         }
     }
 }
