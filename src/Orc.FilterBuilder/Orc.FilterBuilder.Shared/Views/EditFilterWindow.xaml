@@ -98,11 +98,10 @@
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
-
             </TreeView.Resources>
 
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeViewItemStyle}"/>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource FilterBuilderTreeViewItemStyle}"/>
             </TreeView.ItemContainerStyle>
 
             <TreeView.ItemTemplate>
@@ -118,17 +117,17 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource AddGeometry}" 
                                     Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
                                     Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
@@ -202,7 +201,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource IconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource DeleteGeometry}"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>

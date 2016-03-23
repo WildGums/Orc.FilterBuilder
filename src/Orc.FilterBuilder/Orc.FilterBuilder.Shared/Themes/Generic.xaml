@@ -191,7 +191,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="IconButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource FilterBuilderButtonStyle}">
+    <Style x:Key="FilterBuilderIconButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource FilterBuilderButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -407,7 +407,7 @@
     </Style>
 
     <!--TreeViewItem styles-->
-    <Style x:Key="TreeViewToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="FilterBuilderTreeViewToggleButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -418,6 +418,7 @@
                                 <ColumnDefinition Width="8"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+                            
                             <Path x:Name="arrow" Grid.ColumnSpan="2" HorizontalAlignment="Left" Fill="Black" Stroke="Black"
                                   StrokeThickness="1" VerticalAlignment="Center" Data="{StaticResource ExpanderToggleButtonArrow}"
                                   Height="4.5" Stretch="Fill" Width="8" RenderTransformOrigin="0.5,0.5" Margin="0">
@@ -428,6 +429,7 @@
                                     </TransformGroup>
                                 </Path.RenderTransform>
                             </Path>
+                            
                             <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" RecognizesAccessKey="True"
                                               SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
@@ -467,7 +469,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+    <Style x:Key="FilterBuilderTreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
         <Setter Property="IsExpanded" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -484,7 +486,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ToggleButton x:Name="Expander" 
                                               Grid.Column="0"
-                                              Style="{DynamicResource TreeViewToggleButtonStyle}"
+                                              Style="{DynamicResource FilterBuilderTreeViewToggleButtonStyle}"
                                               IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                               ClickMode="Press"/>
                                 <ContentPresenter x:Name="PART_Header" 
