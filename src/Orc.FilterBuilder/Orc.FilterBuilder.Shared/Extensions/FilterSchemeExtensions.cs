@@ -74,6 +74,14 @@ namespace Orc.FilterBuilder
                     }
                 }
             }
+            else
+            {
+                // We already have it, but make sure to get the right instance
+                var property = propertyExpression.Property;
+
+                var typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
+                propertyExpression.Property = typeProperties.GetProperty(property.Name);
+            }
         }
 
         [Time]

@@ -29,6 +29,7 @@ namespace Orc.FilterBuilder.ViewModels
         #region Fields
         private readonly FilterScheme _originalFilterScheme;
         private readonly IReflectionService _reflectionService;
+        private readonly IXmlSerializer _xmlSerializer;
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
         private readonly ILanguageService _languageService;
@@ -46,6 +47,7 @@ namespace Orc.FilterBuilder.ViewModels
             Argument.IsNotNull(() => serviceLocator);
             Argument.IsNotNull(() => languageService);
 
+            _xmlSerializer = xmlSerializer;
             _messageService = messageService;
             _serviceLocator = serviceLocator;
             _languageService = languageService;
@@ -63,17 +65,10 @@ namespace Orc.FilterBuilder.ViewModels
 
             DeferValidationUntilFirstSaveCall = true;
 
-            FilterScheme = new FilterScheme();
-            using (var memoryStream = new MemoryStream())
+            FilterScheme = new FilterScheme
             {
-                xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
-                memoryStream.Position = 0L;
-                xmlSerializer.Deserialize(FilterScheme, memoryStream);                
-            }
-
-            FilterScheme.Scope = filterScheme.Scope;
-
-            FilterSchemeTitle = FilterScheme.Title;
+                Scope = _originalFilterScheme.Scope
+            };
 
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
@@ -109,6 +104,19 @@ namespace Orc.FilterBuilder.ViewModels
             await base.InitializeAsync();
 
             InstanceProperties = (await _reflectionService.GetInstancePropertiesAsync(_originalFilterScheme.TargetType)).Properties;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
+                memoryStream.Position = 0L;
+                _xmlSerializer.Deserialize(FilterScheme, memoryStream);
+            }
+
+            FilterScheme.EnsureIntegrity(_reflectionService);
+            FilterScheme.Scope = _originalFilterScheme.Scope;
+            FilterSchemeTitle = FilterScheme.Title;
+
+            RaisePropertyChanged(() => FilterScheme);
 
             UpdatePreviewItems();
 
