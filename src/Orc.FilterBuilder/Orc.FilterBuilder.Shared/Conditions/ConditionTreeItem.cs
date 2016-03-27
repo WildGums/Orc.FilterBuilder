@@ -68,11 +68,6 @@ namespace Orc.FilterBuilder
 
         protected override void OnDeserialized()
         {
-            var serviceLocator = this.GetServiceLocator();
-            var reflectionService = serviceLocator.ResolveType<IReflectionService>();
-
-            this.EnsureIntegrity(reflectionService);
-
             SubscribeToEvents();
 
             foreach (var item in Items)
