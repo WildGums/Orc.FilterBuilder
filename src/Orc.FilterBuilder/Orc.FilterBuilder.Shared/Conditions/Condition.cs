@@ -40,6 +40,12 @@ namespace Orc.FilterBuilder
         [DisplayName("FilterBuilder_Matches")]
         Matches,
         [DisplayName("FilterBuilder_DoesNotMatch")]
-        DoesNotMatch
+        DoesNotMatch,
+        [DisplayName("FilterBuilder_DoesNotContain")]
+        DoesNotContain,
+        [DisplayName("FilterBuilder_DoesNotStartWith")]
+        DoesNotStartWith,
+        [DisplayName("FilterBuilder_DoesNotEndWith")]
+        DoesNotEndWith
     }
 }

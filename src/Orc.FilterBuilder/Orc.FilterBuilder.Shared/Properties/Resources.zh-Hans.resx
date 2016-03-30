@@ -138,8 +138,17 @@
   <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
     <value>The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</value>
   </data>
+  <data name="FilterBuilder_DoesNotContain" xml:space="preserve">
+    <value>does not contain</value>
+  </data>
+  <data name="FilterBuilder_DoesNotEndWith" xml:space="preserve">
+    <value>does not end with</value>
+  </data>
   <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
     <value>does not match</value>
+  </data>
+  <data name="FilterBuilder_DoesNotStartWith" xml:space="preserve">
+    <value>does not start with</value>
   </data>
   <data name="FilterBuilder_EndsWith" xml:space="preserve">
     <value>尾部包含</value>
