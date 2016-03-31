@@ -9,7 +9,7 @@
     <Geometry x:Key="ExpanderToggleButtonArrow">M5,-0 L9,5 1,5 z</Geometry>
 
     <Style x:Key="FilterBuilderComboBoxStyle"  TargetType="{x:Type ComboBox}">
-        <Setter Property="Width" Value="123" />
+        <Setter Property="Width" Value="173" />
         <Setter Property="Height" Value="26" />
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="4 2 4 2" />
