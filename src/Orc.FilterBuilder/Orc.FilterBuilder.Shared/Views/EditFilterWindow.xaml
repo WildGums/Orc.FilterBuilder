@@ -77,7 +77,7 @@
                       IsChecked="{Binding EnableLivePreview}" Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-        <TreeView x:Name="treeView" Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
+        <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
             <i:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
@@ -118,17 +118,17 @@
                             </ComboBox>
 
                             <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource AddGeometry}" 
-                                    Command="{Binding DataContext.AddExpressionCommand, ElementName=treeView}"
+                                    Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
                             <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
-                                    Command="{Binding DataContext.AddGroupCommand, ElementName=treeView}"
+                                    Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
 
                             <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
-                                    Command="{Binding DataContext.DeleteConditionItem, ElementName=treeView}"
+                                    Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
                             </Button>
@@ -136,7 +136,7 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
-                            <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, ElementName=treeView}"
+                            <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                       DisplayMemberPath="DisplayName" SelectedItem="{Binding Property}" />
 
                             <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
@@ -154,8 +154,8 @@
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Text}}">
                                     <i:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, ElementName=treeView}" 
-                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, ElementName=treeView}"/>-->
+                                        <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
+                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
                                     </i:Interaction.Behaviors>
                                 </TextBox>
 
@@ -202,7 +202,7 @@
                             </Grid>
 
                             <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource DeleteGeometry}"
-                                    Command="{Binding DataContext.DeleteConditionItem, ElementName=treeView}"
+                                    Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
                             </Button>
                         </StackPanel>
