@@ -87,6 +87,7 @@
                 <Style TargetType="DatePicker">
                     <Setter Property="Width" Value="173" />
                     <Setter Property="Margin" Value="2" />
+                    <Setter Property="Padding" Value="2 4 2 2" />
                     <Setter Property="Height" Value="26" />
                 </Style>
 
