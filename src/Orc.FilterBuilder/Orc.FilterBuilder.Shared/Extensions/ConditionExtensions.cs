@@ -18,11 +18,20 @@ namespace Orc.FilterBuilder
                 case Condition.Contains:
                     return "contains";
 
+                case Condition.DoesNotContain:
+                    return "does not contain";
+
                 case Condition.StartsWith:
                     return "starts with";
 
+                case Condition.DoesNotStartWith:
+                    return "does not start with";
+
                 case Condition.EndsWith:
                     return "ends with";
+
+                case Condition.DoesNotEndWith:
+                    return "does not end with";
 
                 case Condition.EqualTo:
                     return "is equal to";

@@ -57,8 +57,14 @@ namespace Orc.FilterBuilder
                 case Condition.Contains:
                     return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1;
 
+                case Condition.DoesNotContain:
+                    return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1;
+
                 case Condition.EndsWith:
                     return entityValue != null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.DoesNotEndWith:
+                    return entityValue != null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.EqualTo:
                     return entityValue == Value;
@@ -92,6 +98,9 @@ namespace Orc.FilterBuilder
 
                 case Condition.StartsWith:
                     return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.DoesNotStartWith:
+                    return entityValue != null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.Matches:
                     return entityValue != null

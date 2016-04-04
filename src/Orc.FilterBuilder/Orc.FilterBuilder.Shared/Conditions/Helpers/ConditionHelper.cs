@@ -48,8 +48,11 @@ namespace Orc.FilterBuilder
             return new List<Condition>
             {
                 Condition.Contains,
+                Condition.DoesNotContain,
                 Condition.StartsWith,
+                Condition.DoesNotStartWith,
                 Condition.EndsWith,
+                Condition.DoesNotEndWith,
                 Condition.EqualTo,
                 Condition.NotEqualTo,
                 Condition.Matches,
@@ -71,8 +74,11 @@ namespace Orc.FilterBuilder
                 condition == Condition.GreaterThanOrEqualTo ||
                 condition == Condition.LessThanOrEqualTo ||
                 condition == Condition.Contains ||
+                condition == Condition.DoesNotContain ||
                 condition == Condition.EndsWith ||
+                condition == Condition.DoesNotEndWith ||
                 condition == Condition.StartsWith ||
+                condition == Condition.DoesNotStartWith ||
                 condition == Condition.Matches ||
                 condition == Condition.DoesNotMatch;
         }

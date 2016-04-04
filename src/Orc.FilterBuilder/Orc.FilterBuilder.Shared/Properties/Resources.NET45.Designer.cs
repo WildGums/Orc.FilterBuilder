@@ -124,11 +124,38 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to does not contain.
+        /// </summary>
+        internal static string FilterBuilder_DoesNotContain {
+            get {
+                return ResourceManager.GetString("FilterBuilder_DoesNotContain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to does not end with.
+        /// </summary>
+        internal static string FilterBuilder_DoesNotEndWith {
+            get {
+                return ResourceManager.GetString("FilterBuilder_DoesNotEndWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to does not match.
         /// </summary>
         internal static string FilterBuilder_DoesNotMatch {
             get {
                 return ResourceManager.GetString("FilterBuilder_DoesNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to does not start with.
+        /// </summary>
+        internal static string FilterBuilder_DoesNotStartWith {
+            get {
+                return ResourceManager.GetString("FilterBuilder_DoesNotStartWith", resourceCulture);
             }
         }
         
