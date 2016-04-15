@@ -95,7 +95,7 @@ namespace Orc.FilterBuilder
             var filteredCollectionType = filteredCollection.GetType();
             if (filteredCollectionType.IsGenericTypeEx() && filteredCollectionType.GetGenericTypeDefinitionEx() == typeof (FastObservableCollection<>))
             {
-                suspendToken = (IDisposable) filteredCollectionType.GetMethodEx("SuspendChangeNotifications").Invoke(filteredCollection, null);
+                suspendToken = (IDisposable) filteredCollectionType.GetMethodEx("SuspendChangeNotifications", new Type [] { }).Invoke(filteredCollection, null);
             }
 
             filteredCollection.Clear();
