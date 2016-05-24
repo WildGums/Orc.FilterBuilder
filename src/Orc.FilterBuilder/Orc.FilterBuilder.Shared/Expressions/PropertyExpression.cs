@@ -181,6 +181,8 @@ namespace Orc.FilterBuilder
 
         protected override void OnDeserialized()
         {
+            base.OnDeserialized();
+
             var dataTypeExpression = DataTypeExpression;
             if (dataTypeExpression != null)
             {

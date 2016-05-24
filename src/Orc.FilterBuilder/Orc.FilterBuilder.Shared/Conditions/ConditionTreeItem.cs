@@ -68,6 +68,8 @@ namespace Orc.FilterBuilder
 
         protected override void OnDeserialized()
         {
+            base.OnDeserialized();
+
             SubscribeToEvents();
 
             foreach (var item in Items)
