@@ -96,6 +96,145 @@ namespace Orc.FilterBuilder.ViewModels
         public object Scope { get; set; }
         #endregion
 
+        #region Commands
+        public Command NewSchemeCommand { get; private set; }
+
+        private void OnNewSchemeExecute()
+        {
+            if (_targetType == null)
+            {
+                Log.Warning("Target type is unknown, cannot get any type information to create filters");
+                return;
+            }
+
+            var filterScheme = new FilterScheme(_targetType);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            {
+                AvailableSchemes.Add(filterScheme);
+                _filterSchemes.Schemes.Add(filterScheme);
+
+                ApplyFilterScheme(filterScheme, true);
+
+                _filterSchemeManager.UpdateFilters();
+            }
+        }
+
+        public Command<FilterScheme> EditSchemeCommand { get; private set; }
+
+        private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
+        {
+            if (filterScheme == null)
+            {
+                return false;
+            }
+
+            if (AvailableSchemes.Count == 0)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(AvailableSchemes[0], filterScheme))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void OnEditSchemeExecute(FilterScheme filterScheme)
+        {
+            filterScheme.EnsureIntegrity(_reflectionService);
+
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+
+            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            {
+                _filterSchemeManager.UpdateFilters();
+
+                if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
+                {
+                    Log.Debug("Current filter has been edited, re-applying filter");
+
+                    _filterService.SelectedFilter = filterScheme;
+                }
+            }
+        }
+
+        public TaskCommand ApplySchemeCommand { get; private set; }
+
+        private bool OnApplySchemeCanExecute()
+        {
+            if (SelectedFilterScheme == null)
+            {
+                return false;
+            }
+
+            if (RawCollection == null)
+            {
+                return false;
+            }
+
+            if (FilteredCollection == null && Mode == FilterBuilderMode.Collection)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task OnApplySchemeExecuteAsync()
+        {
+            Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
+
+            //build filtered collection only if current mode is Collection
+            if (Mode == FilterBuilderMode.Collection)
+            {
+                FilteringFunc = null;
+                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
+            }
+            else
+            {
+                FilteringFunc = SelectedFilterScheme.CalculateResult;
+            }
+        }
+
+        public Command ResetSchemeCommand { get; private set; }
+
+        private bool OnResetSchemeCanExecute()
+        {
+            return AllowReset && ReadyForResetOrDeleteScheme(SelectedFilterScheme);
+        }
+
+        private void OnResetSchemeExecute()
+        {
+            if (AvailableSchemes.Count > 0)
+            {
+                SelectedFilterScheme = AvailableSchemes[0];
+            }
+        }
+
+        public Command<FilterScheme> DeleteSchemeCommand { get; private set; }
+
+        private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
+        {
+            return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
+        }
+
+        private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
+        {
+            if (await _messageService.ShowAsync(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
+            {
+                _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
+
+                SelectedFilterScheme = AvailableSchemes[0];
+
+                _filterSchemeManager.UpdateFilters();
+            }
+        }
+        #endregion
+
         #region Methods
         private bool ReadyForResetOrDeleteScheme(FilterScheme filterScheme)
         {
@@ -263,140 +402,6 @@ namespace Orc.FilterBuilder.ViewModels
         {
             var newFilterScheme = _filterService.SelectedFilter ?? AvailableSchemes.First();
             ApplyFilterScheme(newFilterScheme);
-        }
-        #endregion
-
-        #region Commands
-        public Command NewSchemeCommand { get; private set; }
-
-        private void OnNewSchemeExecute()
-        {
-            if (_targetType == null)
-            {
-                Log.Warning("Target type is unknown, cannot get any type information to create filters");
-                return;
-            }
-
-            var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
-            {
-                AvailableSchemes.Add(filterScheme);
-                _filterSchemes.Schemes.Add(filterScheme);
-
-                ApplyFilterScheme(filterScheme, true);
-
-                _filterSchemeManager.UpdateFilters();
-            }
-        }
-
-        public Command<FilterScheme> EditSchemeCommand { get; private set; }
-
-        private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
-        {
-            if (filterScheme == null)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(AvailableSchemes[0], filterScheme))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void OnEditSchemeExecute(FilterScheme filterScheme)
-        {
-            filterScheme.EnsureIntegrity(_reflectionService);
-
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
-            {
-                _filterSchemeManager.UpdateFilters();
-
-                ApplyFilter();
-            }
-        }
-
-        public TaskCommand ApplySchemeCommand { get; private set; }
-
-        private bool OnApplySchemeCanExecute()
-        {
-            if (SelectedFilterScheme == null)
-            {
-                return false;
-            }
-
-            if (RawCollection == null)
-            {
-                return false;
-            }
-
-            if (FilteredCollection == null && Mode == FilterBuilderMode.Collection)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private async Task OnApplySchemeExecuteAsync()
-        {
-            Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
-
-            //build filtered collection only if current mode is Collection
-            if (Mode == FilterBuilderMode.Collection)
-            {
-                FilteringFunc = null;
-                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
-            }
-            else
-            {
-                FilteringFunc = SelectedFilterScheme.CalculateResult;
-            }
-        }
-
-        public Command ResetSchemeCommand { get; private set; }
-
-        private bool OnResetSchemeCanExecute()
-        {
-            return AllowReset && ReadyForResetOrDeleteScheme(SelectedFilterScheme);
-        }
-
-        private void OnResetSchemeExecute()
-        {
-            if (AvailableSchemes.Count > 0)
-            {
-                SelectedFilterScheme = AvailableSchemes[0];
-            }
-        }
-
-        public Command<FilterScheme> DeleteSchemeCommand { get; private set; }
-
-        private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
-        {
-            return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
-        }
-
-        private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
-        {
-            if (await _messageService.ShowAsync(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
-            {
-                _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
-
-                SelectedFilterScheme = AvailableSchemes[0];
-
-                _filterSchemeManager.UpdateFilters();
-            }
         }
         #endregion
     }

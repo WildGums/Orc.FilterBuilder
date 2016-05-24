@@ -28,7 +28,7 @@ namespace Orc.FilterBuilder.Example
         protected override async void OnStartup(StartupEventArgs e)
         {
 #if DEBUG
-            //LogManager.AddDebugListener();
+            LogManager.AddDebugListener();
 #endif
 
             var languageService = ServiceLocator.Default.ResolveType<ILanguageService>();

@@ -50,7 +50,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
         }
 
         public ObservableCollection<TestEntity> RawItems { get; private set; }
+
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
+
         public FilterScheme SelectedFilterScheme { get; set; }
 
         private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");

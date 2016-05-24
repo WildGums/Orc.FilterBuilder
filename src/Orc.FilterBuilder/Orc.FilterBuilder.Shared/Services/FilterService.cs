@@ -41,10 +41,7 @@ namespace Orc.FilterBuilder.Services
             get { return _selectedFilter; }
             set
             {
-                if (ReferenceEquals(_selectedFilter, value))
-                {
-                    return;
-                }
+                // ORCOMP-257: don't check for equality
 
                 _selectedFilter = value;
 
