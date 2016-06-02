@@ -14,11 +14,20 @@ namespace Orc.FilterBuilder
     using Catel.Runtime.Serialization;
     using Models;
     using Runtime.Serialization;
+    using Catel.Data;
 
     [DebuggerDisplay("{Property} = {DataTypeExpression}")]
     [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
+    [ValidateModel(typeof(PropertyExpressionValidator))]
     public class PropertyExpression : ConditionTreeItem
     {
+        #region Constructors
+        public PropertyExpression()
+        {
+            SuspendValidation = false;
+        }
+        #endregion
+
         #region Properties
         [ExcludeFromSerialization]
         internal string PropertySerializationValue { get; set; }
@@ -37,117 +46,120 @@ namespace Orc.FilterBuilder
                 dataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
             }
 
-            if (Property.Type.IsEnumEx())
+            if (Property != null)
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
-            }
-            else if (Property.Type == typeof(byte))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(false));
-            }
-            else if (Property.Type == typeof(byte?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(true));
-            }
-            else if (Property.Type == typeof(sbyte))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(false));
-            }
-            else if (Property.Type == typeof(sbyte?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(true));
-            }
-            else if (Property.Type == typeof(ushort))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(false));
-            }
-            else if (Property.Type == typeof(ushort?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(true));
-            }
-            else if (Property.Type == typeof(short))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(false));
-            }
-            else if (Property.Type == typeof(short?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(true));
-            }
-            else if (Property.Type == typeof(uint))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(false));
-            }
-            else if (Property.Type == typeof(uint?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(true));
-            }
-            else if (Property.Type == typeof(int))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(false));
-            }
-            else if (Property.Type == typeof(int?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(true));
-            }
-            else if (Property.Type == typeof(ulong))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(false));
-            }
-            else if (Property.Type == typeof(ulong?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(true));
-            }
-            else if(Property.Type == typeof(long))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(false));
-            }
-            else if (Property.Type == typeof(long?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(true));
-            }
-            else if (Property.Type == typeof(string))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
-            }
-            else if (Property.Type == typeof(DateTime))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(false));
-            }
-            else if (Property.Type == typeof(DateTime?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(true));
-            }
-            else if (Property.Type == typeof(bool))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
-            }
-            else if (Property.Type == typeof(TimeSpan))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression());
-            }
-            else if (Property.Type == typeof(decimal))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(false));
-            }
-            else if (Property.Type == typeof(decimal?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
-            }
-            else if (Property.Type == typeof(float))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(false));
-            }
-            else if (Property.Type == typeof(float?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(true));
-            }
-            else if (Property.Type == typeof(double))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(false));
-            }
-            else if (Property.Type == typeof(double?))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(true));
+                if (Property.Type.IsEnumEx())
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+                }
+                else if (Property.Type == typeof(byte))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(false));
+                }
+                else if (Property.Type == typeof(byte?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(true));
+                }
+                else if (Property.Type == typeof(sbyte))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(false));
+                }
+                else if (Property.Type == typeof(sbyte?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(true));
+                }
+                else if (Property.Type == typeof(ushort))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(false));
+                }
+                else if (Property.Type == typeof(ushort?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(true));
+                }
+                else if (Property.Type == typeof(short))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(false));
+                }
+                else if (Property.Type == typeof(short?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(true));
+                }
+                else if (Property.Type == typeof(uint))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(false));
+                }
+                else if (Property.Type == typeof(uint?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(true));
+                }
+                else if (Property.Type == typeof(int))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(false));
+                }
+                else if (Property.Type == typeof(int?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(true));
+                }
+                else if (Property.Type == typeof(ulong))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(false));
+                }
+                else if (Property.Type == typeof(ulong?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(true));
+                }
+                else if (Property.Type == typeof(long))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(false));
+                }
+                else if (Property.Type == typeof(long?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(true));
+                }
+                else if (Property.Type == typeof(string))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+                }
+                else if (Property.Type == typeof(DateTime))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(false));
+                }
+                else if (Property.Type == typeof(DateTime?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(true));
+                }
+                else if (Property.Type == typeof(bool))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
+                }
+                else if (Property.Type == typeof(TimeSpan))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression());
+                }
+                else if (Property.Type == typeof(decimal))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(false));
+                }
+                else if (Property.Type == typeof(decimal?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(true));
+                }
+                else if (Property.Type == typeof(float))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(false));
+                }
+                else if (Property.Type == typeof(float?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(true));
+                }
+                else if (Property.Type == typeof(double))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(false));
+                }
+                else if (Property.Type == typeof(double?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(true));
+                }
             }
 
             dataTypeExpression = DataTypeExpression;
@@ -168,7 +180,7 @@ namespace Orc.FilterBuilder
                 {
                     var oldDataTypeExpression = dataTypeExpression as NullableDataTypeExpression;
                     var newDataTypeExpression = createFunc() as NullableDataTypeExpression;
-                    if(newDataTypeExpression.IsNullable != oldDataTypeExpression.IsNullable)
+                    if (newDataTypeExpression.IsNullable != oldDataTypeExpression.IsNullable)
                     {
                         DataTypeExpression = newDataTypeExpression;
                     }
@@ -201,9 +213,9 @@ namespace Orc.FilterBuilder
 
         public override bool CalculateResult(object entity)
         {
-            if (Property == null)
+            if (!IsValid)
             {
-                return false;
+                return true;
             }
 
             return DataTypeExpression.CalculateResult(Property, entity);

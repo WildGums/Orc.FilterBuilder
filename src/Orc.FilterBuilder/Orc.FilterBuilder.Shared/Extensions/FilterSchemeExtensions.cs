@@ -16,6 +16,7 @@ namespace Orc.FilterBuilder
     using MethodTimer;
     using Models;
     using Services;
+    using Catel.Data;
 
     public static class FilterSchemeExtensions
     {
@@ -62,7 +63,7 @@ namespace Orc.FilterBuilder
                 var serializationValue = propertyExpression.PropertySerializationValue;
                 if (!string.IsNullOrWhiteSpace(serializationValue))
                 {
-                    var splittedString = serializationValue.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
+                    var splittedString = serializationValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
                     if (splittedString.Length == 2)
                     {
                         var type = TypeCache.GetType(splittedString[0]);

@@ -304,6 +304,15 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The filter has some invalid expressions which will be ignored while filtering data set. Are you sure you want to save this filter ?.
+        /// </summary>
+        internal static string FilterBuilder_SaveBroken {
+            get {
+                return ResourceManager.GetString("FilterBuilder_SaveBroken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to starts with.
         /// </summary>
         internal static string FilterBuilder_StartsWith {
