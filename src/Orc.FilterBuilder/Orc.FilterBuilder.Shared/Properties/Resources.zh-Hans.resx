@@ -198,6 +198,9 @@
   <data name="FilterBuilder_Or" xml:space="preserve">
     <value>或</value>
   </data>
+  <data name="FilterBuilder_SaveBroken" xml:space="preserve">
+    <value>The filter has some invalid expressions which will be ignored while filtering. Are you sure you want to save this filter?</value>
+  </data>
   <data name="FilterBuilder_StartsWith" xml:space="preserve">
     <value>头部包含</value>
   </data>

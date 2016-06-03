@@ -136,7 +136,7 @@
     <value>Verwijder</value>
   </data>
   <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
-    <value>De filter heeft niet opgeslagen wijzigingen. Weet je zeker dat je het bewerken wilt stoppen zonder op te slaan?</value>
+    <value>De filter heeft niet opgeslagen wijzigingen. Weet je zeker dat je het bewerken wil stoppen zonder op te slaan?</value>
   </data>
   <data name="FilterBuilder_DoesNotContain" xml:space="preserve">
     <value>bevat geen</value>
@@ -197,6 +197,9 @@
   </data>
   <data name="FilterBuilder_Or" xml:space="preserve">
     <value>Of</value>
+  </data>
+  <data name="FilterBuilder_SaveBroken" xml:space="preserve">
+    <value>De filter bevat ongeldige expressies die genegeerd zullen worden tijdens het filteren. Weet je zeker dat je de filter op wil slaan?</value>
   </data>
   <data name="FilterBuilder_StartsWith" xml:space="preserve">
     <value>begint met</value>

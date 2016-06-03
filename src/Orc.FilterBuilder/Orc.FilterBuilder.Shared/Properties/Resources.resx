@@ -199,7 +199,7 @@
     <value>Or</value>
   </data>
   <data name="FilterBuilder_SaveBroken" xml:space="preserve">
-    <value>The filter has some invalid expressions which will be ignored while filtering data set. Are you sure you want to save this filter ?</value>
+    <value>The filter has some invalid expressions which will be ignored while filtering. Are you sure you want to save this filter?</value>
   </data>
   <data name="FilterBuilder_StartsWith" xml:space="preserve">
     <value>starts with</value>
