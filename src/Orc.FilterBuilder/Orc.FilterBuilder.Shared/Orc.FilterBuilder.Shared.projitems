@@ -79,6 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IReflectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ReflectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validators\PropertyExpressionValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueControlType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EditFilterViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterBuilderViewModel.cs" />

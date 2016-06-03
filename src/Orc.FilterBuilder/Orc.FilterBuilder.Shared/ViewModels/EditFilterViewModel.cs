@@ -161,12 +161,21 @@ namespace Orc.FilterBuilder.ViewModels
             return await base.CancelAsync();
         }
 
-        protected override Task<bool> SaveAsync()
+        protected override async Task<bool> SaveAsync()
         {
+            if (FilterScheme.HasInvalidConditionItems)
+            {
+                if (await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_SaveBroken"),
+                    _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
+                {
+                    return false;
+                }
+            }
+
             FilterScheme.Title = FilterSchemeTitle;
             _originalFilterScheme.Update(FilterScheme);
 
-            return TaskHelper<bool>.FromResult(true);
+            return true;
         }
 
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)

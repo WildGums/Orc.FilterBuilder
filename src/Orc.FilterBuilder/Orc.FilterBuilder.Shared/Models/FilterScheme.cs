@@ -83,6 +83,8 @@ namespace Orc.FilterBuilder.Models
             }
         }
 
+        public bool HasInvalidConditionItems { get; private set; }
+
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion
 
@@ -121,6 +123,29 @@ namespace Orc.FilterBuilder.Models
             SubscribeToEvents();
         }
 
+        private void CheckForInvalidItems()
+        {
+            HasInvalidConditionItems = (ConditionItems != null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
+        }
+
+        private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
+        {
+            var items = conditionTreeItem == null ? null : conditionTreeItem.Items;
+            if (items == null || items.Count == 0)
+            {
+                return conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
+            }
+
+            int invalidCount = 0;
+            foreach (var item in items)
+            {
+                invalidCount += CountInvalidItems(item);
+            }
+            invalidCount += conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
+
+            return invalidCount;
+        }
+
         private void SubscribeToEvents()
         {
             var items = ConditionItems;
@@ -136,6 +161,8 @@ namespace Orc.FilterBuilder.Models
 
         private void OnConditionUpdated(object sender, EventArgs e)
         {
+            CheckForInvalidItems();
+
             RaiseUpdated();
         }
 
@@ -159,6 +186,8 @@ namespace Orc.FilterBuilder.Models
             Title = otherScheme.Title;
             ConditionItems.Clear();
             ConditionItems.Add(otherScheme.Root);
+
+            CheckForInvalidItems();
 
             RaiseUpdated();
         }

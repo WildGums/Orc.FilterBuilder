@@ -30,6 +30,10 @@ namespace Orc.FilterBuilder
         [ExcludeFromSerialization]
         public ConditionTreeItem Parent { get; set; }
 
+        [ExcludeFromSerialization]
+        [ExcludeFromValidation]
+        public bool IsValid { get; private set; } = true;
+
         public ObservableCollection<ConditionTreeItem> Items { get; private set; }
         #endregion
 
@@ -76,6 +80,13 @@ namespace Orc.FilterBuilder
             {
                 item.Parent = this;
             }
+        }
+
+        protected override void OnValidated(IValidationContext validationContext)
+        {
+            base.OnValidated(validationContext);
+
+            IsValid = !validationContext.HasErrors;
         }
 
         private void OnItemsChanged()

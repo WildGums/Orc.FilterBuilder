@@ -259,6 +259,14 @@
         </Setter>
     </Style>
 
+    <Style x:Key="FilterBuilderBrokenTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
     <!--RowDetails Template-->
     <DataTemplate x:Key="RowDetailsDataTemplate">
         <StackPanel>

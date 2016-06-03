@@ -48,9 +48,18 @@
                                 </Image.Visibility>
                             </Image>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Label Content="{Binding Title}" ToolTip="{Binding}" />
-                            </StackPanel>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Content="{Binding Title}" ToolTip="{Binding}"/>
+                                <TextBlock Grid.Column="2" Text="broken" Visibility="{Binding HasInvalidConditionItems, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                           Style="{DynamicResource ResourceKey=FilterBuilderBrokenTextBlockStyle}"/>
+                            </Grid>
 
                             <Button Grid.Column="2" Width="24" CommandParameter="{Binding }" Style="{DynamicResource FilterBuilderButtonStyle}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
