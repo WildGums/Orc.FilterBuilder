@@ -175,7 +175,7 @@ namespace Orc.FilterBuilder.ViewModels
             FilterScheme.Title = FilterSchemeTitle;
             _originalFilterScheme.Update(FilterScheme);
 
-            return await TaskHelper<bool>.FromResult(true);
+            return true;
         }
 
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
