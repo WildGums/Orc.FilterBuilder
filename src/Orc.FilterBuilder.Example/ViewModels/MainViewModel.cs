@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder.Example.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Catel;
     using Catel.Collections;
@@ -46,7 +47,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
                 var filter = _filterService.SelectedFilter;
                 var items = RawItems;
                 var result = await _filterService.FilterCollectionAsync(filter, items);
-                FilteredItems.ReplaceRange(result);
+                ((ICollection<TestEntity>)FilteredItems).ReplaceRange(result);
             }
         }
         #endregion

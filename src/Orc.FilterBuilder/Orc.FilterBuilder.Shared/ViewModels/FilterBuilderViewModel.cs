@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -34,7 +35,7 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof (object), "Default");
+        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
         private IFilterSchemeManager _filterSchemeManager;
         private IFilterService _filterService;
         private IReflectionService _reflectionService;
@@ -348,9 +349,9 @@ namespace Orc.FilterBuilder.ViewModels
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
                 if (_targetType != null)
                 {
-                    newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                         where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                         select scheme));
+                    ((ICollection<FilterScheme>)newSchemes).AddRange((from scheme in _filterSchemes.Schemes
+                                                                      where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                                                      select scheme));
                 }
             }
 

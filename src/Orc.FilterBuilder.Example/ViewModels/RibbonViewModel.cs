@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder.Example.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -68,7 +69,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             }
 
             var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo (filterScheme, RawItems, true, true);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, true, true);
 
             if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
@@ -127,9 +128,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawItems);
-                newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                     select scheme));
+                ((ICollection<FilterScheme>)newSchemes).AddRange(from scheme in _filterSchemes.Schemes
+                                                                 where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                                                 select scheme);
             }
 
             newSchemes.Insert(0, NoFilterFilter);
