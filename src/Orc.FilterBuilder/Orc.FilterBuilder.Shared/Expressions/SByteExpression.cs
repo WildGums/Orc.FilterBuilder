@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public SByteExpression()
-            : this(false)
+            : this(true)
         {
         }
 

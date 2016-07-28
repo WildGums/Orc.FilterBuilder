@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public FloatExpression()
-            : this(false)
+            : this(true)
         {
         }
 

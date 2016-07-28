@@ -15,12 +15,15 @@ namespace Orc.FilterBuilder
     using Models;
     using Runtime.Serialization;
     using Catel.Data;
+    using Catel.Logging;
 
     [DebuggerDisplay("{Property} = {DataTypeExpression}")]
     [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
     [ValidateModel(typeof(PropertyExpressionValidator))]
     public class PropertyExpression : ConditionTreeItem
     {
+        private static ILog Log = LogManager.GetCurrentClassLogger();
+
         #region Constructors
         public PropertyExpression()
         {
@@ -134,7 +137,11 @@ namespace Orc.FilterBuilder
                 }
                 else if (Property.Type == typeof(TimeSpan))
                 {
-                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression());
+                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(false));
+                }
+                else if (Property.Type == typeof(TimeSpan?))
+                {
+                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(true));
                 }
                 else if (Property.Type == typeof(decimal))
                 {
@@ -159,6 +166,10 @@ namespace Orc.FilterBuilder
                 else if (Property.Type == typeof(double?))
                 {
                     CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(true));
+                }
+                else
+                {
+                    Log.Error($"Unable to create data type expression for type '{Property.Type}'");
                 }
             }
 

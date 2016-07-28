@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public DateTimeExpression()
-            : this(false)
+            : this(true)
         {
         }
 

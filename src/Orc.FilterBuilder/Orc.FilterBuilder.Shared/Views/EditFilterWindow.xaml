@@ -196,9 +196,19 @@
                                           SelectedValue="{Binding DataTypeExpression.Value}"
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.Boolean}}"/>
 
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.TimeSpan}}">
-                                    <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}" SelectedValue="{Binding DataTypeExpression.SelectedSpanType}" />
-                                    <TextBox Text="{Binding DataTypeExpression.Amount}" />
+                                <StackPanel Orientation="Horizontal"
+                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static net40:ValueControlType.TimeSpan}}">
+                                    <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}"
+                                              SelectedValue="{Binding DataTypeExpression.SelectedSpanType}" />
+                                    <TextBox Text="{Binding DataTypeExpression.Amount}">
+                                        <i:Interaction.Behaviors>
+                                            <catel:NumericTextBox IsDecimalAllowed="False"
+                                                                  IsNegativeAllowed="False"
+                                                                  UpdateBindingOnTextChanged="False" />
+
+                                            <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
                                 </StackPanel>
                             </Grid>
 

@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public DecimalExpression()
-            : this(false)
+            : this(true)
         {
         }
 

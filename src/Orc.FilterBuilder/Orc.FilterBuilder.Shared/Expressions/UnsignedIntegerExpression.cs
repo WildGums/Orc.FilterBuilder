@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public UnsignedIntegerExpression()
-            : this(false)
+            : this(true)
         {
         }
 

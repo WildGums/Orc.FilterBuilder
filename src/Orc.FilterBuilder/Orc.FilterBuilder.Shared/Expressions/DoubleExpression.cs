@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public DoubleExpression()
-            : this(false)
+            : this(true)
         {
         }
 

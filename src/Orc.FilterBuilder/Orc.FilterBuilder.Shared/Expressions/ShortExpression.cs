@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder
     {
         #region Constructors
         public ShortExpression()
-            : this(false)
+            : this(true)
         {
         }
 
