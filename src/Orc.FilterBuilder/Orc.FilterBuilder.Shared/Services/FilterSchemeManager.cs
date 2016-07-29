@@ -78,7 +78,7 @@ namespace Orc.FilterBuilder.Services
             }
             catch (Exception ex)
             {
-                Log.Error	();
+                Log.Error(ex, "Failed to update filters");
                 throw;
             }            
         }
