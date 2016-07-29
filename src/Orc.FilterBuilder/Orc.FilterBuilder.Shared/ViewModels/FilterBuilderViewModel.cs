@@ -146,20 +146,28 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnEditSchemeExecute(FilterScheme filterScheme)
         {
-            filterScheme.EnsureIntegrity(_reflectionService);
-
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            try
             {
-                _filterSchemeManager.UpdateFilters();
+                filterScheme.EnsureIntegrity(_reflectionService);
 
-                if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
+                var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+
+                if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
                 {
-                    Log.Debug("Current filter has been edited, re-applying filter");
+                    _filterSchemeManager.UpdateFilters();
 
-                    _filterService.SelectedFilter = filterScheme;
+                    if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
+                    {
+                        Log.Debug("Current filter has been edited, re-applying filter");
+
+                        _filterService.SelectedFilter = filterScheme;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Failed to edit filter scheme '{filterScheme?.Title}'");
+                throw;
             }
         }
 

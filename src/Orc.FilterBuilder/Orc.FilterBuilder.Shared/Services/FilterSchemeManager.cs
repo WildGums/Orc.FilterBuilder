@@ -67,12 +67,20 @@ namespace Orc.FilterBuilder.Services
 
         public void UpdateFilters()
         {
-            Updated.SafeInvoke(this);
-
-            if (AutoSave)
+            try
             {
-                Save();
+                Updated.SafeInvoke(this);
+
+                if (AutoSave)
+                {
+                    Save();
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error	();
+                throw;
+            }            
         }
         
         public void Load(string fileName = null)
