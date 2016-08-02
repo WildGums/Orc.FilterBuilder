@@ -83,6 +83,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ValueControlType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EditFilterViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterBuilderViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterView.xaml.cs">
+      <DependentUpon>EditFilterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml.cs">
       <DependentUpon>EditFilterWindow.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,10 @@
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml">
       <SubType>Designer</SubType>

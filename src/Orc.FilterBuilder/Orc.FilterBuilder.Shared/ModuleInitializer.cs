@@ -10,6 +10,8 @@ using Catel.Services;
 using Catel.Services.Models;
 using Orc.FilterBuilder.Properties;
 using Orc.FilterBuilder.Services;
+using Orc.FilterBuilder.ViewModels;
+using Orc.FilterBuilder.Views;
 
 /// <summary>
 /// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.
@@ -31,6 +33,10 @@ public static class ModuleInitializer
 
         var languageService = serviceLocator.ResolveType<ILanguageService>();
         languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.FilterBuilder", "Orc.FilterBuilder.Properties", "Resources"));
+
+        // Register some custom windows (since we combine windows and views)
+        var uiVisualizerService = serviceLocator.ResolveType<IUIVisualizerService>();
+        uiVisualizerService.Register<EditFilterViewModel, EditFilterWindow>();
     }
     #endregion
 }
