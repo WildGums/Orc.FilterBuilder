@@ -107,9 +107,9 @@ namespace Orc.FilterBuilder.ViewModels
 
             using (var memoryStream = new MemoryStream())
             {
-                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
+                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream, null);
                 memoryStream.Position = 0L;
-                _xmlSerializer.Deserialize(FilterScheme, memoryStream);
+                _xmlSerializer.Deserialize(FilterScheme, memoryStream, null);
             }
 
             FilterScheme.EnsureIntegrity(_reflectionService);

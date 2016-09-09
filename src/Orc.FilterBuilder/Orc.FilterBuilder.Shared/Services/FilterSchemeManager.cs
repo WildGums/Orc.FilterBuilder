@@ -4,7 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
+#if !NET
+// Not supported
+#else
 namespace Orc.FilterBuilder.Services
 {
     using System;
@@ -120,7 +122,7 @@ namespace Orc.FilterBuilder.Services
             {
                 using (var stream = File.Open(fileName, FileMode.Create))
                 {
-                    _xmlSerializer.Serialize(FilterSchemes, stream);
+                    _xmlSerializer.Serialize(FilterSchemes, stream, null);
                 }
 
                 Saved.SafeInvoke(this);
@@ -149,7 +151,7 @@ namespace Orc.FilterBuilder.Services
                 {
                     using (var stream = File.Open(fileName, FileMode.Open))
                     {
-                        _xmlSerializer.Deserialize(FilterSchemes, stream);
+                        _xmlSerializer.Deserialize(FilterSchemes, stream, null);
                     }
                 }
 
@@ -179,3 +181,4 @@ namespace Orc.FilterBuilder.Services
         #endregion
     }
 }
+#endif

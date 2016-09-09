@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f6aacf5a-663b-4315-b7a9-05f785f3e9da</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Orc.FilterBuilder.Shared.WPF</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DisableSelectionInTreeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ConditionTreeItemConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DataTypeExpressionToConditionsConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ObjectToValueConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\TriggerConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueControlTypeVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ColorExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TreeViewItemExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Markup\EnumBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EditFilterViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterBuilderViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterView.xaml.cs">
+      <DependentUpon>EditFilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml.cs">
+      <DependentUpon>EditFilterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>FilterBuilderControl.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

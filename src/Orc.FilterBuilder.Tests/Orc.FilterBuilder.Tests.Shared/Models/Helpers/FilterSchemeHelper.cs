@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder.Tests.Models
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Catel.Data;
     using FilterBuilder.Models;
@@ -14,6 +15,45 @@ namespace Orc.FilterBuilder.Tests.Models
 
     public static class FilterSchemeHelper
     {
+        public static IEnumerable<TestFilterModel> GenerateMatchingAndNonMatchingCollection()
+        {
+            List<TestFilterModel> testCollection = new List<TestFilterModel>();
+
+            // Matching value
+            testCollection.Add(new TestFilterModel
+            {
+                BoolProperty = true,
+                IntProperty = 50,
+                StringProperty = "Test va123lue"
+            });
+
+            // Non-Matching value
+            testCollection.Add(new TestFilterModel
+            {
+                BoolProperty = false,
+                IntProperty = null,
+                StringProperty = "Test va123lue"
+            });
+
+            // Matching value
+            testCollection.Add(new TestFilterModel
+            {
+                BoolProperty = true,
+                IntProperty = 42,
+                StringProperty = "123lue"
+            });
+
+            // Non-Matching value
+            testCollection.Add(new TestFilterModel
+            {
+                BoolProperty = true,
+                IntProperty = 50,
+                StringProperty = "Test value"
+            });
+
+            return testCollection;
+        }
+
         public static FilterScheme GenerateFilterScheme()
         {
             var filterScheme = new FilterScheme();

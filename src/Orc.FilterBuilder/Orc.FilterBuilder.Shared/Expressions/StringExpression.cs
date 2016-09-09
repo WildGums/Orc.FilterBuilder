@@ -1,30 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Orc.FilterBuilder
 {
-    using Catel.Reflection;
-    using Orc.FilterBuilder.Models;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq.Expressions;
     using System.Text.RegularExpressions;
+
     using Catel.Caching;
     using Catel.Caching.Policies;
-    using Catel.Data;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    using Catel.Reflection;
+
+    using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
     {
-        #region Fields
+        #region Constants
         private static readonly CacheStorage<string, Regex> _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
         private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
         #endregion
+
+
 
         #region Constructors
         public StringExpression()
@@ -35,9 +37,13 @@ namespace Orc.FilterBuilder
         }
         #endregion
 
+
+
         #region Properties
         public string Value { get; set; }
         #endregion
+
+
 
         #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
@@ -103,24 +109,108 @@ namespace Orc.FilterBuilder
                     return entityValue != null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.Matches:
-                    return entityValue != null
-                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
-                        && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
+                    return entityValue != null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value)) && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 case Condition.DoesNotMatch:
-                    return entityValue != null
-                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
-                        && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
+                    return entityValue != null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value)) && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
             }
         }
 
-        public override string ToString()
+        /// <summary>
+        ///   Converts <see cref="ConditionTreeItem"/> to a LINQ <see cref="Expression"/>
+        /// </summary>
+        /// <param name="propertyExpr">LINQ <see cref="MemberExpression"/>.</param>
+        /// <returns>LINQ Expression.</returns>
+        public override Expression ToLinqExpression(Expression propertyExpr)
         {
-            return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
-        }
-        #endregion
-    }
-}
+            // Check non-value condition types
+            switch (SelectedCondition)
+            {
+                case Condition.IsEmpty:
+                    return Expression.Equal(propertyExpr, Expression.Constant(string.Empty));
+                case Condition.NotIsEmpty:
+                    return Expression.NotEqual(propertyExpr, Expression.Constant(string.Empty));
+                case Condition.IsNull:
+                    return Expression.Equal(propertyExpr, Expression.Constant(null));
+                case Condition.NotIsNull:
+                    return Expression.NotEqual(propertyExpr, Expression.Constant(null));
+            }
+
+            // Check value condition types
+            var valueExpr = Expression.Constant(Value, typeof(string));
+
+            Type[] comparisonMethodParams = { typeof(string), typeof(string), typeof(StringComparison) };
+
+            switch (SelectedCondition)
+            {
+                case Condition.EqualTo:
+                    return Expression.Equal(propertyExpr, valueExpr);
+
+                case Condition.NotEqualTo:
+                    return Expression.NotEqual(propertyExpr, valueExpr);
+
+                case Condition.Contains:
+                    return Expression.Call(propertyExpr, typeof(string).GetMethod("Contains", new[] { typeof(string) }), valueExpr);
+
+                case Condition.DoesNotContain:
+                    return Expression.Negate(Expression.Call(propertyExpr, typeof(string).GetMethod("Contains", new[] { typeof(string) }), valueExpr));
+
+                case Condition.StartsWith:
+                    return Expression.Call(propertyExpr, typeof(string).GetMethod("StartsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
+
+                case Condition.DoesNotStartWith:
+                    return Expression.Negate(Expression.Call(propertyExpr, typeof(string).GetMethod("StartsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)));
+
+                case Condition.EndsWith:
+                    return Expression.Call(propertyExpr, typeof(string).GetMethod("EndsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
+
+                case Condition.DoesNotEndWith:
+                    return Expression.Negate(Expression.Call(propertyExpr, typeof(string).GetMethod("EndsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)));
+
+                // TODO: Handle REGEXP
+                /*
+              case Condition.Matches:
+                return entityValue != null
+                       &&
+                       _regexIsValidCache.GetFromCacheOrFetch(Value,
+                         () => RegexHelper.IsValid(Value))
+                       &&
+                       _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value))
+                                  .IsMatch(entityValue);
+
+              case Condition.DoesNotMatch:
+                return entityValue != null
+                       &&
+                       _regexIsValidCache.GetFromCacheOrFetch(Value,
+                         () => RegexHelper.IsValid(Value))
+                       &&
+                       !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value))
+                                   .IsMatch(entityValue);
+                                   */
+            case Condition.GreaterThan:
+                return Expression.GreaterThan(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+
+            case Condition.GreaterThanOrEqualTo:
+                return Expression.GreaterThanOrEqual(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+
+            case Condition.LessThan:
+                return Expression.LessThan(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+
+            case Condition.LessThanOrEqualTo:
+                return Expression.LessThanOrEqual(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+
+            default:
+                throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
+                }
+                }
+
+                public override string ToString()
+                {
+                    return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
+                }
+                #endregion
+                }
+                }

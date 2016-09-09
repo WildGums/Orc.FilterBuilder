@@ -12,11 +12,15 @@ namespace Orc.FilterBuilder.Models
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Text;
     using Catel;
     using Catel.Data;
     using Catel.IoC;
     using Catel.Runtime.Serialization;
+
+    using MethodTimer;
+
     using Runtime.Serialization;
     using Services;
 
@@ -177,6 +181,21 @@ namespace Orc.FilterBuilder.Models
             }
 
             return true;
+        }
+
+        /// <summary>
+        ///   Convert internal expression tree to Linq expression tree.
+        /// </summary>
+        /// <typeparam name="T">Target type</typeparam>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Invalid type</exception>
+        [Time]
+        public Expression<Func<T, bool>> ToLinqExpression<T>()
+        {
+            ParameterExpression parameterExpr = Expression.Parameter(typeof(T), "obj");
+
+            return Expression.Lambda<Func<T, bool>>(
+              Root.ToLinqExpression(parameterExpr), parameterExpr);
         }
 
         public void Update(FilterScheme otherScheme)
