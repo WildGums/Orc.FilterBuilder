@@ -129,8 +129,8 @@ namespace Orc.FilterBuilder
                 // Not null-check
                 valueExpr = Expression.Constant(Value, typeof(TValue?));
 
+                // return CreateNullableOperatorExpression(propertyExpr, valueExpr);
                 return CreateOperatorExpression(propertyExpr, valueExpr);
-                //return CreateNullableOperatorExpression(propertyExpr, valueExpr);
             }
             else
             {
