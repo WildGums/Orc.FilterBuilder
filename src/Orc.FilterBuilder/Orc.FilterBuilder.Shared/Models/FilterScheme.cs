@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilterScheme.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.FilterBuilder.Models
 {
@@ -12,208 +11,143 @@ namespace Orc.FilterBuilder.Models
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Text;
+
     using Catel;
     using Catel.Data;
-    using Catel.IoC;
     using Catel.Runtime.Serialization;
 
-    using MethodTimer;
+    using Orc.FilterBuilder.Runtime.Serialization;
 
-    using Runtime.Serialization;
-    using Services;
-
+    /// <summary>
+    ///     Filter conditions container. Provides functionalities to dynamically build a filtering
+    ///     Condition Tree.
+    /// </summary>
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
-        private static readonly Type _defaultTargetType = typeof(object);
-        private object _scope;
+        #region Constants
+        private static readonly Type DefaultTargetType = typeof(object);
+        #endregion
+
+
 
         #region Constructors
-        public FilterScheme()
-            : this(_defaultTargetType)
-        {
-        }
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FilterScheme"/> class.
+        /// </summary>
+        public FilterScheme() : this(DefaultTargetType) { }
 
-        public FilterScheme(Type targetType)
-            : this(targetType, string.Empty)
-        {
-        }
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FilterScheme" /> class.
+        /// </summary>
+        /// <param name="targetType">Filter target type.</param>
+        public FilterScheme(Type targetType) : this(targetType, string.Empty) { }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FilterScheme" /> class.
+        /// </summary>
+        /// <param name="targetType">Filter target type.</param>
+        /// <param name="title">Filter title.</param>
         public FilterScheme(Type targetType, string title)
-            : this(targetType, title, new ConditionGroup())
-        {
-        }
-
-        public FilterScheme(Type targetType, string title, ConditionTreeItem root)
         {
             Argument.IsNotNull(() => targetType);
-            Argument.IsNotNull(() => title);
-            Argument.IsNotNull(() => root);
 
             SuspendValidation = true;
 
             TargetType = targetType;
             Title = title;
+            OptimizeTree = true;
+
             ConditionItems = new ObservableCollection<ConditionTreeItem>();
-            ConditionItems.Add(root);
+            this.CreateRootNode();
+
+            IsExpressionValid = CheckExpressionValid();
         }
         #endregion
+
+
 
         #region Properties
-        public Type TargetType { get; private set; }
-
+        /// <summary>
+        ///     Filter title.
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        ///     If true, will attempt to optimize tree when a <see cref="ConditionGroup" /> value is
+        ///     changed. Optimization also occurs when changing this value to true.
+        /// </summary>
+        /// <remarks>Defaults to true.</remarks>
         [ExcludeFromSerialization]
-        public ConditionTreeItem Root
-        {
-            get { return ConditionItems.FirstOrDefault(); }
-        }
-
-        [ExcludeFromSerialization]
-        public object Scope
-        {
-            get { return _scope; }
-            set
-            {
-                _scope = value;
-                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
-                if (reflectionService != null)
-                {
-                    this.EnsureIntegrity(reflectionService);
-                }
-            }
-        }
-
-        public bool HasInvalidConditionItems { get; private set; }
-
-        public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
-        #endregion
-
-        public event EventHandler<EventArgs> Updated;
-
-        #region Methods
-        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
-            {
-                foreach (var item in e.OldItems)
-                {
-                    ((ConditionTreeItem)item).Updated -= OnConditionUpdated;
-                }
-            }
-
-            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
-            if (newCollection != null)
-            {
-                foreach (var item in newCollection)
-                {
-                    ((ConditionTreeItem)item).Updated += OnConditionUpdated;
-                }
-            }
-        }
-
-        private void OnConditionItemsChanged()
-        {
-            SubscribeToEvents();
-        }
-
-        protected override void OnDeserialized()
-        {
-            base.OnDeserialized();
-
-            SubscribeToEvents();
-        }
-
-        private void CheckForInvalidItems()
-        {
-            HasInvalidConditionItems = (ConditionItems != null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
-        }
-
-        private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
-        {
-            var items = conditionTreeItem == null ? null : conditionTreeItem.Items;
-            if (items == null || items.Count == 0)
-            {
-                return conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
-            }
-
-            int invalidCount = 0;
-            foreach (var item in items)
-            {
-                invalidCount += CountInvalidItems(item);
-            }
-            invalidCount += conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
-
-            return invalidCount;
-        }
-
-        private void SubscribeToEvents()
-        {
-            var items = ConditionItems;
-            if (items != null)
-            {
-                items.CollectionChanged += OnConditionItemsCollectionChanged;
-                foreach (var item in items)
-                {
-                    item.Updated += OnConditionUpdated;
-                }
-            }
-        }
-
-        private void OnConditionUpdated(object sender, EventArgs e)
-        {
-            CheckForInvalidItems();
-
-            RaiseUpdated();
-        }
-
-        public bool CalculateResult(object entity)
-        {
-            Argument.IsNotNull(() => entity);
-
-            var root = Root;
-            if (root != null)
-            {
-                return root.CalculateResult(entity);
-            }
-
-            return true;
-        }
+        public bool OptimizeTree { get; set; } // TODO : Optimize away
 
         /// <summary>
-        ///   Convert internal expression tree to Linq expression tree.
+        ///     Root <see cref="ConditionTreeItem" /> item, of type <see cref="ConditionGroup" />.
         /// </summary>
-        /// <typeparam name="T">Target type</typeparam>
-        /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Invalid type</exception>
-        [Time]
-        public Expression<Func<T, bool>> ToLinqExpression<T>()
-        {
-            ParameterExpression parameterExpr = Expression.Parameter(typeof(T), "obj");
+        /// <remarks>Defaults to <see cref="ConditionGroupType.And" /></remarks>
+        [ExcludeFromSerialization]
+        public ConditionTreeItem RootItem => ConditionItems?.FirstOrDefault();
 
-            return Expression.Lambda<Func<T, bool>>(
-              Root.ToLinqExpression(parameterExpr), parameterExpr);
-        }
+        /// <summary>
+        ///     Filter conditions.
+        /// </summary>
+        public ObservableCollection<ConditionTreeItem> ConditionItems { get; protected set; }
 
+        /// <summary>
+        ///     Whether filter expression is valid.
+        /// </summary>
+        public bool IsExpressionValid { get; protected set; }
+
+        /// <summary>
+        ///     Context object.
+        /// </summary>
+        [ExcludeFromSerialization]
+        public object Scope { get; set; }
+
+        /// <summary>
+        ///     Target type for current filter.
+        /// </summary>
+        public Type TargetType { get; set; }
+        #endregion
+
+
+
+        #region Methods
+        /// <summary>
+        ///     Update current filter with otherScheme datas :
+        ///     - Title
+        ///     - Condition items
+        /// </summary>
+        /// <param name="otherScheme">The other scheme.</param>
         public void Update(FilterScheme otherScheme)
         {
             Argument.IsNotNull(() => otherScheme);
 
             Title = otherScheme.Title;
             ConditionItems.Clear();
-            ConditionItems.Add(otherScheme.Root);
+            ConditionItems.Add(otherScheme.RootItem);
 
-            CheckForInvalidItems();
+            IsExpressionValid = CheckExpressionValid();
 
-            RaiseUpdated();
+            Updated.SafeInvoke(this);
         }
 
-        protected void RaiseUpdated()
+        /// <inheritdoc />
+        public override bool Equals(object obj)
         {
-            Updated.SafeInvoke(this);
+            var filterScheme = obj as FilterScheme;
+
+            if (filterScheme == null)
+                return false;
+
+            return string.Equals(filterScheme.Title, Title);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return Title.GetHashCode();
         }
 
         public override string ToString()
@@ -222,7 +156,8 @@ namespace Orc.FilterBuilder.Models
 
             stringBuilder.Append(Title);
 
-            var rootString = Root.ToString();
+            var rootString = RootItem.ToString();
+
             if (rootString.StartsWith("((") && rootString.EndsWith("))"))
             {
                 rootString = rootString.Substring(1, rootString.Length - 2);
@@ -237,21 +172,88 @@ namespace Orc.FilterBuilder.Models
             return stringBuilder.ToString();
         }
 
-        public override bool Equals(object obj)
+        /// <summary>
+        ///     Called when FilterScheme is deserialized
+        /// </summary>
+        protected override void OnDeserialized()
         {
-            var filterScheme = obj as FilterScheme;
-            if (filterScheme == null)
+            base.OnDeserialized();
+
+            SubscribeToEvents();
+        }
+
+        /// <summary>
+        ///     Checks whether filter expression is valid.
+        /// </summary>
+        /// <returns></returns>
+        protected bool CheckExpressionValid()
+        {
+            return RootItem == null || CheckExpressionValid(RootItem);
+        }
+
+        /// <summary>
+        ///     Checks whether given expression is valid and recurse.
+        /// </summary>
+        /// <param name="item">Current recurse item</param>
+        /// <returns></returns>
+        protected bool CheckExpressionValid(ConditionTreeItem item)
+        {
+            return item != null && item.IsValid && (item.Items == null || item.Items.All(CheckExpressionValid));
+        }
+
+        /// <summary>
+        ///   Subscribe to <see cref="ConditionItems"/> change event to validate FilterScheme on
+        ///   item modification.
+        /// </summary>
+        protected void SubscribeToEvents()
+        {
+            var items = ConditionItems;
+
+            if (items != null)
             {
-                return false;
+                items.CollectionChanged += OnConditionItemsCollectionChanged;
+
+                foreach (var item in items)
+                    item.Updated += OnItemUpdated;
             }
-
-            return string.Equals(filterScheme.Title, Title);
         }
 
-        public override int GetHashCode()
+        /// <summary>
+        ///   Called when <see cref="ConditionItems"/> reference changes.
+        /// </summary>
+        private void OnConditionItemsChanged()
         {
-            return Title.GetHashCode();
+            SubscribeToEvents();
         }
+
+        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (var item in e.OldItems)
+                    ((ConditionTreeItem)item).Updated -= OnItemUpdated;
+
+            var newCollection = e.Action == NotifyCollectionChangedAction.Reset ? (IList)sender : e.NewItems;
+
+            if (newCollection != null)
+                foreach (var item in newCollection)
+                    ((ConditionTreeItem)item).Updated += OnItemUpdated;
+        }
+
+        private void OnItemUpdated(object sender, EventArgs e)
+        {
+            IsExpressionValid = CheckExpressionValid();
+
+            Updated.SafeInvoke(this);
+        }
+        #endregion
+
+
+
+        #region Events
+        /// <summary>
+        ///     Occurs when an item in the expression tree is updated.
+        /// </summary>
+        public event EventHandler<EventArgs> Updated;
         #endregion
     }
 }

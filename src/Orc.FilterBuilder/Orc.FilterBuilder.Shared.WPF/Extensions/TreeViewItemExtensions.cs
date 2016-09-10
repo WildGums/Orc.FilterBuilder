@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder
+namespace Orc.FilterBuilder.Extensions
 {
     using System.Windows.Controls;
     using System.Windows.Media;

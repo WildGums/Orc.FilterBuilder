@@ -4,19 +4,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
+
     using Catel;
     using Catel.Collections;
     using Catel.Reflection;
+
     using MethodTimer;
-    using Models;
-    using Services;
-    using Catel.Data;
+
+    using Orc.FilterBuilder.Models;
+    using Orc.FilterBuilder.Services;
 
     public static class FilterSchemeExtensions
     {
@@ -24,16 +27,251 @@ namespace Orc.FilterBuilder
         private const string Separator = "||";
         #endregion
 
+
+
         #region Methods
+        /// <summary>
+        ///     Apply current filter to entity and calculate result.
+        /// </summary>
+        /// <param name="f">Filter instance.</param>
+        /// <param name="entity">Object on which to apply filter.</param>
+        /// <returns></returns>
+        public static bool CalculateResult(this FilterScheme f, object entity)
+        {
+            Argument.IsNotNull(() => entity);
+
+            var root = f.RootItem;
+
+            if (root != null)
+                return root.CalculateResult(entity);
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Convert internal expression tree to Linq expression tree.
+        /// </summary>
+        /// <typeparam name="T">Target type</typeparam>
+        /// <param name="f">Filter instance</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Invalid type</exception>
+        [Time]
+        public static Expression<Func<T, bool>> ToLinqExpression<T>(this FilterScheme f)
+        {
+            ParameterExpression parameterExpr = Expression.Parameter(typeof(T), "obj");
+
+            return Expression.Lambda<Func<T, bool>>(f.RootItem.ToLinqExpression(parameterExpr), parameterExpr);
+        }
+
+        /// <summary>
+        ///     Convert internal expression tree to Linq expression tree.
+        /// </summary>
+        /// <param name="f">Filter instance</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Invalid type</exception>
+        [Time]
+        public static LambdaExpression ToLinqExpression(this FilterScheme f)
+        {
+            ParameterExpression parameterExpr = Expression.Parameter(f.TargetType, "obj");
+
+            return Expression.Lambda(f.RootItem.ToLinqExpression(parameterExpr), parameterExpr);
+        }
+
+        /// <summary>
+        ///     Creates the root node if it doesn't exists.
+        /// </summary>
+        /// <param name="f">The f.</param>
+        public static void CreateRootNode(this FilterScheme f)
+        {
+            if (f.RootItem != null)
+                return;
+
+            f.ConditionItems.Add(f.CreateConditionGroup(ConditionGroupType.And));
+        }
+
+        /// <summary>
+        /// Creates the root node if it doesn't exists.
+        /// </summary>
+        /// <param name="f">The f.</param>
+        /// <param name="targetProperties">The target properties.</param>
+        public static void CreateRootProperty(this FilterScheme f, IEnumerable<IPropertyMetadata> targetProperties)
+        {
+            if (f.RootItem.Items.Count != 0)
+                return;
+
+            f.RootItem.Items.Add(f.CreatePropertyExpression(targetProperties, f.RootItem));
+        }
+
+        /// <summary>
+        ///     Determines whether target item can be removed.
+        /// </summary>
+        /// <param name="f">Filter instance</param>
+        /// <param name="targetItem">
+        ///     Target item underlying type should be
+        ///     <see cref="PropertyExpression" />.
+        /// </param>
+        /// <returns>Whether target item can be removed.</returns>
+        public static bool CanRemove(this FilterScheme f, ConditionTreeItem targetItem)
+        {
+            Argument.IsNotNull(() => targetItem);
+            Argument.IsOfType("targetItem", targetItem, typeof(PropertyExpression));
+
+            // Not root condition
+            if (targetItem.Parent.Parent != null)
+                return true;
+
+            // If root condition, check there if there are other properties
+            return targetItem.Parent.Items.Count > 1;
+        }
+
+        /// <summary>
+        ///     Adds a new item to target's parent <see cref="ConditionGroup" /> if
+        ///     type is the same as parent's <see cref="ConditionGroupType" />, or
+        ///     create a new <see cref="ConditionGroup" /> containing targetItem and
+        ///     a new, blank <see cref="PropertyExpression" /> item otherwise.
+        /// </summary>
+        /// <param name="f">Filter instance</param>
+        /// <param name="targetItem">Target item</param>
+        /// <param name="type">Condition type (and/or)</param>
+        /// <param name="targetProperties">Target type properties metadata.</param>
+        public static void Add(this FilterScheme f, ConditionTreeItem targetItem, ConditionGroupType type, IEnumerable<IPropertyMetadata> targetProperties)
+        {
+            Argument.IsNotNull(() => targetItem);
+            Argument.IsOfType("targetItem", targetItem, typeof(PropertyExpression));
+
+            ConditionGroup parent = targetItem.Parent as ConditionGroup;
+            PropertyExpression newItem = f.CreatePropertyExpression(targetProperties);
+
+            // Same condition type, add new item to parent
+            if (type == parent.Type)
+            {
+                int targetItemIndex = parent.Items.IndexOf(targetItem);
+
+                parent.Items.Insert(targetItemIndex + 1, newItem);
+                newItem.Parent = parent;
+            }
+
+            // Different condition type
+            else
+            {
+                // Special case, where parent is root, and contains a single item.
+                // Since condition type is different, and a condition cannot contain
+                // a single item of ConditionGroup type, switch root type to new type
+                if (parent.Parent == null && parent.Items.Count == 1)
+                {
+                    parent.Type = type;
+
+                    parent.Items.Add(newItem);
+                    newItem.Parent = parent;
+                }
+
+                // New condition group
+                // Create new condition group, relate with targetItem and newItem, and
+                // deny initial parent targetItem's care in profit of that of new
+                // condition group
+                else
+                {
+                    ConditionGroup newParent = f.CreateConditionGroup(type, parent, targetItem, newItem);
+
+                    parent.Items.Remove(targetItem);
+                    parent.Items.Add(newParent);
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Removes specified target item.
+        /// </summary>
+        /// <param name="f">Filter instance</param>
+        /// <param name="targetItem">
+        ///     Target item underlying type should be
+        ///     <see cref="PropertyExpression" />.
+        /// </param>
+        public static void Remove(this FilterScheme f, ConditionTreeItem targetItem)
+        {
+            Argument.IsNotNull(() => targetItem);
+            Argument.IsOfType("targetItem", targetItem, typeof(PropertyExpression));
+
+            if (!f.CanRemove(targetItem))
+                return;
+
+            ConditionGroup parent = targetItem.Parent as ConditionGroup;
+            parent.Items.Remove(targetItem);
+
+            // Last expression in condition group
+            if (parent.Items.Count == 1)
+            {
+                var lastChild = parent.Items.FirstOrDefault();
+
+                // If parent is not root condition, merge this condition with parent's parent
+                if (parent.Parent != null)
+                {
+                    int propExpIndex = parent.Parent.Items.Count(cti => cti is PropertyExpression);
+
+                    parent.Parent.Items.Insert(propExpIndex, lastChild);
+                    parent.Items.Clear();
+
+                    parent.Parent.Items.Remove(parent);
+                }
+                else if (lastChild is ConditionGroup)
+                {
+                    // Parent is root, swap
+                    f.RootItem.Items.Clear();
+                    f.ConditionItems.Clear();
+
+                    lastChild.Parent = null;
+                    f.ConditionItems.Add(lastChild);
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Helper method which setups a PropertyExpression with default property and optional parent.
+        /// </summary>
+        /// <param name="f">Filter instance</param>
+        /// <param name="targetProperties">Target type properties metadata.</param>
+        /// <param name="parent">The (optional) parent.</param>
+        /// <returns></returns>
+        public static PropertyExpression CreatePropertyExpression(this FilterScheme f, IEnumerable<IPropertyMetadata> targetProperties, ConditionTreeItem parent = null)
+        {
+            return new PropertyExpression { Parent = parent, Property = targetProperties.FirstOrDefault() };
+        }
+
+        /// <summary>
+        ///     Helper method which setups a ConditionGroup with given parameters.
+        /// </summary>
+        /// <param name="f">Filter instance</param>
+        /// <param name="type">Condition Type.</param>
+        /// <param name="parent">The (optional) parent.</param>
+        /// <param name="child1">The (optional) first child.</param>
+        /// <param name="child2">The (optional) second child.</param>
+        /// <returns></returns>
+        public static ConditionGroup CreateConditionGroup(this FilterScheme f, ConditionGroupType type, ConditionTreeItem parent = null, ConditionTreeItem child1 = null, ConditionTreeItem child2 = null)
+        {
+            var conditionGroup = new ConditionGroup { Parent = parent, Type = type };
+
+            if (child1 != null)
+            {
+                conditionGroup.Items.Add(child1);
+                child1.Parent = conditionGroup;
+            }
+
+            if (child2 != null)
+            {
+                conditionGroup.Items.Add(child2);
+                child2.Parent = conditionGroup;
+            }
+
+            return conditionGroup;
+        }
+
         public static void EnsureIntegrity(this FilterScheme filterScheme, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => filterScheme);
             Argument.IsNotNull(() => reflectionService);
 
             foreach (var item in filterScheme.ConditionItems)
-            {
                 item.EnsureIntegrity(reflectionService);
-            }
         }
 
         public static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
@@ -42,15 +280,12 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => reflectionService);
 
             var propertyExpression = conditionTreeItem as PropertyExpression;
+
             if (propertyExpression != null)
-            {
-                propertyExpression.EnsureIntegrity(reflectionService);
-            }
+                EnsureIntegrity(propertyExpression, reflectionService);
 
             foreach (var item in conditionTreeItem.Items)
-            {
                 item.EnsureIntegrity(reflectionService);
-            }
         }
 
         public static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
@@ -92,23 +327,25 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => rawCollection);
             Argument.IsNotNull(() => filteredCollection);
 
+            var compiledDelegate = filterScheme.ToLinqExpression().Compile();
+
             IDisposable suspendToken = null;
             if (filteredCollection is ISuspendChangeNotificationsCollection)
-            {
                 suspendToken = ((ISuspendChangeNotificationsCollection)filteredCollection).SuspendChangeNotifications();
-            }
 
             filteredCollection.Clear();
 
-            foreach (var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
-            {
+            foreach (var item in rawCollection.Cast<object>().Where(i => (bool)compiledDelegate.DynamicInvoke(i)))
                 filteredCollection.Add(item);
-            }
+
+#if false
+            foreach (
+                var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
+                filteredCollection.Add(item);
+#endif
 
             if (suspendToken != null)
-            {
                 suspendToken.Dispose();
-            }
         }
         #endregion
     }

@@ -58,6 +58,7 @@ namespace Orc.FilterBuilder.Tests.Models
         {
             var filterScheme = new FilterScheme();
             filterScheme.Title = "Test filter";
+            filterScheme.CreateRootNode();
 
             var root = filterScheme.ConditionItems.First();
 

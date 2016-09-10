@@ -12,6 +12,8 @@ namespace Orc.FilterBuilder.Converters
     using System.Windows.Controls;
     using Catel.MVVM.Converters;
 
+    using Orc.FilterBuilder.Extensions;
+
     public class LeftMarginMultiplierConverter : ValueConverterBase
     {
         #region Properties

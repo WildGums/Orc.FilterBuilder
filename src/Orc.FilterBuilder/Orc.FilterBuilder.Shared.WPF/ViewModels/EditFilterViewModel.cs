@@ -69,10 +69,6 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 Scope = _originalFilterScheme.Scope
             };
-
-            AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
-            AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
-            DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
         }
         #endregion
 
@@ -90,20 +86,12 @@ namespace Orc.FilterBuilder.ViewModels
 
         public IEnumerable RawCollection { get; private set; }
         public FastObservableCollection<object> PreviewItems { get; private set; }
-
-        public List<IPropertyMetadata> InstanceProperties { get; private set; }
-
-        public Command<ConditionGroup> AddGroupCommand { get; private set; }
-        public Command<ConditionGroup> AddExpressionCommand { get; private set; }
-        public Command<ConditionTreeItem> DeleteConditionItem { get; private set; }
         #endregion
 
         #region Methods
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            InstanceProperties = (await _reflectionService.GetInstancePropertiesAsync(_originalFilterScheme.TargetType)).Properties;
 
             using (var memoryStream = new MemoryStream())
             {
@@ -163,7 +151,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         protected override async Task<bool> SaveAsync()
         {
-            if (FilterScheme.HasInvalidConditionItems)
+            if (FilterScheme.IsExpressionValid)
             {
                 if (await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_SaveBroken"),
                     _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
@@ -176,62 +164,6 @@ namespace Orc.FilterBuilder.ViewModels
             _originalFilterScheme.Update(FilterScheme);
 
             return true;
-        }
-
-        private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
-        {
-            if (item == null)
-            {
-                return false;
-            }
-
-            if (!item.IsRoot())
-            {
-                return true;
-            }
-
-            if (FilterScheme.ConditionItems.Count > 1)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private void OnDeleteCondition(ConditionTreeItem item)
-        {
-            if (item.Parent == null)
-            {
-                FilterScheme.ConditionItems.Remove(item);
-
-                foreach (var conditionItem in FilterScheme.ConditionItems)
-                {
-                    conditionItem.Items.Remove(item);
-                }
-            }
-            else
-            {
-                item.Parent.Items.Remove(item);
-            }
-
-            _isFilterDirty = true;
-
-            UpdatePreviewItems();
-        }
-
-        private void OnAddExpression(ConditionGroup group)
-        {
-            var propertyExpression = new PropertyExpression();
-            propertyExpression.Property = InstanceProperties.FirstOrDefault();
-            group.Items.Add(propertyExpression);
-            propertyExpression.Parent = group;
-        }
-
-        private void OnAddGroup(ConditionGroup group)
-        {
-            var newGroup = new ConditionGroup();
-            group.Items.Add(newGroup);
-            newGroup.Parent = group;
         }
 
         private void OnEnableLivePreviewChanged()

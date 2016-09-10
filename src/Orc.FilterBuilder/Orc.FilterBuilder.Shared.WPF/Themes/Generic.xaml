@@ -5,8 +5,12 @@
     <SolidColorBrush x:Key="DataGridHeaderMouseOverBackgroundBrush" Color="{DynamicResource FilterBuilderHighlightColor}"/>
     <SolidColorBrush x:Key="DataGridHeaderBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="DataGridHeaderBackgroundBrush" Color="#F4F4F4"/>
-    
-    <Geometry x:Key="ExpanderToggleButtonArrow">M5,-0 L9,5 1,5 z</Geometry>
+
+    <SolidColorBrush x:Key="FilterBuilderGrayBrush10" Color="#FFF7F7F7"/>
+    <SolidColorBrush x:Key="FilterBuilderGrayBrush9" Color="#5EC9C9C9"/>
+    <SolidColorBrush x:Key="FilterBuilderGrayBrush7" Color="#FFD8D8D9"/>
+
+  <Geometry x:Key="ExpanderToggleButtonArrow">M5,-0 L9,5 1,5 z</Geometry>
 
     <Style x:Key="FilterBuilderComboBoxStyle"  TargetType="{x:Type ComboBox}">
         <Setter Property="Width" Value="173" />
@@ -201,8 +205,7 @@
                             <Viewbox x:Name="Viewbox" Height="13" Width="13">
                                 <Path x:Name="Path" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" 
                                       UseLayoutRounding="True" Margin="0" SnapsToDevicePixels="True"
-                                      Data="{TemplateBinding Content}" Fill="#575757" >
-                                </Path>
+                                      Data="{TemplateBinding Content}" Fill="#575757" />
                             </Viewbox>
                             <Grid x:Name="Filter" Background="Transparent" Opacity="0.7"/>
                         </Grid>
@@ -518,3 +521,4 @@
         </Setter>
     </Style>
 </ResourceDictionary>
+

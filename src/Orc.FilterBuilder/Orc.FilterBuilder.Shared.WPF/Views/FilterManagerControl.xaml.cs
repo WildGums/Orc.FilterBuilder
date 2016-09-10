@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterBuilderControl.xaml.cs" company="WildGums">
+// <copyright file="FilterManagerControl.xaml.cs" company="WildGums">
 //   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,17 +12,20 @@ namespace Orc.FilterBuilder.Views
     using System.Windows;
     using System.Windows.Media;
     using Catel.MVVM.Views;
+
+    using Orc.FilterBuilder.Extensions;
+
     using ViewModels;
 
-    public partial class FilterBuilderControl
+    public partial class FilterManagerControl
     {
         #region Constructors
-        static FilterBuilderControl()
+        static FilterManagerControl()
         {
-            typeof(FilterBuilderControl).AutoDetectViewPropertiesToSubscribe();
+            typeof(FilterManagerControl).AutoDetectViewPropertiesToSubscribe();
         }
 
-        public FilterBuilderControl()
+        public FilterManagerControl()
         {
             InitializeComponent();
         }
@@ -37,7 +40,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register("RawCollection", typeof(IEnumerable),
-            typeof(FilterBuilderControl));
+            typeof(FilterManagerControl));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -48,7 +51,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("Mode", typeof(FilterBuilderMode),
-            typeof(FilterBuilderControl), new PropertyMetadata(default(FilterBuilderMode)));
+            typeof(FilterManagerControl), new PropertyMetadata(default(FilterBuilderMode)));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -59,7 +62,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty FilteringFuncProperty = DependencyProperty.Register("FilteringFunc", typeof(Func<object, bool>),
-            typeof(FilterBuilderControl), new PropertyMetadata(default(Func<object, bool>)));
+            typeof(FilterManagerControl), new PropertyMetadata(default(Func<object, bool>)));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -70,7 +73,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register("FilteredCollection", typeof(IList),
-            typeof(FilterBuilderControl));
+            typeof(FilterManagerControl));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -81,7 +84,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty AutoApplyFilterProperty = DependencyProperty.Register("AutoApplyFilter", typeof(bool),
-            typeof(FilterBuilderControl), new PropertyMetadata(true));
+            typeof(FilterManagerControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -92,7 +95,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty AllowLivePreviewProperty =
-            DependencyProperty.Register("AllowLivePreview", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+            DependencyProperty.Register("AllowLivePreview", typeof(bool), typeof(FilterManagerControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -103,7 +106,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty EnableAutoCompletionProperty =
-            DependencyProperty.Register("EnableAutoCompletion", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+            DependencyProperty.Register("EnableAutoCompletion", typeof(bool), typeof(FilterManagerControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -114,7 +117,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty AllowResetProperty =
-            DependencyProperty.Register("AllowReset", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+            DependencyProperty.Register("AllowReset", typeof(bool), typeof(FilterManagerControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -125,7 +128,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty AllowDeleteProperty = DependencyProperty.Register("AllowDelete", typeof(bool),
-            typeof(FilterBuilderControl), new PropertyMetadata(true));
+            typeof(FilterManagerControl), new PropertyMetadata(true));
 
 
         public Brush AccentColorBrush
@@ -135,7 +138,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty AccentColorBrushProperty = DependencyProperty.Register("AccentColorBrush", typeof(Brush),
-            typeof(FilterBuilderControl), new PropertyMetadata(Brushes.LightGray, (sender, e) => ((FilterBuilderControl)sender).OnAccentColorBrushChanged()));
+            typeof(FilterManagerControl), new PropertyMetadata(Brushes.LightGray, (sender, e) => ((FilterManagerControl)sender).OnAccentColorBrushChanged()));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -146,7 +149,7 @@ namespace Orc.FilterBuilder.Views
         }
 
         public static readonly DependencyProperty ScopeProperty = DependencyProperty.Register("Scope", typeof(object),
-            typeof(FilterBuilderControl), new FrameworkPropertyMetadata((sender, e) => ((FilterBuilderControl)sender).OnScopeChanged()));
+            typeof(FilterManagerControl), new FrameworkPropertyMetadata((sender, e) => ((FilterManagerControl)sender).OnScopeChanged()));
         #endregion
 
         #region Methods
@@ -162,7 +165,7 @@ namespace Orc.FilterBuilder.Views
 
         private void OnScopeChanged()
         {
-            var vm = ViewModel as FilterBuilderViewModel;
+            var vm = ViewModel as FilterManagerViewModel;
             if (vm != null)
             {
                 vm.Scope = Scope;
