@@ -45,6 +45,7 @@
           DisplayMemberPath="DisplayName"
           SelectedItem="{Binding Property, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
           Style="{DynamicResource FilterBuilderComboBoxStyle}"
+          VerticalAlignment="Center"
           Margin="16 0 0 0"
           Width="120" />
 
@@ -53,6 +54,7 @@
           ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
           SelectedItem="{Binding DataTypeExpression.SelectedCondition}"
           Style="{DynamicResource FilterBuilderComboBoxStyle}"
+          VerticalAlignment="Center"
           Margin="16 0 0 0"
           Width="80">
           <ComboBox.ItemTemplate>
@@ -111,6 +113,7 @@
                     SelectedValue="{Binding DataTypeExpression.Value}"
                     Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static expressionsViewModels:ValueControlType.Boolean}}"
                     Style="{DynamicResource FilterBuilderComboBoxStyle}"
+                    VerticalAlignment="Center"
                     Margin="16 0 0 0"
                     Width="80" />
 
@@ -119,6 +122,7 @@
             <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}"
                       SelectedValue="{Binding DataTypeExpression.SelectedSpanType}"
                       Style="{DynamicResource FilterBuilderComboBoxStyle}"
+                      VerticalAlignment="Center"
                       Margin="16 0 0 0"
                       Width="120" />
             <TextBox Text="{Binding DataTypeExpression.Amount}">
