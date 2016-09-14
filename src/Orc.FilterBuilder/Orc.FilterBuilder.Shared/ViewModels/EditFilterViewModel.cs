@@ -151,7 +151,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         protected override async Task<bool> SaveAsync()
         {
-            if (FilterScheme.IsExpressionValid)
+            if (!FilterScheme.IsExpressionValid)
             {
                 if (await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_SaveBroken"),
                     _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
