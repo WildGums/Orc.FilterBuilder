@@ -1,0 +1,80 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Sidekick.WPF.Controls">
+
+  <!--Original source code: http://www.codeproject.com/Articles/17025/Custom-TreeView-Layout-in-WPF-->
+  <!--Used and distributed under Code Project Open License (CPOL) License-->
+
+  <!-- This Style redefines the ControlTemplate used by TreeViewItems and
+         also provides a different itemspanel for their child items. -->
+  <Style x:Key="StackedTreeViewItemStyle" TargetType="TreeViewItem">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TreeViewItem">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <!--The left column contains the item's content.-->
+              <ColumnDefinition Width="Auto" />
+              <!--The right column contains the item's children.-->
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- This Border and ContentPresenter displays the content of the TreeViewItem. -->
+            <Border Name="Bd"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="2"
+                    Grid.Column="0">
+              <ContentPresenter Name="PART_Header"
+                                ContentSource="Header" />
+            </Border>
+
+            <!-- The ItemsPresenter displays the item's children. -->
+            <ItemsPresenter Grid.Column="1" />
+          </Grid>
+
+          <!--<ControlTemplate.Triggers>
+            --><!--When the item is selected in the TreeView, use the 
+                  "selected" colors and give it a drop shadow. --><!--
+            <Trigger Property="IsSelected" Value="True">
+              <Setter
+                TargetName="Bd"
+                Property="Panel.Background"
+                Value="#676767" />
+              --><!--<Setter
+                TargetName="Bd"
+                Property="Border.BorderBrush"
+                Value="{StaticResource SelectedItemBorderBrush}" />--><!--
+              <Setter
+                TargetName="Bd"
+                Property="TextElement.Foreground"
+                Value="{DynamicResource 
+                  {x:Static SystemColors.HighlightTextBrushKey}}" />
+              --><!--<Setter
+                TargetName="Bd"
+                Property="Border.BitmapEffect"
+                Value="{StaticResource DropShadowEffect}" />--><!--
+            </Trigger>
+          </ControlTemplate.Triggers>-->
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <!-- Make each TreeViewItem show it's children 
+           in a vertical StackPanel. -->
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <StackPanel
+            HorizontalAlignment="Left"
+            IsItemsHost="True"
+            Margin="0"
+            Orientation="Vertical" />
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+
+</ResourceDictionary>
