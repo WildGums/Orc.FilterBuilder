@@ -1,16 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BooleanExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq.Expressions;
+
     using Catel.Runtime.Serialization;
+
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -19,12 +21,14 @@ namespace Orc.FilterBuilder
         #region Constructors
         public BooleanExpression()
         {
-            BooleanValues = new List<bool> {true, false};
+            BooleanValues = new List<bool> { true, false };
             Value = true;
             SelectedCondition = Condition.EqualTo;
             ValueControlType = ValueControlType.Boolean;
         }
         #endregion
+
+
 
         #region Properties
         public bool Value { get; set; }
@@ -32,6 +36,8 @@ namespace Orc.FilterBuilder
         [ExcludeFromSerialization]
         public List<bool> BooleanValues { get; set; }
         #endregion
+
+
 
         #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
@@ -45,6 +51,18 @@ namespace Orc.FilterBuilder
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
             }
+        }
+
+        /// <summary>
+        ///   Converts <see cref="ConditionTreeItem"/> to a LINQ <see cref="Expression"/>
+        /// </summary>
+        /// <param name="propertyExpr">LINQ <see cref="MemberExpression"/>.</param>
+        /// <returns>LINQ Expression.</returns>
+        public override Expression ToLinqExpression(Expression propertyExpr)
+        {
+            var valueExpr = Expression.Constant(Value, typeof(bool));
+
+            return Expression.Equal(propertyExpr, valueExpr);
         }
 
         public override string ToString()
