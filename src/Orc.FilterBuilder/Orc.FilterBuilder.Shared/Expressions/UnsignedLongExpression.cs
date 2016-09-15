@@ -28,5 +28,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.UnsignedLong;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new UnsignedLongExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }

@@ -28,5 +28,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.SByte;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new SByteExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }

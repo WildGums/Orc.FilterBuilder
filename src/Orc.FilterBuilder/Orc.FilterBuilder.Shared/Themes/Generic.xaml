@@ -2,21 +2,37 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters">
 
+
+    <!--Colors-->
+    <Color x:Key="FilterBuilderGray10">#FFF7F7F7</Color>
+    <Color x:Key="FilterBuilderGray9">#5EC9C9C9</Color>
+    <Color x:Key="FilterBuilderGray7">#FFD8D8D9</Color>
+
+    <Color x:Key="FilterBuilderWhite">White</Color>
+
+    <!--Brushes-->
+    <SolidColorBrush x:Key="FilterBuilderGrayBrush10" Color="{DynamicResource FilterBuilderGray10}"/>
+    <SolidColorBrush x:Key="FilterBuilderGrayBrush9" Color="{DynamicResource FilterBuilderGray9}"/>
+    <SolidColorBrush x:Key="FilterBuilderGrayBrush7" Color="{DynamicResource FilterBuilderGray7}"/>
+
+    <SolidColorBrush x:Key="FilterBuilderWhiteBrush" Color="{DynamicResource FilterBuilderWhite}"/>
+
     <SolidColorBrush x:Key="DataGridHeaderMouseOverBackgroundBrush" Color="{DynamicResource FilterBuilderHighlightColor}"/>
     <SolidColorBrush x:Key="DataGridHeaderBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="DataGridHeaderBackgroundBrush" Color="#F4F4F4"/>
+    
+    <!--Geometry-->
+    <Geometry x:Key="ExpanderToggleButtonArrow">M5,-0 L9,5 1,5 z</Geometry>
 
-    <SolidColorBrush x:Key="FilterBuilderGrayBrush10" Color="#FFF7F7F7"/>
-    <SolidColorBrush x:Key="FilterBuilderGrayBrush9" Color="#5EC9C9C9"/>
-    <SolidColorBrush x:Key="FilterBuilderGrayBrush7" Color="#FFD8D8D9"/>
-
-  <Geometry x:Key="ExpanderToggleButtonArrow">M5,-0 L9,5 1,5 z</Geometry>
-
+    
+    <!--Styles-->
     <Style x:Key="FilterBuilderComboBoxStyle"  TargetType="{x:Type ComboBox}">
         <Setter Property="Width" Value="173" />
         <Setter Property="Height" Value="26" />
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="4 2 4 2" />
+        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -51,6 +67,7 @@
                         </Popup>
                         <ToggleButton Grid.ColumnSpan="2" 
                                       BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
                                       Background="{TemplateBinding Background}"
                                       IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <ToggleButton.Style>
@@ -61,25 +78,35 @@
                                     <Setter Property="ClickMode" Value="Press"/>
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                <Border x:Name="Chrome" BorderBrush="LightGray" BorderThickness="1"
-                                                                Background="White" SnapsToDevicePixels="True">
-                                                    <Grid x:Name="PathGrid" HorizontalAlignment="Right" Width="12">
-                                                        <Path x:Name="Arrow" Data="M0,0L3.5,4 7,0z" Fill="Black"
-                                                                      HorizontalAlignment="Center" Margin="0,1,0,0" VerticalAlignment="Center"/>
-                                                    </Grid>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
+                                      <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                          <Border x:Name="Chrome"
+                                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                                  Background="{TemplateBinding Background}"
+                                                  SnapsToDevicePixels="True">
+                                            <Grid x:Name="PathGrid"
+                                                  HorizontalAlignment="Right"
+                                                  Width="12">
+                                              <Path x:Name="Arrow"
+                                                    Data="M0,0L3.5,4 7,0z"
+                                                    Fill="Black"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,1,0,0"
+                                                    VerticalAlignment="Center" />
+                                            </Grid>
+                                          </Border>
+                                          <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
                                                         <Setter Property="Background" TargetName="PathGrid" Value="{DynamicResource FilterBuilderAccentBrush}" />
+                                                        <Setter Property="Background" TargetName="Chrome" Value="{DynamicResource FilterBuilderWhiteBrush}" />
                                                         <Setter Property="BorderBrush" TargetName="Chrome" Value="{DynamicResource FilterBuilderAccentBrush}" />
-                                                        <Setter Property="Fill" TargetName="Arrow" Value="White" />
+                                                        <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource FilterBuilderWhiteBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsChecked" Value="True">
                                                         <Setter Property="Background" TargetName="PathGrid" Value="{DynamicResource FilterBuilderAccentBrush}" />
-                                                        <Setter Property="Background" TargetName="Chrome" Value="White" />
-                                                        <Setter Property="Fill" TargetName="Arrow" Value="White" />
+                                                        <Setter Property="Background" TargetName="Chrome" Value="{DynamicResource FilterBuilderWhiteBrush}" />
+                                                        <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource FilterBuilderWhiteBrush}" />
                                                         <Setter Property="BorderBrush" TargetName="Chrome" Value="{DynamicResource FilterBuilderAccentBrush}" />
                                                     </Trigger>
                                                     <Trigger Property="IsEnabled" Value="False">

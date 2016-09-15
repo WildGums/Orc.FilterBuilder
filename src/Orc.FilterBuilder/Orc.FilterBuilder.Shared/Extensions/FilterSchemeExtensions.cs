@@ -4,26 +4,29 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+
     using Catel;
     using Catel.Collections;
     using Catel.Reflection;
+
     using MethodTimer;
-    using Models;
-    using Services;
-    using Catel.Data;
+
+    using Orc.FilterBuilder.Models;
+    using Orc.FilterBuilder.Services;
 
     public static class FilterSchemeExtensions
     {
         #region Constants
         private const string Separator = "||";
         #endregion
+
+
 
         #region Methods
         /// <summary>
@@ -49,6 +52,83 @@ namespace Orc.FilterBuilder
                 return;
 
             f.Root.Items.Add(f.CreatePropertyExpression(targetProperties, f.Root));
+        }
+
+        /// <summary>Removes redundant nodes, and reorder items if required.</summary>
+        public static void OptimizeTree(this FilterScheme f)
+        {
+            if (f.Root == null)
+            {
+                return;
+            }
+
+            f.OptimizeTree(f.Root);
+        }
+
+        public static void OptimizeTree(this FilterScheme f, ConditionTreeItem node)
+        {
+            // If single node, optimize
+            if (node.Items.Count == 1 && node.Parent != null)
+            {
+                var childNode = node.Items.FirstOrDefault();
+
+                // If parent is not root condition, merge this condition with parent's parent
+                if (node.Parent != null)
+                {
+                    childNode.Move(node.Parent);
+
+                    node.Parent.Items.Remove(node);
+                }
+                else if (childNode is ConditionGroup)
+                {
+                    // Node is root, clear its items
+                    node.Items.Clear();
+
+                    // Make child the new Root
+                    childNode.Parent = null;
+
+                    f.ConditionItems.Clear();
+                    f.ConditionItems.Add(childNode);
+                }
+            }
+
+            // Recurse
+            node.Items.ToList().ForEach(f.OptimizeTree);
+
+            // Make sure PropertyExpression items are grouped together, before ConditionGroup items
+            int lastPropIndex = 0;
+            bool startSorting = false;
+
+            for (int i = 0; i < node.Items.Count; i++)
+            {
+                if (!startSorting)
+                {
+                    if (node.Items[i] is PropertyExpression)
+                    {
+                        lastPropIndex = i;
+                    }
+                    else
+                    {
+                        startSorting = true;
+                    }
+                }
+                else if (node.Items[i] is PropertyExpression)
+                {
+                    var propNode = node.Items[i];
+                    node.Items.Remove(propNode);
+                    node.Items.Insert(lastPropIndex++, propNode);
+                }
+            }
+        }
+
+        public static void Move(this ConditionTreeItem movingNode, ConditionTreeItem targetNode)
+        {
+            int propExpIndex = targetNode.Items.Count(cti => cti is PropertyExpression);
+
+            movingNode.Parent.Items.Remove(movingNode);
+            targetNode.Items.Insert(propExpIndex, movingNode);
+
+            movingNode.Parent = targetNode;
         }
 
         /// <summary>
@@ -147,31 +227,7 @@ namespace Orc.FilterBuilder
             ConditionGroup parent = targetItem.Parent as ConditionGroup;
             parent.Items.Remove(targetItem);
 
-            // Last expression in condition group
-            if (parent.Items.Count == 1)
-            {
-                var lastChild = parent.Items.FirstOrDefault();
-
-                // If parent is not root condition, merge this condition with parent's parent
-                if (parent.Parent != null)
-                {
-                    int propExpIndex = parent.Parent.Items.Count(cti => cti is PropertyExpression);
-
-                    parent.Parent.Items.Insert(propExpIndex, lastChild);
-                    parent.Items.Clear();
-
-                    parent.Parent.Items.Remove(parent);
-                }
-                else if (lastChild is ConditionGroup)
-                {
-                    // Parent is root, swap
-                    f.Root.Items.Clear();
-                    f.ConditionItems.Clear();
-
-                    lastChild.Parent = null;
-                    f.ConditionItems.Add(lastChild);
-                }
-            }
+            f.OptimizeTree(parent);
         }
 
         /// <summary>

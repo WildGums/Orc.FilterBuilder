@@ -26,5 +26,10 @@ namespace Orc.FilterBuilder
         {
             IsNullable = type.IsNullable();
         }
+
+        public override object Clone()
+        {
+            return new NumericExpression() { Value = this.Value, SelectedCondition = this.SelectedCondition, IsNullable = this.IsNullable};
+        }
     }
 }

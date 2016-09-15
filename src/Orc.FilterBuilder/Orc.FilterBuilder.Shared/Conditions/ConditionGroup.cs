@@ -10,6 +10,8 @@ namespace Orc.FilterBuilder
     using System.Linq;
     using System.Text;
 
+    using Catel.Collections;
+
     public class ConditionGroup : ConditionTreeItem
     {
         #region Constructors
@@ -39,6 +41,15 @@ namespace Orc.FilterBuilder
             {
                 return Items.Aggregate(false, (current, item) => current || item.CalculateResult(entity));
             }
+        }
+
+        public override object Clone()
+        {
+            var clone = new ConditionGroup { Type = this.Type };
+            
+            Items.ForEach(i => clone.Items.Add(i.Clone() as ConditionTreeItem));
+
+            return clone;
         }
 
         public override string ToString()

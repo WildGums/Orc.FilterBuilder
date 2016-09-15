@@ -4,42 +4,70 @@
                     xmlns:filterBuilder="clr-namespace:Orc.FilterBuilder"
                     xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup">
 
-  <HierarchicalDataTemplate DataType="{x:Type filterBuilder:ConditionGroup}"
-                            ItemsSource="{Binding Items}">
+    <HierarchicalDataTemplate DataType="{x:Type filterBuilder:ConditionGroup}"
+                              ItemsSource="{Binding Items}">
 
-    <HierarchicalDataTemplate.Resources>
-      <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter" />
-    </HierarchicalDataTemplate.Resources>
+        <HierarchicalDataTemplate.Resources>
+            <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter" />
+        </HierarchicalDataTemplate.Resources>
 
-    <Border BorderBrush="{DynamicResource FilterBuilderGrayBrush9}"
-            BorderThickness="1 1 1 1">
+        <Border BorderBrush="{DynamicResource FilterBuilderGrayBrush9}"
+                BorderThickness="1 1 1 1">
 
-      <Grid Background="{DynamicResource FilterBuilderGrayBrush10}"
-            Width="90">
+            <Grid Name="ConditionGrid">
 
-        <Grid Height="60"
-              Margin="0"
-              VerticalAlignment="Top">
+                <ComboBox ItemsSource="{markup:EnumBinding {x:Type filterBuilder:ConditionGroupType}}"
+                          SelectedItem="{Binding Type}"
+                          Style="{DynamicResource FilterBuilderComboBoxStyle}"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          Height="50"
+                          Width="54"
+                          Margin="0"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Top">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Grid.Background>
+                    <SolidColorBrush x:Name="GridBackgroundColor" Color="{DynamicResource FilterBuilderGray10}"/>
+                </Grid.Background>
 
-          <ComboBox ItemsSource="{markup:EnumBinding {x:Type filterBuilder:ConditionGroupType}}"
-                    SelectedItem="{Binding Type}"
-                    Style="{DynamicResource FilterBuilderComboBoxStyle}"
-                    Width="62"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <ComboBox.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}" />
-              </DataTemplate>
-            </ComboBox.ItemTemplate>
-          </ComboBox>
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Grid.MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Duration="0:0:0.15"
+                                                    Storyboard.TargetName="GridBackgroundColor"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="{DynamicResource FilterBuilderGray9}" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Grid.MouseLeave">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Duration="0:0:0.15"
+                                                    Storyboard.TargetName="GridBackgroundColor"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="{DynamicResource FilterBuilderGray10}" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Grid.Triggers>
+                
+            </Grid>
 
-        </Grid>
+        </Border>
 
-      </Grid>
-
-    </Border>
-
-  </HierarchicalDataTemplate>
+    </HierarchicalDataTemplate>
 
 </ResourceDictionary>

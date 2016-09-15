@@ -126,6 +126,8 @@ namespace Orc.FilterBuilder
 
         public abstract bool CalculateResult(object entity);
 
+        public abstract object Clone();
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(obj, this))

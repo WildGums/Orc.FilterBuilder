@@ -60,7 +60,6 @@ namespace Orc.FilterBuilder.Models
 
             TargetType = targetType;
             Title = title;
-            OptimizeTree = true;
 
             ConditionItems = new ObservableCollection<ConditionTreeItem>();
             this.CreateRootNode();
@@ -76,14 +75,6 @@ namespace Orc.FilterBuilder.Models
         ///     Filter title.
         /// </summary>
         public string Title { get; set; }
-
-        /// <summary>
-        ///     If true, will attempt to optimize tree when a <see cref="ConditionGroup" /> value is
-        ///     changed. Optimization also occurs when changing this value to true.
-        /// </summary>
-        /// <remarks>Defaults to true.</remarks>
-        [ExcludeFromSerialization]
-        public bool OptimizeTree { get; set; } // TODO : Optimize away
 
         /// <summary>
         ///     Root <see cref="ConditionTreeItem" /> item, of type <see cref="ConditionGroup" />.

@@ -28,5 +28,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.UnsignedShort;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new UnsignedShortExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }

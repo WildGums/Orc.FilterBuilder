@@ -34,6 +34,8 @@ namespace Orc.FilterBuilder
         }
 
         public abstract bool CalculateResult(IPropertyMetadata propertyMetadata, object entity);
+
+        public abstract object Clone();
         #endregion
     }
 }

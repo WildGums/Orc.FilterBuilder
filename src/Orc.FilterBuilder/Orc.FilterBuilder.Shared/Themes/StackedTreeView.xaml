@@ -24,7 +24,6 @@
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="2"
                     Grid.Column="0">
               <ContentPresenter Name="PART_Header"
                                 ContentSource="Header" />

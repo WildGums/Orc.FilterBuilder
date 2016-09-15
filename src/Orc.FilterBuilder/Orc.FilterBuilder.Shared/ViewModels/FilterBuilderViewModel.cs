@@ -9,11 +9,17 @@ namespace Orc.FilterBuilder.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Catel.IoC;
     using Catel.MVVM;
+
+    using GongSolutions.Wpf.DragDrop;
 
     using Orc.FilterBuilder.Models;
     using Orc.FilterBuilder.Services;
@@ -22,11 +28,12 @@ namespace Orc.FilterBuilder.ViewModels
     ///   View Model for generic FilterBuilder
     /// </summary>
     /// <seealso cref="Catel.MVVM.ViewModelBase" />
-    public class FilterBuilderViewModel : ViewModelBase
+    public class FilterBuilderViewModel : ViewModelBase, IDragSource, IDropTarget
     {
         #region Fields
         private readonly IReflectionService _reflectionService;
         private readonly bool _isEditing = false;
+        private readonly DefaultDragHandler _defaultDragHandler;
         #endregion
 
 
@@ -50,6 +57,7 @@ namespace Orc.FilterBuilder.ViewModels
         public FilterBuilderViewModel(FilterScheme scheme, IReflectionService reflectionService) : base(false)
         {
             _reflectionService = reflectionService;
+            _defaultDragHandler = new DefaultDragHandler();
 
             CurrentFilter = scheme;
 
@@ -96,6 +104,124 @@ namespace Orc.FilterBuilder.ViewModels
         ///   Command for removing a given item.
         /// </summary>
         public ICommand DeleteCommand { get; set; }
+        #endregion
+
+
+
+        #region IDragSource Members
+        public void StartDrag(IDragInfo dragInfo)
+        {
+            _defaultDragHandler.StartDrag(dragInfo);
+        }
+
+        public bool CanStartDrag(IDragInfo dragInfo)
+        {
+            return (ConditionTreeItem)dragInfo.SourceItem != CurrentFilter.Root;
+        }
+
+        public void Dropped(IDropInfo dropInfo)
+        {
+            _defaultDragHandler.Dropped(dropInfo);
+        }
+
+        public void DragCancelled()
+        {
+            _defaultDragHandler.DragCancelled();
+        }
+
+        public bool TryCatchOccurredException(Exception exception)
+        {
+            return _defaultDragHandler.TryCatchOccurredException(exception);
+        }
+        #endregion
+
+
+
+        #region IDropTarget Members
+        public void DragOver(IDropInfo dropInfo)
+        {
+            if (DefaultDropHandler.CanAcceptData(dropInfo))
+            {
+                // Check whether we are are moving/copying, or inserting
+                var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter)
+                    && dropInfo.VisualTargetItem is TreeViewItem;
+                var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+
+                // default should always the move action/effect
+                dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
+
+                // Can only move/copy to a ConditionGroup
+                if (isTreeViewItem && IsTargetConditionGroup(dropInfo))
+                {
+                    dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                }
+                else
+                {
+                    dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+                }
+            }
+        }
+
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Types are known")]
+        public void Drop(IDropInfo dropInfo)
+        {
+            if (dropInfo?.DragInfo == null)
+            {
+                return;
+            }
+
+            // Get drag/drop targets
+            ConditionTreeItem dragSource = dropInfo.DragInfo.SourceItem as ConditionTreeItem;
+            ConditionTreeItem dropTarget = dropInfo.TargetItem as ConditionTreeItem;
+
+            var insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
+            var itemsControl = dropInfo.VisualTarget as ItemsControl;
+
+            // Adjust insert index depending on drop target if moving (copying doesn't involve removing drag source).
+            var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+
+            var sourceParent = dragSource.Parent;
+
+            if (!copyData)
+            {
+                var trueDropTarget = dropTarget is PropertyExpression ? dropTarget.Parent : dropTarget;
+
+                if (sourceParent == trueDropTarget)
+                {
+                    insertIndex = Math.Max(0, insertIndex - 1);
+
+                    if (insertIndex == sourceParent.Items.IndexOf(dragSource))
+                    {
+                        return;
+                    }
+                }
+
+                sourceParent.Items.Remove(dragSource);
+            }
+
+            // If copying, clone data
+            if (copyData)
+            {
+                dragSource = (ConditionTreeItem)dragSource.Clone();
+            }
+
+            // Copy or move
+            if (dropTarget is ConditionGroup)
+            {
+                dropTarget.Items.Insert(insertIndex, dragSource);
+            }
+            else if (dropTarget.Parent != null)
+            {
+                dropTarget.Parent.Items.Insert(insertIndex, dragSource);
+            }
+
+            CurrentFilter.OptimizeTree();
+        }
+
+        private bool IsTargetConditionGroup(IDropInfo dropInfo)
+        {
+            return dropInfo.TargetItem is ConditionGroup;
+        }
         #endregion
 
 
