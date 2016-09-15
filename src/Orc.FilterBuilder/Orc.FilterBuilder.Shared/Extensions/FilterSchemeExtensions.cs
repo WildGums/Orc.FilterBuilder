@@ -116,7 +116,7 @@ namespace Orc.FilterBuilder
                 {
                     var propNode = node.Items[i];
                     node.Items.Remove(propNode);
-                    node.Items.Insert(lastPropIndex++, propNode);
+                    node.Items.Insert(++lastPropIndex, propNode);
                 }
             }
         }
