@@ -27,5 +27,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.DateTime;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new DateTimeExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }

@@ -117,6 +117,11 @@ namespace Orc.FilterBuilder
             }
         }
 
+        public override object Clone()
+        {
+            return new StringExpression() { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
+
         public override string ToString()
         {
             return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);

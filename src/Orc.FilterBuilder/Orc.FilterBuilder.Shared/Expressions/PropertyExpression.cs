@@ -44,6 +44,7 @@ namespace Orc.FilterBuilder
         private void OnPropertyChanged()
         {
             var dataTypeExpression = DataTypeExpression;
+
             if (dataTypeExpression != null)
             {
                 dataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
@@ -230,6 +231,23 @@ namespace Orc.FilterBuilder
             }
 
             return DataTypeExpression.CalculateResult(Property, entity);
+        }
+
+        public override object Clone()
+        {
+            var clone = new PropertyExpression();
+
+            clone.HandlePropertyAndCollectionChanges = false;
+            clone.AlwaysInvokeNotifyChanged = false;
+
+            clone.DataTypeExpression = this.DataTypeExpression.Clone() as DataTypeExpression;
+            clone.DataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
+            clone.Property = this.Property;
+
+            clone.HandlePropertyAndCollectionChanges = true;
+            clone.AlwaysInvokeNotifyChanged = true;
+
+            return clone;
         }
 
         public override string ToString()

@@ -28,5 +28,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.Double;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new DoubleExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }

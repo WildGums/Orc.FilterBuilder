@@ -1,16 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BooleanExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+
     using Catel.Runtime.Serialization;
+
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -19,12 +20,14 @@ namespace Orc.FilterBuilder
         #region Constructors
         public BooleanExpression()
         {
-            BooleanValues = new List<bool> {true, false};
+            BooleanValues = new List<bool> { true, false };
             Value = true;
             SelectedCondition = Condition.EqualTo;
             ValueControlType = ValueControlType.Boolean;
         }
         #endregion
+
+
 
         #region Properties
         public bool Value { get; set; }
@@ -32,6 +35,8 @@ namespace Orc.FilterBuilder
         [ExcludeFromSerialization]
         public List<bool> BooleanValues { get; set; }
         #endregion
+
+
 
         #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
@@ -45,6 +50,11 @@ namespace Orc.FilterBuilder
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
             }
+        }
+
+        public override object Clone()
+        {
+            return new BooleanExpression { Value = this.Value, SelectedCondition = this.SelectedCondition };
         }
 
         public override string ToString()

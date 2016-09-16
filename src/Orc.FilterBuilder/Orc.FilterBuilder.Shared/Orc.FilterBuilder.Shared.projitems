@@ -83,19 +83,32 @@
     <Compile Include="$(MSBuildThisFileDirectory)ValueControlType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EditFilterViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterBuilderViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterManagerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterView.xaml.cs">
       <DependentUpon>EditFilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml.cs">
       <DependentUpon>EditFilterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>FilterBuilderControl.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\FilterBuilderView.xaml.cs">
+      <DependentUpon>FilterBuilderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\FilterManagerControl.xaml.cs">
+      <DependentUpon>FilterManagerControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\StackedTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\DataTemplates\ConditionGroupView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\DataTemplates\PropertyExpressionView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterView.xaml">
@@ -106,7 +119,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Views\FilterBuilderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\FilterManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

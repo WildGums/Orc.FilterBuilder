@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:catel="http://catel.codeplex.com"
+                    xmlns:filterBuilder="clr-namespace:Orc.FilterBuilder"
+                    xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup">
+
+    <HierarchicalDataTemplate DataType="{x:Type filterBuilder:ConditionGroup}"
+                              ItemsSource="{Binding Items}">
+
+        <HierarchicalDataTemplate.Resources>
+            <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter" />
+        </HierarchicalDataTemplate.Resources>
+
+        <Border BorderBrush="{DynamicResource FilterBuilderGrayBrush9}"
+                BorderThickness="1 1 1 1">
+
+            <Grid Name="ConditionGrid">
+
+                <ComboBox ItemsSource="{markup:EnumBinding {x:Type filterBuilder:ConditionGroupType}}"
+                          SelectedItem="{Binding Type}"
+                          Style="{DynamicResource FilterBuilderComboBoxStyle}"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          Height="50"
+                          Width="54"
+                          Margin="0"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Top">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Grid.Background>
+                    <SolidColorBrush x:Name="GridBackgroundColor" Color="{DynamicResource FilterBuilderGray10}"/>
+                </Grid.Background>
+
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Grid.MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Duration="0:0:0.15"
+                                                    Storyboard.TargetName="GridBackgroundColor"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="{DynamicResource FilterBuilderGray9}" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Grid.MouseLeave">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Duration="0:0:0.15"
+                                                    Storyboard.TargetName="GridBackgroundColor"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="{DynamicResource FilterBuilderGray10}" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Grid.Triggers>
+                
+            </Grid>
+
+        </Border>
+
+    </HierarchicalDataTemplate>
+
+</ResourceDictionary>

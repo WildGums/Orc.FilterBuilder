@@ -28,5 +28,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.UnsignedInteger;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new UnsignedIntegerExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }

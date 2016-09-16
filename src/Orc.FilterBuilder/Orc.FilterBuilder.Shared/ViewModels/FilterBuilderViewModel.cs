@@ -4,413 +4,256 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Orc.FilterBuilder.ViewModels
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.Linq;
+    using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
-    using Catel;
-    using Catel.Collections;
-    using Catel.IoC;
-    using Catel.Logging;
-    using Catel.MVVM;
-    using Catel.Reflection;
-    using Catel.Services;
-    using Models;
-    using Services;
-    using Views;
-    using CollectionHelper = FilterBuilder.CollectionHelper;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
 
-    public class FilterBuilderViewModel : ViewModelBase
+    using Catel.IoC;
+    using Catel.MVVM;
+
+    using GongSolutions.Wpf.DragDrop;
+
+    using Orc.FilterBuilder.Models;
+    using Orc.FilterBuilder.Services;
+
+    /// <summary>
+    ///   View Model for generic FilterBuilder
+    /// </summary>
+    /// <seealso cref="Catel.MVVM.ViewModelBase" />
+    public class FilterBuilderViewModel : ViewModelBase, IDragSource, IDropTarget
     {
         #region Fields
-        private readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        private readonly IUIVisualizerService _uiVisualizerService;
-        private readonly IMessageService _messageService;
-        private readonly IServiceLocator _serviceLocator;
-
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
-        private IFilterSchemeManager _filterSchemeManager;
-        private IFilterService _filterService;
-        private IReflectionService _reflectionService;
-        private Type _targetType;
-        private FilterSchemes _filterSchemes;
-        private bool _applyingFilter;
+        private readonly IReflectionService _reflectionService;
+        private readonly bool _isEditing = false;
+        private readonly DefaultDragHandler _defaultDragHandler;
         #endregion
+
+
 
         #region Constructors
-        public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
-            IFilterService filterService, IMessageService messageService, IServiceLocator serviceLocator, IReflectionService reflectionService)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterBuilderViewModel" /> class.
+        /// </summary>
+        /// <param name="targetType">Filter target type.</param>
+        /// <param name="reflectionService">The reflection service.</param>
+        public FilterBuilderViewModel(Type targetType, IReflectionService reflectionService) : this(TypeFactory.Default.CreateInstanceWithParameters<FilterScheme>(targetType), reflectionService)
         {
-            Argument.IsNotNull(() => uiVisualizerService);
-            Argument.IsNotNull(() => filterSchemeManager);
-            Argument.IsNotNull(() => filterService);
-            Argument.IsNotNull(() => messageService);
-            Argument.IsNotNull(() => serviceLocator);
-            Argument.IsNotNull(() => reflectionService);
+            _isEditing = true;
+        }
 
-            _uiVisualizerService = uiVisualizerService;
-            _filterSchemeManager = filterSchemeManager;
-            _filterService = filterService;
-            _messageService = messageService;
-            _serviceLocator = serviceLocator;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterBuilderViewModel" /> class.
+        /// </summary>
+        /// <param name="scheme">Filter scheme.</param>
+        /// <param name="reflectionService">The reflection service.</param>
+        public FilterBuilderViewModel(FilterScheme scheme, IReflectionService reflectionService) : base(false)
+        {
             _reflectionService = reflectionService;
+            _defaultDragHandler = new DefaultDragHandler();
 
-            NewSchemeCommand = new Command(OnNewSchemeExecute);
-            EditSchemeCommand = new Command<FilterScheme>(OnEditSchemeExecute, OnEditSchemeCanExecute);
-            ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
-            ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
-            DeleteSchemeCommand = new Command<FilterScheme>(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
+            CurrentFilter = scheme;
+
+            DeleteCommand = new Command<ConditionTreeItem>(OnDeleteCommandExecute, OnDeleteCommandCanExecute);
+            AddAndConditionCommand = new Command<ConditionTreeItem>(OnAddAndConditionCommandExecute);
+            AddOrConditionCommand = new Command<ConditionTreeItem>(OnAddOrConditionCommandExecute);
         }
         #endregion
+
+
 
         #region Properties
-        public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
-        public FilterScheme SelectedFilterScheme { get; set; }
-
-        public bool AllowLivePreview { get; set; }
-        public bool EnableAutoCompletion { get; set; }
-        public bool AutoApplyFilter { get; set; }
-        public bool AllowReset { get; set; }
-        public bool AllowDelete { get; set; }
-
-        public IEnumerable RawCollection { get; set; }
-        public IList FilteredCollection { get; set; }
+        /// <summary>
+        ///   Current FilterScheme
+        /// </summary>
+        [Model]
+        public FilterScheme CurrentFilter { get; set; }
 
         /// <summary>
-        /// Current <see cref="FilterBuilderControl"/> mode
+        ///   Filter items to display.
         /// </summary>
-        public FilterBuilderMode Mode { get; set; }
+        [ViewModelToModel]
+        public ObservableCollection<ConditionTreeItem> ConditionItems { get; set; }
+
+        [ViewModelToModel]
+        public bool IsExpressionValid { get; set; }
 
         /// <summary>
-        /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
-        /// <see cref="FilterBuilderMode.FilteringFunction"/>
+        ///   Target type properties, used to display items in property combobox.
         /// </summary>
-        public Func<object, bool> FilteringFunc { get; set; }
+        public IEnumerable<IPropertyMetadata> TargetProperties { get; set; }
 
-        public object Scope { get; set; }
+        /// <summary>
+        ///   Command for adding a new And condition.
+        /// </summary>
+        public ICommand AddAndConditionCommand { get; set; }
+
+        /// <summary>
+        ///   Command for adding a new or condition.
+        /// </summary>
+        public ICommand AddOrConditionCommand { get; set; }
+
+        /// <summary>
+        ///   Command for removing a given item.
+        /// </summary>
+        public ICommand DeleteCommand { get; set; }
         #endregion
 
-        #region Commands
-        public Command NewSchemeCommand { get; private set; }
 
-        private void OnNewSchemeExecute()
+
+        #region IDragSource Members
+        public void StartDrag(IDragInfo dragInfo)
         {
-            if (_targetType == null)
+            _defaultDragHandler.StartDrag(dragInfo);
+        }
+
+        public bool CanStartDrag(IDragInfo dragInfo)
+        {
+            return (ConditionTreeItem)dragInfo.SourceItem != CurrentFilter.Root;
+        }
+
+        public void Dropped(IDropInfo dropInfo)
+        {
+            _defaultDragHandler.Dropped(dropInfo);
+        }
+
+        public void DragCancelled()
+        {
+            _defaultDragHandler.DragCancelled();
+        }
+
+        public bool TryCatchOccurredException(Exception exception)
+        {
+            return _defaultDragHandler.TryCatchOccurredException(exception);
+        }
+        #endregion
+
+
+
+        #region IDropTarget Members
+        public void DragOver(IDropInfo dropInfo)
+        {
+            if (DefaultDropHandler.CanAcceptData(dropInfo))
             {
-                Log.Warning("Target type is unknown, cannot get any type information to create filters");
+                // Check whether we are are moving/copying, or inserting
+                var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter)
+                    && dropInfo.VisualTargetItem is TreeViewItem;
+                var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+
+                // default should always the move action/effect
+                dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
+
+                // Can only move/copy to a ConditionGroup
+                if (isTreeViewItem && IsTargetConditionGroup(dropInfo))
+                {
+                    dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                }
+                else
+                {
+                    dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+                }
+            }
+        }
+
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Types are known")]
+        public void Drop(IDropInfo dropInfo)
+        {
+            if (dropInfo?.DragInfo == null)
+            {
                 return;
             }
 
-            var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+            // Get drag/drop targets
+            ConditionTreeItem dragSource = dropInfo.DragInfo.SourceItem as ConditionTreeItem;
+            ConditionTreeItem dropTarget = dropInfo.TargetItem as ConditionTreeItem;
 
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            var insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
+            var itemsControl = dropInfo.VisualTarget as ItemsControl;
+
+            // Adjust insert index depending on drop target if moving (copying doesn't involve removing drag source).
+            var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+
+            var sourceParent = dragSource.Parent;
+
+            if (!copyData)
             {
-                AvailableSchemes.Add(filterScheme);
-                _filterSchemes.Schemes.Add(filterScheme);
+                var trueDropTarget = dropTarget is PropertyExpression ? dropTarget.Parent : dropTarget;
 
-                ApplyFilterScheme(filterScheme, true);
-
-                _filterSchemeManager.UpdateFilters();
-            }
-        }
-
-        public Command<FilterScheme> EditSchemeCommand { get; private set; }
-
-        private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
-        {
-            if (filterScheme == null)
-            {
-                return false;
-            }
-
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(AvailableSchemes[0], filterScheme))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void OnEditSchemeExecute(FilterScheme filterScheme)
-        {
-            try
-            {
-                filterScheme.EnsureIntegrity(_reflectionService);
-
-                var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
-
-                if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+                if (sourceParent == trueDropTarget)
                 {
-                    _filterSchemeManager.UpdateFilters();
+                    insertIndex = Math.Max(0, insertIndex - 1);
 
-                    if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
+                    if (insertIndex == sourceParent.Items.IndexOf(dragSource))
                     {
-                        Log.Debug("Current filter has been edited, re-applying filter");
-
-                        _filterService.SelectedFilter = filterScheme;
+                        return;
                     }
                 }
+
+                sourceParent.Items.Remove(dragSource);
             }
-            catch (Exception ex)
+
+            // If copying, clone data
+            if (copyData)
             {
-                Log.Error(ex, $"Failed to edit filter scheme '{filterScheme?.Title}'");
-                throw;
+                dragSource = (ConditionTreeItem)dragSource.Clone();
             }
+
+            // Copy or move
+            if (dropTarget is ConditionGroup)
+            {
+                dropTarget.Items.Insert(insertIndex, dragSource);
+            }
+            else if (dropTarget.Parent != null)
+            {
+                dropTarget.Parent.Items.Insert(insertIndex, dragSource);
+            }
+
+            CurrentFilter.OptimizeTree();
         }
 
-        public TaskCommand ApplySchemeCommand { get; private set; }
-
-        private bool OnApplySchemeCanExecute()
+        private bool IsTargetConditionGroup(IDropInfo dropInfo)
         {
-            if (SelectedFilterScheme == null)
-            {
-                return false;
-            }
-
-            if (RawCollection == null)
-            {
-                return false;
-            }
-
-            if (FilteredCollection == null && Mode == FilterBuilderMode.Collection)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private async Task OnApplySchemeExecuteAsync()
-        {
-            Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
-
-            //build filtered collection only if current mode is Collection
-            if (Mode == FilterBuilderMode.Collection)
-            {
-                FilteringFunc = null;
-                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
-            }
-            else
-            {
-                FilteringFunc = SelectedFilterScheme.CalculateResult;
-            }
-        }
-
-        public Command ResetSchemeCommand { get; private set; }
-
-        private bool OnResetSchemeCanExecute()
-        {
-            return AllowReset && ReadyForResetOrDeleteScheme(SelectedFilterScheme);
-        }
-
-        private void OnResetSchemeExecute()
-        {
-            if (AvailableSchemes.Count > 0)
-            {
-                SelectedFilterScheme = AvailableSchemes[0];
-            }
-        }
-
-        public Command<FilterScheme> DeleteSchemeCommand { get; private set; }
-
-        private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
-        {
-            return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
-        }
-
-        private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
-        {
-            if (await _messageService.ShowAsync(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
-            {
-                _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
-
-                SelectedFilterScheme = AvailableSchemes[0];
-
-                _filterSchemeManager.UpdateFilters();
-            }
+            return dropInfo.TargetItem is ConditionGroup;
         }
         #endregion
 
+
+
         #region Methods
-        private bool ReadyForResetOrDeleteScheme(FilterScheme filterScheme)
-        {
-            return filterScheme != null && AvailableSchemes != null && AvailableSchemes.Any()
-                   && !ReferenceEquals(filterScheme, AvailableSchemes[0]);
-        }
-
-        private void OnScopeChanged()
-        {
-            if (_filterSchemeManager != null)
-            {
-                _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
-                _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
-            }
-
-            var scope = Scope;
-            _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(scope);
-            _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
-
-            _filterService = _serviceLocator.ResolveType<IFilterService>(scope);
-            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
-
-            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(scope);
-
-            UpdateFilters();
-        }
-
-        private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
-        {
-            if (filterScheme == null || _applyingFilter)
-            {
-                return;
-            }
-
-            _applyingFilter = true;
-
-            var selectedFilterIsDifferent = !ReferenceEquals(SelectedFilterScheme, filterScheme);
-            var filterServiceSelectedFilterIsDifferent = !ReferenceEquals(filterScheme, _filterService.SelectedFilter);
-
-            if (selectedFilterIsDifferent)
-            {
-                SelectedFilterScheme = filterScheme;
-            }
-
-            if (filterServiceSelectedFilterIsDifferent)
-            {
-                _filterService.SelectedFilter = filterScheme;
-            }
-
-            if (force || selectedFilterIsDifferent || filterServiceSelectedFilterIsDifferent)
-            {
-                if (AutoApplyFilter)
-                {
-                    ApplyFilter();
-                }
-            }
-
-            _applyingFilter = false;
-        }
-
-        private void OnSelectedFilterSchemeChanged()
-        {
-            ApplyFilterScheme(SelectedFilterScheme);
-        }
-
-        private void OnRawCollectionChanged()
-        {
-            Log.Debug("Raw collection changed");
-
-            UpdateFilters();
-
-            ApplyFilter();
-        }
-
-        private void OnFilteredCollectionChanged()
-        {
-            Log.Debug("Filtered collection changed");
-
-            ApplyFilter();
-        }
-
-        private void ApplyFilter()
-        {
-            ApplySchemeCommand.Execute();
-        }
-
-        private void UpdateFilters()
-        {
-            Log.Debug("Updating filters");
-
-            if (_filterSchemes != null)
-            {
-                _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
-            }
-
-            _filterSchemes = _filterSchemeManager.FilterSchemes;
-
-            if (_filterSchemes != null)
-            {
-                _filterSchemes.Schemes.CollectionChanged += OnFilterSchemesCollectionChanged;
-            }
-
-            var newSchemes = new ObservableCollection<FilterScheme>();
-
-            if (RawCollection == null)
-            {
-                _targetType = null;
-            }
-            else
-            {
-                _targetType = CollectionHelper.GetTargetType(RawCollection);
-                if (_targetType != null)
-                {
-                    ((ICollection<FilterScheme>)newSchemes).AddRange((from scheme in _filterSchemes.Schemes
-                                                                      where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                                                      select scheme));
-                }
-            }
-
-            newSchemes.Insert(0, NoFilterFilter);
-
-            if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
-            {
-                AvailableSchemes = newSchemes;
-
-                var selectedFilter = _filterService.SelectedFilter ?? NoFilterFilter;
-                SelectedFilterScheme = selectedFilter;
-            }
-        }
-
+        /// <inheritdoc />
         protected override async Task InitializeAsync()
         {
-            await base.InitializeAsync();
+            TargetProperties = (await _reflectionService.GetInstancePropertiesAsync(CurrentFilter.TargetType).ConfigureAwait(false)).Properties;
 
-            _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
-            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
-
-            UpdateFilters();
+            if (!_isEditing)
+                CurrentFilter.CreateRootProperty(TargetProperties);
         }
 
-        protected override async Task CloseAsync()
+        private void OnAddAndConditionCommandExecute(ConditionTreeItem item)
         {
-            if (_filterSchemes != null)
-            {
-                _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
-            }
-
-            _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
-            _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
-
-            await base.CloseAsync();
+            CurrentFilter.Add(item, ConditionGroupType.And, TargetProperties);
         }
 
-        private void OnFilterSchemesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnAddOrConditionCommandExecute(ConditionTreeItem item)
         {
-            UpdateFilters();
+            CurrentFilter.Add(item, ConditionGroupType.Or, TargetProperties);
         }
 
-        private void OnFilterSchemeManagerLoaded(object sender, EventArgs eventArgs)
+        private bool OnDeleteCommandCanExecute(ConditionTreeItem item)
         {
-            UpdateFilters();
+            return CurrentFilter.CanRemove(item);
         }
 
-        private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
+        private void OnDeleteCommandExecute(ConditionTreeItem item)
         {
-            var newFilterScheme = _filterService.SelectedFilter ?? AvailableSchemes.First();
-            ApplyFilterScheme(newFilterScheme);
+            CurrentFilter.Remove(item);
         }
         #endregion
     }

@@ -120,6 +120,11 @@ namespace Orc.FilterBuilder
             }
         }
 
+        public override object Clone()
+        {
+            return new TimeSpanExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition, Amount = this.Amount, SelectedSpanType = this.SelectedSpanType};
+        }
+
         public override string ToString()
         {
             return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);

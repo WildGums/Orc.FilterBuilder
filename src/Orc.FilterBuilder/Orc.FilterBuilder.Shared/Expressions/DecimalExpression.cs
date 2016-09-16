@@ -28,5 +28,12 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.Decimal;
         }
         #endregion
+
+
+
+        public override object Clone()
+        {
+            return new DecimalExpression(IsNullable) { Value = this.Value, SelectedCondition = this.SelectedCondition };
+        }
     }
 }
