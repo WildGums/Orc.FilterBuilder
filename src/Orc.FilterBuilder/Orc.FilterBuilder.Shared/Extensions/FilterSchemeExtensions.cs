@@ -67,36 +67,36 @@ namespace Orc.FilterBuilder
 
         public static void OptimizeTree(this FilterScheme f, ConditionTreeItem node)
         {
+            // Recurse
+            node.Items.ToList().ForEach(f.OptimizeTree);
+
             // If single node, optimize
-            if (node.Items.Count == 1 && node.Parent != null)
+            if (node.Items.Count == 1)
             {
                 var childNode = node.Items.FirstOrDefault();
-
+        
                 // If parent is not root condition, merge this condition with parent's parent
                 if (node.Parent != null)
                 {
                     childNode.Move(node.Parent);
-
+                    
                     node.Parent.Items.Remove(node);
                 }
                 else if (childNode is ConditionGroup)
                 {
                     // Node is root, clear its items
                     node.Items.Clear();
-
+                    
                     // Make child the new Root
                     childNode.Parent = null;
-
+                    
                     f.ConditionItems.Clear();
                     f.ConditionItems.Add(childNode);
                 }
             }
-
-            // Recurse
-            node.Items.ToList().ForEach(f.OptimizeTree);
-
+            
             // Make sure PropertyExpression items are grouped together, before ConditionGroup items
-            int lastPropIndex = 0;
+            int lastPropIndex = -1;
             bool startSorting = false;
 
             for (int i = 0; i < node.Items.Count; i++)
