@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23912551-289D-43BF-9B2D-5385308A09E4}"
 EndProject
@@ -37,16 +37,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.NET46", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET46", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.NET40\Orc.FilterBuilder.Tests.NET46\Orc.FilterBuilder.Tests.NET46.csproj", "{CFF8901D-66CA-4201-A232-8B09979801EA}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FilterBuilder.Shared.WPF", "Orc.FilterBuilder\Orc.FilterBuilder.Shared.WPF\Orc.FilterBuilder.Shared.WPF.shproj", "{F6AACF5A-663B-4315-B7A9-05F785F3E9DA}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{32932ba3-f415-428e-9196-40d6cdcc7d50}*SharedItemsImports = 13
-		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{6f5eb0c1-7e36-413d-8463-968b7f86fe53}*SharedItemsImports = 4
-		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{66be4c8a-a6d2-4157-9261-5eeae1135fbb}*SharedItemsImports = 4
-		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{1e4a6610-74f8-477b-bb07-a9c2cc6763ed}*SharedItemsImports = 4
-		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{5a88454a-d65b-49bf-8165-7e2cdae446b0}*SharedItemsImports = 4
 		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{050cea5d-dacb-41c0-bdb7-2149dfcc53a1}*SharedItemsImports = 13
+		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{1e4a6610-74f8-477b-bb07-a9c2cc6763ed}*SharedItemsImports = 4
+		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{32932ba3-f415-428e-9196-40d6cdcc7d50}*SharedItemsImports = 13
+		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{5a88454a-d65b-49bf-8165-7e2cdae446b0}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared.WPF\Orc.FilterBuilder.Shared.WPF.projitems*{66be4c8a-a6d2-4157-9261-5eeae1135fbb}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{66be4c8a-a6d2-4157-9261-5eeae1135fbb}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared.WPF\Orc.FilterBuilder.Shared.WPF.projitems*{6f5eb0c1-7e36-413d-8463-968b7f86fe53}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{6f5eb0c1-7e36-413d-8463-968b7f86fe53}*SharedItemsImports = 4
 		Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{cff8901d-66ca-4201-a232-8b09979801ea}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared.WPF\Orc.FilterBuilder.Shared.WPF.projitems*{df2fdbdc-f137-419d-a0ae-451b70b0b9e8}*SharedItemsImports = 4
 		Orc.FilterBuilder\Orc.FilterBuilder.Shared\Orc.FilterBuilder.Shared.projitems*{df2fdbdc-f137-419d-a0ae-451b70b0b9e8}*SharedItemsImports = 4
+		Orc.FilterBuilder\Orc.FilterBuilder.Shared.WPF\Orc.FilterBuilder.Shared.WPF.projitems*{f6aacf5a-663b-4315-b7a9-05f785f3e9da}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,5 +104,6 @@ Global
 		{5A88454A-D65B-49BF-8165-7E2CDAE446B0} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
 		{66BE4C8A-A6D2-4157-9261-5EEAE1135FBB} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
 		{CFF8901D-66CA-4201-A232-8B09979801EA} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
+		{F6AACF5A-663B-4315-B7A9-05F785F3E9DA} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
 	EndGlobalSection
 EndGlobal
