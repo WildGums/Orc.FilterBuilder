@@ -154,12 +154,6 @@ namespace Orc.FilterBuilder
             foreach (var item in rawCollection.Cast<object>().Where(i => (bool)compiledDelegate.DynamicInvoke(i)))
                 filteredCollection.Add(item);
 
-#if false
-            foreach (
-                var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
-                filteredCollection.Add(item);
-#endif
-
             if (suspendToken != null)
                 suspendToken.Dispose();
         }

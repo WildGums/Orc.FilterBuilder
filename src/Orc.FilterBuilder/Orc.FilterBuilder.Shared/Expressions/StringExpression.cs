@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder
     using System.Linq.Expressions;
     using System.Text.RegularExpressions;
 
+    using Catel;
     using Catel.Caching;
     using Catel.Caching.Policies;
     using Catel.Reflection;
@@ -24,6 +25,10 @@ namespace Orc.FilterBuilder
         #region Constants
         private static readonly CacheStorage<string, Regex> _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
         private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+
+        private const string ContainsMethodName = "Contains";
+        private const string StartsWithMethodName = "StartsWith";
+        private const string EndsWithMethodName = "EndsWith";
         #endregion
 
 
@@ -126,6 +131,8 @@ namespace Orc.FilterBuilder
         /// <returns>LINQ Expression.</returns>
         public override Expression ToLinqExpression(Expression propertyExpr)
         {
+            Argument.IsNotNull(() => propertyExpr);
+
             // Check non-value condition types
             switch (SelectedCondition)
             {
@@ -134,9 +141,9 @@ namespace Orc.FilterBuilder
                 case Condition.NotIsEmpty:
                     return Expression.NotEqual(propertyExpr, Expression.Constant(string.Empty));
                 case Condition.IsNull:
-                    return Expression.Equal(propertyExpr, Expression.Constant(null));
+                    return Expression.ReferenceEqual(propertyExpr, Expression.Constant(null));
                 case Condition.NotIsNull:
-                    return Expression.NotEqual(propertyExpr, Expression.Constant(null));
+                    return Expression.ReferenceNotEqual(propertyExpr, Expression.Constant(null));
             }
 
             // Check value condition types
@@ -154,27 +161,27 @@ namespace Orc.FilterBuilder
                     return Expression.NotEqual(propertyExpr, valueExpr);
 
                 case Condition.Contains:
-                    operatorExpr = Expression.Call(propertyExpr, typeof(string).GetMethod("Contains", new[] { typeof(string) }), valueExpr);
+                    operatorExpr = Expression.Call(propertyExpr, typeof(string).GetMethodEx(ContainsMethodName, new[] { typeof(string) }), valueExpr);
                     break;
 
                 case Condition.DoesNotContain:
-                    operatorExpr = Expression.IsFalse(Expression.Call(propertyExpr, typeof(string).GetMethod("Contains", new[] { typeof(string) }), valueExpr));
+                    operatorExpr = Expression.IsFalse(Expression.Call(propertyExpr, typeof(string).GetMethodEx(ContainsMethodName, new[] { typeof(string) }), valueExpr));
                     break;
 
                 case Condition.StartsWith:
-                    operatorExpr = Expression.Call(propertyExpr, typeof(string).GetMethod("StartsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
+                    operatorExpr = Expression.Call(propertyExpr, typeof(string).GetMethodEx(StartsWithMethodName, new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
                     break;
 
                 case Condition.DoesNotStartWith:
-                    operatorExpr = Expression.IsFalse(Expression.Call(propertyExpr, typeof(string).GetMethod("StartsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)));
+                    operatorExpr = Expression.IsFalse(Expression.Call(propertyExpr, typeof(string).GetMethodEx(StartsWithMethodName, new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)));
                     break;
 
                 case Condition.EndsWith:
-                    operatorExpr = Expression.Call(propertyExpr, typeof(string).GetMethod("EndsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
+                    operatorExpr = Expression.Call(propertyExpr, typeof(string).GetMethodEx(EndsWithMethodName, new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
                     break;
 
                 case Condition.DoesNotEndWith:
-                    operatorExpr = Expression.IsFalse(Expression.Call(propertyExpr, typeof(string).GetMethod("EndsWith", new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)));
+                    operatorExpr = Expression.IsFalse(Expression.Call(propertyExpr, typeof(string).GetMethodEx(EndsWithMethodName, new[] { typeof(string), typeof(StringComparison) }), valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)));
                     break;
 
                 // TODO: Handle REGEXP
@@ -198,16 +205,16 @@ namespace Orc.FilterBuilder
                                    .IsMatch(entityValue);
                                    */
                 case Condition.GreaterThan:
-                    return Expression.GreaterThan(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+                    return Expression.GreaterThan(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethodEx("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
 
                 case Condition.GreaterThanOrEqualTo:
-                    return Expression.GreaterThanOrEqual(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+                    return Expression.GreaterThanOrEqual(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethodEx("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
 
                 case Condition.LessThan:
-                    return Expression.LessThan(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+                    return Expression.LessThan(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethodEx("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
 
                 case Condition.LessThanOrEqualTo:
-                    return Expression.LessThanOrEqual(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethod("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
+                    return Expression.LessThanOrEqual(Expression.Call(Expression.Constant(null, typeof(string)), typeof(string).GetMethodEx("Compare", comparisonMethodParams), propertyExpr, valueExpr, Expression.Constant(StringComparison.CurrentCultureIgnoreCase)), Expression.Constant(0, typeof(int)));
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));

@@ -13,6 +13,7 @@ namespace Orc.FilterBuilder
     using System.Linq;
     using System.Linq.Expressions;
 
+    using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
@@ -131,6 +132,8 @@ namespace Orc.FilterBuilder
         /// <returns>LINQ Expression.</returns>
         public override Expression ToLinqExpression(Expression propertyExpr)
         {
+            Argument.IsNotNull(() => propertyExpr);
+
             var valueExpr = Expression.Constant(Value, typeof(TimeSpan));
 
             // Operators

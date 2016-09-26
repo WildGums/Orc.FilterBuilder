@@ -11,6 +11,7 @@ namespace Orc.FilterBuilder
     using System.Diagnostics;
     using System.Linq.Expressions;
 
+    using Catel;
     using Catel.Data;
     using Catel.Logging;
     using Catel.Reflection;
@@ -247,6 +248,8 @@ namespace Orc.FilterBuilder
         /// <returns>LINQ Expression.</returns>
         public override Expression ToLinqExpression(Expression parameterExpr)
         {
+            Argument.IsNotNull(() => parameterExpr);
+
             if (!IsValid)
             {
                 return Expression.Constant(true, typeof(bool));

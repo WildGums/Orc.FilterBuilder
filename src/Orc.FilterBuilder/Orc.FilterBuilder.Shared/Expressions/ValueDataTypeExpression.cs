@@ -10,6 +10,8 @@ namespace Orc.FilterBuilder
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
+    using Catel;
+
     using Orc.FilterBuilder.Models;
 
     public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
@@ -111,6 +113,8 @@ namespace Orc.FilterBuilder
         /// <returns>LINQ Expression.</returns>
         public override Expression ToLinqExpression(Expression propertyExpr)
         {
+            Argument.IsNotNull(() => propertyExpr);
+
             Expression valueExpr;
 
             // Nullable type
