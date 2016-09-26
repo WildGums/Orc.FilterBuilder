@@ -86,7 +86,7 @@ namespace Orc.FilterBuilder.Tests.Models
             };
       
             conditionGroup.Items.Add(GenerateStringExpression());
-            //conditionGroup.Items.Add(GenerateNonNullStringExpression());
+            conditionGroup.Items.Add(GenerateNonNullStringExpression());
             conditionGroup.Items.Add(GenerateBoolExpression());
             conditionGroup.Items.Add(GenerateIntExpression());
 
