@@ -239,11 +239,13 @@ namespace Orc.FilterBuilder.ViewModels
         private void OnAddAndConditionCommandExecute(ConditionTreeItem item)
         {
             CurrentFilter.Add(item, ConditionGroupType.And, TargetProperties);
+            RaisePropertyChanged(() => DeleteCommand);
         }
 
         private void OnAddOrConditionCommandExecute(ConditionTreeItem item)
         {
             CurrentFilter.Add(item, ConditionGroupType.Or, TargetProperties);
+            RaisePropertyChanged(() => DeleteCommand);
         }
 
         private bool OnDeleteCommandCanExecute(ConditionTreeItem item)
@@ -254,6 +256,7 @@ namespace Orc.FilterBuilder.ViewModels
         private void OnDeleteCommandExecute(ConditionTreeItem item)
         {
             CurrentFilter.Remove(item);
+            RaisePropertyChanged(() => DeleteCommand);
         }
         #endregion
     }

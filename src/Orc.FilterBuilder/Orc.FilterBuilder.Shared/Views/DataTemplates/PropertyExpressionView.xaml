@@ -38,8 +38,7 @@
 
             <StackPanel Name="PropertyPanel"
                         Orientation="Horizontal"
-                        Height="50"
-                        MinWidth="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}">
+                        Height="50">
 
                 <!--Property-->
                 <ComboBox ItemsSource="{Binding DataContext.TargetProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
