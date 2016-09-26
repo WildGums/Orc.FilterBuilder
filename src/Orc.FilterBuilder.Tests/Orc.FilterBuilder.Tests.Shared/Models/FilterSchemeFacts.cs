@@ -40,7 +40,7 @@ namespace Orc.FilterBuilder.Tests.Shared.Models
 
                 var actual = filterScheme.ToString();
                 var expected = @"Test filter
-(StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
+(StringProperty contains '123' and StringProperty is not null '' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and StringProperty is not null '' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
 
                 Assert.AreEqual(expected, actual);
             }
@@ -57,6 +57,8 @@ namespace Orc.FilterBuilder.Tests.Shared.Models
                 var linqCollection = testCollection.Where(linqLambdaExpression.Compile());
 
                 CollectionAssert.AreEqual(filterSchemeCollection, linqCollection);
+                Assert.AreEqual(testCollection.Count() - linqCollection.Count(), FilterSchemeHelper.NonMatchingCount);
+                Assert.AreEqual(linqCollection.Count(), FilterSchemeHelper.MatchingCount);
             }
         }
     }

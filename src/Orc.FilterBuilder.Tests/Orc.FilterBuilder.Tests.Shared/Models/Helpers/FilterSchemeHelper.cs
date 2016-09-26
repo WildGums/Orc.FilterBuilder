@@ -15,6 +15,9 @@ namespace Orc.FilterBuilder.Tests.Models
 
     public static class FilterSchemeHelper
     {
+        public const int MatchingCount = 2;
+        public const int NonMatchingCount = 3;
+
         public static IEnumerable<TestFilterModel> GenerateMatchingAndNonMatchingCollection()
         {
             List<TestFilterModel> testCollection = new List<TestFilterModel>();
@@ -51,6 +54,14 @@ namespace Orc.FilterBuilder.Tests.Models
                 StringProperty = "Test value"
             });
 
+            // Non-Matching value
+            testCollection.Add(new TestFilterModel
+            {
+                BoolProperty = true,
+                IntProperty = 50,
+                StringProperty = null
+            });
+
             return testCollection;
         }
 
@@ -73,8 +84,9 @@ namespace Orc.FilterBuilder.Tests.Models
             {
                 Type = ConditionGroupType.And
             };
-
+      
             conditionGroup.Items.Add(GenerateStringExpression());
+            //conditionGroup.Items.Add(GenerateNonNullStringExpression());
             conditionGroup.Items.Add(GenerateBoolExpression());
             conditionGroup.Items.Add(GenerateIntExpression());
 
@@ -89,6 +101,21 @@ namespace Orc.FilterBuilder.Tests.Models
             var expression = GenerateExpression<StringExpression>();
             expression.SelectedCondition = Condition.Contains;
             expression.Value = "123";
+
+            var propertyExpression = new PropertyExpression();
+            propertyExpression.Property = new PropertyMetadata(typeof(TestFilterModel), typeInfo.GetPropertyData("StringProperty"));
+            propertyExpression.DataTypeExpression = expression;
+
+            return propertyExpression;
+        }
+
+        public static PropertyExpression GenerateNonNullStringExpression()
+        {
+            var propertyDataManager = PropertyDataManager.Default;
+            var typeInfo = propertyDataManager.GetCatelTypeInfo(typeof(TestFilterModel));
+
+            var expression = GenerateExpression<StringExpression>();
+            expression.SelectedCondition = Condition.NotIsNull;
 
             var propertyExpression = new PropertyExpression();
             propertyExpression.Property = new PropertyMetadata(typeof(TestFilterModel), typeInfo.GetPropertyData("StringProperty"));
