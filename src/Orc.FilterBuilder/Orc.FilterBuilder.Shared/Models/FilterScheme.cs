@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilterScheme.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.FilterBuilder.Models
 {
@@ -164,19 +163,6 @@ namespace Orc.FilterBuilder.Models
             CheckForInvalidItems();
 
             RaiseUpdated();
-        }
-
-        public bool CalculateResult(object entity)
-        {
-            Argument.IsNotNull(() => entity);
-
-            var root = Root;
-            if (root != null)
-            {
-                return root.CalculateResult(entity);
-            }
-
-            return true;
         }
 
         public void Update(FilterScheme otherScheme)

@@ -15,6 +15,6 @@ namespace Orc.FilterBuilder.Tests.Models
 
         public bool BoolProperty { get; set; }
 
-        public int IntProperty { get; set; }
+        public int? IntProperty { get; set; }
     }
 }
