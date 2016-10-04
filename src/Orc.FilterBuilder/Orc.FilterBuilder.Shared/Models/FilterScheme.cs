@@ -165,6 +165,19 @@ namespace Orc.FilterBuilder.Models
             RaiseUpdated();
         }
 
+        public bool CalculateResult(object entity)
+        {
+            Argument.IsNotNull(() => entity);
+
+            var root = Root;
+            if (root != null)
+            {
+                return root.CalculateResult(entity);
+            }
+
+            return true;
+        }
+
         public void Update(FilterScheme otherScheme)
         {
             Argument.IsNotNull(() => otherScheme);
