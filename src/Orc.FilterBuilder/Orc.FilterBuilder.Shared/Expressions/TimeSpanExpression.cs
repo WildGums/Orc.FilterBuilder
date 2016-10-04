@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimeSpanExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.FilterBuilder
 {
@@ -11,12 +12,8 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
-    using System.Linq.Expressions;
-
-    using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
-
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -27,10 +24,12 @@ namespace Orc.FilterBuilder
         private const int AverageDaysInMonth = 30;
         #endregion
 
-
-
         #region Constructors
-        public TimeSpanExpression() : this(true) { }
+        public TimeSpanExpression()
+            : this(true)
+        {
+            
+        }
 
         public TimeSpanExpression(bool isNullable)
         {
@@ -38,12 +37,10 @@ namespace Orc.FilterBuilder
             SelectedCondition = Condition.EqualTo;
             Value = TimeSpan.FromHours(1);
             ValueControlType = ValueControlType.TimeSpan;
-            SpanTypes = Enum.GetValues(typeof(TimeSpanType)).Cast<TimeSpanType>().ToList();
+            SpanTypes = Enum.GetValues(typeof (TimeSpanType)).Cast<TimeSpanType>().ToList();
             SelectedSpanType = TimeSpanType.Hours;
         }
         #endregion
-
-
 
         #region Properties
         public TimeSpan Value { get; set; }
@@ -55,8 +52,6 @@ namespace Orc.FilterBuilder
 
         public float Amount { get; set; }
         #endregion
-
-
 
         #region Methods
         protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
@@ -119,43 +114,6 @@ namespace Orc.FilterBuilder
 
                 case Condition.LessThanOrEqualTo:
                     return entityValue <= Value;
-
-                default:
-                    throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
-            }
-        }
-
-        /// <summary>
-        ///   Converts <see cref="ConditionTreeItem"/> to a LINQ <see cref="Expression"/>
-        /// </summary>
-        /// <param name="propertyExpr">LINQ <see cref="MemberExpression"/>.</param>
-        /// <returns>LINQ Expression.</returns>
-        public override Expression ToLinqExpression(Expression propertyExpr)
-        {
-            Argument.IsNotNull(() => propertyExpr);
-
-            var valueExpr = Expression.Constant(Value, typeof(TimeSpan));
-
-            // Operators
-            switch (SelectedCondition)
-            {
-                case Condition.EqualTo:
-                    return Expression.Equal(propertyExpr, valueExpr);
-
-                case Condition.NotEqualTo:
-                    return Expression.NotEqual(propertyExpr, valueExpr);
-
-                case Condition.GreaterThan:
-                    return Expression.GreaterThan(propertyExpr, valueExpr);
-
-                case Condition.LessThan:
-                    return Expression.LessThan(propertyExpr, valueExpr);
-
-                case Condition.GreaterThanOrEqualTo:
-                    return Expression.GreaterThanOrEqual(propertyExpr, valueExpr);
-
-                case Condition.LessThanOrEqualTo:
-                    return Expression.LessThanOrEqual(propertyExpr, valueExpr);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));

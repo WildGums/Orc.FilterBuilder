@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConditionTreeItem.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.FilterBuilder
 {
@@ -10,11 +11,11 @@ namespace Orc.FilterBuilder
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Linq.Expressions;
-
     using Catel;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.Runtime.Serialization;
+    using Services;
 
     public abstract class ConditionTreeItem : ModelBase
     {
@@ -24,8 +25,6 @@ namespace Orc.FilterBuilder
             Items = new ObservableCollection<ConditionTreeItem>();
         }
         #endregion
-
-
 
         #region Properties
         [ExcludeFromSerialization]
@@ -38,7 +37,7 @@ namespace Orc.FilterBuilder
         public ObservableCollection<ConditionTreeItem> Items { get; private set; }
         #endregion
 
-
+        public event EventHandler<EventArgs> Updated;
 
         #region Methods
         private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -127,13 +126,6 @@ namespace Orc.FilterBuilder
 
         public abstract bool CalculateResult(object entity);
 
-        /// <summary>
-        ///   Converts <see cref="ConditionTreeItem"/> to a LINQ <see cref="Expression"/>
-        /// </summary>
-        /// <param name="parameterExpr">LINQ ParameterExpression.</param>
-        /// <returns>LINQ Expression.</returns>
-        public abstract Expression ToLinqExpression(Expression parameterExpr);
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(obj, this))
@@ -149,9 +141,5 @@ namespace Orc.FilterBuilder
             return base.GetHashCode();
         }
         #endregion
-
-
-
-        public event EventHandler<EventArgs> Updated;
     }
 }

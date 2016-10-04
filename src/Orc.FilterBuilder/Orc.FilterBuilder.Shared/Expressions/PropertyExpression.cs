@@ -1,35 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.FilterBuilder
 {
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Linq.Expressions;
-
-    using Catel;
-    using Catel.Data;
-    using Catel.Logging;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
-
-    using Orc.FilterBuilder.Models;
-    using Orc.FilterBuilder.Runtime.Serialization;
+    using Models;
+    using Runtime.Serialization;
+    using Catel.Data;
+    using Catel.Logging;
 
     [DebuggerDisplay("{Property} = {DataTypeExpression}")]
     [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
     [ValidateModel(typeof(PropertyExpressionValidator))]
     public class PropertyExpression : ConditionTreeItem
     {
-        #region Constants
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        #endregion
-
-
+        private static ILog Log = LogManager.GetCurrentClassLogger();
 
         #region Constructors
         public PropertyExpression()
@@ -37,8 +30,6 @@ namespace Orc.FilterBuilder
             SuspendValidation = false;
         }
         #endregion
-
-
 
         #region Properties
         [ExcludeFromSerialization]
@@ -48,8 +39,6 @@ namespace Orc.FilterBuilder
 
         public DataTypeExpression DataTypeExpression { get; set; }
         #endregion
-
-
 
         #region Methods
         private void OnPropertyChanged()
@@ -191,12 +180,14 @@ namespace Orc.FilterBuilder
             }
         }
 
-        private void CreateDataTypeExpressionIfNotCompatible<TDataExpression>(Func<TDataExpression> createFunc) where TDataExpression : DataTypeExpression
+        private void CreateDataTypeExpressionIfNotCompatible<TDataExpression>(Func<TDataExpression> createFunc)
+             where TDataExpression : DataTypeExpression
         {
             var dataTypeExpression = DataTypeExpression;
             if (dataTypeExpression != null && dataTypeExpression is TDataExpression)
             {
-                if (dataTypeExpression is NullableDataTypeExpression && typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)))
+                if (dataTypeExpression is NullableDataTypeExpression
+                    && typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)))
                 {
                     var oldDataTypeExpression = dataTypeExpression as NullableDataTypeExpression;
                     var newDataTypeExpression = createFunc() as NullableDataTypeExpression;
@@ -239,25 +230,6 @@ namespace Orc.FilterBuilder
             }
 
             return DataTypeExpression.CalculateResult(Property, entity);
-        }
-
-        /// <summary>
-        ///   Converts <see cref="ConditionTreeItem"/> to a LINQ <see cref="Expression"/>
-        /// </summary>
-        /// <param name="parameterExpr">LINQ <see cref="ParameterExpression"/>.</param>
-        /// <returns>LINQ Expression.</returns>
-        public override Expression ToLinqExpression(Expression parameterExpr)
-        {
-            Argument.IsNotNull(() => parameterExpr);
-
-            if (!IsValid)
-            {
-                return Expression.Constant(true, typeof(bool));
-            }
-
-            var propExpr = Expression.Property(parameterExpr, parameterExpr.Type, Property.Name);
-
-            return DataTypeExpression.ToLinqExpression(propExpr);
         }
 
         public override string ToString()
