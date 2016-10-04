@@ -1,27 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataTypeExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace Orc.FilterBuilder
 {
-    using System.Linq.Expressions;
-
+    using System.Diagnostics;
+    using System.Text;
     using Catel.Data;
-
     using Orc.FilterBuilder.Models;
 
     public abstract class DataTypeExpression : ModelBase
     {
-        #region Constructors
         protected DataTypeExpression()
         {
             IsValueRequired = true;
         }
-        #endregion
-
-
 
         #region Properties
         public Condition SelectedCondition { get; set; }
@@ -31,8 +27,6 @@ namespace Orc.FilterBuilder
         public ValueControlType ValueControlType { get; set; }
         #endregion
 
-
-
         #region Methods
         private void OnSelectedConditionChanged()
         {
@@ -40,13 +34,6 @@ namespace Orc.FilterBuilder
         }
 
         public abstract bool CalculateResult(IPropertyMetadata propertyMetadata, object entity);
-
-        /// <summary>
-        ///   Converts <see cref="ConditionTreeItem"/> to a LINQ <see cref="Expression"/>
-        /// </summary>
-        /// <param name="propertyExpr">LINQ <see cref="MemberExpression"/>.</param>
-        /// <returns>LINQ Expression.</returns>
-        public abstract Expression ToLinqExpression(Expression propertyExpr);
         #endregion
     }
 }

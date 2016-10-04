@@ -4,22 +4,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-
     using Catel;
     using Catel.Collections;
     using Catel.Reflection;
-
     using MethodTimer;
-
-    using Orc.FilterBuilder.Models;
-    using Orc.FilterBuilder.Services;
+    using Models;
+    using Services;
+    using Catel.Data;
 
     public static class FilterSchemeExtensions
     {
@@ -27,63 +24,16 @@ namespace Orc.FilterBuilder
         private const string Separator = "||";
         #endregion
 
-
-
         #region Methods
-        /// <summary>
-        ///     Apply current filter to entity and calculate result.
-        /// </summary>
-        /// <param name="f">Filter instance.</param>
-        /// <param name="entity">Object on which to apply filter.</param>
-        /// <returns></returns>
-        public static bool CalculateResult(this FilterScheme f, object entity)
-        {
-            Argument.IsNotNull(() => entity);
-
-            var root = f.Root;
-
-            if (root != null)
-                return root.CalculateResult(entity);
-
-            return true;
-        }
-
-        /// <summary>
-        ///     Convert internal expression tree to Linq expression tree.
-        /// </summary>
-        /// <typeparam name="T">Target type</typeparam>
-        /// <param name="f">Filter instance</param>
-        /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Invalid type</exception>
-        [Time]
-        public static Expression<Func<T, bool>> ToLinqExpression<T>(this FilterScheme f)
-        {
-            ParameterExpression parameterExpr = Expression.Parameter(typeof(T), "obj");
-
-            return Expression.Lambda<Func<T, bool>>(f.Root.ToLinqExpression(parameterExpr), parameterExpr);
-        }
-
-        /// <summary>
-        ///     Convert internal expression tree to Linq expression tree.
-        /// </summary>
-        /// <param name="f">Filter instance</param>
-        /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Invalid type</exception>
-        [Time]
-        public static LambdaExpression ToLinqExpression(this FilterScheme f)
-        {
-            ParameterExpression parameterExpr = Expression.Parameter(f.TargetType, "obj");
-
-            return Expression.Lambda(f.Root.ToLinqExpression(parameterExpr), parameterExpr);
-        }
-
         public static void EnsureIntegrity(this FilterScheme filterScheme, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => filterScheme);
             Argument.IsNotNull(() => reflectionService);
 
             foreach (var item in filterScheme.ConditionItems)
+            {
                 item.EnsureIntegrity(reflectionService);
+            }
         }
 
         public static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
@@ -92,7 +42,6 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => reflectionService);
 
             var propertyExpression = conditionTreeItem as PropertyExpression;
-
             if (propertyExpression != null)
             {
                 propertyExpression.EnsureIntegrity(reflectionService);
@@ -143,19 +92,23 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => rawCollection);
             Argument.IsNotNull(() => filteredCollection);
 
-            var compiledDelegate = filterScheme.ToLinqExpression().Compile();
-
             IDisposable suspendToken = null;
             if (filteredCollection is ISuspendChangeNotificationsCollection)
+            {
                 suspendToken = ((ISuspendChangeNotificationsCollection)filteredCollection).SuspendChangeNotifications();
+            }
 
             filteredCollection.Clear();
 
-            foreach (var item in rawCollection.Cast<object>().Where(i => (bool)compiledDelegate.DynamicInvoke(i)))
+            foreach (var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
+            {
                 filteredCollection.Add(item);
+            }
 
             if (suspendToken != null)
+            {
                 suspendToken.Dispose();
+            }
         }
         #endregion
     }

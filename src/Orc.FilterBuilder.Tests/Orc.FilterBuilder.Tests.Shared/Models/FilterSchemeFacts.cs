@@ -7,9 +7,6 @@
 
 namespace Orc.FilterBuilder.Tests.Shared.Models
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using FilterBuilder.Models;
     using NUnit.Framework;
     using Tests.Models;
@@ -40,25 +37,9 @@ namespace Orc.FilterBuilder.Tests.Shared.Models
 
                 var actual = filterScheme.ToString();
                 var expected = @"Test filter
-(StringProperty contains '123' and StringProperty is not null '' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and StringProperty is not null '' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
+(StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
 
                 Assert.AreEqual(expected, actual);
-            }
-
-            [TestCase]
-            public void CalculateResultEqualsLinqResultOnFilterScheme()
-            {
-                var filterScheme = FilterSchemeHelper.GenerateFilterScheme();
-                var testCollection = FilterSchemeHelper.GenerateMatchingAndNonMatchingCollection();
-
-                var linqLambdaExpression = filterScheme.ToLinqExpression<TestFilterModel>();
-
-                var filterSchemeCollection = testCollection.Where(item => filterScheme.CalculateResult(item));
-                var linqCollection = testCollection.Where(linqLambdaExpression.Compile());
-
-                CollectionAssert.AreEqual(filterSchemeCollection, linqCollection);
-                Assert.AreEqual(testCollection.Count() - linqCollection.Count(), FilterSchemeHelper.NonMatchingCount);
-                Assert.AreEqual(linqCollection.Count(), FilterSchemeHelper.MatchingCount);
             }
         }
     }
