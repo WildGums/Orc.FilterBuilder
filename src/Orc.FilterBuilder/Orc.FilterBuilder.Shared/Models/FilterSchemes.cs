@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemes.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="FilterSchemes.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,6 +13,8 @@ namespace Orc.FilterBuilder.Models
 
     public class FilterSchemes : ModelBase
     {
+        private object _scope;
+
         #region Constructors
         public FilterSchemes()
         {
@@ -22,7 +24,20 @@ namespace Orc.FilterBuilder.Models
 
         #region Properties
         [ExcludeFromSerialization]
-        public object Tag { get; set; }
+        public object Scope
+        {
+            get { return _scope; }
+            set
+            {
+                _scope = value;
+
+                foreach (var filterScheme in Schemes)
+                {
+                    filterScheme.Scope = Scope;
+                }
+            }
+        }
+
         public ObservableCollection<FilterScheme> Schemes { get; private set; }
         #endregion
     }

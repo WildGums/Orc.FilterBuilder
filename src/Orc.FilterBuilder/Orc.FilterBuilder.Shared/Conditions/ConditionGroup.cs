@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionGroup.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="ConditionGroup.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -48,7 +48,6 @@ namespace Orc.FilterBuilder
             var groupType = Type.ToString().ToLower();
 
             var itemCount = Items.Count;
-
             if (itemCount > 1)
             {
                 stringBuilder.Append("(");

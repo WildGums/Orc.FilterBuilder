@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeExtensions.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="FilterSchemeExtensions.cs" company="WildGums">
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,118 +9,54 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
-    using System.Threading.Tasks;
+    using System.Linq;
     using Catel;
     using Catel.Collections;
-    using Catel.IoC;
     using Catel.Reflection;
-    using Catel.Threading;
     using MethodTimer;
     using Models;
     using Services;
+    using Catel.Data;
 
     public static class FilterSchemeExtensions
     {
+        #region Constants
         private const string Separator = "||";
+        #endregion
 
-        private static readonly IReflectionService _reflectionService = ServiceLocator.Default.ResolveType<IReflectionService>();
-        private static readonly AsyncLock LockFilterScheme = new AsyncLock();
-        private static readonly AsyncLock LockPropertyExpression = new AsyncLock();
-
-        public static async Task EnsureIntegrityAsync(this FilterScheme filterScheme)
+        #region Methods
+        public static void EnsureIntegrity(this FilterScheme filterScheme, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => filterScheme);
-
-            var reflectionService = ServiceLocator.Default.ResolveType<IReflectionService>(filterScheme.Tag);
-
-            using (await LockFilterScheme.LockAsync())
-            {
-                foreach (var item in filterScheme.ConditionItems)
-                {
-                    await item.EnsureIntegrityAsync(reflectionService);
-                }
-            }
-        }
-
-        [ObsoleteEx(ReplacementTypeOrMember = "EnsureIntegrityAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
-        public static void EnsureIntegrity(this FilterScheme filterScheme)
-        {
-            Argument.IsNotNull(() => filterScheme);
+            Argument.IsNotNull(() => reflectionService);
 
             foreach (var item in filterScheme.ConditionItems)
             {
-                item.EnsureIntegrity();
+                item.EnsureIntegrity(reflectionService);
             }
         }
 
-        public static async Task EnsureIntegrityAsync(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService = null)
+        public static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => conditionTreeItem);
+            Argument.IsNotNull(() => reflectionService);
 
             var propertyExpression = conditionTreeItem as PropertyExpression;
             if (propertyExpression != null)
             {
-                await propertyExpression.EnsureIntegrityAsync(reflectionService);
+                propertyExpression.EnsureIntegrity(reflectionService);
             }
 
             foreach (var item in conditionTreeItem.Items)
             {
-                await item.EnsureIntegrityAsync(reflectionService);
+                item.EnsureIntegrity(reflectionService);
             }
         }
 
-        [ObsoleteEx(ReplacementTypeOrMember = "EnsureIntegrityAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
-        public static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem)
-        {
-            Argument.IsNotNull(() => conditionTreeItem);
-
-            var propertyExpression = conditionTreeItem as PropertyExpression;
-            if (propertyExpression != null)
-            {
-                propertyExpression.EnsureIntegrity();
-            }
-
-            foreach (var item in conditionTreeItem.Items)
-            {
-                item.EnsureIntegrity();
-            }
-        }
-
-        public static async Task EnsureIntegrityAsync(this PropertyExpression propertyExpression, IReflectionService reflectionService = null)
+        public static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => propertyExpression);
-
-            if (reflectionService == null)
-            {
-                reflectionService = _reflectionService;
-            }
-
-            if (propertyExpression.Property == null)
-            {
-                using (await LockPropertyExpression.LockAsync())
-                {
-                    var serializationValue = propertyExpression.PropertySerializationValue;
-                    if (!string.IsNullOrWhiteSpace(serializationValue))
-                    {
-                        var splittedString = serializationValue.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
-                        if (splittedString.Length == 2)
-                        {
-                            var type = TypeCache.GetType(splittedString[0]);
-                            if (type != null)
-                            {
-                                var typeProperties = await reflectionService.GetInstancePropertiesAsync(type);
-                                propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        [ObsoleteEx(ReplacementTypeOrMember = "EnsureIntegrityAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
-        public static void EnsureIntegrity(this PropertyExpression propertyExpression)
-        {
-            Argument.IsNotNull(() => propertyExpression);
+            Argument.IsNotNull(() => reflectionService);
 
             if (propertyExpression.Property == null)
             {
@@ -133,11 +69,19 @@ namespace Orc.FilterBuilder
                         var type = TypeCache.GetType(splittedString[0]);
                         if (type != null)
                         {
-                            var typeProperties = _reflectionService.GetInstanceProperties(type);
+                            var typeProperties = reflectionService.GetInstanceProperties(type);
                             propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
                         }
                     }
                 }
+            }
+            else
+            {
+                // We already have it, but make sure to get the right instance
+                var property = propertyExpression.Property;
+
+                var typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
+                propertyExpression.Property = typeProperties.GetProperty(property.Name);
             }
         }
 
@@ -149,20 +93,16 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => filteredCollection);
 
             IDisposable suspendToken = null;
-            var filteredCollectionType = filteredCollection.GetType();
-            if (filteredCollectionType.IsGenericTypeEx() && filteredCollectionType.GetGenericTypeDefinitionEx() == typeof(FastObservableCollection<>))
+            if (filteredCollection is ISuspendChangeNotificationsCollection)
             {
-                suspendToken = (IDisposable)filteredCollectionType.GetMethodEx("SuspendChangeNotifications").Invoke(filteredCollection, null);
+                suspendToken = ((ISuspendChangeNotificationsCollection)filteredCollection).SuspendChangeNotifications();
             }
 
             filteredCollection.Clear();
 
-            foreach (var item in rawCollection)
+            foreach (var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
             {
-                if (filterScheme.CalculateResult(item))
-                {
-                    filteredCollection.Add(item);
-                }
+                filteredCollection.Add(item);
             }
 
             if (suspendToken != null)
@@ -170,5 +110,6 @@ namespace Orc.FilterBuilder
                 suspendToken.Dispose();
             }
         }
+        #endregion
     }
 }

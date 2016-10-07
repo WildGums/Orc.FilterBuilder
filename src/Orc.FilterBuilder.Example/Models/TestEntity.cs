@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestEntity.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="TestEntity.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,6 +9,15 @@ namespace FilterBuilder.Example.Models
 {
     using System;
     using Catel.Data;
+
+    public enum MyEnum
+    {
+        EnumValue1,
+
+        EnumValue2,
+
+        SpecialValue
+    }
 
     public class TestEntity : ModelBase
     {
@@ -22,6 +31,8 @@ namespace FilterBuilder.Example.Models
         public TimeSpan Duration { get; set; }
         public decimal Price { get; set; }
         public decimal? NullablePrice { get; set; }
+        public MyEnum EnumValue { get; set; }
+        public Description Description { get; set; }
         #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterService.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="FilterService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,25 +11,29 @@ namespace Orc.FilterBuilder.Services
     using System.Collections;
     using System.Threading.Tasks;
     using Catel;
+    using Catel.IoC;
     using Catel.Threading;
     using MethodTimer;
     using Models;
 
     public class FilterService : IFilterService
     {
-        private readonly IFilterSchemeManager _filterSchemeManager;
-
         #region Fields
+        private readonly IReflectionService _reflectionService;
         private FilterScheme _selectedFilter;
         #endregion
 
+        #region Constructors
         public FilterService(IFilterSchemeManager filterSchemeManager)
         {
             Argument.IsNotNull(() => filterSchemeManager);
 
-            _filterSchemeManager = filterSchemeManager;
-            _filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
+            var scope = filterSchemeManager.Scope;
+            _reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(scope);
+            
+            filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
         }
+        #endregion
 
         #region Properties
         public FilterScheme SelectedFilter
@@ -37,10 +41,7 @@ namespace Orc.FilterBuilder.Services
             get { return _selectedFilter; }
             set
             {
-                if (ReferenceEquals(_selectedFilter, value))
-                {
-                    return;
-                }
+                // ORCOMP-257: don't check for equality
 
                 _selectedFilter = value;
 
@@ -49,6 +50,7 @@ namespace Orc.FilterBuilder.Services
         }
         #endregion
 
+        #region IFilterService Members
         /// <summary>
         /// Occurs when any of the filters has been updated.
         /// </summary>
@@ -59,27 +61,21 @@ namespace Orc.FilterBuilder.Services
         /// </summary>
         public event EventHandler<EventArgs> SelectedFilterChanged;
 
-        public async Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+        public Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
         {
             Argument.IsNotNull(() => filter);
 
-            await filter.EnsureIntegrityAsync();
+            FilterCollection(filter, rawCollection, filteredCollection);
 
-            if (filteredCollection == null)
-            {
-                return;
-            }
-
-            filter.Apply(rawCollection, filteredCollection);
+            return TaskHelper.Completed;
         }
 
         [Time]
-        [ObsoleteEx(ReplacementTypeOrMember = "FilterCollectionAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
         {
             Argument.IsNotNull(() => filter);
 
-            filter.EnsureIntegrity();
+            filter.EnsureIntegrity(_reflectionService);
 
             if (filteredCollection == null)
             {
@@ -88,10 +84,13 @@ namespace Orc.FilterBuilder.Services
 
             filter.Apply(rawCollection, filteredCollection);
         }
+        #endregion
 
+        #region Methods
         private void OnFilterSchemeManagerUpdated(object sender, EventArgs e)
         {
             FiltersUpdated.SafeInvoke(this);
         }
+        #endregion
     }
 }

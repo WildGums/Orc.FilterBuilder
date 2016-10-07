@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionHelper.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="ConditionHelper.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,8 +21,8 @@ namespace Orc.FilterBuilder
                 Condition.EqualTo,
                 Condition.NotEqualTo,
                 Condition.LessThan,
-                Condition.GreaterThan,
                 Condition.LessThanOrEqualTo,
+                Condition.GreaterThan,
                 Condition.GreaterThanOrEqualTo
             };
         }
@@ -35,16 +35,32 @@ namespace Orc.FilterBuilder
             return conditions;
         }
 
-        public static List<Condition> GetStringConditions()
-        {
-            return Enum.GetValues(typeof (Condition)).Cast<Condition>().ToList();
-        }
-
         public static List<Condition> GetBooleanConditions()
         {
             return new List<Condition>
             {
                 Condition.EqualTo
+            };
+        }
+        
+        public static List<Condition> GetStringConditions()
+        {
+            return new List<Condition>
+            {
+                Condition.Contains,
+                Condition.DoesNotContain,
+                Condition.StartsWith,
+                Condition.DoesNotStartWith,
+                Condition.EndsWith,
+                Condition.DoesNotEndWith,
+                Condition.EqualTo,
+                Condition.NotEqualTo,
+                Condition.Matches,
+                Condition.DoesNotMatch,
+                Condition.IsEmpty,
+                Condition.NotIsEmpty,
+                Condition.IsNull,
+                Condition.NotIsNull
             };
         }
 
@@ -58,8 +74,13 @@ namespace Orc.FilterBuilder
                 condition == Condition.GreaterThanOrEqualTo ||
                 condition == Condition.LessThanOrEqualTo ||
                 condition == Condition.Contains ||
+                condition == Condition.DoesNotContain ||
                 condition == Condition.EndsWith ||
-                condition == Condition.StartsWith;
+                condition == Condition.DoesNotEndWith ||
+                condition == Condition.StartsWith ||
+                condition == Condition.DoesNotStartWith ||
+                condition == Condition.Matches ||
+                condition == Condition.DoesNotMatch;
         }
         #endregion
     }

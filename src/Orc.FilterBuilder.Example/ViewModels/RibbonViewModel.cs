@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RibbonViewModel.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="RibbonViewModel.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder.Example.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -50,7 +51,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
         }
 
         public ObservableCollection<TestEntity> RawItems { get; private set; }
+
         public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
+
         public FilterScheme SelectedFilterScheme { get; set; }
 
         private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
@@ -66,7 +69,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             }
 
             var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo (filterScheme, RawItems, true, true);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, true, true);
 
             if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
@@ -125,9 +128,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawItems);
-                newSchemes.AddRange((from scheme in _filterSchemes.Schemes
-                                     where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                     select scheme));
+                ((ICollection<FilterScheme>)newSchemes).AddRange(from scheme in _filterSchemes.Schemes
+                                                                 where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                                                 select scheme);
             }
 
             newSchemes.Insert(0, NoFilterFilter);

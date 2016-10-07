@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterScheme.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="FilterScheme.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,13 +15,16 @@ namespace Orc.FilterBuilder.Models
     using System.Text;
     using Catel;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.Runtime.Serialization;
     using Runtime.Serialization;
+    using Services;
 
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
     public class FilterScheme : ModelBase
     {
         private static readonly Type _defaultTargetType = typeof(object);
+        private object _scope;
 
         #region Constructors
         public FilterScheme()
@@ -66,7 +69,21 @@ namespace Orc.FilterBuilder.Models
         }
 
         [ExcludeFromSerialization]
-        public object Tag { get; set; }
+        public object Scope
+        {
+            get { return _scope; }
+            set
+            {
+                _scope = value;
+                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
+                if (reflectionService != null)
+                {
+                    this.EnsureIntegrity(reflectionService);
+                }
+            }
+        }
+
+        public bool HasInvalidConditionItems { get; private set; }
 
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
         #endregion
@@ -101,7 +118,32 @@ namespace Orc.FilterBuilder.Models
 
         protected override void OnDeserialized()
         {
+            base.OnDeserialized();
+
             SubscribeToEvents();
+        }
+
+        private void CheckForInvalidItems()
+        {
+            HasInvalidConditionItems = (ConditionItems != null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
+        }
+
+        private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
+        {
+            var items = conditionTreeItem == null ? null : conditionTreeItem.Items;
+            if (items == null || items.Count == 0)
+            {
+                return conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
+            }
+
+            int invalidCount = 0;
+            foreach (var item in items)
+            {
+                invalidCount += CountInvalidItems(item);
+            }
+            invalidCount += conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
+
+            return invalidCount;
         }
 
         private void SubscribeToEvents()
@@ -119,6 +161,8 @@ namespace Orc.FilterBuilder.Models
 
         private void OnConditionUpdated(object sender, EventArgs e)
         {
+            CheckForInvalidItems();
+
             RaiseUpdated();
         }
 
@@ -142,6 +186,8 @@ namespace Orc.FilterBuilder.Models
             Title = otherScheme.Title;
             ConditionItems.Clear();
             ConditionItems.Add(otherScheme.Root);
+
+            CheckForInvalidItems();
 
             RaiseUpdated();
         }

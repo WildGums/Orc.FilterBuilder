@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueControlType.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="ValueControlType.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,6 +12,18 @@ namespace Orc.FilterBuilder
         Text,
         DateTime,
         Boolean,
-        TimeSpan
+        TimeSpan,
+        Decimal,
+        Double,
+        Integer,
+        Numeric,
+        UnsignedInteger,
+        Byte,
+        SByte,
+        Short,
+        UnsignedShort,
+        Long,
+        UnsignedLong,
+        Float
     }
 }

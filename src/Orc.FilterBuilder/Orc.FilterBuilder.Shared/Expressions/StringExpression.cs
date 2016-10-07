@@ -1,19 +1,31 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExpression.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="StringExpression.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
 namespace Orc.FilterBuilder
 {
+    using Catel.Reflection;
+    using Orc.FilterBuilder.Models;
     using System;
     using System.Diagnostics;
-    using Orc.FilterBuilder.Models;
+    using System.Text.RegularExpressions;
+    using Catel.Caching;
+    using Catel.Caching.Policies;
+    using Catel.Data;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
     {
+        #region Fields
+        private static readonly CacheStorage<string, Regex> _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+        private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+        #endregion
+
         #region Constructors
         public StringExpression()
         {
@@ -31,14 +43,28 @@ namespace Orc.FilterBuilder
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             var entityValue = propertyMetadata.GetValue<string>(entity);
+            if (entityValue == null && propertyMetadata.Type.IsEnumEx())
+            {
+                var entityValueAsObject = propertyMetadata.GetValue(entity);
+                if (entityValueAsObject != null)
+                {
+                    entityValue = entityValueAsObject.ToString();
+                }
+            }
 
             switch (SelectedCondition)
             {
                 case Condition.Contains:
                     return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1;
 
+                case Condition.DoesNotContain:
+                    return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1;
+
                 case Condition.EndsWith:
                     return entityValue != null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.DoesNotEndWith:
+                    return entityValue != null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.EqualTo:
                     return entityValue == Value;
@@ -72,6 +98,19 @@ namespace Orc.FilterBuilder
 
                 case Condition.StartsWith:
                     return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.DoesNotStartWith:
+                    return entityValue != null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+
+                case Condition.Matches:
+                    return entityValue != null
+                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
+                        && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
+
+                case Condition.DoesNotMatch:
+                    return entityValue != null
+                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
+                        && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
                     throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));

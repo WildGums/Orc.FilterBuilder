@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionExtensions.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="ConditionExtensions.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,11 +18,20 @@ namespace Orc.FilterBuilder
                 case Condition.Contains:
                     return "contains";
 
+                case Condition.DoesNotContain:
+                    return "does not contain";
+
                 case Condition.StartsWith:
                     return "starts with";
 
+                case Condition.DoesNotStartWith:
+                    return "does not start with";
+
                 case Condition.EndsWith:
                     return "ends with";
+
+                case Condition.DoesNotEndWith:
+                    return "does not end with";
 
                 case Condition.EqualTo:
                     return "is equal to";
@@ -53,6 +62,12 @@ namespace Orc.FilterBuilder
 
                 case Condition.NotIsNull:
                     return "is not null";
+
+                case Condition.Matches:
+                    return "matches";
+
+                case Condition.DoesNotMatch:
+                    return "does not match";
 
                 default:
                     throw new ArgumentOutOfRangeException("condition", condition, null);

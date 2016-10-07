@@ -117,64 +117,91 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddExpression" xml:space="preserve">
+  <data name="FilterBuilder_AddExpression" xml:space="preserve">
     <value>Expressie toevoegen</value>
   </data>
-  <data name="AddGroup" xml:space="preserve">
+  <data name="FilterBuilder_AddGroup" xml:space="preserve">
     <value>Groep toevoegen</value>
   </data>
-  <data name="And" xml:space="preserve">
+  <data name="FilterBuilder_And" xml:space="preserve">
     <value>En</value>
   </data>
-  <data name="Contains" xml:space="preserve">
-    <value>Bevat</value>
+  <data name="FilterBuilder_AreYouSure" xml:space="preserve">
+    <value>Weet je het zeker?</value>
   </data>
-  <data name="DeleteItem" xml:space="preserve">
+  <data name="FilterBuilder_Contains" xml:space="preserve">
+    <value>bevat</value>
+  </data>
+  <data name="FilterBuilder_DeleteItem" xml:space="preserve">
     <value>Verwijder</value>
   </data>
-  <data name="EndsWith" xml:space="preserve">
-    <value>Eindigt met</value>
+  <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
+    <value>De filter heeft niet opgeslagen wijzigingen. Weet je zeker dat je het bewerken wil stoppen zonder op te slaan?</value>
   </data>
-  <data name="EqualTo" xml:space="preserve">
-    <value>Gelijk aan</value>
+  <data name="FilterBuilder_DoesNotContain" xml:space="preserve">
+    <value>bevat geen</value>
   </data>
-  <data name="GreaterThan" xml:space="preserve">
-    <value>Groter dan</value>
+  <data name="FilterBuilder_DoesNotEndWith" xml:space="preserve">
+    <value>eindigt niet met</value>
   </data>
-  <data name="GreaterThanOrEqualTo" xml:space="preserve">
-    <value>Groter dan of gelijk aan</value>
+  <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
+    <value>komt niet overeen met</value>
   </data>
-  <data name="IsEmpty" xml:space="preserve">
-    <value>Is leeg</value>
+  <data name="FilterBuilder_DoesNotStartWith" xml:space="preserve">
+    <value>start niet met</value>
   </data>
-  <data name="IsNull" xml:space="preserve">
-    <value>Is null</value>
+  <data name="FilterBuilder_EndsWith" xml:space="preserve">
+    <value>eindigt met</value>
   </data>
-  <data name="LessThan" xml:space="preserve">
-    <value>Kleiner dan</value>
+  <data name="FilterBuilder_EqualTo" xml:space="preserve">
+    <value>is gelijk aan</value>
   </data>
-  <data name="LessThanOrEqualTo" xml:space="preserve">
-    <value>Kleiner dan of gelijk aan</value>
+  <data name="FilterBuilder_FieldIsRequired" xml:space="preserve">
+    <value>Veld is verplicht</value>
   </data>
-  <data name="LivePreview" xml:space="preserve">
+  <data name="FilterBuilder_GreaterThan" xml:space="preserve">
+    <value>is groter dan</value>
+  </data>
+  <data name="FilterBuilder_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>is groter dan of gelijk aan</value>
+  </data>
+  <data name="FilterBuilder_IsEmpty" xml:space="preserve">
+    <value>is leeg</value>
+  </data>
+  <data name="FilterBuilder_IsNull" xml:space="preserve">
+    <value>is niets</value>
+  </data>
+  <data name="FilterBuilder_LessThan" xml:space="preserve">
+    <value>is kleiner dan</value>
+  </data>
+  <data name="FilterBuilder_LessThanOrEqualTo" xml:space="preserve">
+    <value>is kleiner dan of gelijk aan</value>
+  </data>
+  <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live voorbeeld</value>
   </data>
-  <data name="Name" xml:space="preserve">
+  <data name="FilterBuilder_Matches" xml:space="preserve">
+    <value>komt overeen met</value>
+  </data>
+  <data name="FilterBuilder_Name" xml:space="preserve">
     <value>Naam</value>
   </data>
-  <data name="NotEqualTo" xml:space="preserve">
-    <value>Niet gelijk aan</value>
+  <data name="FilterBuilder_NotEqualTo" xml:space="preserve">
+    <value>is niet gelijk aan</value>
   </data>
-  <data name="NotIsEmpty" xml:space="preserve">
-    <value>Is niet leeg</value>
+  <data name="FilterBuilder_NotIsEmpty" xml:space="preserve">
+    <value>is niet leeg</value>
   </data>
-  <data name="NotIsNull" xml:space="preserve">
-    <value>Is niet null</value>
+  <data name="FilterBuilder_NotIsNull" xml:space="preserve">
+    <value>is niet niets</value>
   </data>
-  <data name="Or" xml:space="preserve">
+  <data name="FilterBuilder_Or" xml:space="preserve">
     <value>Of</value>
   </data>
-  <data name="StartsWith" xml:space="preserve">
-    <value>Begint met</value>
+  <data name="FilterBuilder_SaveBroken" xml:space="preserve">
+    <value>De filter bevat ongeldige expressies die genegeerd zullen worden tijdens het filteren. Weet je zeker dat je de filter op wil slaan?</value>
+  </data>
+  <data name="FilterBuilder_StartsWith" xml:space="preserve">
+    <value>begint met</value>
   </data>
 </root>

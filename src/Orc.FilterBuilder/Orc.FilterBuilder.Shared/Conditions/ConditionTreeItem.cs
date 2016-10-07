@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionTreeItem.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="ConditionTreeItem.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,9 @@ namespace Orc.FilterBuilder
     using System.Collections.Specialized;
     using Catel;
     using Catel.Data;
+    using Catel.IoC;
     using Catel.Runtime.Serialization;
+    using Services;
 
     public abstract class ConditionTreeItem : ModelBase
     {
@@ -27,6 +29,10 @@ namespace Orc.FilterBuilder
         #region Properties
         [ExcludeFromSerialization]
         public ConditionTreeItem Parent { get; set; }
+
+        [ExcludeFromSerialization]
+        [ExcludeFromValidation]
+        public bool IsValid { get; private set; } = true;
 
         public ObservableCollection<ConditionTreeItem> Items { get; private set; }
         #endregion
@@ -66,12 +72,21 @@ namespace Orc.FilterBuilder
 
         protected override void OnDeserialized()
         {
+            base.OnDeserialized();
+
             SubscribeToEvents();
 
             foreach (var item in Items)
             {
                 item.Parent = this;
             }
+        }
+
+        protected override void OnValidated(IValidationContext validationContext)
+        {
+            base.OnValidated(validationContext);
+
+            IsValid = !validationContext.HasErrors;
         }
 
         private void OnItemsChanged()

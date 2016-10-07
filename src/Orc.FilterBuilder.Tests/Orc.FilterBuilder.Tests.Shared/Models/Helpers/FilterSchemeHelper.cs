@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeHelper.cs" company="Wild Gums">
-//   Copyright (c) 2008 - 2015 Wild Gums. All rights reserved.
+// <copyright file="FilterSchemeHelper.cs" company="WildGums">
+//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -51,8 +51,8 @@ namespace Orc.FilterBuilder.Tests.Models
             expression.Value = "123";
 
             var propertyExpression = new PropertyExpression();
-            propertyExpression.DataTypeExpression = expression;
             propertyExpression.Property = new PropertyMetadata(typeof(TestFilterModel), typeInfo.GetPropertyData("StringProperty"));
+            propertyExpression.DataTypeExpression = expression;
 
             return propertyExpression;
         }
@@ -67,8 +67,8 @@ namespace Orc.FilterBuilder.Tests.Models
             expression.Value = true;
 
             var propertyExpression = new PropertyExpression();
-            propertyExpression.DataTypeExpression = expression;
             propertyExpression.Property = new PropertyMetadata(typeof(TestFilterModel), typeInfo.GetPropertyData("BoolProperty"));
+            propertyExpression.DataTypeExpression = expression;            
 
             return propertyExpression;
         }
@@ -83,8 +83,8 @@ namespace Orc.FilterBuilder.Tests.Models
             expression.Value = 42;
 
             var propertyExpression = new PropertyExpression();
-            propertyExpression.DataTypeExpression = expression;
             propertyExpression.Property = new PropertyMetadata(typeof(TestFilterModel), typeInfo.GetPropertyData("IntProperty"));
+            propertyExpression.DataTypeExpression = expression;            
 
             return propertyExpression;
         }

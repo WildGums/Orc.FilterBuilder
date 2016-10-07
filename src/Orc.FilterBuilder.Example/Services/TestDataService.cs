@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestDataService.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="TestDataService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -56,6 +56,8 @@ namespace FilterBuilder.Example.Services
             testEntity.Duration = new TimeSpan(_random.Next(3), _random.Next(24), _random.Next(60), _random.Next(60));
             testEntity.Price = (decimal)(_random.NextDouble() * 1000 - 500);
             testEntity.NullablePrice = (_random.Next(10) >= 5 ? (decimal?)(_random.NextDouble() * 1000 - 500) : null);
+            testEntity.EnumValue = (MyEnum)_random.Next(1, 3);
+            testEntity.Description = new Description(GetRandomString());
             return testEntity;
         }
 

@@ -1,43 +1,51 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Condition.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="Condition.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
-using System.ComponentModel.DataAnnotations;
-using Catel.ComponentModel;
-using Orc.FilterBuilder.Properties;
-
 namespace Orc.FilterBuilder
 {
+    using Catel.ComponentModel;
+
     public enum Condition
     {
-        [DisplayName("Contains")]
+        [DisplayName("FilterBuilder_Contains")]
         Contains,
-        [DisplayName("StartsWith")]
+        [DisplayName("FilterBuilder_StartsWith")]
         StartsWith,
-        [DisplayName("EndsWith")]
+        [DisplayName("FilterBuilder_EndsWith")]
         EndsWith,
-        [DisplayName("EqualTo")]
+        [DisplayName("FilterBuilder_EqualTo")]
         EqualTo,
-        [DisplayName("NotEqualTo")]
+        [DisplayName("FilterBuilder_NotEqualTo")]
         NotEqualTo,
-        [DisplayName("GreaterThan")]
+        [DisplayName("FilterBuilder_GreaterThan")]
         GreaterThan,
-        [DisplayName("LessThan")]
+        [DisplayName("FilterBuilder_LessThan")]
         LessThan,
-        [DisplayName("GreaterThanOrEqualTo")]
+        [DisplayName("FilterBuilder_GreaterThanOrEqualTo")]
         GreaterThanOrEqualTo,
-        [DisplayName("LessThanOrEqualTo")]
+        [DisplayName("FilterBuilder_LessThanOrEqualTo")]
         LessThanOrEqualTo,
-        [DisplayName("IsEmpty")]
+        [DisplayName("FilterBuilder_IsEmpty")]
         IsEmpty,
-        [DisplayName("NotIsEmpty")]
+        [DisplayName("FilterBuilder_NotIsEmpty")]
         NotIsEmpty,
-        [DisplayName("IsNull")]
+        [DisplayName("FilterBuilder_IsNull")]
         IsNull,
-        [DisplayName("NotIsNull")]
-        NotIsNull
+        [DisplayName("FilterBuilder_NotIsNull")]
+        NotIsNull,
+        [DisplayName("FilterBuilder_Matches")]
+        Matches,
+        [DisplayName("FilterBuilder_DoesNotMatch")]
+        DoesNotMatch,
+        [DisplayName("FilterBuilder_DoesNotContain")]
+        DoesNotContain,
+        [DisplayName("FilterBuilder_DoesNotStartWith")]
+        DoesNotStartWith,
+        [DisplayName("FilterBuilder_DoesNotEndWith")]
+        DoesNotEndWith
     }
 }

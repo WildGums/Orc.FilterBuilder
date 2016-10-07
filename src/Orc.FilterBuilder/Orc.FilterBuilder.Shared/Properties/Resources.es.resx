@@ -117,64 +117,91 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddExpression" xml:space="preserve">
+  <data name="FilterBuilder_AddExpression" xml:space="preserve">
     <value>Add expression</value>
   </data>
-  <data name="AddGroup" xml:space="preserve">
+  <data name="FilterBuilder_AddGroup" xml:space="preserve">
     <value>Add group</value>
   </data>
-  <data name="And" xml:space="preserve">
+  <data name="FilterBuilder_And" xml:space="preserve">
     <value>And</value>
   </data>
-  <data name="Contains" xml:space="preserve">
-    <value>Contains</value>
+  <data name="FilterBuilder_AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
   </data>
-  <data name="DeleteItem" xml:space="preserve">
+  <data name="FilterBuilder_Contains" xml:space="preserve">
+    <value>contains</value>
+  </data>
+  <data name="FilterBuilder_DeleteItem" xml:space="preserve">
     <value>Delete item</value>
   </data>
-  <data name="EndsWith" xml:space="preserve">
-    <value>EndsWith</value>
+  <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
+    <value>The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</value>
   </data>
-  <data name="EqualTo" xml:space="preserve">
-    <value>EqualTo</value>
+  <data name="FilterBuilder_DoesNotContain" xml:space="preserve">
+    <value>does not contain</value>
   </data>
-  <data name="GreaterThan" xml:space="preserve">
-    <value>GreaterThan</value>
+  <data name="FilterBuilder_DoesNotEndWith" xml:space="preserve">
+    <value>does not end with</value>
   </data>
-  <data name="GreaterThanOrEqualTo" xml:space="preserve">
-    <value>GreaterThanOrEqualTo</value>
+  <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
+    <value>does not match</value>
   </data>
-  <data name="IsEmpty" xml:space="preserve">
-    <value>IsEmpty</value>
+  <data name="FilterBuilder_DoesNotStartWith" xml:space="preserve">
+    <value>does not start with</value>
   </data>
-  <data name="IsNull" xml:space="preserve">
-    <value>IsNull</value>
+  <data name="FilterBuilder_EndsWith" xml:space="preserve">
+    <value>ends with</value>
   </data>
-  <data name="LessThan" xml:space="preserve">
-    <value>LessThan</value>
+  <data name="FilterBuilder_EqualTo" xml:space="preserve">
+    <value>is equal to</value>
   </data>
-  <data name="LessThanOrEqualTo" xml:space="preserve">
-    <value>LessThanOrEqualTo</value>
+  <data name="FilterBuilder_FieldIsRequired" xml:space="preserve">
+    <value>Field is required</value>
   </data>
-  <data name="LivePreview" xml:space="preserve">
+  <data name="FilterBuilder_GreaterThan" xml:space="preserve">
+    <value>is greater than</value>
+  </data>
+  <data name="FilterBuilder_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>is greater than or equal to</value>
+  </data>
+  <data name="FilterBuilder_IsEmpty" xml:space="preserve">
+    <value>is empty</value>
+  </data>
+  <data name="FilterBuilder_IsNull" xml:space="preserve">
+    <value>is null</value>
+  </data>
+  <data name="FilterBuilder_LessThan" xml:space="preserve">
+    <value>is less than</value>
+  </data>
+  <data name="FilterBuilder_LessThanOrEqualTo" xml:space="preserve">
+    <value>is less than or equal to</value>
+  </data>
+  <data name="FilterBuilder_LivePreview" xml:space="preserve">
     <value>Live preview</value>
   </data>
-  <data name="Name" xml:space="preserve">
+  <data name="FilterBuilder_Matches" xml:space="preserve">
+    <value>matches</value>
+  </data>
+  <data name="FilterBuilder_Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NotEqualTo" xml:space="preserve">
-    <value>NotEqualTo</value>
+  <data name="FilterBuilder_NotEqualTo" xml:space="preserve">
+    <value>is not equal to</value>
   </data>
-  <data name="NotIsEmpty" xml:space="preserve">
-    <value>NotIsEmpty</value>
+  <data name="FilterBuilder_NotIsEmpty" xml:space="preserve">
+    <value>is not empty</value>
   </data>
-  <data name="NotIsNull" xml:space="preserve">
-    <value>NotIsNull</value>
+  <data name="FilterBuilder_NotIsNull" xml:space="preserve">
+    <value>is not null</value>
   </data>
-  <data name="Or" xml:space="preserve">
+  <data name="FilterBuilder_Or" xml:space="preserve">
     <value>Or</value>
   </data>
-  <data name="StartsWith" xml:space="preserve">
-    <value>StartsWith</value>
+  <data name="FilterBuilder_SaveBroken" xml:space="preserve">
+    <value>The filter has some invalid expressions which will be ignored while filtering. Are you sure you want to save this filter?</value>
+  </data>
+  <data name="FilterBuilder_StartsWith" xml:space="preserve">
+    <value>starts with</value>
   </data>
 </root>

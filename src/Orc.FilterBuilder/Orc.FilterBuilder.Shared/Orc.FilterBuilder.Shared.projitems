@@ -10,39 +10,41 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DisableSelectionInTreeView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\Condition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroupType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionTreeItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\Helpers\ConditionHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\ConditionTreeItemConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\DataTypeExpressionToConditionsConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\LeftMarginMultiplierConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\ObjectToValueConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\TriggerConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueControlTypeVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\BooleanExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\ByteExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DataTypeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DateTimeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DecimalExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DoubleExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\FloatExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\IntegerExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\LongExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\NullableDataTypeExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\NumericExpression.generic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\NumericExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\PropertyExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\SByteExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\ShortExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\StringExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\TimeSpanExpression.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ColorExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\UnsignedIntegerExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\UnsignedLongExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\UnsignedShortExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\ValueDataTypeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionTreeItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FilterSchemeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyInfoExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterBuilderMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CollectionHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Markup\EnumBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\InstancePropertyHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\RegexHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\FilterScheme.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemeEditInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemes.cs" />
@@ -66,28 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IReflectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ReflectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeSpanType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validators\PropertyExpressionValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueControlType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EditFilterViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FilterBuilderViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml.cs">
-      <DependentUpon>EditFilterWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>FilterBuilderControl.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\EditFilterWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\FilterBuilderControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
 </Project>

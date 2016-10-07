@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="App.xaml.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="App.xaml.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ namespace Orc.FilterBuilder.Example
         protected override async void OnStartup(StartupEventArgs e)
         {
 #if DEBUG
-            //LogManager.AddDebugListener();
+            LogManager.AddDebugListener();
 #endif
 
             var languageService = ServiceLocator.Default.ResolveType<ILanguageService>();
@@ -50,7 +50,7 @@ namespace Orc.FilterBuilder.Example
             await shellService.CreateWithSplashAsync<ShellWindow>();
 
             var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
-            await filterSchemeManager.LoadAsync();
+            filterSchemeManager.Load();
 
             base.OnStartup(e);
         }

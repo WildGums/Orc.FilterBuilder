@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFilterSchemeManager.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="IFilterSchemeManager.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace Orc.FilterBuilder.Services
         #region Properties
         bool AutoSave { get; set; }
         FilterSchemes FilterSchemes { get; }
-        object Tag { get; set; }
+        object Scope { get; set; }
         #endregion
 
         event EventHandler<EventArgs> Updated;
@@ -24,8 +24,7 @@ namespace Orc.FilterBuilder.Services
         event EventHandler<EventArgs> Saved;
 
         #region Methods
-        void UpdateFilters();
-        [ObsoleteEx(ReplacementTypeOrMember = "LoadAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
+        void UpdateFilters();        
         void Load(string fileName = null);
         Task<bool> LoadAsync(string fileName = null);
         void Save(string fileName = null);

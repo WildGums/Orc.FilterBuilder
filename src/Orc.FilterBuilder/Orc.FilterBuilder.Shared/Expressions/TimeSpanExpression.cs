@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeSpanExpression.cs" company="Orcomp development team">
-//   Copyright (c) 2008 - 2014 Orcomp development team. All rights reserved.
+// <copyright file="TimeSpanExpression.cs" company="WildGums">
+//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ namespace Orc.FilterBuilder
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class TimeSpanExpression : DataTypeExpression
+    public class TimeSpanExpression : NullableDataTypeExpression
     {
         #region Constants
         private const int AverageDaysInYear = 365;
@@ -26,7 +26,14 @@ namespace Orc.FilterBuilder
 
         #region Constructors
         public TimeSpanExpression()
+            : this(true)
         {
+            
+        }
+
+        public TimeSpanExpression(bool isNullable)
+        {
+            IsNullable = isNullable;
             SelectedCondition = Condition.EqualTo;
             Value = TimeSpan.FromHours(1);
             ValueControlType = ValueControlType.TimeSpan;
