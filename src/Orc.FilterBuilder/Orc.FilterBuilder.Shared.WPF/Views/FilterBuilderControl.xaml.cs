@@ -173,7 +173,7 @@ namespace Orc.FilterBuilder.Views
         {
             base.OnApplyTemplate();
 
-            AccentColorBrush = TryFindResource("AccentColorBrush") as SolidColorBrush;
+            SetCurrentValue(AccentColorBrushProperty, TryFindResource("AccentColorBrush") as SolidColorBrush);
         }
         #endregion
     }

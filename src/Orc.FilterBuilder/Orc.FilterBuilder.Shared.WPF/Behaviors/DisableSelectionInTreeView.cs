@@ -50,7 +50,7 @@ namespace Orc.FilterBuilder.Behaviors
                     {
                         if (tvi.IsSelected)
                         {
-                            tvi.IsSelected = false;
+                            tvi.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
                         }
 
                         ClearTreeViewItemsControlSelection(tvi.Items, tvi.ItemContainerGenerator);

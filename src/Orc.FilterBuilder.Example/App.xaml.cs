@@ -25,7 +25,9 @@ namespace Orc.FilterBuilder.Example
     /// </summary>
     public partial class App : Application
     {
+#pragma warning disable AvoidAsyncVoid
         protected override async void OnStartup(StartupEventArgs e)
+#pragma warning restore AvoidAsyncVoid
         {
 #if DEBUG
             LogManager.AddDebugListener();

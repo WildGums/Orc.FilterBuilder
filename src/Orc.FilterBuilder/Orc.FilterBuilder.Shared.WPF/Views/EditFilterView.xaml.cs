@@ -23,7 +23,9 @@ namespace Orc.FilterBuilder.Views
         }
         #endregion
 
+#pragma warning disable AvoidAsyncVoid
         protected override async void OnViewModelChanged()
+#pragma warning restore AvoidAsyncVoid
         {
             base.OnViewModelChanged();
 

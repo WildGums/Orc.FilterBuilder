@@ -231,9 +231,11 @@ namespace Orc.FilterBuilder.ViewModels
             return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
         }
 
+#pragma warning disable AvoidAsyncVoid
         private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
+#pragma warning restore AvoidAsyncVoid
         {
-            if (await _messageService.ShowAsync(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
+            if (await _messageService.ShowAsync($"Are you sure you want to delete filter '{filterScheme.Title}'?", "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
             {
                 _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
 

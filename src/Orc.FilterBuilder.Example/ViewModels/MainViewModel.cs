@@ -40,7 +40,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
             FilteredItems.CollectionChanged += (sender, e) => Log.Info("Collection updated");
         }
 
+#pragma warning disable AvoidAsyncVoid
         private async void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
+#pragma warning restore AvoidAsyncVoid
         {
             using (FilteredItems.SuspendChangeNotifications())
             {
