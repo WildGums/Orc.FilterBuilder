@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
+	<Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\Condition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroupType.cs" />

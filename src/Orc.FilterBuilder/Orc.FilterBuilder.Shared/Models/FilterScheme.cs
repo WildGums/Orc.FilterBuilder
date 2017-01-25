@@ -74,11 +74,17 @@ namespace Orc.FilterBuilder.Models
             get { return _scope; }
             set
             {
-                _scope = value;
-                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
-                if (reflectionService != null)
+                if (!ObjectHelper.AreEqual(_scope, value))
                 {
-                    this.EnsureIntegrity(reflectionService);
+                    _scope = value;
+
+                    RaisePropertyChanged(nameof(Scope));
+
+                    var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
+                    if (reflectionService != null)
+                    {
+                        this.EnsureIntegrity(reflectionService);
+                    }
                 }
             }
         }
