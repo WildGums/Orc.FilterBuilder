@@ -10,11 +10,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
-	<Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DummyFacts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\FilterSchemeFacts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Helpers\FilterSchemeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FilterSchemeFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FilterSchemeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TestFilterModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\AttributeTypeNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Helpers\FilterSchemeInitializationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Metadata\TestFilterRuntimeModelMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Metadata\TestFilterRuntimeModelPropertyCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Models\TestAttributeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Models\TestAttributeValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Models\TestFilterRuntimeModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Provider\TestDataProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Provider\TestAttributeTypeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\RuntimeMetadataFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Services\TestFilterRuntimeModelReflectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TemporaryFilesContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Files\filters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
