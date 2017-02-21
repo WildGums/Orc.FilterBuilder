@@ -13,7 +13,7 @@ namespace Orc.FilterBuilder.Tests
     public static class TestAttributeTypeProvider
     {
         #region Constants
-        public static readonly IReadOnlyDictionary<string, TestAttributeType> AttributeTypes;
+        public static readonly Dictionary<string, TestAttributeType> AttributeTypes;
         #endregion
 
         #region Constructors
