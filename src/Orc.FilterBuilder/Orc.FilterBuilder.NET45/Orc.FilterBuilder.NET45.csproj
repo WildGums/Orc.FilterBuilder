@@ -89,25 +89,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\add_expression.png">
+    <Resource Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\add_expression.png">
       <Link>Resources\Images\add_expression.png</Link>
-    </Content>
-    <Content Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\add_group.png">
+    </Resource>
+    <Resource Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\add_group.png">
       <Link>Resources\Images\add_group.png</Link>
-    </Content>
-    <Content Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\delete.png">
+    </Resource>
+    <Resource Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\delete.png">
       <Link>Resources\Images\delete.png</Link>
-    </Content>
-    <Content Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\edit.png">
+    </Resource>
+    <Resource Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\edit.png">
       <Link>Resources\Images\edit.png</Link>
-    </Content>
-    <Content Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\remove.png">
+    </Resource>
+    <Resource Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\remove.png">
       <Link>Resources\Images\remove.png</Link>
-    </Content>
-    <Content Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\selected.png">
+    </Resource>
+    <Resource Include="..\Orc.FilterBuilder.Shared.WPF\Resources\Images\selected.png">
       <Link>Resources\Images\selected.png</Link>
-    </Content>
-    <Content Include="FodyWeavers.xml" />
+    </Resource>
+    <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Orc.FilterBuilder.Shared\Properties\Resources.de.resx">
