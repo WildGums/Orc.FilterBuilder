@@ -3,18 +3,16 @@
 [![Join the chat at https://gitter.im/WildGums/Orc.FilterBuilder](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WildGums/Orc.FilterBuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![License](https://img.shields.io/github/license/wildgums/orc.filterbuilder.svg)
-![NuGet downloads](https://img.shields.io/nuget/dt/orc.filterbuilder.svg)
 ![Version](https://img.shields.io/nuget/v/orc.filterbuilder.svg)
 ![Pre-release version](https://img.shields.io/nuget/vpre/orc.filterbuilder.svg)
 
-FilterBuilder is  WPF component which can help you extract key insights from your data, by adding complex filtering functionalities to your application. 
+FilterBuilder is  WPF component which can help you extract key insights from your data, by adding complex filtering functionalities to your application.
 
 ![Filter Builder component main screen](img/1.png) 
 
 ## Usage
 
 FilterBuilder is developer-friendly component which allows easy integration of complex data filtering functionality with new and existing enterprise applications. The component implementation only requires three steps.
-
 
 1. Include the components project to your application
 2. Create two object collections (input and output) 
@@ -136,3 +134,7 @@ To customize the style of the buttons add the *MetroCircleButtonStyle* and appro
 ![FilterBuilder project](img/metro_2.png)  
 
 Compile the project, and enjoy!
+
+## Links
+
+FilterBuilder is part of the [Orchestra](https://github.com/WildGums/Orchestra) family of controls.
