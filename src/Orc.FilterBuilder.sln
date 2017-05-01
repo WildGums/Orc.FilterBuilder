@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23912551-289D-43BF-9B2D-5385308A09E4}"
 EndProject
@@ -36,9 +36,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.NET46", "Orc.FilterBuilder\Orc.FilterBuilder.NET46\Orc.FilterBuilder.NET46.csproj", "{66BE4C8A-A6D2-4157-9261-5EEAE1135FBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET46", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.NET40\Orc.FilterBuilder.Tests.NET46\Orc.FilterBuilder.Tests.NET46.csproj", "{CFF8901D-66CA-4201-A232-8B09979801EA}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FilterBuilder.Shared.WPF", "Orc.FilterBuilder\Orc.FilterBuilder.Shared.WPF\Orc.FilterBuilder.Shared.WPF.shproj", "{F6AACF5A-663B-4315-B7A9-05F785F3E9DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET46", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.NET46\Orc.FilterBuilder.Tests.NET46.csproj", "{CFF8901D-66CA-4201-A232-8B09979801EA}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -104,7 +104,7 @@ Global
 		{DF2FDBDC-F137-419D-A0AE-451B70B0B9E8} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
 		{5A88454A-D65B-49BF-8165-7E2CDAE446B0} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
 		{66BE4C8A-A6D2-4157-9261-5EEAE1135FBB} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
-		{CFF8901D-66CA-4201-A232-8B09979801EA} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
 		{F6AACF5A-663B-4315-B7A9-05F785F3E9DA} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
+		{CFF8901D-66CA-4201-A232-8B09979801EA} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
 	EndGlobalSection
 EndGlobal
