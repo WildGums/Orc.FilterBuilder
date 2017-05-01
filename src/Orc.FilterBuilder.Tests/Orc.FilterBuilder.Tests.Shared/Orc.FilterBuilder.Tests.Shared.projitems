@@ -11,8 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DummyFacts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterSchemeFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AssemblyDirectoryHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\FilterSchemeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TestFilterModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />

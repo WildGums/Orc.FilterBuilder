@@ -23,7 +23,7 @@ namespace Orc.FilterBuilder.Tests
 
             var tempFileContext = new TemporaryFilesContext("filters");
             var tempFile = tempFileContext.GetFile($"testFilters.xml", true);
-            var sourceFile = $"Resources\\Files\\filters.xml";
+            var sourceFile = Path.Combine(AssemblyDirectoryHelper.GetCurrentDirectory(), $"Resources\\Files\\filters.xml");
             File.Copy(sourceFile, tempFile, true);
 
             var filterManager = serviceLocator.ResolveType<IFilterSchemeManager>();
