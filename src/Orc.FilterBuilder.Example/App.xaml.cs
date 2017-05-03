@@ -17,6 +17,7 @@ namespace Orc.FilterBuilder.Example
     using Catel.IoC;
     using Catel.Services;
     using Catel.Windows;
+    using Orchestra;
     using Orchestra.Services;
     using Orchestra.Views;
 
@@ -43,7 +44,7 @@ namespace Orc.FilterBuilder.Example
 
             //Log.Info("Starting application");
 
-            StyleHelper.CreateStyleForwardersForDefaultStyles();
+            this.ApplyTheme();
 
             //Log.Info("Calling base.OnStartup");
 

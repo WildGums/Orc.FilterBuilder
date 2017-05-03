@@ -38,6 +38,8 @@ namespace Orc.FilterBuilder.Example.ViewModels
             FilteredItems = new FastObservableCollection<TestEntity>();
 
             FilteredItems.CollectionChanged += (sender, e) => Log.Info("Collection updated");
+
+            Title = "Orc.FilterBuilder example";
         }
 
 #pragma warning disable AvoidAsyncVoid
