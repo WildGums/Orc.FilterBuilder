@@ -43,6 +43,7 @@ namespace Orc.FilterBuilder.Converters
                         // No custom conditions
                         break;
 
+                    case ValueControlType.Enum:
                     case ValueControlType.Byte:
                     case ValueControlType.SByte:
                     case ValueControlType.Short:

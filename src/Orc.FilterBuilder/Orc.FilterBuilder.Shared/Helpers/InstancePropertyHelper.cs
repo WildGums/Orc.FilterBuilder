@@ -12,43 +12,38 @@ namespace Orc.FilterBuilder
     using Models;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
     public static class InstancePropertyHelper
     {
-        private static readonly HashSet<Type> _supportedTypes;
+        private static readonly HashSet<Type> SupportedTypes;
+
+        private static readonly HashSet<Type> UnsupportedTypes;
 
         static InstancePropertyHelper()
         {
-            _supportedTypes = new HashSet<Type>
+            UnsupportedTypes = new HashSet<Type>
+            {
+                typeof(bool?),
+                typeof(TimeSpan?)
+            };
+
+            SupportedTypes = new HashSet<Type>
             {
                 typeof(bool),
                 typeof(byte),
-                typeof(byte?),
                 typeof(sbyte),
-                typeof(sbyte?),
                 typeof(ushort),
-                typeof(ushort?),
                 typeof(short),
-                typeof(short?),
                 typeof(uint),
-                typeof(uint?),
                 typeof(int),
-                typeof(int?),
                 typeof(ulong),
-                typeof(ulong?),
                 typeof(long),
-                typeof(long?),
                 typeof(float),
-                typeof(float?),
                 typeof(double),
-                typeof(double?),
                 typeof(decimal),
-                typeof(decimal?),
                 typeof(string),
                 typeof(DateTime),
-                typeof(DateTime?),
                 typeof(TimeSpan)
             };
         }
@@ -71,7 +66,17 @@ namespace Orc.FilterBuilder
         {
             Argument.IsNotNull(() => type);
 
-            return _supportedTypes.Contains(type) || type.IsEnumEx();
+            if (UnsupportedTypes.Contains(type))
+            {
+                return false;
+            }
+
+            if (type.IsNullableType())
+            {
+                type = type.GetNonNullable();
+            }
+
+            return SupportedTypes.Contains(type) || type.IsEnumEx();
         }
     }
 }
