@@ -24,6 +24,7 @@ namespace Orc.FilterBuilder
         UnsignedShort,
         Long,
         UnsignedLong,
-        Float
+        Float,
+        Enum
     }
 }
