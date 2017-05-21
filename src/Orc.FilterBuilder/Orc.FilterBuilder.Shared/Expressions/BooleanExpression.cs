@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BooleanExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -10,7 +10,9 @@ namespace Orc.FilterBuilder
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using Catel.IoC;
     using Catel.Runtime.Serialization;
+    using Catel.Services;
     using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -43,7 +45,7 @@ namespace Orc.FilterBuilder
                     return entityValue == Value;
 
                 default:
-                    throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
+                    throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

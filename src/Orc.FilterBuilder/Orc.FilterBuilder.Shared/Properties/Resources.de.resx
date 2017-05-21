@@ -210,4 +210,19 @@
   <data name="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" xml:space="preserve">
     <value>broken</value>
 </data>
+  <data name="FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern" xml:space="preserve">
+    <value>Condition '{0}' is not supported.</value>
+</data>
+  <data name="FilterBuilder_Exception_Message_Type0IsNotSupported_Pattern" xml:space="preserve">
+    <value>Type '{0}' is not supported.</value>
+</data>
+  <data name="FilterBuilder_Exception_Message_Parameter0IsNotSupported_Pattern" xml:space="preserve">
+    <value>Parameter {0} is not supported.</value>
+</data>
+  <data name="FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption" xml:space="preserve">
+    <value>Delete filter?</value>
+</data>
+  <data name="FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilter0Question_Pattern" xml:space="preserve">
+    <value>Are you sure you want to delete filter '{0}'?</value>
+</data>
 </root>

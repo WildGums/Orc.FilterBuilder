@@ -338,5 +338,50 @@ namespace Orc.FilterBuilder.Properties {
                 return ResourceManager.GetString("FilterBuilder_Generic_TextBlock_Text_DetailsView", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter {0} is not supported..
+        /// </summary>
+        internal static string FilterBuilder_Exception_Message_Parameter0IsNotSupported_Pattern {
+            get {
+                return ResourceManager.GetString("FilterBuilder_Exception_Message_Parameter0IsNotSupported_Pattern", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Type '{0}' is not supported..
+        /// </summary>
+        internal static string FilterBuilder_Exception_Message_Type0IsNotSupported_Pattern {
+            get {
+                return ResourceManager.GetString("FilterBuilder_Exception_Message_Type0IsNotSupported_Pattern", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Condition '{0}' is not supported..
+        /// </summary>
+        internal static string FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern {
+            get {
+                return ResourceManager.GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete filterQuestion.
+        /// </summary>
+        internal static string FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption {
+            get {
+                return ResourceManager.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete filter '{0}'?.
+        /// </summary>
+        internal static string FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilter0Question_Pattern {
+            get {
+                return ResourceManager.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilter0Question_Pattern", resourceCulture);
+            }
+        }
  }
 }
