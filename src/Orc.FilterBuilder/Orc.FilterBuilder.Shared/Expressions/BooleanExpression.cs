@@ -10,10 +10,9 @@ namespace Orc.FilterBuilder
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using Catel.IoC;
+    using Catel;
     using Catel.Runtime.Serialization;
-    using Catel.Services;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class BooleanExpression : DataTypeExpression
@@ -45,7 +44,7 @@ namespace Orc.FilterBuilder
                     return entityValue == Value;
 
                 default:
-                    throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

@@ -15,8 +15,7 @@ namespace Orc.FilterBuilder
     using Catel.Caching;
     using Catel.Caching.Policies;
     using System.Collections.Generic;
-    using Catel.IoC;
-    using Catel.Services;
+    using Catel;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
@@ -113,7 +112,7 @@ namespace Orc.FilterBuilder
                         && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
-                    throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

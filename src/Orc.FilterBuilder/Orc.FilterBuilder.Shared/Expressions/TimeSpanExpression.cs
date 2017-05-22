@@ -12,10 +12,9 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
+    using Catel;
     using Catel.Data;
-    using Catel.IoC;
     using Catel.Runtime.Serialization;
-    using Catel.Services;
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -89,7 +88,7 @@ namespace Orc.FilterBuilder
                         break;
 
                     default:
-                        throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Type0IsNotSupported_Pattern"), SelectedSpanType));
+                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
                 }
             }
         }
@@ -118,7 +117,7 @@ namespace Orc.FilterBuilder
                     return entityValue <= Value;
 
                 default:
-                    throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

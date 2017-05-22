@@ -342,27 +342,27 @@ namespace Orc.FilterBuilder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Parameter {0} is not supported..
         /// </summary>
-        internal static string FilterBuilder_Exception_Message_Parameter0IsNotSupported_Pattern {
+        internal static string FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern {
             get {
-                return ResourceManager.GetString("FilterBuilder_Exception_Message_Parameter0IsNotSupported_Pattern", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern", resourceCulture);
             }
         }
 
         /// <summary>
         ///   Looks up a localized string similar to Type '{0}' is not supported..
         /// </summary>
-        internal static string FilterBuilder_Exception_Message_Type0IsNotSupported_Pattern {
+        internal static string FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern {
             get {
-                return ResourceManager.GetString("FilterBuilder_Exception_Message_Type0IsNotSupported_Pattern", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern", resourceCulture);
             }
         }
 
         /// <summary>
         ///   Looks up a localized string similar to Condition '{0}' is not supported..
         /// </summary>
-        internal static string FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern {
+        internal static string FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern {
             get {
-                return ResourceManager.GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern", resourceCulture);
             }
         }
 
@@ -378,9 +378,9 @@ namespace Orc.FilterBuilder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete filter '{0}'?.
         /// </summary>
-        internal static string FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilter0Question_Pattern {
+        internal static string FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern {
             get {
-                return ResourceManager.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilter0Question_Pattern", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern", resourceCulture);
             }
         }
  }

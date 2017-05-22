@@ -80,7 +80,7 @@ namespace Orc.FilterBuilder
 
             if (!IsNullable && (SelectedCondition == Condition.IsNull || SelectedCondition == Condition.NotIsNull))
             {
-                throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
 
             switch (SelectedCondition)
@@ -110,7 +110,7 @@ namespace Orc.FilterBuilder
                     return entityValue != null;
 
                 default:
-                    throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

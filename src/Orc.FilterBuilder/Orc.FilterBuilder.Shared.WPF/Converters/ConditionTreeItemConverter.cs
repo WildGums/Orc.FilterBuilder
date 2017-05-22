@@ -9,9 +9,8 @@ namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Windows;
-    using Catel.IoC;
+    using Catel;
     using Catel.MVVM.Converters;
-    using Catel.Services;
 
     public class ConditionTreeItemConverter : ValueConverterBase
     {
@@ -27,7 +26,7 @@ namespace Orc.FilterBuilder.Converters
                     return value is PropertyExpression ? Visibility.Visible : Visibility.Collapsed;
 
                 default:
-                    throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Parameter0IsNotSupported_Pattern"), parameter));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern"), parameter));
             }
         }
         #endregion

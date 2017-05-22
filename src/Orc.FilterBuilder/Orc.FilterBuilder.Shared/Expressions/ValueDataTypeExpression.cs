@@ -10,8 +10,7 @@ namespace Orc.FilterBuilder
     using Models;
     using System;
     using System.Collections.Generic;
-    using Catel.IoC;
-    using Catel.Services;
+    using Catel;
 
     public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
         where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>
@@ -66,7 +65,7 @@ namespace Orc.FilterBuilder
                         return entityValue != null;
 
                     default:
-                        throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
                 }
             }
             else
@@ -93,7 +92,7 @@ namespace Orc.FilterBuilder
                         return _comparer.Compare(entityValue, Value) <= 0;
 
                     default:
-                        throw new NotSupportedException(string.Format(this.GetDependencyResolver().Resolve<ILanguageService>().GetString("FilterBuilder_Exception_Message_Condition0IsNotSupported_Pattern"), SelectedCondition));
+                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
                 }
             }
         }

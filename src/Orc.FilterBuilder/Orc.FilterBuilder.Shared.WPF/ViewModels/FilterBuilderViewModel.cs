@@ -238,7 +238,7 @@ namespace Orc.FilterBuilder.ViewModels
         private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
 #pragma warning restore AvoidAsyncVoid
         {
-            if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilter0Question_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) == MessageResult.Yes)
+            if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) == MessageResult.Yes)
             {
                 _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
 
