@@ -1,6 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters">
+                   xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters"
+                   xmlns:catel="http://catel.codeplex.com">
 
     <SolidColorBrush x:Key="DataGridHeaderMouseOverBackgroundBrush" Color="{DynamicResource FilterBuilderHighlightColor}"/>
     <SolidColorBrush x:Key="DataGridHeaderBorderBrush" Color="LightGray"/>
@@ -270,7 +271,7 @@
     <!--RowDetails Template-->
     <DataTemplate x:Key="RowDetailsDataTemplate">
         <StackPanel>
-            <TextBlock Text="Details View"/>
+            <TextBlock Text="{catel:LanguageBinding FilterBuilder_Generic_TextBlock_Text_DetailsView}"/>
         </StackPanel>
     </DataTemplate>
     
