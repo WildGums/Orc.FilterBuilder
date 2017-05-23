@@ -12,7 +12,9 @@ namespace Orc.FilterBuilder
     using System.Diagnostics;
     using System.Linq;
     using Catel;
+    using Catel.IoC;
     using Catel.Reflection;
+    using Catel.Services;
     using Models;
 
     /// <summary>
@@ -78,7 +80,7 @@ namespace Orc.FilterBuilder
 
             if (!IsNullable && (SelectedCondition == Condition.IsNull || SelectedCondition == Condition.NotIsNull))
             {
-                throw new NotSupportedException($"Condition '{SelectedCondition}' is not supported.");
+                throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
 
             switch (SelectedCondition)
@@ -108,7 +110,7 @@ namespace Orc.FilterBuilder
                     return entityValue != null;
 
                 default:
-                    throw new NotSupportedException($"Condition '{SelectedCondition}' is not supported.");
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 
