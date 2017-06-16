@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimeSpanExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -12,9 +12,10 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
+    using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class TimeSpanExpression : NullableDataTypeExpression
@@ -87,7 +88,7 @@ namespace Orc.FilterBuilder
                         break;
 
                     default:
-                        throw new NotSupportedException(string.Format("Type '{0}' is not supported.", SelectedSpanType));
+                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
                 }
             }
         }
@@ -116,7 +117,7 @@ namespace Orc.FilterBuilder
                     return entityValue <= Value;
 
                 default:
-                    throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

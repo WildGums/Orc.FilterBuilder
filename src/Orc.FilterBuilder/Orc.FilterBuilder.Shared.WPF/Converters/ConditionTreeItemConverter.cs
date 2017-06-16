@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConditionTreeItemConverter.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Windows;
+    using Catel;
     using Catel.MVVM.Converters;
 
     public class ConditionTreeItemConverter : ValueConverterBase
@@ -25,7 +26,7 @@ namespace Orc.FilterBuilder.Converters
                     return value is PropertyExpression ? Visibility.Visible : Visibility.Collapsed;
 
                 default:
-                    throw new NotSupportedException(string.Format("Parameter {0} is not supported.", parameter));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern"), parameter));
             }
         }
         #endregion

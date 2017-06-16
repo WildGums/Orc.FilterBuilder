@@ -39,6 +39,7 @@ namespace Orc.FilterBuilder.ViewModels
         private IFilterSchemeManager _filterSchemeManager;
         private IFilterService _filterService;
         private IReflectionService _reflectionService;
+        private readonly ILanguageService _languageService;
         private Type _targetType;
         private FilterSchemes _filterSchemes;
         private bool _applyingFilter;
@@ -46,7 +47,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         #region Constructors
         public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
-            IFilterService filterService, IMessageService messageService, IServiceLocator serviceLocator, IReflectionService reflectionService)
+            IFilterService filterService, IMessageService messageService, IServiceLocator serviceLocator, IReflectionService reflectionService, ILanguageService languageService)
         {
             Argument.IsNotNull(() => uiVisualizerService);
             Argument.IsNotNull(() => filterSchemeManager);
@@ -54,6 +55,7 @@ namespace Orc.FilterBuilder.ViewModels
             Argument.IsNotNull(() => messageService);
             Argument.IsNotNull(() => serviceLocator);
             Argument.IsNotNull(() => reflectionService);
+            Argument.IsNotNull(() => languageService);
 
             _uiVisualizerService = uiVisualizerService;
             _filterSchemeManager = filterSchemeManager;
@@ -61,6 +63,7 @@ namespace Orc.FilterBuilder.ViewModels
             _messageService = messageService;
             _serviceLocator = serviceLocator;
             _reflectionService = reflectionService;
+            _languageService = languageService;
 
             NewSchemeCommand = new Command(OnNewSchemeExecute);
             EditSchemeCommand = new Command<FilterScheme>(OnEditSchemeExecute, OnEditSchemeCanExecute);
@@ -231,9 +234,11 @@ namespace Orc.FilterBuilder.ViewModels
             return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
         }
 
+#pragma warning disable AvoidAsyncVoid
         private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
+#pragma warning restore AvoidAsyncVoid
         {
-            if (await _messageService.ShowAsync(string.Format("Are you sure you want to delete filter '{0}'?", filterScheme.Title), "Delete filter?", MessageButton.YesNo) == MessageResult.Yes)
+            if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) == MessageResult.Yes)
             {
                 _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
 

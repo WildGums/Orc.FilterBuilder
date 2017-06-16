@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -8,15 +8,14 @@
 namespace Orc.FilterBuilder
 {
     using Catel.Reflection;
-    using Orc.FilterBuilder.Models;
+    using Models;
     using System;
     using System.Diagnostics;
     using System.Text.RegularExpressions;
     using Catel.Caching;
     using Catel.Caching.Policies;
-    using Catel.Data;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    using Catel;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
@@ -113,7 +112,7 @@ namespace Orc.FilterBuilder
                         && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
-                    throw new NotSupportedException(string.Format("Condition '{0}' is not supported.", SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 

@@ -27,19 +27,19 @@ namespace Orc.FilterBuilder.Example.Services
             _serviceLocator = serviceLocator;
         }
 
-        public override async Task InitializeBeforeCreatingShellAsync()
+        public override Task InitializeBeforeCreatingShellAsync()
         {
-            await InitializeFonts();
+            InitializeFonts();
+
+            return TaskHelper.Completed;
         }
 
-        private Task InitializeFonts()
+        private void InitializeFonts()
         {
             FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
 
             FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
             FontImage.DefaultFontFamily = "FontAwesome";
-
-            return TaskHelper.Completed;
         }
     }
 }

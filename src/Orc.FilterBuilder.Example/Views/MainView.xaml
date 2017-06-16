@@ -21,6 +21,8 @@
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" Width="*" />
                 <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*" />
                 <DataGridTextColumn Header="Nullable Price" Binding="{Binding NullablePrice}" Width="*" />
+                <DataGridTextColumn Header="EnumValue" Binding="{Binding EnumValue}" Width="*" />
+                <DataGridTextColumn Header="NullableEnumValue" Binding="{Binding NullableEnumValue}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -35,6 +37,8 @@
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" Width="*" />
                 <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*" />
                 <DataGridTextColumn Header="Nullable Price" Binding="{Binding NullablePrice}" Width="*" />
+                <DataGridTextColumn Header="EnumValue" Binding="{Binding EnumValue}" Width="*" />
+                <DataGridTextColumn Header="NullableEnumValue" Binding="{Binding NullableEnumValue}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

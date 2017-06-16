@@ -8,6 +8,7 @@
 namespace Orc.FilterBuilder.Models
 {   
     using System.Collections.ObjectModel;
+    using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
@@ -29,11 +30,16 @@ namespace Orc.FilterBuilder.Models
             get { return _scope; }
             set
             {
-                _scope = value;
-
-                foreach (var filterScheme in Schemes)
+                if (!ObjectHelper.AreEqual(_scope, value))
                 {
-                    filterScheme.Scope = Scope;
+                    _scope = value;
+
+                    RaisePropertyChanged(nameof(Scope));
+
+                    foreach (var filterScheme in Schemes)
+                    {
+                        filterScheme.Scope = Scope;
+                    }
                 }
             }
         }

@@ -198,6 +198,10 @@
                                           SelectedValue="{Binding DataTypeExpression.Value}"
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Boolean}}"/>
 
+                                <ComboBox ItemsSource="{Binding DataTypeExpression.EnumValues}"
+                                          SelectedValue="{Binding DataTypeExpression.Value}"
+                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
+
                                 <StackPanel Orientation="Horizontal"
                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}">
                                     <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}"

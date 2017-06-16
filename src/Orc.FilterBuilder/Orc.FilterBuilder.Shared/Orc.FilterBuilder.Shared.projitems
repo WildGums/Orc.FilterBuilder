@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\Condition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conditions\ConditionGroupType.cs" />
@@ -21,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DateTimeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DecimalExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\DoubleExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\EnumExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\FloatExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\IntegerExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\LongExpression.cs" />
