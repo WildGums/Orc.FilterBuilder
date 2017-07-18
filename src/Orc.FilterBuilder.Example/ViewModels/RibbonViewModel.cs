@@ -47,7 +47,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             _uiVisualizerService = uiVisualizerService;
             RawItems = _testDataService.GetTestItems();
 
-            NewSchemeCommand = new Command(OnNewSchemeExecute);
+            NewSchemeCommand = new TaskCommand(OnNewSchemeExecuteAsync);
         }
 
         public ObservableCollection<TestEntity> RawItems { get; private set; }
@@ -58,9 +58,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
 
-        public Command NewSchemeCommand { get; private set; }
+        public TaskCommand NewSchemeCommand { get; private set; }
 
-        private void OnNewSchemeExecute()
+        private async Task OnNewSchemeExecuteAsync()
         {
             if (_targetType == null)
             {
@@ -71,7 +71,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, true, true);
 
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
 

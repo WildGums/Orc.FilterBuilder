@@ -103,7 +103,7 @@ namespace Orc.FilterBuilder.ViewModels
         {
             await base.InitializeAsync();
 
-            InstanceProperties = (await _reflectionService.GetInstancePropertiesAsync(_originalFilterScheme.TargetType)).Properties;
+            InstanceProperties = _reflectionService.GetInstanceProperties(_originalFilterScheme.TargetType).Properties;
 
             using (var memoryStream = new MemoryStream())
             {

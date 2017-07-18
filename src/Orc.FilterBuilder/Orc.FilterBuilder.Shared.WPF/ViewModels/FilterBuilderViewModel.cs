@@ -65,8 +65,8 @@ namespace Orc.FilterBuilder.ViewModels
             _reflectionService = reflectionService;
             _languageService = languageService;
 
-            NewSchemeCommand = new Command(OnNewSchemeExecute);
-            EditSchemeCommand = new Command<FilterScheme>(OnEditSchemeExecute, OnEditSchemeCanExecute);
+            NewSchemeCommand = new TaskCommand(OnNewSchemeExecuteAsync);
+            EditSchemeCommand = new TaskCommand<FilterScheme>(OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
             ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
             DeleteSchemeCommand = new Command<FilterScheme>(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
@@ -101,9 +101,9 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Commands
-        public Command NewSchemeCommand { get; private set; }
+        public TaskCommand NewSchemeCommand { get; private set; }
 
-        private void OnNewSchemeExecute()
+        private async Task OnNewSchemeExecuteAsync()
         {
             if (_targetType == null)
             {
@@ -114,7 +114,7 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
-            if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);
@@ -125,7 +125,7 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command<FilterScheme> EditSchemeCommand { get; private set; }
+        public TaskCommand<FilterScheme> EditSchemeCommand { get; private set; }
 
         private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
@@ -147,7 +147,7 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
-        private void OnEditSchemeExecute(FilterScheme filterScheme)
+        private async Task OnEditSchemeExecuteAsync(FilterScheme filterScheme)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace Orc.FilterBuilder.ViewModels
 
                 var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
-                if (_uiVisualizerService.ShowDialog<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+                if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
                 {
                     _filterSchemeManager.UpdateFilters();
 
