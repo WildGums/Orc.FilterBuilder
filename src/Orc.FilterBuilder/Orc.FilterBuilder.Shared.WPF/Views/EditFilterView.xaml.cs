@@ -23,9 +23,7 @@ namespace Orc.FilterBuilder.Views
         }
         #endregion
 
-#pragma warning disable AvoidAsyncVoid
-        protected override async void OnViewModelChanged()
-#pragma warning restore AvoidAsyncVoid
+        protected override void OnViewModelChanged()
         {
             base.OnViewModelChanged();
 
@@ -40,7 +38,7 @@ namespace Orc.FilterBuilder.Views
                     var reflectionService = dependencyResolver.Resolve<IReflectionService>(vm.FilterScheme.Scope);
 
                     var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
-                    var instanceProperties = await reflectionService.GetInstancePropertiesAsync(targetType);
+                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
 
                     foreach (var instanceProperty in instanceProperties.Properties)
                     {

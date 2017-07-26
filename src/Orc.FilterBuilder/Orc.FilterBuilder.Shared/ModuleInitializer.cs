@@ -7,7 +7,6 @@
 
 using Catel.IoC;
 using Catel.Services;
-using Catel.Services.Models;
 using Orc.FilterBuilder.Properties;
 using Orc.FilterBuilder.Services;
 using Orc.FilterBuilder.ViewModels;

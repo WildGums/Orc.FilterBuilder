@@ -17,7 +17,7 @@ namespace Orc.FilterBuilder
     using Catel.Runtime.Serialization;
     using Services;
 
-    public abstract class ConditionTreeItem : ModelBase
+    public abstract class ConditionTreeItem : ValidatableModelBase
     {
         #region Constructors
         protected ConditionTreeItem()

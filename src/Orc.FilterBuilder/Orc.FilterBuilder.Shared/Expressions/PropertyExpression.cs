@@ -26,7 +26,6 @@ namespace Orc.FilterBuilder
         #region Constructors
         public PropertyExpression()
         {
-            SuspendValidation = false;
         }
         #endregion
 

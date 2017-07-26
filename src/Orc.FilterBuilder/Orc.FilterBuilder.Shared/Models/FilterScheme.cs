@@ -48,8 +48,6 @@ namespace Orc.FilterBuilder.Models
             Argument.IsNotNull(() => title);
             Argument.IsNotNull(() => root);
 
-            SuspendValidation = true;
-
             TargetType = targetType;
             Title = title;
             ConditionItems = new ObservableCollection<ConditionTreeItem>();

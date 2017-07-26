@@ -30,7 +30,6 @@ namespace Orc.FilterBuilder.Services
         }
 
         #region Methods
-        [ObsoleteEx(ReplacementTypeOrMember = "GetInstancePropertiesAsync", TreatAsErrorFromVersion = "1.0", RemoveInVersion = "2.0")]
         public IPropertyCollection GetInstanceProperties(Type targetType)
         {
             Argument.IsNotNull(() => targetType);
@@ -43,11 +42,6 @@ namespace Orc.FilterBuilder.Services
 
                 return instanceProperties;
             });
-        }
-
-        public Task<IPropertyCollection> GetInstancePropertiesAsync(Type targetType)
-        {
-            return TaskHelper<IPropertyCollection>.FromResult(GetInstanceProperties(targetType));
         }
 
         public void ClearCache()

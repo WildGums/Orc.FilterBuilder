@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<FilterSchemes graphid="1" xmlns:ctl="http://catel.codeplex.com" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+<FilterSchemes graphid="1" xmlns:ctl="http://schemas.catelproject.com" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
   <Schemes xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays" graphid="2" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
     <FilterScheme xmlns="http://schemas.datacontract.org/2004/07/Orc.FilterBuilder.Models">
       <TargetType type="System.String">Orc.FilterBuilder.Tests.TestFilterRuntimeModel</TargetType>
