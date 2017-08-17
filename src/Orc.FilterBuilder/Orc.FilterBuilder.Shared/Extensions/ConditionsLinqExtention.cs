@@ -95,10 +95,88 @@ namespace Orc.FilterBuilder.Conditions
             {
                 return ((StringExpression)dataTypeExpression).MakeExpression(pe, propertyMetadata.Name);
             }
+            else if (dataTypeExpression.GetType().BaseType.IsGenericType && dataTypeExpression.GetType().BaseType.GetGenericTypeDefinition() == typeof(NumericExpression<>))
+            {
+                return dataTypeExpression.MakeNumericExpression(pe, propertyMetadata.Name);
+            }
             else
             {
                 return null;
             }
+        }
+        private static Expression MakeNumericExpression(this DataTypeExpression expression, ParameterExpression pe, string propertyName)
+
+        {
+
+            var valueInfo = expression.GetType().GetProperty("Value");
+            var value = valueInfo.GetValue(expression);
+            Expression nullExp;
+            Expression left;
+            Expression rigth;
+            Expression e;
+            Expression final;
+            // left = PropertyExpression(pe, propertyName);
+            switch (expression.SelectedCondition)
+            {
+                case Condition.EqualTo:
+                    nullExp = IsNotNullExpression(pe, propertyName);
+                    left = PropertyExpression(pe, propertyName);
+                    rigth = Expression.Constant(value);
+                    e = Expression.Equal(left, rigth);
+                    final = Expression.AndAlso(nullExp, e);
+                    return final;
+                case Condition.NotEqualTo:
+                    nullExp = IsNullExpression(pe, propertyName);
+                    left = PropertyExpression(pe, propertyName);
+                    rigth = Expression.Constant(value);
+                    e = Expression.NotEqual(left, rigth);
+                    final = Expression.OrElse(nullExp, e);
+                    return final;
+
+                case Condition.GreaterThan:
+                    nullExp = IsNotNullExpression(pe, propertyName);
+                    left = PropertyExpression(pe, propertyName);
+                    rigth = Expression.Constant(value);
+                    e = Expression.GreaterThan(left, rigth);
+                    final = Expression.AndAlso(nullExp, e);
+                    return final;
+                case Condition.GreaterThanOrEqualTo:
+                    nullExp = IsNotNullExpression(pe, propertyName);
+                    left = PropertyExpression(pe, propertyName);
+                    rigth = Expression.Constant(value);
+                    e = Expression.GreaterThanOrEqual(left, rigth);
+                    final = Expression.AndAlso(nullExp, e);
+                    return final;
+                case Condition.LessThan:
+                    nullExp = IsNotNullExpression(pe, propertyName);
+                    left = PropertyExpression(pe, propertyName);
+                    rigth = Expression.Constant(value);
+                    e = Expression.LessThan(left, rigth);
+                    final = Expression.AndAlso(nullExp, e);
+                    return final;
+
+
+                case Condition.LessThanOrEqualTo:
+                    nullExp = IsNotNullExpression(pe, propertyName);
+                    left = PropertyExpression(pe, propertyName);
+                    rigth = Expression.Constant(value);
+                    e = Expression.LessThanOrEqual(left, rigth);
+                    final = Expression.AndAlso(nullExp, e);
+                    return final;
+                case Condition.IsNull:
+                    nullExp = IsNullExpression(pe, propertyName);
+                    return nullExp;
+                case Condition.NotIsNull:
+                    nullExp = IsNotNullExpression(pe, propertyName);
+                    return nullExp;
+
+                default:
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition));
+            }
+
+
+
+
         }
 
         private static Expression MakeExpression(this BooleanExpression expression, ParameterExpression pe, string propertyName)
@@ -199,26 +277,26 @@ namespace Orc.FilterBuilder.Conditions
                     return Expression.Not(e);
 
                 case Condition.GreaterThan:
-                    e = expression.CompareExpression(pe, propertyName);
+                    e = CompareStringExpression(pe, propertyName, expression.Value);
                     final = Expression.GreaterThan(e, Expression.Constant(0));
                     return final;
 
                 case Condition.GreaterThanOrEqualTo:
-                    e = expression.CompareExpression(pe, propertyName);
+                    e = CompareStringExpression(pe, propertyName, expression.Value);
 
                     final = Expression.GreaterThanOrEqual(e, Expression.Constant(0));
 
                     return final;
 
                 case Condition.LessThan:
-                    e = expression.CompareExpression(pe, propertyName);
+                    e = CompareStringExpression(pe, propertyName, expression.Value);
 
                     final = Expression.LessThan(e, Expression.Constant(0));
 
                     return final;
 
                 case Condition.LessThanOrEqualTo:
-                    e = expression.CompareExpression(pe, propertyName);
+                    e = CompareStringExpression(pe, propertyName, expression.Value);
                     final = Expression.LessThanOrEqual(e, Expression.Constant(0));
                     return final;
 
@@ -255,17 +333,16 @@ namespace Orc.FilterBuilder.Conditions
                     return null;
 
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition));
             }
         }
-        private static Expression CompareExpression(this StringExpression expression, ParameterExpression pe, string propertyName)
+        private static Expression CompareStringExpression(ParameterExpression pe, string propertyName, string value)
         {
-            var Value = expression.Value;
             Expression left;
             Expression rigth;
             Expression e;
             left = Expression.Property(pe, propertyName);
-            rigth = Expression.Constant(Value);
+            rigth = Expression.Constant(value);
             var method = typeof(string).GetMethod("Compare", new Type[] { typeof(string), typeof(string), typeof(StringComparison) });
             e = Expression.Call(method, left, rigth, Expression.Constant(StringComparison.InvariantCultureIgnoreCase));
             return e;
@@ -299,6 +376,24 @@ namespace Orc.FilterBuilder.Conditions
             else
             {
                 return Expression.Constant(false);
+            }
+        }
+        private static Expression IsNotNullExpression(ParameterExpression pe, string propertyName)
+        {
+            var type = Expression.Property(pe, propertyName).Type;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                Expression left;
+                Expression rigth;
+                Expression e;
+                left = Expression.Property(pe, propertyName);
+                rigth = Expression.Constant(null);
+                e = Expression.NotEqual(left, rigth);
+                return e;
+            }
+            else
+            {
+                return Expression.Constant(true);
             }
         }
         private static Expression PropertyExpression(ParameterExpression pe, string propertyName)

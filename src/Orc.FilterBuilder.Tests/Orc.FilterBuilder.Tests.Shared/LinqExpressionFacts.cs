@@ -14,19 +14,19 @@ namespace Orc.FilterBuilder.Tests
         [TestCase]
         public void Bool_ExpressionTest()
         {
-            var items = CalcHumansFor("HasChailds", new BooleanExpression()
-            {
-                SelectedCondition = Condition.EqualTo,
-                Value = true 
-            });
-            Assert.True(ListEquals(items, People.Where((t) => t.HasChailds ).ToList()));
-
-             items = CalcHumansFor("Married", new BooleanExpression()
+            var items = CalcHumansFor("BOOL", new BooleanExpression()
             {
                 SelectedCondition = Condition.EqualTo,
                 Value = true
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Married.HasValue && t.Married.Value).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.BOOL).ToList()));
+
+            items = CalcHumansFor("NullBOOL", new BooleanExpression()
+            {
+                SelectedCondition = Condition.EqualTo,
+                Value = true
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullBOOL.HasValue && t.NullBOOL.Value).ToList()));
 
 
         }
@@ -34,68 +34,69 @@ namespace Orc.FilterBuilder.Tests
         [TestCase]
         public void String_ExpressionTest()
         {
-            var items = CalcHumansFor("Name", new StringExpression()
+            string propertyName = "STRING";
+            var items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.Contains,
                 Value = "nn"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name != null && t.Name.Contains("nn")).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING != null && t.STRING.Contains("nn")).ToList()));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.DoesNotContain,
                 Value = "nn"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name == null || !t.Name.Contains("nn")).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING == null || !t.STRING.Contains("nn")).ToList()));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.StartsWith,
                 Value = "A"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name != null && t.Name.StartsWith("A")).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING != null && t.STRING.StartsWith("A")).ToList()));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.DoesNotStartWith,
                 Value = "A"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name == null || !t.Name.StartsWith("A")).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING == null || !t.STRING.StartsWith("A")).ToList()));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.EndsWith,
                 Value = "io"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name != null && t.Name.EndsWith("io")).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING != null && t.STRING.EndsWith("io")).ToList()));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.DoesNotEndWith,
                 Value = "io"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name == null || !t.Name.EndsWith("io")).ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING == null || !t.STRING.EndsWith("io")).ToList()));
 
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.EqualTo,
                 Value = "Ann"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name != null && t.Name == "Ann").ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING != null && t.STRING == "Ann").ToList()));
 
 
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.NotEqualTo,
                 Value = "Sergio"
             });
-            Assert.True(ListEquals(items, People.Where((t) => t.Name == null || t.Name != "Sergio").ToList()));
+            Assert.True(ListEquals(items, People.Where((t) => t.STRING == null || t.STRING != "Sergio").ToList()));
 
 
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.GreaterThan,
                 Value = "Ann"
@@ -103,76 +104,192 @@ namespace Orc.FilterBuilder.Tests
 
             Assert.True(ListEquals(
                 items,
-                People.Where((t) => string.Compare(t.Name, "Ann", StringComparison.InvariantCultureIgnoreCase) > 0).ToList()
+                People.Where((t) => string.Compare(t.STRING, "Ann", StringComparison.InvariantCultureIgnoreCase) > 0).ToList()
                 ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.GreaterThanOrEqualTo,
                 Value = "Ann"
             });
             Assert.True(ListEquals(
                items,
-               People.Where((t) => string.Compare(t.Name, "Ann", StringComparison.InvariantCultureIgnoreCase) >= 0).ToList()
+               People.Where((t) => string.Compare(t.STRING, "Ann", StringComparison.InvariantCultureIgnoreCase) >= 0).ToList()
                ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.LessThan,
                 Value = "Sergio"
             });
             Assert.True(ListEquals(
      items,
-     People.Where((t) => string.Compare(t.Name, "Sergio", StringComparison.InvariantCultureIgnoreCase) < 0).ToList()
+     People.Where((t) => string.Compare(t.STRING, "Sergio", StringComparison.InvariantCultureIgnoreCase) < 0).ToList()
      ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.LessThanOrEqualTo,
                 Value = "Sergio"
             });
             Assert.True(ListEquals(
                     items,
-                    People.Where((t) => string.Compare(t.Name, "Sergio", StringComparison.InvariantCultureIgnoreCase) <= 0).ToList()
+                    People.Where((t) => string.Compare(t.STRING, "Sergio", StringComparison.InvariantCultureIgnoreCase) <= 0).ToList()
             ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.IsNull,
             });
             Assert.True(ListEquals(
                     items,
-                    People.Where((t) => t.Name==null).ToList()
+                    People.Where((t) => t.STRING == null).ToList()
             ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.NotIsNull,
             });
             Assert.True(ListEquals(
                     items,
-                    People.Where((t) => t.Name != null).ToList()
+                    People.Where((t) => t.STRING != null).ToList()
             ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.IsEmpty,
             });
             Assert.True(ListEquals(
                     items,
-                  People.Where((t) => t.Name == string.Empty ).ToList()
+                  People.Where((t) => t.STRING == string.Empty).ToList()
             ));
 
-            items = CalcHumansFor("Name", new StringExpression()
+            items = CalcHumansFor(propertyName, new StringExpression()
             {
                 SelectedCondition = Condition.NotIsEmpty,
             });
             Assert.True(ListEquals(
                     items,
-                   People.Where((t) => t.Name != string.Empty).ToList()
+                   People.Where((t) => t.STRING != string.Empty).ToList()
             ));
         }
+        [TestCase]
+        public void INT_ExpressionTest()
+        {
+            var items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.EqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.INT == 5).ToList()));
 
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.EqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT == 5).ToList()));
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.NotEqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.INT != 5).ToList()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.NotEqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT != 5).ToList()));
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.GreaterThan,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.INT > 5).ToList()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.GreaterThan,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT > 5).ToList()));
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.GreaterThanOrEqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.INT >= 5).ToList()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.GreaterThanOrEqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT >= 5).ToList()));
+
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.LessThan,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.INT < 5).ToList()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.LessThan,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT < 5).ToList()));
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.LessThanOrEqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.INT <= 5).ToList()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.LessThanOrEqualTo,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT <= 5).ToList()));
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.IsNull,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, new List<Human> ()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.IsNull,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT == null).ToList()));
+
+
+            items = CalcHumansFor("INT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.NotIsNull,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.ToList()));
+
+            items = CalcHumansFor("NullINT", new IntegerExpression()
+            {
+                SelectedCondition = Condition.NotIsNull,
+                Value = 5
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullINT != null).ToList()));
+        }
         bool ListEquals(IList<Human> m1, IList<Human> m2)
         {
             if (m1 == null || m2 == null) return false;
@@ -180,7 +297,7 @@ namespace Orc.FilterBuilder.Tests
             var c = m1.Count;
             for (int i = 0; i < c; i++)
             {
-                if (m1[i].Name != m2[i].Name)
+                if (m1[i].STRING != m2[i].STRING)
                 {
                     return false;
                 }
@@ -210,28 +327,32 @@ namespace Orc.FilterBuilder.Tests
             var result = People.AsQueryable().Where(expression).ToList();
             return result;
         }
-        
+
         public List<Human> People => new List<Human>()
         {
-            new Human("Ann",5,false),
-            new Human("Sergio", 35, true ),
-            new Human("", 35, true ),
-            new Human(null, 35, true )
-
+            new Human("Ann",false, true, 0,0),
+            new Human("Sergio",  true , false, 5,5),
+            new Human("",  true ,true, 5,5),
+            new Human(null, true, null, 10, null  )
         };
 
         public class Human
         {
-            public Human(string name, int age, bool hasChailds)
+            public Human(string @string, bool @bool, bool? nullBOOL, int @int, int? nullINT)
             {
-                Name = name;
-                Age = age;
-                HasChailds = hasChailds;
+                STRING = @string;
+
+                BOOL = @bool;
+                NullBOOL = nullBOOL;
+
+                INT = @int;
+                NullINT = nullINT;
             }
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public bool HasChailds { get; set; }
-            public bool? Married { get; set; }
+            public string STRING { get; set; }
+            public int INT { get; set; }
+            public int? NullINT { get; set; }
+            public bool BOOL { get; set; }
+            public bool? NullBOOL { get; set; }
         }
 
     }
