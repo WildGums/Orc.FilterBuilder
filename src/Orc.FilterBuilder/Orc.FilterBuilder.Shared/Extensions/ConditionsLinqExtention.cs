@@ -8,7 +8,6 @@ namespace Orc.FilterBuilder.Conditions
 {
     public static class ConditionsLinqExtention
     {
-
         public static Expression<Func<T, bool>> MakeFunction<T>(this ConditionTreeItem conditionTreeItem)
         {
             var type = typeof(T);
@@ -38,7 +37,6 @@ namespace Orc.FilterBuilder.Conditions
             }
         }
 
-
         private static Expression MakeExpression(this ConditionGroup conditionGroup, ParameterExpression parametr)
         {
 
@@ -46,7 +44,6 @@ namespace Orc.FilterBuilder.Conditions
             {
                 return null;
             }
-
 
             Expression final = null;
             Expression left = null;
@@ -75,7 +72,6 @@ namespace Orc.FilterBuilder.Conditions
                 }
             }
 
-            //return final != null ? final : left;
             return final ?? left;
         }
 
@@ -95,10 +91,15 @@ namespace Orc.FilterBuilder.Conditions
             {
                 return ((StringExpression)dataTypeExpression).MakeExpression(pe, propertyMetadata.Name);
             }
+            else if (dataTypeExpression.GetType() == typeof(DateTimeExpression))
+            {
+                return dataTypeExpression.MakeNumericExpression(pe, propertyMetadata.Name);
+            }
             else if (dataTypeExpression.GetType().BaseType.IsGenericType && dataTypeExpression.GetType().BaseType.GetGenericTypeDefinition() == typeof(NumericExpression<>))
             {
                 return dataTypeExpression.MakeNumericExpression(pe, propertyMetadata.Name);
             }
+
             else
             {
                 return null;
@@ -115,7 +116,6 @@ namespace Orc.FilterBuilder.Conditions
             Expression rigth;
             Expression e;
             Expression final;
-            // left = PropertyExpression(pe, propertyName);
             switch (expression.SelectedCondition)
             {
                 case Condition.EqualTo:
@@ -173,10 +173,6 @@ namespace Orc.FilterBuilder.Conditions
                 default:
                     throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition));
             }
-
-
-
-
         }
 
         private static Expression MakeExpression(this BooleanExpression expression, ParameterExpression pe, string propertyName)

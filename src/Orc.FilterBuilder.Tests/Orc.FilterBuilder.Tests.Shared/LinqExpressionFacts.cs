@@ -12,7 +12,7 @@ namespace Orc.FilterBuilder.Tests
     public class LinqExpressionFacts
     {
         [TestCase]
-        public void Bool_ExpressionTest()
+        public void LinqExpressions_BoolTest()
         {
             var items = CalcHumansFor("BOOL", new BooleanExpression()
             {
@@ -174,7 +174,7 @@ namespace Orc.FilterBuilder.Tests
             ));
         }
         [TestCase]
-        public void INT_ExpressionTest()
+        public void LinqExpressions_IntTest()
         {
             var items = CalcHumansFor("INT", new IntegerExpression()
             {
@@ -264,14 +264,12 @@ namespace Orc.FilterBuilder.Tests
             items = CalcHumansFor("INT", new IntegerExpression()
             {
                 SelectedCondition = Condition.IsNull,
-                Value = 5
             });
-            Assert.True(ListEquals(items, new List<Human> ()));
+            Assert.True(ListEquals(items, new List<Human>()));
 
             items = CalcHumansFor("NullINT", new IntegerExpression()
             {
                 SelectedCondition = Condition.IsNull,
-                Value = 5
             });
             Assert.True(ListEquals(items, People.Where((t) => t.NullINT == null).ToList()));
 
@@ -279,16 +277,127 @@ namespace Orc.FilterBuilder.Tests
             items = CalcHumansFor("INT", new IntegerExpression()
             {
                 SelectedCondition = Condition.NotIsNull,
-                Value = 5
             });
-            Assert.True(ListEquals(items, People.ToList()));
+            Assert.True(ListEquals(items, People));
 
             items = CalcHumansFor("NullINT", new IntegerExpression()
             {
                 SelectedCondition = Condition.NotIsNull,
-                Value = 5
             });
             Assert.True(ListEquals(items, People.Where((t) => t.NullINT != null).ToList()));
+        }
+        [TestCase]
+        public void LinqExpressions_DateTimeTest()
+        {
+            var items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.EqualTo,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE == new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.EqualTo,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE == new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.NotEqualTo,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE != new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.NotEqualTo,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE != new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.GreaterThan,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE > new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.GreaterThan,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE > new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.GreaterThanOrEqualTo,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE >= new DateTime(1990, 1, 1)).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.GreaterThanOrEqualTo,
+                Value = new DateTime(1990, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE >= new DateTime(1990, 1, 1)).ToList()));
+
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.LessThan,
+                Value = new DateTime(2000, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE < new DateTime(2000, 1, 1)).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.LessThan,
+                Value = new DateTime(2000, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE < new DateTime(2000, 1, 1)).ToList()));
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.LessThanOrEqualTo,
+                Value = new DateTime(2000, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE <= new DateTime(2000, 1, 1)).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.LessThanOrEqualTo,
+                Value = new DateTime(2000, 1, 1)
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE <= new DateTime(2000, 1, 1)).ToList()));
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.IsNull,
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE == null).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.IsNull,
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE == null).ToList()));
+
+
+            items = CalcHumansFor("DATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.NotIsNull,
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.DATE != null).ToList()));
+
+            items = CalcHumansFor("NullDATE", new DateTimeExpression()
+            {
+                SelectedCondition = Condition.NotIsNull,
+            });
+            Assert.True(ListEquals(items, People.Where((t) => t.NullDATE != null).ToList()));
         }
         bool ListEquals(IList<Human> m1, IList<Human> m2)
         {
@@ -330,15 +439,19 @@ namespace Orc.FilterBuilder.Tests
 
         public List<Human> People => new List<Human>()
         {
-            new Human("Ann",false, true, 0,0),
-            new Human("Sergio",  true , false, 5,5),
-            new Human("",  true ,true, 5,5),
-            new Human(null, true, null, 10, null  )
+            new Human("Ann",false, true, 0,0, new DateTime(1990,1,1), new DateTime(1990,1,1)),
+            new Human("Sergio",  true , false, 5,5, new DateTime(2000,1,1), new DateTime(2000,1,1)),
+            new Human("",  true ,true, 5,5, new DateTime(2010,1,1), null),
+            new Human(null, true, null, 10, null, new DateTime(2020,1,1), null  )
         };
 
         public class Human
         {
-            public Human(string @string, bool @bool, bool? nullBOOL, int @int, int? nullINT)
+            public Human(string @string,
+                bool @bool, bool? nullBOOL,
+                int @int, int? nullINT,
+                DateTime date,
+                DateTime? nullDATE)
             {
                 STRING = @string;
 
@@ -347,12 +460,17 @@ namespace Orc.FilterBuilder.Tests
 
                 INT = @int;
                 NullINT = nullINT;
+
+                DATE = date;
+                NullDATE = nullDATE;
             }
             public string STRING { get; set; }
             public int INT { get; set; }
             public int? NullINT { get; set; }
             public bool BOOL { get; set; }
             public bool? NullBOOL { get; set; }
+            public DateTime DATE { get; set; }
+            public DateTime? NullDATE { get; set; }
         }
 
     }
