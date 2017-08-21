@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using Orc.FilterBuilder.Models;
-using Orc.FilterBuilder.Conditions;
-using System.Linq.Expressions;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FilterSchemeFacts.cs" company="WildGums">
+//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+// </copyright>
+// ---------
+
 
 namespace Orc.FilterBuilder.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using Orc.FilterBuilder.Models;
+    using Orc.FilterBuilder.Conditions;
+
     [TestFixture]
     public class LinqExpressionFacts
     {
