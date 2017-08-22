@@ -296,6 +296,7 @@ namespace Orc.FilterBuilder.Conditions
                 return Expression.Constant(false);
             }
         }
+
         private static Expression IsNotNullExpression(ParameterExpression pe, string propertyName)
         {
             var type = Expression.Property(pe, propertyName).Type;
