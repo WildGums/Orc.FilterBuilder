@@ -438,7 +438,7 @@ namespace Orc.FilterBuilder.Tests
 
             conditionGroup.Items.Add(propertyExpression);
 
-            var expression = conditionGroup.MakeFunction<Human>();
+            var expression = conditionGroup.BuildLambda<Human>();
             var result = People.AsQueryable().Where(expression).ToList();
             return result;
         }

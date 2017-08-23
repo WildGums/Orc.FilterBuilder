@@ -15,11 +15,11 @@ namespace Orc.FilterBuilder.Conditions
 
     public static class ConditionsLinqExtention
     {
-        public static Expression<Func<T, bool>> MakeFunction<T>(this ConditionTreeItem conditionTreeItem)
+        public static Expression<Func<T, bool>> BuildLambda<T>(this ConditionTreeItem conditionTreeItem)
         {
             var type = typeof(T);
             var pe = Expression.Parameter(type, "item");
-            Expression expression = conditionTreeItem.MakeExpression(pe);
+            Expression expression = conditionTreeItem.BuildExpression(pe);
             if (expression == null)
             {
                 return null;
@@ -28,20 +28,20 @@ namespace Orc.FilterBuilder.Conditions
             return lambda;
         }
 
-        private static Expression MakeExpression(this ConditionTreeItem conditionTreeItem, ParameterExpression parametr)
+        private static Expression BuildExpression(this ConditionTreeItem conditionTreeItem, ParameterExpression parametr)
         {
             if (conditionTreeItem.GetType() == typeof(ConditionGroup))
             {
-                return ((ConditionGroup)conditionTreeItem).MakeExpression(parametr);
+                return ((ConditionGroup)conditionTreeItem).BuildExpression(parametr);
             }
             if (conditionTreeItem.GetType() == typeof(PropertyExpression))
             {
-                return ((PropertyExpression)conditionTreeItem).MakeExpression(parametr);
+                return ((PropertyExpression)conditionTreeItem).BuildExpression(parametr);
             }
             return null;
         }
 
-        private static Expression MakeExpression(this ConditionGroup conditionGroup, ParameterExpression parametr)
+        private static Expression BuildExpression(this ConditionGroup conditionGroup, ParameterExpression parametr)
         {
             if (!conditionGroup.Items.Any())
             {
@@ -52,7 +52,7 @@ namespace Orc.FilterBuilder.Conditions
             Expression left = null;
             foreach (var item in conditionGroup.Items)
             {
-                var curExp = item?.MakeExpression(parametr);
+                var curExp = item?.BuildExpression(parametr);
                 if (curExp == null) { continue; }
                 if (left == null)
                 {
@@ -76,22 +76,22 @@ namespace Orc.FilterBuilder.Conditions
             return final ?? left;
         }
 
-        private static Expression MakeExpression(this PropertyExpression propertyExpression, ParameterExpression pe)
+        private static Expression BuildExpression(this PropertyExpression propertyExpression, ParameterExpression pe)
         {
-            return propertyExpression.DataTypeExpression.MakeExpression(pe, propertyExpression.Property);
+            return propertyExpression.DataTypeExpression.BuildExpression(pe, propertyExpression.Property);
         }
 
-        private static Expression MakeExpression(this DataTypeExpression dataTypeExpression, ParameterExpression pe, IPropertyMetadata propertyMetadata)
+        private static Expression BuildExpression(this DataTypeExpression dataTypeExpression, ParameterExpression pe, IPropertyMetadata propertyMetadata)
         {
 
             if (dataTypeExpression.GetType() == typeof(BooleanExpression))
             {
-                return ((BooleanExpression)dataTypeExpression).MakeExpression(pe, propertyMetadata.Name);
+                return ((BooleanExpression)dataTypeExpression).BuildExpression(pe, propertyMetadata.Name);
             }
 
             if (dataTypeExpression.GetType() == typeof(StringExpression))
             {
-                return ((StringExpression)dataTypeExpression).MakeExpression(pe, propertyMetadata.Name);
+                return ((StringExpression)dataTypeExpression).BuildExpression(pe, propertyMetadata.Name);
             }
 
             if (
@@ -101,13 +101,13 @@ namespace Orc.FilterBuilder.Conditions
                         dataTypeExpression.GetType().BaseType.GetGenericTypeDefinition() == typeof(NumericExpression<>)
                     ))
             {
-                return dataTypeExpression.MakeNumericExpression(pe, propertyMetadata.Name);
+                return dataTypeExpression.BuildNumericExpression(pe, propertyMetadata.Name);
             }
 
             return null;
         }
 
-        private static Expression MakeNumericExpression(this DataTypeExpression expression, ParameterExpression pe, string propertyName)
+        private static Expression BuildNumericExpression(this DataTypeExpression expression, ParameterExpression pe, string propertyName)
         {
             Expression valueExp = Expression.Constant(expression.GetType().GetProperty("Value")?.GetValue(expression));
             Expression propertyExp = PropertyExpression(pe, propertyName);
@@ -148,7 +148,7 @@ namespace Orc.FilterBuilder.Conditions
             }
         }
 
-        private static Expression MakeExpression(this BooleanExpression expression, ParameterExpression pe, string propertyName)
+        private static Expression BuildExpression(this BooleanExpression expression, ParameterExpression pe, string propertyName)
         {
             var value = expression.Value;
             var condition = expression.SelectedCondition;
@@ -164,7 +164,7 @@ namespace Orc.FilterBuilder.Conditions
             }
         }
 
-        private static Expression MakeExpression(this StringExpression expression, ParameterExpression pe, string propertyName)
+        private static Expression BuildExpression(this StringExpression expression, ParameterExpression pe, string propertyName)
         {
 
             Expression valueExp = Expression.Constant(expression.Value);
