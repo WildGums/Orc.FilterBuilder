@@ -162,53 +162,39 @@ namespace Orc.FilterBuilder.Conditions
 
         private static Expression MakeExpression(this StringExpression expression, ParameterExpression pe, string propertyName)
         {
-            var value = expression.Value;
+
             Expression valueExp = Expression.Constant(expression.Value);
             Expression propertyExp = Expression.Property(pe, propertyName);
-            Expression notNullEmtpyExp= IsNotNullOrEmptyExpression(pe, propertyName);
+
+            return StringExpression(expression.SelectedCondition, propertyExp, valueExp);
+        }
+
+      static   Expression StringExpression(Condition condition, Expression propertyExp, Expression valueExp )
+        {
+            Expression notNullEmtpyExp = IsNotNullOrEmptyExpression(propertyExp);
             Expression e;
-            switch (expression.SelectedCondition)
+            switch (condition)
             {
                 case Condition.Contains:
                     e = Expression.Call(propertyExp, typeof(string).GetMethod("Contains", new Type[] { typeof(string) }), valueExp);
                     return Expression.AndAlso(notNullEmtpyExp, e);
                 case Condition.DoesNotContain:
-                    e = (new StringExpression()
-                    {
-                        SelectedCondition = Condition.Contains,
-                        Value = expression.Value
-                    }).MakeExpression(pe, propertyName);
-                    return Expression.Not(e);
+                    return Expression.Not(StringExpression(Condition.Contains, propertyExp, valueExp));
                 case Condition.StartsWith:
                     e = Expression.Call(propertyExp, typeof(string).GetMethod("StartsWith", new Type[] { typeof(string) }), valueExp);
                     return Expression.AndAlso(notNullEmtpyExp, e);
                 case Condition.DoesNotStartWith:
-                    e = (new StringExpression()
-                    {
-                        SelectedCondition = Condition.StartsWith,
-                        Value = expression.Value
-                    }).MakeExpression(pe, propertyName);
-                    return Expression.Not(e);
+                    return Expression.Not(StringExpression(Condition.StartsWith, propertyExp, valueExp));
                 case Condition.EndsWith:
                     e = Expression.Call(propertyExp, typeof(string).GetMethod("EndsWith", new Type[] { typeof(string) }), valueExp);
                     return Expression.AndAlso(notNullEmtpyExp, e);
                 case Condition.DoesNotEndWith:
-                    e = (new StringExpression()
-                    {
-                        SelectedCondition = Condition.EndsWith,
-                        Value = expression.Value
-                    }).MakeExpression(pe, propertyName);
-                    return Expression.Not(e);
+                    return Expression.Not(StringExpression(Condition.EndsWith, propertyExp, valueExp));
                 case Condition.EqualTo:
-                    e = Expression.Equal(propertyExp, Expression.Constant(value));
+                    e = Expression.Equal(propertyExp, valueExp);
                     return Expression.AndAlso(notNullEmtpyExp, e);
                 case Condition.NotEqualTo:
-                    e = (new StringExpression()
-                    {
-                        SelectedCondition = Condition.EqualTo,
-                        Value = expression.Value
-                    }).MakeExpression(pe, propertyName);
-                    return Expression.Not(e);
+                    return Expression.Not(StringExpression(Condition.EqualTo, propertyExp, valueExp));
                 case Condition.GreaterThan:
                     e = CompareStringExpression(propertyExp, valueExp);
                     return Expression.GreaterThan(e, Expression.Constant(0));
@@ -232,10 +218,9 @@ namespace Orc.FilterBuilder.Conditions
                     e = Expression.Equal(propertyExp, Expression.Constant(string.Empty));
                     return Expression.Not(e);
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition));
             }
         }
-
         private static Expression CompareStringExpression( Expression  value1, Expression value2)
         {
             var method = typeof(string).GetMethod("Compare", new Type[] { typeof(string), typeof(string), typeof(StringComparison) });
@@ -248,10 +233,19 @@ namespace Orc.FilterBuilder.Conditions
             Expression arg = Expression.Property(pe, propertyName);
             return Expression.Call(method, arg);
         }
+        private static Expression IsNullOrEmptyExpression(Expression propertyExp)
+        {
+            var method = typeof(string).GetMethod("IsNullOrEmpty", new Type[] { typeof(string) });
+            return Expression.Call(method, propertyExp);
+        }
 
         private static Expression IsNotNullOrEmptyExpression(ParameterExpression pe, string propertyName)
         {
            return Expression.Not(IsNullOrEmptyExpression(pe, propertyName));
+        }
+        private static Expression IsNotNullOrEmptyExpression(Expression propertyExp)
+        {
+            return Expression.Not(IsNullOrEmptyExpression( propertyExp));
         }
 
         private static Expression IsNullExpression(ParameterExpression pe, string propertyName)
