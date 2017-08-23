@@ -38,7 +38,7 @@ namespace Orc.FilterBuilder.Tests
         }
 
         [TestCase]
-        public void String_ExpressionTest()
+        public void LinqExpressions_StringTest()
         {
             string propertyName = "STRING";
             var items = CalcHumansFor(propertyName, new StringExpression()
