@@ -15,7 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FilterSchemeFacts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AssemblyDirectoryHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\FilterSchemeHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LinqExpressionFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConditionsLinqExtentionsFacts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TestFilterModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\AttributeTypeNames.cs" />
