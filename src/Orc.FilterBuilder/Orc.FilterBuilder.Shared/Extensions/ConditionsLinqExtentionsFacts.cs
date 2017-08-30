@@ -717,9 +717,9 @@ namespace Orc.FilterBuilder.Tests
             switch (expression)
             {
                 case UnaryExpression _:
-                    return GetPropertyName(((UnaryExpression)expression).Operand);
+                    return GetPropertyName(((UnaryExpression) expression).Operand);
                 case MemberExpression _:
-                    return ((MemberExpression)expression).Member.Name;
+                    return ((MemberExpression) expression).Member.Name;
                 default:
                     return null;
             }
