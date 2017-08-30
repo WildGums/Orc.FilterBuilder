@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\UnsignedShortExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\ValueDataTypeExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionsLinqExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionTreeItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FilterSchemeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyInfoExtensions.cs" />
