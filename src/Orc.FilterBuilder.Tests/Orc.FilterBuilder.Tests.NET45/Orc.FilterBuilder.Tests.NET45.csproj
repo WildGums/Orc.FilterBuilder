@@ -25,8 +25,9 @@
     <NoWarn>1591;1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\..\output\release\NET45\Orc.FilterBuilder.Tests\</OutputPath>
     <DefineConstants>TRACE;NET;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
