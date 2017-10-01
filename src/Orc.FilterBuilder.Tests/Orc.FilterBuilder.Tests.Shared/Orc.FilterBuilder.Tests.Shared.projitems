@@ -13,11 +13,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Expressions\EnumExpressionFacts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilterSchemeFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalInitialization.approvaltests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AssemblyDirectoryHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\FilterSchemeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConditionsLinqExtensionsFacts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TestFilterModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PublicApiFacts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\AttributeTypeNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Helpers\FilterSchemeInitializationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Metadata\TestFilterRuntimeModelMetadata.cs" />
