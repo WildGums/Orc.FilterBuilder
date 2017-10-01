@@ -181,7 +181,6 @@ namespace Orc.FilterBuilder
     }
     public class static FilterSchemeExtensions
     {
-        [MethodTimer.TimeAttribute()]
         public static void Apply(this Orc.FilterBuilder.Models.FilterScheme filterScheme, System.Collections.IEnumerable rawCollection, System.Collections.IList filteredCollection) { }
         public static void EnsureIntegrity(this Orc.FilterBuilder.Models.FilterScheme filterScheme, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
         public static void EnsureIntegrity(this Orc.FilterBuilder.ConditionTreeItem conditionTreeItem, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
@@ -548,7 +547,6 @@ namespace Orc.FilterBuilder.Services
         public Orc.FilterBuilder.Models.FilterScheme SelectedFilter { get; set; }
         public event System.EventHandler<System.EventArgs> FiltersUpdated;
         public event System.EventHandler<System.EventArgs> SelectedFilterChanged;
-        [MethodTimer.TimeAttribute()]
         public void FilterCollection(Orc.FilterBuilder.Models.FilterScheme filter, System.Collections.IEnumerable rawCollection, System.Collections.IList filteredCollection) { }
         public System.Threading.Tasks.Task FilterCollectionAsync(Orc.FilterBuilder.Models.FilterScheme filter, System.Collections.IEnumerable rawCollection, System.Collections.IList filteredCollection) { }
     }
