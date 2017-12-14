@@ -191,6 +191,11 @@ namespace Orc.FilterBuilder
                 return true;
             }
 
+            if (DataTypeExpression == null)
+            {
+                return true;
+            }
+
             return DataTypeExpression.CalculateResult(Property, entity);
         }
 

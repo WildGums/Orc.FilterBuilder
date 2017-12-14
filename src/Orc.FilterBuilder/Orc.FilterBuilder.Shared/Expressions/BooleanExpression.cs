@@ -37,7 +37,8 @@ namespace Orc.FilterBuilder
         #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
-            bool entityValue = propertyMetadata.GetValue<bool>(entity);
+            var entityValue = propertyMetadata.GetValue<bool>(entity);
+
             switch (SelectedCondition)
             {
                 case Condition.EqualTo:
