@@ -30,7 +30,7 @@ namespace Orc.FilterBuilder
             var enumerator = collection.GetEnumerator();
             if (!enumerator.MoveNext())
             {
-                Log.Warning("Collection does not contain items, cannot get any type information");
+                Log.Debug("Collection does not contain items, cannot get any type information");
                 return null;
             }
 
