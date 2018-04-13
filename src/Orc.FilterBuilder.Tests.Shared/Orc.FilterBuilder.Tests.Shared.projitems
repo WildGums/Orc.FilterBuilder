@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>32932ba3-f415-428e-9196-40d6cdcc7d50</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Orc.FilterBuilder.Tests</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Expressions\EnumExpressionFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConditionsLinqExtentionsFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FilterSchemeFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalInitialization.approvaltests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AssemblyDirectoryHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FilterSchemeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConditionsLinqExtensionsFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TestFilterModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PublicApiFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\AttributeTypeNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Helpers\FilterSchemeInitializationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Metadata\TestFilterRuntimeModelMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Metadata\TestFilterRuntimeModelPropertyCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Models\TestAttributeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Models\TestAttributeValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Models\TestFilterRuntimeModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Provider\TestDataProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Provider\TestAttributeTypeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\RuntimeMetadataFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeMetadataFacts\Services\TestFilterRuntimeModelReflectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TemporaryFilesContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Files\filters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
