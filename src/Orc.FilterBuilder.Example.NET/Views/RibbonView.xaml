@@ -3,7 +3,7 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:catel="http://schemas.catelproject.com"
                    xmlns:fluent="urn:fluent-ribbon"
-                   xmlns:orchestra="https://github.com/orcomp/orchestra"
+                   xmlns:orchestra="http://schemas.wildgums.com/orchestra"
                    xmlns:ribbon="clr-namespace:Orc.FilterBuilder.Example"
                    xmlns:views="clr-namespace:Orc.FilterBuilder.Views;assembly=Orc.FilterBuilder.Xaml">
     <fluent:Ribbon>

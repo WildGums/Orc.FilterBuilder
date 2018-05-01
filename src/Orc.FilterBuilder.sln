@@ -31,15 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Xaml", "O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Example.NET", "Orc.FilterBuilder.Example.NET\Orc.FilterBuilder.Example.NET.csproj", "{E9D22451-EBDB-467C-9AE6-3EC790C6EB81}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.FilterBuilder.Tests.Shared", "Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.shproj", "{32932BA3-F415-428E-9196-40D6CDCC7D50}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.FilterBuilder.Tests.NET", "Orc.FilterBuilder.Tests.NET\Orc.FilterBuilder.Tests.NET.csproj", "{CFF8901D-66CA-4201-A232-8B09979801EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Tests", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.csproj", "{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{32932ba3-f415-428e-9196-40d6cdcc7d50}*SharedItemsImports = 13
-		Orc.FilterBuilder.Tests.Shared\Orc.FilterBuilder.Tests.Shared.projitems*{cff8901d-66ca-4201-a232-8b09979801ea}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -57,10 +51,10 @@ Global
 		{E9D22451-EBDB-467C-9AE6-3EC790C6EB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9D22451-EBDB-467C-9AE6-3EC790C6EB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9D22451-EBDB-467C-9AE6-3EC790C6EB81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFF8901D-66CA-4201-A232-8B09979801EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFF8901D-66CA-4201-A232-8B09979801EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFF8901D-66CA-4201-A232-8B09979801EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFF8901D-66CA-4201-A232-8B09979801EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,8 +66,7 @@ Global
 		{BE7D10B8-87AB-4518-9210-E46A6FA87AAC} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
 		{A76A825F-49DD-4654-BE4A-FB87EB8207A1} = {EF646E4B-A54F-4160-AAD6-4142E6736489}
 		{E9D22451-EBDB-467C-9AE6-3EC790C6EB81} = {6B402D49-4EA5-49E0-B717-F957A9415915}
-		{32932BA3-F415-428E-9196-40D6CDCC7D50} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
-		{CFF8901D-66CA-4201-A232-8B09979801EA} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
+		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C} = {C5407F4F-E6E4-426D-9E39-1D8AE2303080}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2407D189-CAC1-4267-BDD5-515EDE369782}

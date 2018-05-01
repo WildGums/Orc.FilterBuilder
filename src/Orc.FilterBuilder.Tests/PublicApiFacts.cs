@@ -7,6 +7,7 @@
 
 namespace Orc.FilterBuilder.Tests
 {
+    using System.Runtime.CompilerServices;
     using ApiApprover;
     using FilterBuilder.Models;
     using NUnit.Framework;
@@ -15,7 +16,7 @@ namespace Orc.FilterBuilder.Tests
     [TestFixture]
     public class PublicApiFacts
     {
-        [Test]
+        [Test, MethodImpl(MethodImplOptions.NoInlining)]
         public void Orc_FilterBuilder_HasNoBreakingChanges()
         {
             var assembly = typeof(FilterScheme).Assembly;
@@ -23,7 +24,7 @@ namespace Orc.FilterBuilder.Tests
             PublicApiApprover.ApprovePublicApi(assembly);
         }
 
-        [Test]
+        [Test, MethodImpl(MethodImplOptions.NoInlining)]
         public void Orc_FilterBuilder_Xaml_HasNoBreakingChanges()
         {
             var assembly = typeof(EditFilterView).Assembly;
