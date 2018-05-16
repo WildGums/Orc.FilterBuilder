@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="fr" original="ORC.FILTERBUILDER/PROPERTIES/RESOURCES.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="ORC.FILTERBUILDER/PROPERTIES/RESOURCES.RESX" datatype="resx">
+        <trans-unit id="FilterBuilder_AddExpression" translate="yes" xml:space="preserve">
+          <source>Add expression</source>
+          <target state="needs-review-translation">Add expression</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_AddGroup" translate="yes" xml:space="preserve">
+          <source>Add group</source>
+          <target state="needs-review-translation">Add group</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_And" translate="yes" xml:space="preserve">
+          <source>And</source>
+          <target state="needs-review-translation">And</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_AreYouSure" translate="yes" xml:space="preserve">
+          <source>Are you sure?</source>
+          <target state="needs-review-translation">Are you sure?</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Contains" translate="yes" xml:space="preserve">
+          <source>contains</source>
+          <target state="needs-review-translation">contains</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_DeleteItem" translate="yes" xml:space="preserve">
+          <source>Delete item</source>
+          <target state="needs-review-translation">Delete item</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_DiscardChanges" translate="yes" xml:space="preserve">
+          <source>The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</source>
+          <target state="needs-review-translation">The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_DoesNotContain" translate="yes" xml:space="preserve">
+          <source>does not contain</source>
+          <target state="needs-review-translation">does not contain</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_DoesNotEndWith" translate="yes" xml:space="preserve">
+          <source>does not end with</source>
+          <target state="needs-review-translation">does not end with</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_DoesNotMatch" translate="yes" xml:space="preserve">
+          <source>does not match</source>
+          <target state="needs-review-translation">does not match</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_DoesNotStartWith" translate="yes" xml:space="preserve">
+          <source>does not start with</source>
+          <target state="needs-review-translation">does not start with</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_EndsWith" translate="yes" xml:space="preserve">
+          <source>ends with</source>
+          <target state="needs-review-translation">ends with</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_EqualTo" translate="yes" xml:space="preserve">
+          <source>is equal to</source>
+          <target state="needs-review-translation">is equal to</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_FieldIsRequired" translate="yes" xml:space="preserve">
+          <source>Field is required</source>
+          <target state="needs-review-translation">Field is required</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_GreaterThan" translate="yes" xml:space="preserve">
+          <source>is greater than</source>
+          <target state="needs-review-translation">is greater than</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_GreaterThanOrEqualTo" translate="yes" xml:space="preserve">
+          <source>is greater than or equal to</source>
+          <target state="needs-review-translation">is greater than or equal to</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_IsEmpty" translate="yes" xml:space="preserve">
+          <source>is empty</source>
+          <target state="needs-review-translation">is empty</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_IsNull" translate="yes" xml:space="preserve">
+          <source>is null</source>
+          <target state="needs-review-translation">is null</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_LessThan" translate="yes" xml:space="preserve">
+          <source>is less than</source>
+          <target state="needs-review-translation">is less than</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_LessThanOrEqualTo" translate="yes" xml:space="preserve">
+          <source>is less than or equal to</source>
+          <target state="needs-review-translation">is less than or equal to</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_LivePreview" translate="yes" xml:space="preserve">
+          <source>Live preview</source>
+          <target state="needs-review-translation">Live preview</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Matches" translate="yes" xml:space="preserve">
+          <source>matches</source>
+          <target state="needs-review-translation">matches</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Name" translate="yes" xml:space="preserve">
+          <source>Name</source>
+          <target state="needs-review-translation">Name</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_NotEqualTo" translate="yes" xml:space="preserve">
+          <source>is not equal to</source>
+          <target state="needs-review-translation">is not equal to</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_NotIsEmpty" translate="yes" xml:space="preserve">
+          <source>is not empty</source>
+          <target state="needs-review-translation">is not empty</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_NotIsNull" translate="yes" xml:space="preserve">
+          <source>is not null</source>
+          <target state="needs-review-translation">is not null</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Or" translate="yes" xml:space="preserve">
+          <source>Or</source>
+          <target state="needs-review-translation">Or</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_SaveBroken" translate="yes" xml:space="preserve">
+          <source>The filter has some invalid expressions which will be ignored while filtering. Are you sure you want to save this filter?</source>
+          <target state="needs-review-translation">The filter has some invalid expressions which will be ignored while filtering. Are you sure you want to save this filter?</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_StartsWith" translate="yes" xml:space="preserve">
+          <source>starts with</source>
+          <target state="needs-review-translation">starts with</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Generic_TextBlock_Text_DetailsView" translate="yes" xml:space="preserve">
+          <source>Details View</source>
+          <target state="needs-review-translation">Details View</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" translate="yes" xml:space="preserve">
+          <source>broken</source>
+          <target state="needs-review-translation">broken</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern" translate="yes" xml:space="preserve">
+          <source>Condition '{0}' is not supported.</source>
+          <target state="needs-review-translation">Condition '{0}' is not supported.</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern" translate="yes" xml:space="preserve">
+          <source>Type '{0}' is not supported.</source>
+          <target state="needs-review-translation">Type '{0}' is not supported.</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern" translate="yes" xml:space="preserve">
+          <source>Parameter {0} is not supported.</source>
+          <target state="needs-review-translation">Parameter {0} is not supported.</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption" translate="yes" xml:space="preserve">
+          <source>Delete filter?</source>
+          <target state="needs-review-translation">Delete filter?</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to delete filter '{0}'?</source>
+          <target state="needs-review-translation">Are you sure you want to delete filter '{0}'?</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
