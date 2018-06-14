@@ -21,7 +21,8 @@ TestResult.xml
 [Pp]ackages*/
 bin
 obj
-[Ll]ib/
+[Ll]ib/*
+![Ll]ib/repositories.config
 *.ide/
 *_i.c
 *_p.c
@@ -123,3 +124,5 @@ Desktop.ini
 # mstest test results
 TestResults
 src/.vs/
+.sonarqube/
+.github/
