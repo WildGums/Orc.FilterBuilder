@@ -13,7 +13,8 @@ var StartYear = 2014;
 
 var ComponentsToBuild = new string[]
 {
-    "Orc.FilterBuilder"
+    "Orc.FilterBuilder",
+    "Orc.FilterBuilder.Xaml"
 };
 
 //=======================================================
