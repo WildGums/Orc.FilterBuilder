@@ -4,6 +4,7 @@
     <AssemblyName>Orc.FilterBuilder.Example.NET</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Example</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
+    <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
 
   <PropertyGroup>
