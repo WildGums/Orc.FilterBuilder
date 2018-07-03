@@ -74,6 +74,7 @@ namespace Orc.FilterBuilder
     public class ConditionGroup : Orc.FilterBuilder.ConditionTreeItem
     {
         public static readonly Catel.Data.PropertyData TypeProperty;
+        protected ConditionGroup(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public ConditionGroup() { }
         public Orc.FilterBuilder.ConditionGroupType Type { get; set; }
         public override bool CalculateResult(object entity) { }
@@ -97,8 +98,8 @@ namespace Orc.FilterBuilder
     public abstract class ConditionTreeItem : Catel.Data.ValidatableModelBase
     {
         public static readonly Catel.Data.PropertyData IsValidProperty;
-        public static readonly Catel.Data.PropertyData ItemsProperty;
         public static readonly Catel.Data.PropertyData ParentProperty;
+        protected ConditionTreeItem(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected ConditionTreeItem() { }
         [Catel.Data.ExcludeFromValidationAttribute()]
         [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
@@ -108,6 +109,7 @@ namespace Orc.FilterBuilder
         public Orc.FilterBuilder.ConditionTreeItem Parent { get; set; }
         public event System.EventHandler<System.EventArgs> Updated;
         public abstract bool CalculateResult(object entity);
+        protected bool Equals(Orc.FilterBuilder.ConditionTreeItem other) { }
         public override bool Equals(object obj) { }
         public override int GetHashCode() { }
         protected override void OnDeserialized() { }
@@ -220,6 +222,7 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.PropertyData PropertyProperty;
         public static readonly Catel.Data.PropertyData PropertySerializationValueProperty;
         public PropertyExpression() { }
+        protected PropertyExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public Orc.FilterBuilder.DataTypeExpression DataTypeExpression { get; set; }
         public Orc.FilterBuilder.Models.IPropertyMetadata Property { get; set; }
         public override bool CalculateResult(object entity) { }

@@ -11,6 +11,7 @@ namespace Orc.FilterBuilder
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using System.Runtime.Serialization;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
@@ -18,6 +19,11 @@ namespace Orc.FilterBuilder
     public abstract class ConditionTreeItem : ValidatableModelBase
     {
         #region Constructors
+        protected ConditionTreeItem(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         protected ConditionTreeItem()
         {
             Items = new ObservableCollection<ConditionTreeItem>();
@@ -124,19 +130,34 @@ namespace Orc.FilterBuilder
 
         public abstract bool CalculateResult(object entity);
 
+        protected bool Equals(ConditionTreeItem other)
+        {
+            return Items.Equals(other.Items);
+        }
+
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(obj, this))
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
 
-            return base.Equals(obj);
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((ConditionTreeItem)obj);
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return Items.GetHashCode();
         }
         #endregion
     }
