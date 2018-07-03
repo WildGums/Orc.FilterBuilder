@@ -134,18 +134,19 @@ namespace Orc.FilterBuilder.Models
 
         private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
         {
-            var items = conditionTreeItem == null ? null : conditionTreeItem.Items;
+            var items = conditionTreeItem?.Items;
             if (items == null || items.Count == 0)
             {
                 return conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
             }
 
-            int invalidCount = 0;
+            var invalidCount = 0;
             foreach (var item in items)
             {
                 invalidCount += CountInvalidItems(item);
             }
-            invalidCount += conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
+
+            invalidCount += conditionTreeItem.IsValid ? 0 : 1;
 
             return invalidCount;
         }

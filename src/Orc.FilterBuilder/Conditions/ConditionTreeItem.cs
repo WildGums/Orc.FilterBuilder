@@ -13,9 +13,7 @@ namespace Orc.FilterBuilder
     using System.Collections.Specialized;
     using Catel;
     using Catel.Data;
-    using Catel.IoC;
     using Catel.Runtime.Serialization;
-    using Services;
 
     public abstract class ConditionTreeItem : ValidatableModelBase
     {
