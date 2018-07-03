@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EnumExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
 // </copyright>
@@ -11,6 +11,7 @@ namespace Orc.FilterBuilder
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Runtime.Serialization;
     using Catel;
     using Catel.IoC;
     using Catel.Reflection;
@@ -24,10 +25,16 @@ namespace Orc.FilterBuilder
     /// The enum type parameter.
     /// </typeparam>
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [Serializable]
     public class EnumExpression<TEnum> : NullableDataTypeExpression
         where TEnum : struct
     {
         #region Constructors
+        protected EnumExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         /// <summary>
         /// Initialize an instance of <see cref="EnumExpression{TEnum}" />.
         /// </summary>

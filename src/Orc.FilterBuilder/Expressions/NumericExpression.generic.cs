@@ -7,14 +7,17 @@
 
 namespace Orc.FilterBuilder
 {
-    using Models;
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.Runtime.Serialization;
 
     public abstract class NumericExpression<TValue> : ValueDataTypeExpression<TValue>
         where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>
     {
+        protected NumericExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         protected NumericExpression()
             : base()
         {

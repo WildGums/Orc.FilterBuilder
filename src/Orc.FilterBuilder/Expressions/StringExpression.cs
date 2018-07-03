@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -15,9 +15,11 @@ namespace Orc.FilterBuilder
     using Catel.Caching;
     using Catel.Caching.Policies;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
     using Catel;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [Serializable]
     public class StringExpression : DataTypeExpression
     {
         #region Fields
@@ -26,6 +28,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Constructors
+        protected StringExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         public StringExpression()
         {
             SelectedCondition = Condition.Contains;

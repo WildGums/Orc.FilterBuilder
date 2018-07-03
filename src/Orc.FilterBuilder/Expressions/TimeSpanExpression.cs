@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimeSpanExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -12,12 +12,14 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
+    using System.Runtime.Serialization;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [Serializable]
     public class TimeSpanExpression : NullableDataTypeExpression
     {
         #region Constants
@@ -26,6 +28,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Constructors
+        protected TimeSpanExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         public TimeSpanExpression()
             : this(true)
         {

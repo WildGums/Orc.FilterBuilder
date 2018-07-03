@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BooleanExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
 // </copyright>
@@ -10,14 +10,21 @@ namespace Orc.FilterBuilder
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Runtime.Serialization;
     using Catel;
     using Catel.Runtime.Serialization;
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [Serializable]
     public class BooleanExpression : DataTypeExpression
     {
         #region Constructors
+        protected BooleanExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         public BooleanExpression()
         {
             BooleanValues = new List<bool> {true, false};
@@ -51,7 +58,7 @@ namespace Orc.FilterBuilder
 
         public override string ToString()
         {
-            return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
+            return $"{SelectedCondition.Humanize()} '{Value}'";
         }
         #endregion
     }

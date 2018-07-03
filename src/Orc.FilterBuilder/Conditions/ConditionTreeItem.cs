@@ -44,6 +44,11 @@ namespace Orc.FilterBuilder
         public event EventHandler<EventArgs> Updated;
 
         #region Methods
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
+
         private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)

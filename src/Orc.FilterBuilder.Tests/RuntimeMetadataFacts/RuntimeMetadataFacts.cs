@@ -29,7 +29,7 @@ namespace Orc.FilterBuilder.Tests
             var filterService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<FilterService>();
             filterService.FilterCollection(filterScheme, initialCollection, resultList);
 
-            Assert.AreEqual(resultList.Count, 1);
+            Assert.AreEqual(1, resultList.Count);
             Assert.AreEqual(resultList[0].Attributes[AttributeTypeNames.StringAttribute].Value, "one");
         }
     }
