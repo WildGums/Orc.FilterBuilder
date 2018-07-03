@@ -14,9 +14,8 @@ namespace Orc.FilterBuilder
     {
         public static int GetDepth(this TreeViewItem item)
         {
-            TreeViewItem parent;
-
-            while ((parent = GetParent(item)) != null)
+            var parent = GetParent(item);
+            if (!(parent is null))
             {
                 return GetDepth(parent) + 1;
             }

@@ -136,7 +136,7 @@ namespace Orc.FilterBuilder.ViewModels
         public Catel.MVVM.TaskCommand ApplySchemeCommand { get; }
         public bool AutoApplyFilter { get; set; }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.Models.FilterScheme> AvailableSchemes { get; }
-        public Catel.MVVM.Command<Orc.FilterBuilder.Models.FilterScheme> DeleteSchemeCommand { get; }
+        public Catel.MVVM.TaskCommand<Orc.FilterBuilder.Models.FilterScheme> DeleteSchemeCommand { get; }
         public Catel.MVVM.TaskCommand<Orc.FilterBuilder.Models.FilterScheme> EditSchemeCommand { get; }
         public bool EnableAutoCompletion { get; set; }
         public System.Collections.IList FilteredCollection { get; set; }

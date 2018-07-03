@@ -69,7 +69,7 @@ namespace Orc.FilterBuilder.ViewModels
             EditSchemeCommand = new TaskCommand<FilterScheme>(OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
             ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
-            DeleteSchemeCommand = new Command<FilterScheme>(OnDeleteSchemeExecute, OnDeleteSchemeCanExecute);
+            DeleteSchemeCommand = new TaskCommand<FilterScheme>(OnDeleteSchemeExecuteAsync, OnDeleteSchemeCanExecute);
         }
         #endregion
 
@@ -227,16 +227,14 @@ namespace Orc.FilterBuilder.ViewModels
             }
         }
 
-        public Command<FilterScheme> DeleteSchemeCommand { get; private set; }
+        public TaskCommand<FilterScheme> DeleteSchemeCommand { get; private set; }
 
         private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
         {
             return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
         }
 
-#pragma warning disable AvoidAsyncVoid
-        private async void OnDeleteSchemeExecute(FilterScheme filterScheme)
-#pragma warning restore AvoidAsyncVoid
+        private async Task OnDeleteSchemeExecuteAsync(FilterScheme filterScheme)
         {
             if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) == MessageResult.Yes)
             {

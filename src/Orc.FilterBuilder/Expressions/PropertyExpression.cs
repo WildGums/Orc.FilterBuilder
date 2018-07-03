@@ -21,7 +21,7 @@ namespace Orc.FilterBuilder
     [ValidateModel(typeof(PropertyExpressionValidator))]
     public class PropertyExpression : ConditionTreeItem
     {
-        private static ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         #region Constructors
         public PropertyExpression()
@@ -49,89 +49,7 @@ namespace Orc.FilterBuilder
 
             if (Property != null)
             {
-                var propertyType = Property.Type;
-                bool isNullable = propertyType.IsNullableType();
-                if (isNullable)
-                {
-                    propertyType = propertyType.GetNonNullable();
-                }
-
-                if (propertyType.IsEnumEx())
-                {
-                    if (DataTypeExpression != null)
-                    {
-                        var enumExpressionGenericType = typeof(EnumExpression<>).MakeGenericType(propertyType);
-                        if (!enumExpressionGenericType.IsAssignableFromEx(DataTypeExpression.GetType()) || (DataTypeExpression as NullableDataTypeExpression)?.IsNullable != isNullable)
-                        {
-                            var constructorInfo = enumExpressionGenericType.GetConstructorEx(TypeArray.From<bool>());
-                            DataTypeExpression = (DataTypeExpression)constructorInfo?.Invoke(new object[] { isNullable });
-                        }
-                    }
-                }
-                else if (propertyType == typeof(byte))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(isNullable));
-                }
-                else if (propertyType == typeof(sbyte))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(isNullable));
-                }
-                else if (propertyType == typeof(ushort))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(isNullable));
-                }
-                else if (propertyType == typeof(short))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(isNullable));
-                }
-                else if (propertyType == typeof(uint))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(isNullable));
-                }
-                else if (propertyType == typeof(int))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(isNullable));
-                }
-                else if (propertyType == typeof(ulong))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(isNullable));
-                }
-                else if (propertyType == typeof(long))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(isNullable));
-                }
-                else if (propertyType == typeof(string))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
-                }
-                else if (propertyType == typeof(DateTime))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(isNullable));
-                }
-                else if (propertyType == typeof(bool))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
-                }
-                else if (propertyType == typeof(TimeSpan))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(isNullable));
-                }
-                else if (propertyType == typeof(decimal))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(isNullable));
-                }
-                else if (propertyType == typeof(float))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(isNullable));
-                }
-                else if (propertyType == typeof(double))
-                {
-                    CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(isNullable));
-                }
-                else
-                {
-                    Log.Error($"Unable to create data type expression for type '{propertyType}'");
-                }
+                CreateDataTypeExpression();
             }
 
             dataTypeExpression = DataTypeExpression;
@@ -139,6 +57,128 @@ namespace Orc.FilterBuilder
             {
                 dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
             }
+        }
+
+        private void CreateDataTypeExpression()
+        {
+            var propertyType = Property.Type;
+            var isNullable = propertyType.IsNullableType();
+            if (isNullable)
+            {
+                propertyType = propertyType.GetNonNullable();
+            }
+
+            if (propertyType.IsEnumEx())
+            {
+                if (DataTypeExpression is null)
+                {
+                    return;
+                }
+
+                var enumExpressionGenericType = typeof(EnumExpression<>).MakeGenericType(propertyType);
+                if (enumExpressionGenericType.IsAssignableFromEx(DataTypeExpression.GetType()) 
+                    && (DataTypeExpression as NullableDataTypeExpression)?.IsNullable == isNullable)
+                {
+                    return;
+                }
+
+                var constructorInfo = enumExpressionGenericType.GetConstructorEx(TypeArray.From<bool>());
+                DataTypeExpression = (DataTypeExpression)constructorInfo?.Invoke(new object[] {isNullable});
+
+                return;
+            }
+
+            if (propertyType == typeof(byte))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(sbyte))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(ushort))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(short))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(uint))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(int))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(ulong))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(long))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(string))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+                return;
+            }
+
+            if (propertyType == typeof(DateTime))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(bool))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
+                return;
+            }
+
+            if (propertyType == typeof(TimeSpan))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(decimal))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(float))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(isNullable));
+                return;
+            }
+
+            if (propertyType == typeof(double))
+            {
+                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(isNullable));
+                return;
+            }
+
+            Log.Error($"Unable to create data type expression for type '{propertyType}'");
         }
 
         private void CreateDataTypeExpressionIfNotCompatible<TDataExpression>(Func<TDataExpression> createFunc)
