@@ -174,8 +174,6 @@ namespace Orc.FilterBuilder
     {
         public static void Apply(this Orc.FilterBuilder.Models.FilterScheme filterScheme, System.Collections.IEnumerable rawCollection, System.Collections.IList filteredCollection) { }
         public static void EnsureIntegrity(this Orc.FilterBuilder.Models.FilterScheme filterScheme, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
-        public static void EnsureIntegrity(this Orc.FilterBuilder.ConditionTreeItem conditionTreeItem, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
-        public static void EnsureIntegrity(this Orc.FilterBuilder.PropertyExpression propertyExpression, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class FloatExpression : Orc.FilterBuilder.NumericExpression<float>
@@ -241,6 +239,7 @@ namespace Orc.FilterBuilder
         public Orc.FilterBuilder.DataTypeExpression DataTypeExpression { get; set; }
         public Orc.FilterBuilder.Models.IPropertyMetadata Property { get; set; }
         public override bool CalculateResult(object entity) { }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected override void OnDeserialized() { }
         public override string ToString() { }
     }
@@ -376,6 +375,7 @@ namespace Orc.FilterBuilder.Models
         public FilterScheme() { }
         public FilterScheme(System.Type targetType) { }
         public FilterScheme(System.Type targetType, string title) { }
+        protected FilterScheme(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public FilterScheme(System.Type targetType, string title, Orc.FilterBuilder.ConditionTreeItem root) { }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.ConditionTreeItem> ConditionItems { get; }
         public bool HasInvalidConditionItems { get; }
@@ -407,6 +407,7 @@ namespace Orc.FilterBuilder.Models
     {
         public static readonly Catel.Data.PropertyData SchemesProperty;
         public FilterSchemes() { }
+        protected FilterSchemes(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.Models.FilterScheme> Schemes { get; }
         [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
         public object Scope { get; set; }

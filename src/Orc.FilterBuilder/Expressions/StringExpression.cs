@@ -125,7 +125,7 @@ namespace Orc.FilterBuilder
 
         public override string ToString()
         {
-            return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
+            return $"{SelectedCondition.Humanize()} '{Value}'";
         }
         #endregion
     }

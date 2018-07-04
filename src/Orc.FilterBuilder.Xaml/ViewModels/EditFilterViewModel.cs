@@ -24,6 +24,7 @@ namespace Orc.FilterBuilder.ViewModels
     using Models;
     using Services;
 
+    [Serializable]
     public class EditFilterViewModel : ViewModelBase
     {
         #region Fields
@@ -31,7 +32,6 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IReflectionService _reflectionService;
         private readonly IXmlSerializer _xmlSerializer;
         private readonly IMessageService _messageService;
-        private readonly IServiceLocator _serviceLocator;
         private readonly ILanguageService _languageService;
 
         private bool _isFilterDirty;
@@ -49,7 +49,6 @@ namespace Orc.FilterBuilder.ViewModels
 
             _xmlSerializer = xmlSerializer;
             _messageService = messageService;
-            _serviceLocator = serviceLocator;
             _languageService = languageService;
 
             PreviewItems = new FastObservableCollection<object>();
@@ -61,7 +60,7 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = filterSchemeEditInfo.FilterScheme;
             _originalFilterScheme = filterScheme;
 
-            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(filterScheme.Scope);
+            _reflectionService = serviceLocator.ResolveType<IReflectionService>(filterScheme.Scope);
 
             DeferValidationUntilFirstSaveCall = true;
 
@@ -149,13 +148,10 @@ namespace Orc.FilterBuilder.ViewModels
 
         protected override async Task<bool> CancelAsync()
         {
-            if (_isFilterDirty)
-            {
-                if (await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_DiscardChanges"),
+            if (_isFilterDirty && await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_DiscardChanges"),
                     _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
-                {
-                    return false;
-                }
+            {
+                return false;
             }
 
             return await base.CancelAsync();
@@ -163,13 +159,10 @@ namespace Orc.FilterBuilder.ViewModels
 
         protected override async Task<bool> SaveAsync()
         {
-            if (FilterScheme.HasInvalidConditionItems)
-            {
-                if (await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_SaveBroken"),
+            if (FilterScheme.HasInvalidConditionItems && await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_SaveBroken"),
                     _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
-                {
-                    return false;
-                }
+            {
+                return false;
             }
 
             FilterScheme.Title = FilterSchemeTitle;

@@ -6,12 +6,15 @@
 
 
 namespace Orc.FilterBuilder.Models
-{   
+{
+    using System;
     using System.Collections.ObjectModel;
+    using System.Runtime.Serialization;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
+    [Serializable]
     public class FilterSchemes : ModelBase
     {
         private object _scope;
@@ -20,6 +23,11 @@ namespace Orc.FilterBuilder.Models
         public FilterSchemes()
         {
             Schemes = new ObservableCollection<FilterScheme>();
+        }
+
+        protected FilterSchemes(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
         #endregion
 

@@ -29,39 +29,40 @@ namespace Orc.FilterBuilder.Views
 
             dataGrid.Columns.Clear();
 
-            var vm = ViewModel as EditFilterViewModel;
-            if (vm != null)
+            if (!(ViewModel is EditFilterViewModel vm))
             {
-                if (vm.AllowLivePreview)
-                {
-                    var dependencyResolver = this.GetDependencyResolver();
-                    var reflectionService = dependencyResolver.Resolve<IReflectionService>(vm.FilterScheme.Scope);
-
-                    var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
-                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
-
-                    foreach (var instanceProperty in instanceProperties.Properties)
-                    {
-                        var column = new DataGridTextColumn
-                        {
-                            Header = instanceProperty.DisplayName
-                        };
-
-                        var binding = new Binding
-                        {
-                            Converter = new ObjectToValueConverter(instanceProperty),
-                            ConverterParameter = instanceProperty.Name
-                        };
-
-                        column.Binding = binding;
-
-                        dataGrid.Columns.Add(column);
-                    }
-                }
-
-                // Fix for SA-144
-                var dispatcherOperation = Dispatcher.BeginInvoke(new Action(() => Focus()));
+                return;
             }
+
+            if (vm.AllowLivePreview)
+            {
+                var dependencyResolver = this.GetDependencyResolver();
+                var reflectionService = dependencyResolver.Resolve<IReflectionService>(vm.FilterScheme.Scope);
+
+                var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
+                var instanceProperties = reflectionService.GetInstanceProperties(targetType);
+
+                foreach (var instanceProperty in instanceProperties.Properties)
+                {
+                    var column = new DataGridTextColumn
+                    {
+                        Header = instanceProperty.DisplayName
+                    };
+
+                    var binding = new Binding
+                    {
+                        Converter = new ObjectToValueConverter(instanceProperty),
+                        ConverterParameter = instanceProperty.Name
+                    };
+
+                    column.Binding = binding;
+
+                    dataGrid.Columns.Add(column);
+                }
+            }
+
+            // Fix for SA-144
+            Dispatcher.BeginInvoke(new Action(() => Focus()));
         }
     }
 }

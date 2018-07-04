@@ -22,11 +22,6 @@ namespace Orc.FilterBuilder
     [Serializable]
     public class TimeSpanExpression : NullableDataTypeExpression
     {
-        #region Constants
-        private const int AverageDaysInYear = 365;
-        private const int AverageDaysInMonth = 30;
-        #endregion
-
         #region Constructors
         protected TimeSpanExpression(SerializationInfo info, StreamingContext context)
             : base(info, context)
@@ -66,37 +61,42 @@ namespace Orc.FilterBuilder
         {
             base.OnPropertyChanged(e);
 
-            if (e.HasPropertyChanged(() => SelectedSpanType) || e.HasPropertyChanged(() => Amount))
+            const int averageDaysInYear = 365;
+            const int averageDaysInMonth = 30;
+
+            if (!e.HasPropertyChanged(() => SelectedSpanType) && !e.HasPropertyChanged(() => Amount))
             {
-                switch (SelectedSpanType)
-                {
-                    case TimeSpanType.Years:
-                        Value = TimeSpan.FromDays(Amount * AverageDaysInYear);
-                        break;
+                return;
+            }
 
-                    case TimeSpanType.Months:
-                        Value = TimeSpan.FromDays(Amount * AverageDaysInMonth);
-                        break;
+            switch (SelectedSpanType)
+            {
+                case TimeSpanType.Years:
+                    Value = TimeSpan.FromDays(Amount * averageDaysInYear);
+                    break;
 
-                    case TimeSpanType.Days:
-                        Value = TimeSpan.FromDays(Amount);
-                        break;
+                case TimeSpanType.Months:
+                    Value = TimeSpan.FromDays(Amount * averageDaysInMonth);
+                    break;
 
-                    case TimeSpanType.Hours:
-                        Value = TimeSpan.FromHours(Amount);
-                        break;
+                case TimeSpanType.Days:
+                    Value = TimeSpan.FromDays(Amount);
+                    break;
 
-                    case TimeSpanType.Minutes:
-                        Value = TimeSpan.FromMinutes(Amount);
-                        break;
+                case TimeSpanType.Hours:
+                    Value = TimeSpan.FromHours(Amount);
+                    break;
 
-                    case TimeSpanType.Seconds:
-                        Value = TimeSpan.FromSeconds(Amount);
-                        break;
+                case TimeSpanType.Minutes:
+                    Value = TimeSpan.FromMinutes(Amount);
+                    break;
 
-                    default:
-                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
-                }
+                case TimeSpanType.Seconds:
+                    Value = TimeSpan.FromSeconds(Amount);
+                    break;
+
+                default:
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
             }
         }
 

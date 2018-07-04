@@ -49,6 +49,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
+
         private void OnPropertyChanged()
         {
             var dataTypeExpression = DataTypeExpression;

@@ -26,16 +26,17 @@ namespace Orc.FilterBuilder.ViewModels
     using Views;
     using CollectionHelper = FilterBuilder.CollectionHelper;
 
+    [Serializable]
     public class FilterBuilderViewModel : ViewModelBase
     {
         #region Fields
-        private readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly IUIVisualizerService _uiVisualizerService;
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
+        private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default");
         private IFilterSchemeManager _filterSchemeManager;
         private IFilterService _filterService;
         private IReflectionService _reflectionService;
@@ -296,12 +297,9 @@ namespace Orc.FilterBuilder.ViewModels
                 _filterService.SelectedFilter = filterScheme;
             }
 
-            if (force || selectedFilterIsDifferent || filterServiceSelectedFilterIsDifferent)
+            if (AutoApplyFilter & (force || selectedFilterIsDifferent || filterServiceSelectedFilterIsDifferent))
             {
-                if (AutoApplyFilter)
-                {
-                    ApplyFilter();
-                }
+                ApplyFilter();
             }
 
             _applyingFilter = false;
@@ -358,7 +356,7 @@ namespace Orc.FilterBuilder.ViewModels
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
-                if (_targetType != null)
+                if (_targetType != null && _filterSchemes != null)
                 {
                     ((ICollection<FilterScheme>)newSchemes).AddRange((from scheme in _filterSchemes.Schemes
                                                                       where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
@@ -366,13 +364,13 @@ namespace Orc.FilterBuilder.ViewModels
                 }
             }
 
-            newSchemes.Insert(0, NoFilterFilter);
+            newSchemes.Insert(0, _noFilterFilter);
 
             if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {
                 AvailableSchemes = newSchemes;
 
-                var selectedFilter = _filterService.SelectedFilter ?? NoFilterFilter;
+                var selectedFilter = _filterService.SelectedFilter ?? _noFilterFilter;
                 SelectedFilterScheme = selectedFilter;
             }
         }
