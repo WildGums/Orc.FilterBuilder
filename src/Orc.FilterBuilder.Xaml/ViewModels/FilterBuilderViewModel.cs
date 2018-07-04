@@ -297,7 +297,7 @@ namespace Orc.FilterBuilder.ViewModels
                 _filterService.SelectedFilter = filterScheme;
             }
 
-            if (AutoApplyFilter & (force || selectedFilterIsDifferent || filterServiceSelectedFilterIsDifferent))
+            if (AutoApplyFilter && (force || selectedFilterIsDifferent || filterServiceSelectedFilterIsDifferent))
             {
                 ApplyFilter();
             }
