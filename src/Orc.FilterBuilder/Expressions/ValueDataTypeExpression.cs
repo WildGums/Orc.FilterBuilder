@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ValueDataTypeExpression.cs" company="WildGums">
 //   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
 // </copyright>
@@ -10,6 +10,7 @@ namespace Orc.FilterBuilder
     using Models;
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
     using Catel;
 
     public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
@@ -18,6 +19,11 @@ namespace Orc.FilterBuilder
         #region Fields
         private readonly Comparer<TValue> _comparer;
         #endregion
+
+        protected ValueDataTypeExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
 
         protected ValueDataTypeExpression()
             : base()

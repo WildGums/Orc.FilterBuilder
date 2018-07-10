@@ -9,12 +9,19 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
+    using System.Runtime.Serialization;
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [Serializable]
     public class UnsignedIntegerExpression : NumericExpression<uint>
     {
         #region Constructors
+        protected UnsignedIntegerExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         public UnsignedIntegerExpression()
             : this(true)
         {

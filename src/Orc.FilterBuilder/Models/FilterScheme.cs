@@ -12,6 +12,7 @@ namespace Orc.FilterBuilder.Models
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Text;
     using Catel;
     using Catel.Data;
@@ -21,6 +22,7 @@ namespace Orc.FilterBuilder.Models
     using Services;
 
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
+    [Serializable]
     public class FilterScheme : ModelBase
     {
         private static readonly Type _defaultTargetType = typeof(object);
@@ -39,6 +41,11 @@ namespace Orc.FilterBuilder.Models
 
         public FilterScheme(Type targetType, string title)
             : this(targetType, title, new ConditionGroup())
+        {
+        }
+
+        protected FilterScheme(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -137,7 +144,7 @@ namespace Orc.FilterBuilder.Models
             var items = conditionTreeItem?.Items;
             if (items == null || items.Count == 0)
             {
-                return conditionTreeItem == null ? 0 : conditionTreeItem.IsValid ? 0 : 1;
+                return conditionTreeItem?.IsValid??true ? 0 : 1;
             }
 
             var invalidCount = 0;

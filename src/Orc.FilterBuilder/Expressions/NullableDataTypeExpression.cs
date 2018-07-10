@@ -7,13 +7,15 @@
 
 namespace Orc.FilterBuilder
 {
-    using System.Diagnostics;
-    using System.Text;
-    using Catel.Data;
-    using Orc.FilterBuilder.Models;
+    using System.Runtime.Serialization;
 
     public abstract class NullableDataTypeExpression : DataTypeExpression
     {
+        protected NullableDataTypeExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         protected NullableDataTypeExpression()
             : base()
         {

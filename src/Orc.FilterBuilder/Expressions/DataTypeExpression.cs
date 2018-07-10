@@ -7,13 +7,17 @@
 
 namespace Orc.FilterBuilder
 {
-    using System.Diagnostics;
-    using System.Text;
+    using System.Runtime.Serialization;
     using Catel.Data;
-    using Orc.FilterBuilder.Models;
+    using Models;
 
     public abstract class DataTypeExpression : ModelBase
     {
+        protected DataTypeExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         protected DataTypeExpression()
         {
             IsValueRequired = true;

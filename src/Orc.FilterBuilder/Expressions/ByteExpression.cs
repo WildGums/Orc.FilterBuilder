@@ -9,12 +9,19 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
+    using System.Runtime.Serialization;
     using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [Serializable]
     public class ByteExpression : NumericExpression<byte>
     {
         #region Constructors
+        protected ByteExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
         public ByteExpression()
             : this(true)
         {

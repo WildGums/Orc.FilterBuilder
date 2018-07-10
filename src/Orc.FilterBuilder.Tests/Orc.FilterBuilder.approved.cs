@@ -11,6 +11,7 @@ namespace Orc.FilterBuilder
     {
         public static readonly Catel.Data.PropertyData BooleanValuesProperty;
         public static readonly Catel.Data.PropertyData ValueProperty;
+        protected BooleanExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public BooleanExpression() { }
         [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
         public System.Collections.Generic.List<bool> BooleanValues { get; set; }
@@ -21,6 +22,7 @@ namespace Orc.FilterBuilder
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class ByteExpression : Orc.FilterBuilder.NumericExpression<byte>
     {
+        protected ByteExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public ByteExpression() { }
         public ByteExpression(bool isNullable) { }
     }
@@ -74,6 +76,7 @@ namespace Orc.FilterBuilder
     public class ConditionGroup : Orc.FilterBuilder.ConditionTreeItem
     {
         public static readonly Catel.Data.PropertyData TypeProperty;
+        protected ConditionGroup(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public ConditionGroup() { }
         public Orc.FilterBuilder.ConditionGroupType Type { get; set; }
         public override bool CalculateResult(object entity) { }
@@ -99,6 +102,7 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.PropertyData IsValidProperty;
         public static readonly Catel.Data.PropertyData ItemsProperty;
         public static readonly Catel.Data.PropertyData ParentProperty;
+        protected ConditionTreeItem(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected ConditionTreeItem() { }
         [Catel.Data.ExcludeFromValidationAttribute()]
         [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
@@ -108,8 +112,10 @@ namespace Orc.FilterBuilder
         public Orc.FilterBuilder.ConditionTreeItem Parent { get; set; }
         public event System.EventHandler<System.EventArgs> Updated;
         public abstract bool CalculateResult(object entity);
+        protected bool Equals(Orc.FilterBuilder.ConditionTreeItem other) { }
         public override bool Equals(object obj) { }
         public override int GetHashCode() { }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected override void OnDeserialized() { }
         protected override void OnPropertyChanged(Catel.Data.AdvancedPropertyChangedEventArgs e) { }
         protected override void OnValidated(Catel.Data.IValidationContext validationContext) { }
@@ -124,6 +130,7 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.PropertyData IsValueRequiredProperty;
         public static readonly Catel.Data.PropertyData SelectedConditionProperty;
         public static readonly Catel.Data.PropertyData ValueControlTypeProperty;
+        protected DataTypeExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected DataTypeExpression() { }
         public bool IsValueRequired { get; set; }
         public Orc.FilterBuilder.Condition SelectedCondition { get; set; }
@@ -133,18 +140,21 @@ namespace Orc.FilterBuilder
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class DateTimeExpression : Orc.FilterBuilder.ValueDataTypeExpression<System.DateTime>
     {
+        protected DateTimeExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public DateTimeExpression() { }
         public DateTimeExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class DecimalExpression : Orc.FilterBuilder.NumericExpression<decimal>
     {
+        protected DecimalExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public DecimalExpression() { }
         public DecimalExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class DoubleExpression : Orc.FilterBuilder.NumericExpression<double>
     {
+        protected DoubleExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public DoubleExpression() { }
         public DoubleExpression(bool isNullable) { }
     }
@@ -153,6 +163,7 @@ namespace Orc.FilterBuilder
         where TEnum :  struct
     {
         public static readonly Catel.Data.PropertyData ValueProperty;
+        protected EnumExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public EnumExpression(bool isNullable) { }
         public System.Collections.Generic.List<TEnum> EnumValues { get; }
         public TEnum Value { get; set; }
@@ -163,12 +174,11 @@ namespace Orc.FilterBuilder
     {
         public static void Apply(this Orc.FilterBuilder.Models.FilterScheme filterScheme, System.Collections.IEnumerable rawCollection, System.Collections.IList filteredCollection) { }
         public static void EnsureIntegrity(this Orc.FilterBuilder.Models.FilterScheme filterScheme, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
-        public static void EnsureIntegrity(this Orc.FilterBuilder.ConditionTreeItem conditionTreeItem, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
-        public static void EnsureIntegrity(this Orc.FilterBuilder.PropertyExpression propertyExpression, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class FloatExpression : Orc.FilterBuilder.NumericExpression<float>
     {
+        protected FloatExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public FloatExpression() { }
         public FloatExpression(bool isNullable) { }
     }
@@ -181,24 +191,28 @@ namespace Orc.FilterBuilder
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class IntegerExpression : Orc.FilterBuilder.NumericExpression<int>
     {
+        protected IntegerExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public IntegerExpression() { }
         public IntegerExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class LongExpression : Orc.FilterBuilder.NumericExpression<long>
     {
+        protected LongExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public LongExpression() { }
         public LongExpression(bool isNullable) { }
     }
     public abstract class NullableDataTypeExpression : Orc.FilterBuilder.DataTypeExpression
     {
         public static readonly Catel.Data.PropertyData IsNullableProperty;
+        protected NullableDataTypeExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected NullableDataTypeExpression() { }
         public bool IsNullable { get; set; }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class NumericExpression : Orc.FilterBuilder.NumericExpression<double>
     {
+        protected NumericExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public NumericExpression() { }
         public NumericExpression(System.Type type) { }
     }
@@ -207,6 +221,7 @@ namespace Orc.FilterBuilder
     {
         public static readonly Catel.Data.PropertyData IsDecimalProperty;
         public static readonly Catel.Data.PropertyData IsSignedProperty;
+        protected NumericExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected NumericExpression() { }
         public bool IsDecimal { get; set; }
         public bool IsSigned { get; set; }
@@ -220,9 +235,11 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.PropertyData PropertyProperty;
         public static readonly Catel.Data.PropertyData PropertySerializationValueProperty;
         public PropertyExpression() { }
+        protected PropertyExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public Orc.FilterBuilder.DataTypeExpression DataTypeExpression { get; set; }
         public Orc.FilterBuilder.Models.IPropertyMetadata Property { get; set; }
         public override bool CalculateResult(object entity) { }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected override void OnDeserialized() { }
         public override string ToString() { }
     }
@@ -238,12 +255,14 @@ namespace Orc.FilterBuilder
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class SByteExpression : Orc.FilterBuilder.NumericExpression<sbyte>
     {
+        protected SByteExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public SByteExpression() { }
         public SByteExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class ShortExpression : Orc.FilterBuilder.NumericExpression<short>
     {
+        protected ShortExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public ShortExpression() { }
         public ShortExpression(bool isNullable) { }
     }
@@ -251,6 +270,7 @@ namespace Orc.FilterBuilder
     public class StringExpression : Orc.FilterBuilder.DataTypeExpression
     {
         public static readonly Catel.Data.PropertyData ValueProperty;
+        protected StringExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public StringExpression() { }
         public string Value { get; set; }
         public override bool CalculateResult(Orc.FilterBuilder.Models.IPropertyMetadata propertyMetadata, object entity) { }
@@ -263,6 +283,7 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.PropertyData SelectedSpanTypeProperty;
         public static readonly Catel.Data.PropertyData SpanTypesProperty;
         public static readonly Catel.Data.PropertyData ValueProperty;
+        protected TimeSpanExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public TimeSpanExpression() { }
         public TimeSpanExpression(bool isNullable) { }
         public float Amount { get; set; }
@@ -286,18 +307,21 @@ namespace Orc.FilterBuilder
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class UnsignedIntegerExpression : Orc.FilterBuilder.NumericExpression<uint>
     {
+        protected UnsignedIntegerExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public UnsignedIntegerExpression() { }
         public UnsignedIntegerExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class UnsignedLongExpression : Orc.FilterBuilder.NumericExpression<ulong>
     {
+        protected UnsignedLongExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public UnsignedLongExpression() { }
         public UnsignedLongExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class UnsignedShortExpression : Orc.FilterBuilder.NumericExpression<ushort>
     {
+        protected UnsignedShortExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public UnsignedShortExpression() { }
         public UnsignedShortExpression(bool isNullable) { }
     }
@@ -325,6 +349,7 @@ namespace Orc.FilterBuilder
         where TValue :  struct, System.IComparable, System.IFormattable, System.IConvertible, System.IComparable<>, System.IEquatable<>
     {
         public static readonly Catel.Data.PropertyData ValueProperty;
+        protected ValueDataTypeExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected ValueDataTypeExpression() { }
         public TValue Value { get; set; }
         public override bool CalculateResult(Orc.FilterBuilder.Models.IPropertyMetadata propertyMetadata, object entity) { }
@@ -350,6 +375,7 @@ namespace Orc.FilterBuilder.Models
         public FilterScheme() { }
         public FilterScheme(System.Type targetType) { }
         public FilterScheme(System.Type targetType, string title) { }
+        protected FilterScheme(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public FilterScheme(System.Type targetType, string title, Orc.FilterBuilder.ConditionTreeItem root) { }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.ConditionTreeItem> ConditionItems { get; }
         public bool HasInvalidConditionItems { get; }
@@ -381,6 +407,7 @@ namespace Orc.FilterBuilder.Models
     {
         public static readonly Catel.Data.PropertyData SchemesProperty;
         public FilterSchemes() { }
+        protected FilterSchemes(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.Models.FilterScheme> Schemes { get; }
         [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
         public object Scope { get; set; }

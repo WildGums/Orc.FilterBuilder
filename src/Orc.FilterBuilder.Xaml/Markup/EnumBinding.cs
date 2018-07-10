@@ -36,7 +36,7 @@ namespace Orc.FilterBuilder.Markup
         [ConstructorArgument("enumType")]
         public Type EnumType
         {
-            get { return _enumType; }
+            get => _enumType;
             private set
             {
                 if (_enumType == value)
@@ -45,7 +45,7 @@ namespace Orc.FilterBuilder.Markup
                 }
 
                 var enumType = Nullable.GetUnderlyingType(value) ?? value;
-                if (enumType.IsEnum == false)
+                if (!enumType.IsEnum)
                 {
                     throw new ArgumentException("Type must be an Enum.");
                 }

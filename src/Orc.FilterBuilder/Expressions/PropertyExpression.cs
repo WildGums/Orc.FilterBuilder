@@ -1,30 +1,40 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.FilterBuilder
 {
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Runtime.Serialization;
+    using Catel.Data;
+    using Catel.Logging;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
     using Models;
     using Runtime.Serialization;
-    using Catel.Data;
-    using Catel.Logging;
 
     [DebuggerDisplay("{Property} = {DataTypeExpression}")]
     [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
     [ValidateModel(typeof(PropertyExpressionValidator))]
+    [Serializable]
     public class PropertyExpression : ConditionTreeItem
     {
+        #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        #endregion
 
         #region Constructors
         public PropertyExpression()
+        {
+        }
+
+        protected PropertyExpression(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
         #endregion
@@ -39,6 +49,11 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
+
         private void OnPropertyChanged()
         {
             var dataTypeExpression = DataTypeExpression;
@@ -68,137 +83,137 @@ namespace Orc.FilterBuilder
                 propertyType = propertyType.GetNonNullable();
             }
 
-            if (propertyType.IsEnumEx())
+            if (TryCreateDataTypeExpressionForEnum(propertyType, isNullable))
             {
-                if (DataTypeExpression is null)
-                {
-                    return;
-                }
-
-                var enumExpressionGenericType = typeof(EnumExpression<>).MakeGenericType(propertyType);
-                if (enumExpressionGenericType.IsAssignableFromEx(DataTypeExpression.GetType()) 
-                    && (DataTypeExpression as NullableDataTypeExpression)?.IsNullable == isNullable)
-                {
-                    return;
-                }
-
-                var constructorInfo = enumExpressionGenericType.GetConstructorEx(TypeArray.From<bool>());
-                DataTypeExpression = (DataTypeExpression)constructorInfo?.Invoke(new object[] {isNullable});
-
                 return;
             }
 
-            if (propertyType == typeof(byte))
+            if (!TryCreateDataTypeExpressionForSystemType(propertyType, isNullable))
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(isNullable));
-                return;
+                Log.Error($"Unable to create data type expression for type '{propertyType}'");
+            }
+        }
+
+        private bool TryCreateDataTypeExpressionForSystemType(Type propertyType, bool isNullable)
+        {
+            switch (propertyType)
+            {
+                case Type _ when propertyType == typeof(byte):
+                    CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(sbyte):
+                    CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(ushort):
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(short):
+                    CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(uint):
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(int):
+                    CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(ulong):
+                    CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(long):
+                    CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(string):
+                    CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
+                    break;
+
+                case Type _ when propertyType == typeof(DateTime):
+                    CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(bool):
+                    CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
+                    break;
+
+                case Type _ when propertyType == typeof(TimeSpan):
+                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(decimal):
+                    CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(float):
+                    CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(isNullable));
+                    break;
+
+                case Type _ when propertyType == typeof(double):
+                    CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(isNullable));
+                    break;
+
+                default:
+                    return false;
             }
 
-            if (propertyType == typeof(sbyte))
+            return true;
+        }
+
+        private bool TryCreateDataTypeExpressionForEnum(Type propertyType, bool isNullable)
+        {
+            if (!propertyType.IsEnumEx())
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(isNullable));
-                return;
+                return false;
             }
 
-            if (propertyType == typeof(ushort))
+            if (DataTypeExpression is null)
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(isNullable));
-                return;
+                return true;
             }
 
-            if (propertyType == typeof(short))
+            var enumExpressionGenericType = typeof(EnumExpression<>).MakeGenericType(propertyType);
+            if (enumExpressionGenericType.IsAssignableFromEx(DataTypeExpression.GetType())
+                && (DataTypeExpression as NullableDataTypeExpression)?.IsNullable == isNullable)
             {
-                CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(isNullable));
-                return;
+                return true;
             }
 
-            if (propertyType == typeof(uint))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(isNullable));
-                return;
-            }
+            var constructorInfo = enumExpressionGenericType.GetConstructorEx(TypeArray.From<bool>());
+            DataTypeExpression = (DataTypeExpression)constructorInfo?.Invoke(new object[] {isNullable});
 
-            if (propertyType == typeof(int))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(ulong))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(long))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(string))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
-                return;
-            }
-
-            if (propertyType == typeof(DateTime))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(bool))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
-                return;
-            }
-
-            if (propertyType == typeof(TimeSpan))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(decimal))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(float))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(isNullable));
-                return;
-            }
-
-            if (propertyType == typeof(double))
-            {
-                CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(isNullable));
-                return;
-            }
-
-            Log.Error($"Unable to create data type expression for type '{propertyType}'");
+            return true;
         }
 
         private void CreateDataTypeExpressionIfNotCompatible<TDataExpression>(Func<TDataExpression> createFunc)
-             where TDataExpression : DataTypeExpression
+            where TDataExpression : DataTypeExpression
         {
             var dataTypeExpression = DataTypeExpression;
 
-            if (dataTypeExpression != null && dataTypeExpression is TDataExpression)
+            switch (dataTypeExpression)
             {
-                if (dataTypeExpression is NullableDataTypeExpression && typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)))
-                {
-                    var oldDataTypeExpression = dataTypeExpression as NullableDataTypeExpression;
+                case TDataExpression _ when !(dataTypeExpression is NullableDataTypeExpression) || !typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)):
+                    return;
+
+                case TDataExpression _:
+                    var oldDataTypeExpression = (NullableDataTypeExpression)dataTypeExpression;
                     var newDataTypeExpression = createFunc() as NullableDataTypeExpression;
+                    if (newDataTypeExpression is null)
+                    {
+                        return;
+                    }
+
                     if (newDataTypeExpression.IsNullable != oldDataTypeExpression.IsNullable)
                     {
                         DataTypeExpression = newDataTypeExpression;
                     }
-                }
 
-                return;
+                    return;
             }
 
             DataTypeExpression = createFunc();

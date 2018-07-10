@@ -122,12 +122,9 @@ namespace Orc.FilterBuilder.Models
             {
                 value = _propertyInfo.GetValue(instance, null);
             }
-            else if (_propertyData != null)
+            else if (_propertyData != null && instance is IModelEditor modelEditor)
             {
-                if (instance is IModelEditor modelEditor)
-                {
-                    value = modelEditor.GetValue(_propertyData.Name);
-                }
+                value = modelEditor.GetValue(_propertyData.Name);
             }
 
             if (value == null)

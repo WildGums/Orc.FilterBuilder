@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilterSchemeExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,6 @@ namespace Orc.FilterBuilder
     using MethodTimer;
     using Models;
     using Services;
-    using Catel.Data;
 
     public static class FilterSchemeExtensions
     {
@@ -36,16 +35,13 @@ namespace Orc.FilterBuilder
             }
         }
 
-        public static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
+        private static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => conditionTreeItem);
             Argument.IsNotNull(() => reflectionService);
 
             var propertyExpression = conditionTreeItem as PropertyExpression;
-            if (propertyExpression != null)
-            {
-                propertyExpression.EnsureIntegrity(reflectionService);
-            }
+            propertyExpression?.EnsureIntegrity(reflectionService);
 
             foreach (var item in conditionTreeItem.Items)
             {
@@ -53,36 +49,44 @@ namespace Orc.FilterBuilder
             }
         }
 
-        public static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
+        private static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
         {
             Argument.IsNotNull(() => propertyExpression);
             Argument.IsNotNull(() => reflectionService);
 
-            if (propertyExpression.Property == null)
-            {
-                var serializationValue = propertyExpression.PropertySerializationValue;
-                if (!string.IsNullOrWhiteSpace(serializationValue))
-                {
-                    var splittedString = serializationValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-                    if (splittedString.Length == 2)
-                    {
-                        var type = TypeCache.GetType(splittedString[0]);
-                        if (type != null)
-                        {
-                            var typeProperties = reflectionService.GetInstanceProperties(type);
-                            propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
-                        }
-                    }
-                }
-            }
-            else
+            IPropertyCollection typeProperties;
+
+            if (propertyExpression.Property != null)
             {
                 // We already have it, but make sure to get the right instance
                 var property = propertyExpression.Property;
 
-                var typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
+                typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
                 propertyExpression.Property = typeProperties.GetProperty(property.Name);
+
+                return;
             }
+
+            var serializationValue = propertyExpression.PropertySerializationValue;
+            if (string.IsNullOrWhiteSpace(serializationValue))
+            {
+                return;
+            }
+
+            var splittedString = serializationValue.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
+            if (splittedString.Length != 2)
+            {
+                return;
+            }
+
+            var type = TypeCache.GetType(splittedString[0]);
+            if (type == null)
+            {
+                return;
+            }
+
+            typeProperties = reflectionService.GetInstanceProperties(type);
+            propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
         }
 
         [Time]
@@ -93,9 +97,9 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => filteredCollection);
 
             IDisposable suspendToken = null;
-            if (filteredCollection is ISuspendChangeNotificationsCollection)
+            if (filteredCollection is ISuspendChangeNotificationsCollection collection)
             {
-                suspendToken = ((ISuspendChangeNotificationsCollection)filteredCollection).SuspendChangeNotifications();
+                suspendToken = collection.SuspendChangeNotifications();
             }
 
             filteredCollection.Clear();
@@ -105,10 +109,7 @@ namespace Orc.FilterBuilder
                 filteredCollection.Add(item);
             }
 
-            if (suspendToken != null)
-            {
-                suspendToken.Dispose();
-            }
+            suspendToken?.Dispose();
         }
         #endregion
     }
