@@ -21,7 +21,8 @@ TestResult.xml
 [Pp]ackages*/
 bin
 obj
-[Ll]ib/
+[Ll]ib/*
+![Ll]ib/repositories.config
 *.ide/
 *_i.c
 *_p.c
@@ -120,6 +121,16 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
+# Cake - Uncomment if you are using it
+tools/**
+!tools/packages.config
+build.cakeoverrides
+
 # mstest test results
 TestResults
-src/.vs/
+.vs/
+.sonarqube/
+.github/
+BundleArtifacts/
+
+.vscode

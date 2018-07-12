@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FilterBuilder_AddExpression" xml:space="preserve">
+    <value>Add expression</value>
+  </data>
+  <data name="FilterBuilder_AddGroup" xml:space="preserve">
+    <value>Add group</value>
+  </data>
+  <data name="FilterBuilder_And" xml:space="preserve">
+    <value>And</value>
+  </data>
+  <data name="FilterBuilder_AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="FilterBuilder_Contains" xml:space="preserve">
+    <value>contains</value>
+  </data>
+  <data name="FilterBuilder_DeleteItem" xml:space="preserve">
+    <value>Delete item</value>
+  </data>
+  <data name="FilterBuilder_DiscardChanges" xml:space="preserve">
+    <value>The filter has unsaved changes. Are you sure you want to close the editor without saving changes?</value>
+  </data>
+  <data name="FilterBuilder_DoesNotContain" xml:space="preserve">
+    <value>does not contain</value>
+  </data>
+  <data name="FilterBuilder_DoesNotEndWith" xml:space="preserve">
+    <value>does not end with</value>
+  </data>
+  <data name="FilterBuilder_DoesNotMatch" xml:space="preserve">
+    <value>does not match</value>
+  </data>
+  <data name="FilterBuilder_DoesNotStartWith" xml:space="preserve">
+    <value>does not start with</value>
+  </data>
+  <data name="FilterBuilder_EndsWith" xml:space="preserve">
+    <value>ends with</value>
+  </data>
+  <data name="FilterBuilder_EqualTo" xml:space="preserve">
+    <value>is equal to</value>
+  </data>
+  <data name="FilterBuilder_FieldIsRequired" xml:space="preserve">
+    <value>Field is required</value>
+  </data>
+  <data name="FilterBuilder_GreaterThan" xml:space="preserve">
+    <value>is greater than</value>
+  </data>
+  <data name="FilterBuilder_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>is greater than or equal to</value>
+  </data>
+  <data name="FilterBuilder_IsEmpty" xml:space="preserve">
+    <value>is empty</value>
+  </data>
+  <data name="FilterBuilder_IsNull" xml:space="preserve">
+    <value>is null</value>
+  </data>
+  <data name="FilterBuilder_LessThan" xml:space="preserve">
+    <value>is less than</value>
+  </data>
+  <data name="FilterBuilder_LessThanOrEqualTo" xml:space="preserve">
+    <value>is less than or equal to</value>
+  </data>
+  <data name="FilterBuilder_LivePreview" xml:space="preserve">
+    <value>Live preview</value>
+  </data>
+  <data name="FilterBuilder_Matches" xml:space="preserve">
+    <value>matches</value>
+  </data>
+  <data name="FilterBuilder_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="FilterBuilder_NotEqualTo" xml:space="preserve">
+    <value>is not equal to</value>
+  </data>
+  <data name="FilterBuilder_NotIsEmpty" xml:space="preserve">
+    <value>is not empty</value>
+  </data>
+  <data name="FilterBuilder_NotIsNull" xml:space="preserve">
+    <value>is not null</value>
+  </data>
+  <data name="FilterBuilder_Or" xml:space="preserve">
+    <value>Or</value>
+  </data>
+  <data name="FilterBuilder_SaveBroken" xml:space="preserve">
+    <value>The filter has some invalid expressions which will be ignored while filtering. Are you sure you want to save this filter?</value>
+  </data>
+  <data name="FilterBuilder_StartsWith" xml:space="preserve">
+    <value>starts with</value>
+  </data>
+  <data name="FilterBuilder_Generic_TextBlock_Text_DetailsView" xml:space="preserve">
+    <value>Details View</value>
+  </data>
+  <data name="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" xml:space="preserve">
+    <value>broken</value>
+  </data>
+  <data name="FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern" xml:space="preserve">
+    <value>Condition '{0}' is not supported.</value>
+  </data>
+  <data name="FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern" xml:space="preserve">
+    <value>Type '{0}' is not supported.</value>
+  </data>
+  <data name="FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern" xml:space="preserve">
+    <value>Parameter {0} is not supported.</value>
+  </data>
+  <data name="FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption" xml:space="preserve">
+    <value>Delete filter?</value>
+  </data>
+  <data name="FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern" xml:space="preserve">
+    <value>Are you sure you want to delete filter '{0}'?</value>
+  </data>
+</root>

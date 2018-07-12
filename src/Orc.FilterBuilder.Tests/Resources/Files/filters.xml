@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FilterSchemes graphid="1" xmlns:ctl="http://schemas.catelproject.com" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+  <Schemes xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays" graphid="2" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <FilterScheme xmlns="http://schemas.datacontract.org/2004/07/Orc.FilterBuilder.Models">
+      <TargetType type="System.String">Orc.FilterBuilder.Tests.TestFilterRuntimeModel</TargetType>
+      <Title>Test</Title>
+      <HasInvalidConditionItems>false</HasInvalidConditionItems>
+      <ConditionItems xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays" graphid="3" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <ConditionTreeItem i:type="ConditionGroup" xmlns="http://schemas.datacontract.org/2004/07/Orc.FilterBuilder">
+          <Type>And</Type>
+          <Items xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays" graphid="4" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <ConditionTreeItem i:type="PropertyExpression" xmlns="http://schemas.datacontract.org/2004/07/Orc.FilterBuilder">
+              <Property type="System.String">Orc.FilterBuilder.Tests.TestFilterRuntimeModel||StringAttribute</Property>
+              <ctl1:DataTypeExpression xmlns:ctl1="http://schemas.datacontract.org/2004/07/Orc.FilterBuilder" graphid="5" type="Orc.FilterBuilder.StringExpression">
+                <ctl1:Value>on</ctl1:Value>
+                <ctl1:SelectedCondition>StartsWith</ctl1:SelectedCondition>
+                <ctl1:IsValueRequired>true</ctl1:IsValueRequired>
+                <ctl1:ValueControlType>Text</ctl1:ValueControlType>
+              </ctl1:DataTypeExpression>
+              <Items xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays" graphid="6" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" />
+            </ConditionTreeItem>
+          </Items>
+        </ConditionTreeItem>
+      </ConditionItems>
+    </FilterScheme>
+  </Schemes>
+</FilterSchemes>
