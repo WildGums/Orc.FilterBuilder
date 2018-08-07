@@ -1,25 +1,37 @@
+//=======================================================
+// DEFINE PARAMETERS
+//=======================================================
+
 // Define the required parameters
-var DefaultSolutionName = "Orc.FilterBuilder";
-var DefaultCompany = "WildGums";
-var DefaultRepositoryUrl = string.Format("https://github.com/{0}/{1}", DefaultCompany, DefaultSolutionName);
-var StartYear = 2014;
+var Parameters = new Dictionary<string, object>();
+Parameters["SolutionName"] = "Orc.FilterBuilder";
+Parameters["Company"] = "WildGums";
+Parameters["RepositoryUrl"] = string.Format("https://github.com/{0}/{1}", GetBuildServerVariable("Company"), GetBuildServerVariable("SolutionName"));
+Parameters["StartYear"] = "2014";
 
 // Note: the rest of the variables should be coming from the build server,
 // see `/deployment/cake/*-variables.cake` for customization options
+// 
+// If required, more variables can be overridden by specifying them via the 
+// Parameters dictionary, but the build server variables will always override
+// them if defined by the build server. For example, to override the code
+// sign wild card, add this to build.cake
+//
+// Parameters["CodeSignWildcard"] = "Orc.EntityFramework";
 
 //=======================================================
-
-// Components
+// DEFINE COMPONENTS TO BUILD / PACKAGE
+//=======================================================
 
 var ComponentsToBuild = new string[]
 {
     "Orc.FilterBuilder",
-    "Orc.FilterBuilder.Xaml"
+    "Orc.FilterBuilder.Xaml",
 };
 
 //=======================================================
-
-// WPF apps
+// DEFINE WPF APPS TO BUILD / PACKAGE
+//=======================================================
 
 var WpfAppsToBuild = new string[]
 {
@@ -27,8 +39,8 @@ var WpfAppsToBuild = new string[]
 };
 
 //=======================================================
-
-// UWP apps
+// DEFINE UWP APPS TO BUILD / PACKAGE
+//=======================================================
 
 var UwpAppsToBuild = new string[]
 {
@@ -36,14 +48,16 @@ var UwpAppsToBuild = new string[]
 };
 
 //=======================================================
-
-// Test projects
+// DEFINE TEST PROJECTS TO BUILD
+//=======================================================
 
 var TestProjectsToBuild = new string[]
 {
-    "Orc.FilterBuilder.Tests"
+    string.Format("{0}.Tests", GetBuildServerVariable("SolutionName"))
 };
 
+//=======================================================
+// REQUIRED INITIALIZATION, DO NOT CHANGE
 //=======================================================
 
 // Now all variables are defined, include the tasks, that
