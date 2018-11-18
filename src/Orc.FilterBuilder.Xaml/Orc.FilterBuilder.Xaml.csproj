@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net46;net47</TargetFrameworks>
+    <TargetFrameworks>net46;net47;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder.Xaml</AssemblyName>
     <RootNamespace>Orc.FilterBuilder</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -17,7 +17,6 @@
   
   <ItemGroup>
     <PackageReference Include="MethodTimer.Fody" Version="2.1.1" PrivateAssets="all" />
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="all" />
     <PackageReference Include="Catel.Core" Version="5.6.0" />
     <PackageReference Include="Catel.Fody" Version="3.3.0" PrivateAssets="all" />
     <PackageReference Include="Catel.MVVM" Version="5.6.0" />
