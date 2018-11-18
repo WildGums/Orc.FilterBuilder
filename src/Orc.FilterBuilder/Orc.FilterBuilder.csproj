@@ -1,6 +1,7 @@
 <Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net46;net47;netstandard2.0</TargetFrameworks>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
     <AssemblyName>Orc.FilterBuilder</AssemblyName>
     <RootNamespace>Orc.FilterBuilder</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -49,7 +50,6 @@
     <PackageReference Update="NETStandard.Library" Version="2.0.1" />
   </ItemGroup>
 
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.mat.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.mat.props')" />
 </Project>
