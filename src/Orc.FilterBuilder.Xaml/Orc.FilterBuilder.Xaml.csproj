@@ -1,7 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net46;net47</TargetFrameworks>
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <TargetFrameworks>net46;net47;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder.Xaml</AssemblyName>
     <RootNamespace>Orc.FilterBuilder</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -9,6 +8,11 @@
     <PackageVersion>1.0.0-alpha0001</PackageVersion>
     <Description>FilterBuilder xaml library.</Description>
     <PackageTags>orc;filter;builder;xaml;wpf</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- WPF specific -->
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
 
   <PropertyGroup>

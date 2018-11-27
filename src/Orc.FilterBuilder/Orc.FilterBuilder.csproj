@@ -1,7 +1,6 @@
-<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;netstandard2.0</TargetFrameworks>
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <TargetFrameworks>net46;net47;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder</AssemblyName>
     <RootNamespace>Orc.FilterBuilder</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -12,10 +11,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <!-- WPF specific -->
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <!-- SonarQube requires a project guid -->
     <ProjectGuid>CB68F51C-2A87-4945-A220-722BEC604789</ProjectGuid>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="MethodTimer.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="Catel.Core" Version="5.6.0" />
