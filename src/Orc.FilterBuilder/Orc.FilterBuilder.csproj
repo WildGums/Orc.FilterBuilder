@@ -12,7 +12,7 @@
 
   <PropertyGroup>
     <!-- WPF specific -->
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
   
   <PropertyGroup>
