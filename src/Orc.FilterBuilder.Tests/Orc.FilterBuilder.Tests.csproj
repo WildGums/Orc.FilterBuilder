@@ -1,7 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
     <AssemblyName>Orc.FilterBuilder.Tests</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Tests</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -10,6 +9,7 @@
     <Description></Description>
     <PackageTags></PackageTags>
     <SonarQubeExclude>true</SonarQubeExclude>
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
 
   <ItemGroup>
