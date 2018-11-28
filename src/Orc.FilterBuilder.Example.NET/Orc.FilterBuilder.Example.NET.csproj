@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
     <AssemblyName>Orc.FilterBuilder.Example.NET</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Example</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -16,7 +17,6 @@
   <ItemGroup>
     <PackageReference Include="ControlzEx" Version="3.0.2.4" />
     <PackageReference Include="Fluent.Ribbon" Version="6.1.0.233" />
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="All" />
     <PackageReference Include="Catel.Core" Version="5.6.0" />
     <PackageReference Include="Catel.MVVM" Version="5.6.0" />
     <PackageReference Include="Catel.Fody" Version="3.3.0" PrivateAssets="all" />
@@ -56,6 +56,5 @@
     </EmbeddedResource>
   </ItemGroup>
   
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />
 </Project>
