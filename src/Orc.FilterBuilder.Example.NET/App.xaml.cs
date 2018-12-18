@@ -50,7 +50,7 @@ namespace Orc.FilterBuilder.Example
 
             var serviceLocator = ServiceLocator.Default;
             var shellService = serviceLocator.ResolveType<IShellService>();
-            await shellService.CreateWithSplashAsync<ShellWindow>();
+            await shellService.CreateAsync<ShellWindow>();
 
             var filterSchemeManager = serviceLocator.ResolveType<IFilterSchemeManager>();
             filterSchemeManager.Load();
