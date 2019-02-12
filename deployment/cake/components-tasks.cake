@@ -132,19 +132,8 @@ private void BuildComponents()
             PlatformTarget = PlatformTarget.MSIL
         };
 
-        var toolPath = GetVisualStudioPath(msBuildSettings.ToolVersion);
-        if (!string.IsNullOrWhiteSpace(toolPath))
-        {
-            msBuildSettings.ToolPath = toolPath;
-        }
-
-        // msBuildSettings.AddFileLogger(new MSBuildFileLogger
-        // {
-        //     //Verbosity = msBuildSettings.Verbosity,
-        //     Verbosity = Verbosity.Diagnostic,
-        //     LogFile = System.IO.Path.Combine(OutputRootDirectory, string.Format(@"MsBuild_{0}_build.log", component))
-        // });
-
+        ConfigureMsBuild(msBuildSettings, component);
+        
         // Note: we need to set OverridableOutputPath because we need to be able to respect
         // AppendTargetFrameworkToOutputPath which isn't possible for global properties (which
         // are properties passed in using the command line)
@@ -329,7 +318,7 @@ private void PackageComponents()
         LogSeparator();
     }
 
-    var codeSign = (!IsCiBuild && !string.IsNullOrWhiteSpace(CodeSignCertificateSubjectName));
+    var codeSign = (!IsCiBuild && !IsLocalBuild && !string.IsNullOrWhiteSpace(CodeSignCertificateSubjectName));
     if (codeSign)
     {
         // For details, see https://docs.microsoft.com/en-us/nuget/create-packages/sign-a-package
