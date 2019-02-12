@@ -44,7 +44,11 @@ namespace Orc.FilterBuilder.Converters
                 var modelBase = value as IModelEditor;
                 if (modelBase != null)
                 {
-                    return modelBase.GetValue(propertyName);
+                    var propertyDataManager = PropertyDataManager.Default;
+                    if (propertyDataManager.IsPropertyRegistered(modelBase.GetType(), propertyName))
+                    {
+                        return modelBase.GetValueFastButUnsecure(propertyName);
+                    }
                 }
 
                 if (_propertyMetadata != null)
