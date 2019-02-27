@@ -70,7 +70,7 @@ namespace Orc.FilterBuilder.Services
         {
             try
             {
-                Updated.SafeInvoke(this);
+                Updated?.Invoke(this, EventArgs.Empty);
 
                 if (AutoSave)
                 {
@@ -91,8 +91,8 @@ namespace Orc.FilterBuilder.Services
                 throw Log.ErrorAndCreateException<FileLoadException>("Unable to load filters from file '{0}'", GetFileName(fileName));
             }
 
-            Loaded.SafeInvoke(this);
-            Updated.SafeInvoke(this);
+            Loaded?.Invoke(this, EventArgs.Empty);
+            Updated?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<bool> LoadAsync(string fileName = null)
@@ -101,8 +101,8 @@ namespace Orc.FilterBuilder.Services
             {
                 if (TryLoad(fileName))
                 {
-                    Loaded.SafeInvoke(this);
-                    Updated.SafeInvoke(this);
+                    Loaded?.Invoke(this, EventArgs.Empty);
+                    Updated?.Invoke(this, EventArgs.Empty);
 
                     return true;
                 }
@@ -124,7 +124,7 @@ namespace Orc.FilterBuilder.Services
                     _xmlSerializer.Serialize(FilterSchemes, stream, null);
                 }
 
-                Saved.SafeInvoke(this);
+                Saved?.Invoke(this, EventArgs.Empty);
 
                 Log.Debug("Saved filter schemes to '{0}'", fileName);
             }

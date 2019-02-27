@@ -206,7 +206,7 @@ namespace Orc.FilterBuilder.Models
 
         protected void RaiseUpdated()
         {
-            Updated.SafeInvoke(this);
+            Updated?.Invoke(this, EventArgs.Empty);
         }
 
         public override string ToString()
