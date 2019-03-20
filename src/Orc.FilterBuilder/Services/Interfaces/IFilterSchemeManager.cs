@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFilterSchemeManager.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Services
+﻿namespace Orc.FilterBuilder.Services
 {
     using System;
     using System.Threading.Tasks;
@@ -24,9 +17,17 @@ namespace Orc.FilterBuilder.Services
         event EventHandler<EventArgs> Saved;
 
         #region Methods
-        void UpdateFilters();        
-        void Load(string fileName = null);
+        Task UpdateFiltersAsync();
         Task<bool> LoadAsync(string fileName = null);
+        Task SaveAsync(string fileName = null);
+
+        [ObsoleteEx(ReplacementTypeOrMember = "UpdateFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
+        void UpdateFilters();
+
+        [ObsoleteEx(ReplacementTypeOrMember = "IFilterSerializationService.LoadFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
+        void Load(string fileName = null);
+
+        [ObsoleteEx(ReplacementTypeOrMember = "IFilterSerializationService.SaveFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
         void Save(string fileName = null);
         #endregion
     }

@@ -1,18 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterBuilderControl.xaml.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Views
+﻿namespace Orc.FilterBuilder.Views
 {
     using System;
     using System.Collections;
     using System.Windows;
     using System.Windows.Media;
     using Catel.MVVM.Views;
+    using Orc.FilterBuilder.Models;
     using ViewModels;
+    using PropertyMetadata = System.Windows.PropertyMetadata;
 
     public partial class FilterBuilderControl
     {
@@ -36,8 +31,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(RawCollectionProperty, value); }
         }
 
-        public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register("RawCollection", typeof(IEnumerable),
-            typeof(FilterBuilderControl));
+        public static readonly DependencyProperty RawCollectionProperty = DependencyProperty.Register(nameof(RawCollection), 
+            typeof(IEnumerable), typeof(FilterBuilderControl));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -47,8 +42,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(ModeProperty, value); }
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("Mode", typeof(FilterBuilderMode),
-            typeof(FilterBuilderControl), new PropertyMetadata(default(FilterBuilderMode)));
+        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(nameof(Mode), 
+            typeof(FilterBuilderMode), typeof(FilterBuilderControl), new PropertyMetadata(default(FilterBuilderMode)));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -58,8 +53,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(FilteringFuncProperty, value); }
         }
 
-        public static readonly DependencyProperty FilteringFuncProperty = DependencyProperty.Register("FilteringFunc", typeof(Func<object, bool>),
-            typeof(FilterBuilderControl), new PropertyMetadata(default(Func<object, bool>)));
+        public static readonly DependencyProperty FilteringFuncProperty = DependencyProperty.Register(nameof(FilteringFunc), 
+            typeof(Func<object, bool>), typeof(FilterBuilderControl), new PropertyMetadata(default(Func<object, bool>)));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -69,8 +64,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(FilteredCollectionProperty, value); }
         }
 
-        public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register("FilteredCollection", typeof(IList),
-            typeof(FilterBuilderControl));
+        public static readonly DependencyProperty FilteredCollectionProperty = DependencyProperty.Register(nameof(FilteredCollection),
+            typeof(IList), typeof(FilterBuilderControl));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -80,8 +75,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(AutoApplyFilterProperty, value); }
         }
 
-        public static readonly DependencyProperty AutoApplyFilterProperty = DependencyProperty.Register("AutoApplyFilter", typeof(bool),
-            typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty AutoApplyFilterProperty = DependencyProperty.Register(nameof(AutoApplyFilter), 
+            typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -91,8 +86,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(AllowLivePreviewProperty, value); }
         }
 
-        public static readonly DependencyProperty AllowLivePreviewProperty =
-            DependencyProperty.Register("AllowLivePreview", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty AllowLivePreviewProperty = DependencyProperty.Register(nameof(AllowLivePreview), 
+            typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -102,8 +97,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(EnableAutoCompletionProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableAutoCompletionProperty =
-            DependencyProperty.Register("EnableAutoCompletion", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty EnableAutoCompletionProperty = DependencyProperty.Register(nameof(EnableAutoCompletion), 
+            typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -113,8 +108,8 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(AllowResetProperty, value); }
         }
 
-        public static readonly DependencyProperty AllowResetProperty =
-            DependencyProperty.Register("AllowReset", typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty AllowResetProperty = DependencyProperty.Register(nameof(AllowReset), 
+            typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
@@ -124,17 +119,19 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(AllowDeleteProperty, value); }
         }
 
-        public static readonly DependencyProperty AllowDeleteProperty = DependencyProperty.Register("AllowDelete", typeof(bool),
-            typeof(FilterBuilderControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty AllowDeleteProperty = DependencyProperty.Register(nameof(AllowDelete), 
+            typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
 
+        [ObsoleteEx(Message = "Will be removed", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
         public Brush AccentColorBrush
         {
             get { return (Brush)GetValue(AccentColorBrushProperty); }
             set { SetValue(AccentColorBrushProperty, value); }
         }
 
-        public static readonly DependencyProperty AccentColorBrushProperty = DependencyProperty.Register("AccentColorBrush", typeof(Brush),
+        [ObsoleteEx(Message = "Will be removed", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
+        public static readonly DependencyProperty AccentColorBrushProperty = DependencyProperty.Register(nameof(AccentColorBrush), typeof(Brush),
             typeof(FilterBuilderControl), new PropertyMetadata(Brushes.LightGray, (sender, e) => ((FilterBuilderControl)sender).OnAccentColorBrushChanged()));
 
 
@@ -145,11 +142,12 @@ namespace Orc.FilterBuilder.Views
             set { SetValue(ScopeProperty, value); }
         }
 
-        public static readonly DependencyProperty ScopeProperty = DependencyProperty.Register("Scope", typeof(object),
+        public static readonly DependencyProperty ScopeProperty = DependencyProperty.Register(nameof(Scope), typeof(object),
             typeof(FilterBuilderControl), new FrameworkPropertyMetadata((sender, e) => ((FilterBuilderControl)sender).OnScopeChanged()));
         #endregion
 
         #region Methods
+        [ObsoleteEx(Message = "Will be removed", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
         private void OnAccentColorBrushChanged()
         {
             var solidColorBrush = AccentColorBrush as SolidColorBrush;
@@ -169,11 +167,17 @@ namespace Orc.FilterBuilder.Views
             }
         }
 
-        public override void OnApplyTemplate()
+        private void OnFilterPreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            base.OnApplyTemplate();
-
-            SetCurrentValue(AccentColorBrushProperty, TryFindResource("AccentColorBrush") as SolidColorBrush);
+            var filterScheme = ((FrameworkElement)sender).DataContext as FilterScheme;
+            if (filterScheme != null)
+            {
+                var vm = ViewModel as FilterBuilderViewModel;
+                if (vm != null)
+                {
+                    vm.SelectedFilterScheme = filterScheme;
+                }
+            }
         }
         #endregion
     }

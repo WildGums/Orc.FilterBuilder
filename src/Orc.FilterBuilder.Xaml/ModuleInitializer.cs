@@ -1,14 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModuleInitializer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-using Catel.IoC;
+﻿using Catel.IoC;
 using Catel.Services;
-using Orc.FilterBuilder.Properties;
-using Orc.FilterBuilder.Services;
 using Orc.FilterBuilder.ViewModels;
 using Orc.FilterBuilder.Views;
 

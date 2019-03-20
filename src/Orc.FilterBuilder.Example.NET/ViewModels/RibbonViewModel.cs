@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RibbonViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Example.ViewModels
+﻿namespace Orc.FilterBuilder.Example.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -28,7 +21,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
     public class RibbonViewModel : ViewModelBase
     {
-        private readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly ITestDataService _testDataService;
         private readonly IFilterSchemeManager _filterSchemeManager;
@@ -56,7 +49,11 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         public FilterScheme SelectedFilterScheme { get; set; }
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
+        private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default")
+        {
+            CanDelete = false,
+            CanEdit = false
+        };
 
         public TaskCommand NewSchemeCommand { get; private set; }
 
@@ -78,7 +75,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
                 _filterSchemes.Schemes.Add(filterScheme);
                 _filterService.SelectedFilter = filterScheme;
 
-                _filterSchemeManager.UpdateFilters();
+                await _filterSchemeManager.UpdateFiltersAsync();
             }
         }
 
@@ -133,7 +130,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
                                                                  select scheme);
             }
 
-            newSchemes.Insert(0, NoFilterFilter);
+            newSchemes.Insert(0, _noFilterFilter);
 
             if (AvailableSchemes is null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {

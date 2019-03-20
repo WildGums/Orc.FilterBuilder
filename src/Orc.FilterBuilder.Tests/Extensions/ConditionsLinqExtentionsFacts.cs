@@ -567,7 +567,7 @@ namespace Orc.FilterBuilder.Tests
                     SelectedCondition = Condition.IsNull
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.DATE is null), HumanComparer);
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.DATE == null), HumanComparer);
             }
 
             [Test]

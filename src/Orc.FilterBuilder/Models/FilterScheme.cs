@@ -25,12 +25,12 @@ namespace Orc.FilterBuilder.Models
     [Serializable]
     public class FilterScheme : ModelBase
     {
-        private static readonly Type _defaultTargetType = typeof(object);
+        private static readonly Type DefaultTargetType = typeof(object);
         private object _scope;
 
         #region Constructors
         public FilterScheme()
-            : this(_defaultTargetType)
+            : this(DefaultTargetType)
         {
         }
 
@@ -59,6 +59,8 @@ namespace Orc.FilterBuilder.Models
             Title = title;
             ConditionItems = new ObservableCollection<ConditionTreeItem>();
             ConditionItems.Add(root);
+            CanEdit = true;
+            CanDelete = true;
         }
         #endregion
 
@@ -66,6 +68,14 @@ namespace Orc.FilterBuilder.Models
         public Type TargetType { get; private set; }
 
         public string Title { get; set; }
+
+        public string FilterGroup { get; set; }
+
+        [ExcludeFromSerialization]
+        public bool CanEdit { get; set; }
+
+        [ExcludeFromSerialization]
+        public bool CanDelete { get; set; }
 
         [ExcludeFromSerialization]
         public ConditionTreeItem Root
