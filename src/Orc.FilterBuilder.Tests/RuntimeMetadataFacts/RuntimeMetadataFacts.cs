@@ -20,7 +20,7 @@
             var initialCollection = TestDataProvider.GetInitialCollection();
             var resultList = new List<TestFilterRuntimeModel>();
 
-            var filterService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<FilterService>();
+            var filterService = typeFactory.CreateInstance<FilterService>();
             filterService.FilterCollection(filterScheme, initialCollection, resultList);
 
             Assert.AreEqual(1, resultList.Count);
