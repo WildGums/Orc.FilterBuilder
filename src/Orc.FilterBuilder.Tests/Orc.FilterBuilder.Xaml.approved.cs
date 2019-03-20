@@ -68,6 +68,13 @@ namespace Orc.FilterBuilder
         Collection = 0,
         FilteringFunction = 1,
     }
+    [System.Diagnostics.DebuggerDisplayAttribute("{Title}")]
+    public class FilterGroup
+    {
+        public FilterGroup(string title, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.Models.FilterScheme> filterSchemes) { }
+        public System.Collections.Generic.List<Orc.FilterBuilder.Models.FilterScheme> FilterSchemes { get; }
+        public string Title { get; }
+    }
     public class static TreeViewItemExtensions
     {
         public static int GetDepth(this System.Windows.Controls.TreeViewItem item) { }
@@ -121,9 +128,9 @@ namespace Orc.FilterBuilder.ViewModels
         public static readonly Catel.Data.PropertyData AllowLivePreviewProperty;
         public static readonly Catel.Data.PropertyData AllowResetProperty;
         public static readonly Catel.Data.PropertyData AutoApplyFilterProperty;
-        public static readonly Catel.Data.PropertyData AvailableSchemesProperty;
         public static readonly Catel.Data.PropertyData EnableAutoCompletionProperty;
         public static readonly Catel.Data.PropertyData FilteredCollectionProperty;
+        public static readonly Catel.Data.PropertyData FilterGroupsProperty;
         public static readonly Catel.Data.PropertyData FilteringFuncProperty;
         public static readonly Catel.Data.PropertyData ModeProperty;
         public static readonly Catel.Data.PropertyData RawCollectionProperty;
@@ -135,11 +142,11 @@ namespace Orc.FilterBuilder.ViewModels
         public bool AllowReset { get; set; }
         public Catel.MVVM.TaskCommand ApplySchemeCommand { get; }
         public bool AutoApplyFilter { get; set; }
-        public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.Models.FilterScheme> AvailableSchemes { get; }
         public Catel.MVVM.TaskCommand<Orc.FilterBuilder.Models.FilterScheme> DeleteSchemeCommand { get; }
         public Catel.MVVM.TaskCommand<Orc.FilterBuilder.Models.FilterScheme> EditSchemeCommand { get; }
         public bool EnableAutoCompletion { get; set; }
         public System.Collections.IList FilteredCollection { get; set; }
+        public System.Collections.Generic.List<Orc.FilterBuilder.FilterGroup> FilterGroups { get; }
         public System.Func<object, bool> FilteringFunc { get; set; }
         public Orc.FilterBuilder.FilterBuilderMode Mode { get; set; }
         public Catel.MVVM.TaskCommand NewSchemeCommand { get; }
@@ -164,8 +171,9 @@ namespace Orc.FilterBuilder.Views
         public EditFilterWindow() { }
         public void InitializeComponent() { }
     }
-    public class FilterBuilderControl : Catel.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector
+    public class FilterBuilderControl : Catel.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector, System.Windows.Markup.IStyleConnector
     {
+        [System.ObsoleteAttribute("Will be removed. Will be removed in version 4.0.0.", true)]
         public static readonly System.Windows.DependencyProperty AccentColorBrushProperty;
         public static readonly System.Windows.DependencyProperty AllowDeleteProperty;
         public static readonly System.Windows.DependencyProperty AllowLivePreviewProperty;
@@ -178,6 +186,7 @@ namespace Orc.FilterBuilder.Views
         public static readonly System.Windows.DependencyProperty RawCollectionProperty;
         public static readonly System.Windows.DependencyProperty ScopeProperty;
         public FilterBuilderControl() { }
+        [System.ObsoleteAttribute("Will be removed. Will be removed in version 4.0.0.", true)]
         public System.Windows.Media.Brush AccentColorBrush { get; set; }
         [Catel.MVVM.Views.ViewToViewModelAttribute("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
         public bool AllowDelete { get; set; }
@@ -200,6 +209,5 @@ namespace Orc.FilterBuilder.Views
         [Catel.MVVM.Views.ViewToViewModelAttribute("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
         public object Scope { get; set; }
         public void InitializeComponent() { }
-        public override void OnApplyTemplate() { }
     }
 }

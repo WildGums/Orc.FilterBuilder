@@ -175,12 +175,23 @@ namespace Orc.FilterBuilder
         public static void Apply(this Orc.FilterBuilder.Models.FilterScheme filterScheme, System.Collections.IEnumerable rawCollection, System.Collections.IList filteredCollection) { }
         public static void EnsureIntegrity(this Orc.FilterBuilder.Models.FilterScheme filterScheme, Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
     }
+    public class FilterSerializationService : Orc.FilterBuilder.IFilterSerializationService
+    {
+        public FilterSerializationService(Orc.FileSystem.IDirectoryService directoryService, Orc.FileSystem.IFileService fileService, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer) { }
+        public virtual System.Threading.Tasks.Task<Orc.FilterBuilder.Models.FilterSchemes> LoadFiltersAsync(string fileName) { }
+        public virtual System.Threading.Tasks.Task SaveFiltersAsync(string fileName, Orc.FilterBuilder.Models.FilterSchemes filterSchemes) { }
+    }
     [System.Diagnostics.DebuggerDisplayAttribute("{ValueControlType} {SelectedCondition} {Value}")]
     public class FloatExpression : Orc.FilterBuilder.NumericExpression<float>
     {
         protected FloatExpression(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public FloatExpression() { }
         public FloatExpression(bool isNullable) { }
+    }
+    public interface IFilterSerializationService
+    {
+        System.Threading.Tasks.Task<Orc.FilterBuilder.Models.FilterSchemes> LoadFiltersAsync(string fileName);
+        System.Threading.Tasks.Task SaveFiltersAsync(string fileName, Orc.FilterBuilder.Models.FilterSchemes filterSchemes);
     }
     public class static InstancePropertyHelper
     {
@@ -368,7 +379,10 @@ namespace Orc.FilterBuilder.Models
     [Catel.Runtime.Serialization.SerializerModifierAttribute(typeof(Orc.FilterBuilder.Runtime.Serialization.FilterSchemeSerializerModifier))]
     public class FilterScheme : Catel.Data.ModelBase
     {
+        public static readonly Catel.Data.PropertyData CanDeleteProperty;
+        public static readonly Catel.Data.PropertyData CanEditProperty;
         public static readonly Catel.Data.PropertyData ConditionItemsProperty;
+        public static readonly Catel.Data.PropertyData FilterGroupProperty;
         public static readonly Catel.Data.PropertyData HasInvalidConditionItemsProperty;
         public static readonly Catel.Data.PropertyData TargetTypeProperty;
         public static readonly Catel.Data.PropertyData TitleProperty;
@@ -377,7 +391,12 @@ namespace Orc.FilterBuilder.Models
         public FilterScheme(System.Type targetType, string title) { }
         protected FilterScheme(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public FilterScheme(System.Type targetType, string title, Orc.FilterBuilder.ConditionTreeItem root) { }
+        [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
+        public bool CanDelete { get; set; }
+        [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
+        public bool CanEdit { get; set; }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.ConditionTreeItem> ConditionItems { get; }
+        public string FilterGroup { get; set; }
         public bool HasInvalidConditionItems { get; }
         [Catel.Runtime.Serialization.ExcludeFromSerializationAttribute()]
         public Orc.FilterBuilder.ConditionTreeItem Root { get; }
@@ -473,17 +492,24 @@ namespace Orc.FilterBuilder.Services
     }
     public class FilterSchemeManager : Orc.FilterBuilder.Services.IFilterSchemeManager
     {
-        public FilterSchemeManager(Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer) { }
+        public FilterSchemeManager(Orc.FilterBuilder.IFilterSerializationService filterSerializationService) { }
         public bool AutoSave { get; set; }
         public Orc.FilterBuilder.Models.FilterSchemes FilterSchemes { get; }
         public object Scope { get; set; }
         public event System.EventHandler<System.EventArgs> Loaded;
         public event System.EventHandler<System.EventArgs> Saved;
         public event System.EventHandler<System.EventArgs> Updated;
+        [System.ObsoleteAttribute("Use `IFilterSerializationService.LoadFiltersAsync` instead. Will be removed in ve" +
+            "rsion 4.0.0.", true)]
         public void Load(string fileName = null) { }
-        public System.Threading.Tasks.Task<bool> LoadAsync(string fileName = null) { }
+        public virtual System.Threading.Tasks.Task<bool> LoadAsync(string fileName = null) { }
+        [System.ObsoleteAttribute("Use `IFilterSerializationService.SaveFiltersAsync` instead. Will be removed in ve" +
+            "rsion 4.0.0.", true)]
         public void Save(string fileName = null) { }
+        public virtual System.Threading.Tasks.Task SaveAsync(string fileName = null) { }
+        [System.ObsoleteAttribute("Use `UpdateFiltersAsync` instead. Will be removed in version 4.0.0.", true)]
         public void UpdateFilters() { }
+        public virtual System.Threading.Tasks.Task UpdateFiltersAsync() { }
     }
     public class FilterService : Orc.FilterBuilder.Services.IFilterService
     {
@@ -506,10 +532,17 @@ namespace Orc.FilterBuilder.Services
         public event System.EventHandler<System.EventArgs> Loaded;
         public event System.EventHandler<System.EventArgs> Saved;
         public event System.EventHandler<System.EventArgs> Updated;
+        [System.ObsoleteAttribute("Use `IFilterSerializationService.LoadFiltersAsync` instead. Will be removed in ve" +
+            "rsion 4.0.0.", true)]
         void Load(string fileName = null);
         System.Threading.Tasks.Task<bool> LoadAsync(string fileName = null);
+        [System.ObsoleteAttribute("Use `IFilterSerializationService.SaveFiltersAsync` instead. Will be removed in ve" +
+            "rsion 4.0.0.", true)]
         void Save(string fileName = null);
+        System.Threading.Tasks.Task SaveAsync(string fileName = null);
+        [System.ObsoleteAttribute("Use `UpdateFiltersAsync` instead. Will be removed in version 4.0.0.", true)]
         void UpdateFilters();
+        System.Threading.Tasks.Task UpdateFiltersAsync();
     }
     public interface IFilterService
     {

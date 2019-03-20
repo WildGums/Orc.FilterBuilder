@@ -392,11 +392,12 @@ namespace Orc.FilterBuilder.ViewModels
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
+
                 if (_targetType != null && _filterSchemes != null)
                 {
                     ((ICollection<FilterScheme>)applicableFilterSchemes).AddRange((from scheme in _filterSchemes.Schemes
-                                                                      where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                                                      select scheme));
+                                                                                   where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                                                                   select scheme));
                 }
             }
 
@@ -406,11 +407,12 @@ namespace Orc.FilterBuilder.ViewModels
                                     //where filterScheme.IsVisible
                                 orderby filterScheme.FilterGroup, filterScheme.Title, filterScheme.CanDelete
                                 group filterScheme by filterScheme.FilterGroup into g
-                                select new FilterGroup
-                                {
-                                    Title = g.Key,
-                                    FilterSchemes = new List<FilterScheme>(g.ToList())
-                                }).ToList();
+                                select new FilterGroup(g.Key, g)).ToList();
+
+            // Ensure no filter is at the top
+            var noFilterGroup = filterGroups.First(x => x.Title == _noFilterFilter.FilterGroup);
+            noFilterGroup.FilterSchemes.Remove(_noFilterFilter);
+            noFilterGroup.FilterSchemes.Insert(0, _noFilterFilter);
 
             FilterGroups = filterGroups;
         }

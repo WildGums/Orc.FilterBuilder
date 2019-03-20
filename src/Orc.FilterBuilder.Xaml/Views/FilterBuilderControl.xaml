@@ -27,6 +27,7 @@
                                Visibility="{Binding Title, Converter={catel:ReferenceToCollapsingVisibilityConverter}}" />
 
                         <ListBox x:Name="listBox" 
+                                 Grid.Row="1"
                                  ItemsSource="{Binding FilterSchemes}"
                                  BorderThickness="0" 
                                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
