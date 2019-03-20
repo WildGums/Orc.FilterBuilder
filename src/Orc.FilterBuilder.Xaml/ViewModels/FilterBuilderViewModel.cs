@@ -106,7 +106,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async Task OnNewSchemeExecuteAsync()
         {
-            if (_targetType == null)
+            if (_targetType is null)
             {
                 Log.Warning("Target type is unknown, cannot get any type information to create filters");
                 return;
@@ -130,7 +130,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
-            if (filterScheme == null)
+            if (filterScheme is null)
             {
                 return false;
             }
@@ -179,17 +179,17 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnApplySchemeCanExecute()
         {
-            if (SelectedFilterScheme == null)
+            if (SelectedFilterScheme is null)
             {
                 return false;
             }
 
-            if (RawCollection == null)
+            if (RawCollection is null)
             {
                 return false;
             }
 
-            if (FilteredCollection == null && Mode == FilterBuilderMode.Collection)
+            if (FilteredCollection is null && Mode == FilterBuilderMode.Collection)
             {
                 return false;
             }
@@ -277,7 +277,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
         {
-            if (filterScheme == null || _applyingFilter)
+            if (filterScheme is null || _applyingFilter)
             {
                 return;
             }
@@ -349,7 +349,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             var newSchemes = new ObservableCollection<FilterScheme>();
 
-            if (RawCollection == null)
+            if (RawCollection is null)
             {
                 _targetType = null;
             }
@@ -366,7 +366,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             newSchemes.Insert(0, _noFilterFilter);
 
-            if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
+            if (AvailableSchemes is null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {
                 AvailableSchemes = newSchemes;
 

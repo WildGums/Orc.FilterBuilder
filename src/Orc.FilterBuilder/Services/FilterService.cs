@@ -77,7 +77,7 @@ namespace Orc.FilterBuilder.Services
 
             filter.EnsureIntegrity(_reflectionService);
 
-            if (filteredCollection == null)
+            if (filteredCollection is null)
             {
                 return;
             }

@@ -18,12 +18,12 @@ namespace Orc.FilterBuilder.Services
         {
             var filteredCollection = new List<TItem>();
 
-            if (rawCollection == null)
+            if (rawCollection is null)
             {
                 return filteredCollection;
             }
 
-            if (filter == null)
+            if (filter is null)
             {
                 filteredCollection.AddRange(rawCollection);
                 return filteredCollection;

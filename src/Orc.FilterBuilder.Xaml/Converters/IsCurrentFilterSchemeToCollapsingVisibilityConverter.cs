@@ -24,7 +24,7 @@ namespace Orc.FilterBuilder.Converters
 
             var visibility = Visibility.Collapsed;
 
-            if (filterScheme == null)
+            if (filterScheme is null)
             {
                 return visibility;
             }

@@ -22,7 +22,7 @@ namespace Orc.FilterBuilder.Converters
         protected override object Convert(object value, Type targetType, object parameter)
         {
             var item = value as TreeViewItem;
-            if (item == null)
+            if (item is null)
             {
                 return new Thickness(0);
             }

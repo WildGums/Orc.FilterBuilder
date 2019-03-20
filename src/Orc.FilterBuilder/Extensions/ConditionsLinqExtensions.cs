@@ -26,7 +26,7 @@ namespace Orc.FilterBuilder.Conditions
             var type = typeof(T);
             var parameterExpression = Expression.Parameter(type, "item");
             var expression = conditionTreeItem.BuildExpression(parameterExpression);
-            if (expression == null)
+            if (expression is null)
             {
                 return null;
             }
@@ -63,11 +63,11 @@ namespace Orc.FilterBuilder.Conditions
             foreach (var item in conditionGroup.Items)
             {
                 var curExp = item?.BuildExpression(parameterExpression);
-                if (curExp == null)
+                if (curExp is null)
                 {
                     continue;
                 }
-                if (left == null)
+                if (left is null)
                 {
                     left = curExp;
                 }

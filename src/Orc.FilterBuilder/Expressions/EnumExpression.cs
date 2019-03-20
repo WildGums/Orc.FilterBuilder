@@ -111,7 +111,7 @@ namespace Orc.FilterBuilder
                     return !Equals(entityValue, Value);
 
                 case Condition.IsNull:
-                    return entityValue == null;
+                    return entityValue is null;
 
                 case Condition.NotIsNull:
                     return entityValue != null;

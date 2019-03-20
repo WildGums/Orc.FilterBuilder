@@ -14,7 +14,7 @@ namespace Orc.FilterBuilder
     {
         protected override void ValidateFields(PropertyExpression instance, List<IFieldValidationResult> validationResults)
         {
-            if (instance.Property == null)
+            if (instance.Property is null)
             {
                 validationResults.Add(FieldValidationResult.CreateError("Property", "Property can not be null"));
             }

@@ -246,7 +246,7 @@ namespace Orc.FilterBuilder
                 return true;
             }
 
-            if (DataTypeExpression == null)
+            if (DataTypeExpression is null)
             {
                 return true;
             }
@@ -257,13 +257,13 @@ namespace Orc.FilterBuilder
         public override string ToString()
         {
             var property = Property;
-            if (property == null)
+            if (property is null)
             {
                 return string.Empty;
             }
 
             var dataTypeExpression = DataTypeExpression;
-            if (dataTypeExpression == null)
+            if (dataTypeExpression is null)
             {
                 return string.Empty;
             }

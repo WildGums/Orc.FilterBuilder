@@ -26,7 +26,7 @@ namespace FilterBuilder.Example.Services
 
         public ObservableCollection<TestEntity> GetTestItems()
         {
-            if (_testItems == null)
+            if (_testItems is null)
             {
                 _testItems = GenerateTestItems();
             }

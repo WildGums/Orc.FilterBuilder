@@ -62,7 +62,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         private async Task OnNewSchemeExecuteAsync()
         {
-            if (_targetType == null)
+            if (_targetType is null)
             {
                 Log.Warning("Target type is unknown, cannot get any type information to create filters");
                 return;
@@ -121,7 +121,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
             var newSchemes = new ObservableCollection<FilterScheme>();
 
-            if (RawItems == null)
+            if (RawItems is null)
             {
                 _targetType = null;
             }
@@ -135,7 +135,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
             newSchemes.Insert(0, NoFilterFilter);
 
-            if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
+            if (AvailableSchemes is null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {
                 AvailableSchemes = newSchemes;
                 SelectedFilterScheme = newSchemes.FirstOrDefault();
@@ -154,7 +154,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
         {
-            if (_filterService.SelectedFilter == null)
+            if (_filterService.SelectedFilter is null)
             {
                 SelectedFilterScheme = AvailableSchemes.First();
             }
