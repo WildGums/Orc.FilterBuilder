@@ -17,16 +17,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MethodTimer.Fody" Version="2.3.2" PrivateAssets="all" />
+    <PackageReference Include="MethodTimer.Fody" Version="2.3.3" PrivateAssets="all" />
     <PackageReference Include="Catel.Core" Version="5.10.0" />
     <PackageReference Include="Catel.Fody" Version="3.9.0" PrivateAssets="all" />
-    <PackageReference Include="Fody" Version="4.0.2" PrivateAssets="all">
+    <PackageReference Include="Fody" Version="4.2.1" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="ModuleInit.Fody" Version="1.9.0" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="4.4.3" PrivateAssets="all" />
-    <PackageReference Include="Orc.FileSystem" Version="3.0.0" />
-    <PackageReference Include="Orc.Metadata" Version="3.1.0-alpha0010" />
+    <PackageReference Include="Orc.FileSystem" Version="3.1.0" />
+    <PackageReference Include="Orc.Metadata" Version="3.1.0" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <PackageReference Include="WpfAnalyzers" Version="2.2.0.2" PrivateAssets="all" />
