@@ -65,7 +65,7 @@ namespace Orc.FilterBuilder
                         return entityValue != null && _comparer.Compare(entityValue.Value, Value) <= 0;
 
                     case Condition.IsNull:
-                        return entityValue == null;
+                        return entityValue is null;
 
                     case Condition.NotIsNull:
                         return entityValue != null;

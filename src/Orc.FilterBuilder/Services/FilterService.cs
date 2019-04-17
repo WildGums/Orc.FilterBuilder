@@ -45,7 +45,7 @@ namespace Orc.FilterBuilder.Services
 
                 _selectedFilter = value;
 
-                SelectedFilterChanged.SafeInvoke(this);
+                SelectedFilterChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         #endregion
@@ -77,7 +77,7 @@ namespace Orc.FilterBuilder.Services
 
             filter.EnsureIntegrity(_reflectionService);
 
-            if (filteredCollection == null)
+            if (filteredCollection is null)
             {
                 return;
             }
@@ -89,7 +89,7 @@ namespace Orc.FilterBuilder.Services
         #region Methods
         private void OnFilterSchemeManagerUpdated(object sender, EventArgs e)
         {
-            FiltersUpdated.SafeInvoke(this);
+            FiltersUpdated?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

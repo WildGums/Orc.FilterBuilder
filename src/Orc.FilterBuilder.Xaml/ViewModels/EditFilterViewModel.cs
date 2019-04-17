@@ -173,7 +173,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
         {
-            if (item == null)
+            if (item is null)
             {
                 return false;
             }
@@ -193,7 +193,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnDeleteCondition(ConditionTreeItem item)
         {
-            if (item.Parent == null)
+            if (item.Parent is null)
             {
                 FilterScheme.ConditionItems.Remove(item);
 
@@ -234,7 +234,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void UpdatePreviewItems()
         {
-            if (FilterScheme == null || RawCollection == null)
+            if (FilterScheme is null || RawCollection is null)
             {
                 return;
             }

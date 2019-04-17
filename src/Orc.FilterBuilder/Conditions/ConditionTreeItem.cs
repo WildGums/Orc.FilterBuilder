@@ -125,7 +125,7 @@ namespace Orc.FilterBuilder
 
         protected void RaiseUpdated()
         {
-            Updated.SafeInvoke(this);
+            Updated?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnConditionUpdated(object sender, EventArgs e)

@@ -1,13 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeMetadataFacts.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Catel.IoC;
     using FilterBuilder.Services;
     using NUnit.Framework;
@@ -16,17 +10,17 @@ namespace Orc.FilterBuilder.Tests
     public class RuntimeMetadataFacts
     {
         [Test]
-        public void CorrectlyFilterEntitiesWithRuntimeMetadata()
+        public async Task CorrectlyFilterEntitiesWithRuntimeMetadataAsync()
         {
             var serviceLocator = ServiceLocator.Default;
 
             var typeFactory = serviceLocator.ResolveType<ITypeFactory>();
             
-            var filterScheme = FilterSchemeInitializationHelper.GetTestFilterScheme();
+            var filterScheme = await FilterSchemeInitializationHelper.GetTestFilterSchemeAsync();
             var initialCollection = TestDataProvider.GetInitialCollection();
             var resultList = new List<TestFilterRuntimeModel>();
 
-            var filterService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<FilterService>();
+            var filterService = typeFactory.CreateInstance<FilterService>();
             filterService.FilterCollection(filterScheme, initialCollection, resultList);
 
             Assert.AreEqual(1, resultList.Count);

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests
 {
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using Catel.IoC;
     using FilterBuilder.Models;
     using FilterBuilder.Services;
@@ -13,7 +10,7 @@ namespace Orc.FilterBuilder.Tests
 
     public static class FilterSchemeInitializationHelper
     {
-        public static FilterScheme GetTestFilterScheme()
+        public static async Task<FilterScheme> GetTestFilterSchemeAsync()
         {
             var serviceLocator = ServiceLocator.Default;
 
@@ -27,7 +24,7 @@ namespace Orc.FilterBuilder.Tests
             File.Copy(sourceFile, tempFile, true);
 
             var filterManager = serviceLocator.ResolveType<IFilterSchemeManager>();
-            filterManager.Load(tempFile);
+            await filterManager.LoadAsync(tempFile);
 
             return filterManager.FilterSchemes.Schemes.FirstOrDefault(x => x.Title == "Test");
         }

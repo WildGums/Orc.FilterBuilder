@@ -1,5 +1,6 @@
 ﻿using Catel.IoC;
 using FilterBuilder.Example.Services;
+using Orc.FilterBuilder;
 using Orc.FilterBuilder.Example.Services;
 using Orchestra.Services;
 
@@ -18,5 +19,6 @@ public static class ModuleInitializer
         serviceLocator.RegisterType<IRibbonService, RibbonService>();
         serviceLocator.RegisterType<IApplicationInitializationService, ApplicationInitializationService>();
         serviceLocator.RegisterType<ITestDataService, TestDataService>();
+        serviceLocator.RegisterType<IFilterSerializationService, ExampleFilterSerializationService>();
     }
 }

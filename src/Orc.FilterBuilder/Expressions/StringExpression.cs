@@ -49,7 +49,7 @@ namespace Orc.FilterBuilder
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             var entityValue = propertyMetadata.GetValue<string>(entity);
-            if (entityValue == null && propertyMetadata.Type.IsEnumEx())
+            if (entityValue is null && propertyMetadata.Type.IsEnumEx())
             {
                 var entityValueAsObject = propertyMetadata.GetValue(entity);
                 if (entityValueAsObject != null)
@@ -85,7 +85,7 @@ namespace Orc.FilterBuilder
                     return entityValue == string.Empty;
 
                 case Condition.IsNull:
-                    return entityValue == null;
+                    return entityValue is null;
 
                 case Condition.LessThan:
                     return string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) < 0;

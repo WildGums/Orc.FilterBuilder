@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RibbonViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Example.ViewModels
+﻿namespace Orc.FilterBuilder.Example.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -28,7 +21,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
     public class RibbonViewModel : ViewModelBase
     {
-        private readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly ITestDataService _testDataService;
         private readonly IFilterSchemeManager _filterSchemeManager;
@@ -56,13 +49,17 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         public FilterScheme SelectedFilterScheme { get; set; }
 
-        private readonly FilterScheme NoFilterFilter = new FilterScheme(typeof(object), "Default");
+        private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default")
+        {
+            CanDelete = false,
+            CanEdit = false
+        };
 
         public TaskCommand NewSchemeCommand { get; private set; }
 
         private async Task OnNewSchemeExecuteAsync()
         {
-            if (_targetType == null)
+            if (_targetType is null)
             {
                 Log.Warning("Target type is unknown, cannot get any type information to create filters");
                 return;
@@ -78,7 +75,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
                 _filterSchemes.Schemes.Add(filterScheme);
                 _filterService.SelectedFilter = filterScheme;
 
-                _filterSchemeManager.UpdateFilters();
+                await _filterSchemeManager.UpdateFiltersAsync();
             }
         }
 
@@ -121,7 +118,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
             var newSchemes = new ObservableCollection<FilterScheme>();
 
-            if (RawItems == null)
+            if (RawItems is null)
             {
                 _targetType = null;
             }
@@ -133,9 +130,9 @@ namespace Orc.FilterBuilder.Example.ViewModels
                                                                  select scheme);
             }
 
-            newSchemes.Insert(0, NoFilterFilter);
+            newSchemes.Insert(0, _noFilterFilter);
 
-            if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
+            if (AvailableSchemes is null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
             {
                 AvailableSchemes = newSchemes;
                 SelectedFilterScheme = newSchemes.FirstOrDefault();
@@ -154,7 +151,7 @@ namespace Orc.FilterBuilder.Example.ViewModels
 
         private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
         {
-            if (_filterService.SelectedFilter == null)
+            if (_filterService.SelectedFilter is null)
             {
                 SelectedFilterScheme = AvailableSchemes.First();
             }

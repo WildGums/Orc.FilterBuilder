@@ -15,7 +15,7 @@ namespace Orc.FilterBuilder
         {
             Argument.IsNotNull(() => item);
 
-            return item.Parent == null;
+            return item.Parent is null;
         }
     }
 }

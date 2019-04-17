@@ -13,7 +13,6 @@ namespace Orc.FilterBuilder.Services
     using Catel;
     using Catel.IoC;
     using Catel.Logging;
-    using Catel.Runtime.Serialization.Xml;
     using Catel.Threading;
     using Models;
 
@@ -26,18 +25,18 @@ namespace Orc.FilterBuilder.Services
         #endregion
 
         #region Fields
-        private readonly IXmlSerializer _xmlSerializer;
+        private readonly IFilterSerializationService _filterSerializationService;
+
         private string _lastFileName;
-        private readonly AsyncLock _lockObject = new AsyncLock();
         private object _scope;
         #endregion
 
         #region Constructors
-        public FilterSchemeManager(IXmlSerializer xmlSerializer)
+        public FilterSchemeManager(IFilterSerializationService filterSerializationService)
         {
-            Argument.IsNotNull(() => xmlSerializer);
+            Argument.IsNotNull(() => filterSerializationService);
 
-            _xmlSerializer = xmlSerializer;
+            _filterSerializationService = filterSerializationService;
 
             AutoSave = true;
             FilterSchemes = new FilterSchemes();
@@ -46,6 +45,7 @@ namespace Orc.FilterBuilder.Services
 
         #region Properties
         public bool AutoSave { get; set; }
+
         public FilterSchemes FilterSchemes { get; private set; }
 
         public object Scope
@@ -66,106 +66,68 @@ namespace Orc.FilterBuilder.Services
 
         public event EventHandler<EventArgs> Saved;
 
-        public void UpdateFilters()
+        [ObsoleteEx(ReplacementTypeOrMember = "UpdateFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
+        public async void UpdateFilters()
+        {
+            await UpdateFiltersAsync();
+        }
+
+        [ObsoleteEx(ReplacementTypeOrMember = "IFilterSerializationService.LoadFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
+        public async void Load(string fileName = null)
+        {
+            await LoadAsync();
+        }
+
+        [ObsoleteEx(ReplacementTypeOrMember = "IFilterSerializationService.SaveFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
+        public async void Save(string fileName = null)
+        {
+            await SaveAsync();
+        }
+
+        public virtual async Task UpdateFiltersAsync()
         {
             try
             {
-                Updated.SafeInvoke(this);
+                Updated?.Invoke(this, EventArgs.Empty);
 
                 if (AutoSave)
                 {
-                    Save();
+                    await SaveAsync();
                 }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Failed to update filters");
                 throw;
-            }            
-        }
-        
-        public void Load(string fileName = null)
-        {
-            if (!TryLoad(fileName))
-            {
-                throw Log.ErrorAndCreateException<FileLoadException>("Unable to load filters from file '{0}'", GetFileName(fileName));
             }
-
-            Loaded.SafeInvoke(this);
-            Updated.SafeInvoke(this);
         }
 
-        public async Task<bool> LoadAsync(string fileName = null)
-        {
-            using (await _lockObject.LockAsync())
-            {
-                if (TryLoad(fileName))
-                {
-                    Loaded.SafeInvoke(this);
-                    Updated.SafeInvoke(this);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void Save(string fileName = null)
+        public virtual async Task<bool> LoadAsync(string fileName = null)
         {
             fileName = GetFileName(fileName);
 
-            Log.Info("Saving filter schemes to '{0}'", fileName);
+            var filterSchemes = await _filterSerializationService.LoadFiltersAsync(fileName);
+            filterSchemes.Scope = Scope;
 
-            try
-            {
-                using (var stream = File.Open(fileName, FileMode.Create))
-                {
-                    _xmlSerializer.Serialize(FilterSchemes, stream, null);
-                }
+            FilterSchemes = filterSchemes;
 
-                Saved.SafeInvoke(this);
+            Loaded?.Invoke(this, EventArgs.Empty);
+            Updated?.Invoke(this, EventArgs.Empty);
 
-                Log.Debug("Saved filter schemes to '{0}'", fileName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to save filter schemes");
-            }
+            return true;
+        }
+
+        public virtual async Task SaveAsync(string fileName = null)
+        {
+            fileName = GetFileName(fileName);
+
+            await _filterSerializationService.SaveFiltersAsync(fileName, FilterSchemes);
+
+            Saved?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
         #region Methods
-        private bool TryLoad(string fileName = null)
-        {
-            fileName = GetFileName(fileName);
-
-            Log.Info("Loading filter schemes from '{0}'", fileName);
-
-            FilterSchemes = new FilterSchemes();
-
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    using (var stream = File.Open(fileName, FileMode.Open))
-                    {
-                        _xmlSerializer.Deserialize(FilterSchemes, stream, null);
-                    }
-                }
-
-                Log.Debug("Loaded filter schemes from '{0}'", fileName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to load filter schemes");
-                return false;
-            }
-
-            FilterSchemes.Scope = Scope;
-            return true;
-        }
-
         private string GetFileName(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))

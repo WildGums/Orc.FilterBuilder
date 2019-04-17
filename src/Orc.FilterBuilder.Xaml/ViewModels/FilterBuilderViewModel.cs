@@ -36,7 +36,12 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
 
-        private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default");
+        private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default")
+        {
+            CanEdit = false,
+            CanDelete = false
+        };
+
         private IFilterSchemeManager _filterSchemeManager;
         private IFilterService _filterService;
         private IReflectionService _reflectionService;
@@ -66,6 +71,8 @@ namespace Orc.FilterBuilder.ViewModels
             _reflectionService = reflectionService;
             _languageService = languageService;
 
+            FilterGroups = new List<FilterGroup>();
+
             NewSchemeCommand = new TaskCommand(OnNewSchemeExecuteAsync);
             EditSchemeCommand = new TaskCommand<FilterScheme>(OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
             ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
@@ -75,7 +82,7 @@ namespace Orc.FilterBuilder.ViewModels
         #endregion
 
         #region Properties
-        public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
+        public List<FilterGroup> FilterGroups { get; private set; }
         public FilterScheme SelectedFilterScheme { get; set; }
 
         public bool AllowLivePreview { get; set; }
@@ -106,7 +113,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async Task OnNewSchemeExecuteAsync()
         {
-            if (_targetType == null)
+            if (_targetType is null)
             {
                 Log.Warning("Target type is unknown, cannot get any type information to create filters");
                 return;
@@ -117,12 +124,13 @@ namespace Orc.FilterBuilder.ViewModels
 
             if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
             {
-                AvailableSchemes.Add(filterScheme);
                 _filterSchemes.Schemes.Add(filterScheme);
+
+                UpdateFilterGroups();
 
                 ApplyFilterScheme(filterScheme, true);
 
-                _filterSchemeManager.UpdateFilters();
+                await _filterSchemeManager.UpdateFiltersAsync();
             }
         }
 
@@ -130,17 +138,12 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
-            if (filterScheme == null)
+            if (filterScheme is null)
             {
                 return false;
             }
 
-            if (AvailableSchemes.Count == 0)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(AvailableSchemes[0], filterScheme))
+            if (!filterScheme.CanEdit)
             {
                 return false;
             }
@@ -158,7 +161,7 @@ namespace Orc.FilterBuilder.ViewModels
 
                 if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
                 {
-                    _filterSchemeManager.UpdateFilters();
+                    await _filterSchemeManager.UpdateFiltersAsync();
 
                     if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
                     {
@@ -179,17 +182,17 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnApplySchemeCanExecute()
         {
-            if (SelectedFilterScheme == null)
+            if (SelectedFilterScheme is null)
             {
                 return false;
             }
 
-            if (RawCollection == null)
+            if (RawCollection is null)
             {
                 return false;
             }
 
-            if (FilteredCollection == null && Mode == FilterBuilderMode.Collection)
+            if (FilteredCollection is null && Mode == FilterBuilderMode.Collection)
             {
                 return false;
             }
@@ -217,22 +220,56 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnResetSchemeCanExecute()
         {
-            return AllowReset && ReadyForResetOrDeleteScheme(SelectedFilterScheme);
+            if (!AllowReset)
+            {
+                return false;
+            }
+
+            if (_noFilterFilter is null)
+            {
+                return false;
+            }
+
+            var selectedFilterScheme = SelectedFilterScheme;
+            if (selectedFilterScheme is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(selectedFilterScheme, _noFilterFilter))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void OnResetSchemeExecute()
         {
-            if (AvailableSchemes.Count > 0)
-            {
-                SelectedFilterScheme = AvailableSchemes[0];
-            }
+            SelectedFilterScheme = _noFilterFilter;
         }
 
         public TaskCommand<FilterScheme> DeleteSchemeCommand { get; private set; }
 
         private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
         {
-            return AllowDelete && ReadyForResetOrDeleteScheme(filterScheme);
+            if (!AllowDelete)
+            {
+                return false;
+            }
+
+            var selectedFilterScheme = SelectedFilterScheme;
+            if (selectedFilterScheme is null)
+            {
+                return false;
+            }
+
+            if (!selectedFilterScheme.CanDelete)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private async Task OnDeleteSchemeExecuteAsync(FilterScheme filterScheme)
@@ -241,20 +278,14 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
 
-                SelectedFilterScheme = AvailableSchemes[0];
+                SelectedFilterScheme = _noFilterFilter;
 
-                _filterSchemeManager.UpdateFilters();
+                await _filterSchemeManager.UpdateFiltersAsync();
             }
         }
         #endregion
 
         #region Methods
-        private bool ReadyForResetOrDeleteScheme(FilterScheme filterScheme)
-        {
-            return filterScheme != null && AvailableSchemes != null && AvailableSchemes.Any()
-                   && !ReferenceEquals(filterScheme, AvailableSchemes[0]);
-        }
-
         private void OnScopeChanged()
         {
             if (_filterSchemeManager != null)
@@ -277,7 +308,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
         {
-            if (filterScheme == null || _applyingFilter)
+            if (filterScheme is null || _applyingFilter)
             {
                 return;
             }
@@ -347,32 +378,43 @@ namespace Orc.FilterBuilder.ViewModels
                 _filterSchemes.Schemes.CollectionChanged += OnFilterSchemesCollectionChanged;
             }
 
-            var newSchemes = new ObservableCollection<FilterScheme>();
+            UpdateFilterGroups();
+        }
 
-            if (RawCollection == null)
+        private void UpdateFilterGroups()
+        {
+            var applicableFilterSchemes = new List<FilterScheme>();
+
+            if (RawCollection is null)
             {
                 _targetType = null;
             }
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
+
                 if (_targetType != null && _filterSchemes != null)
                 {
-                    ((ICollection<FilterScheme>)newSchemes).AddRange((from scheme in _filterSchemes.Schemes
-                                                                      where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                                                      select scheme));
+                    ((ICollection<FilterScheme>)applicableFilterSchemes).AddRange((from scheme in _filterSchemes.Schemes
+                                                                                   where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                                                                   select scheme));
                 }
             }
 
-            newSchemes.Insert(0, _noFilterFilter);
+            applicableFilterSchemes.Insert(0, _noFilterFilter);
 
-            if (AvailableSchemes == null || !Catel.Collections.CollectionHelper.IsEqualTo(AvailableSchemes, newSchemes))
-            {
-                AvailableSchemes = newSchemes;
+            var filterGroups = (from filterScheme in applicableFilterSchemes
+                                    //where filterScheme.IsVisible
+                                orderby filterScheme.FilterGroup, filterScheme.Title, filterScheme.CanDelete
+                                group filterScheme by filterScheme.FilterGroup into g
+                                select new FilterGroup(g.Key, g)).ToList();
 
-                var selectedFilter = _filterService.SelectedFilter ?? _noFilterFilter;
-                SelectedFilterScheme = selectedFilter;
-            }
+            // Ensure no filter is at the top
+            var noFilterGroup = filterGroups.First(x => x.Title == _noFilterFilter.FilterGroup);
+            noFilterGroup.FilterSchemes.Remove(_noFilterFilter);
+            noFilterGroup.FilterSchemes.Insert(0, _noFilterFilter);
+
+            FilterGroups = filterGroups;
         }
 
         protected override async Task InitializeAsync()
@@ -410,7 +452,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
         {
-            var newFilterScheme = _filterService.SelectedFilter ?? AvailableSchemes.First();
+            var newFilterScheme = _filterService.SelectedFilter ?? _noFilterFilter;
             ApplyFilterScheme(newFilterScheme);
         }
         #endregion

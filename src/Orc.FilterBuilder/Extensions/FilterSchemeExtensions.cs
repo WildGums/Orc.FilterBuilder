@@ -80,7 +80,7 @@ namespace Orc.FilterBuilder
             }
 
             var type = TypeCache.GetType(splittedString[0]);
-            if (type == null)
+            if (type is null)
             {
                 return;
             }

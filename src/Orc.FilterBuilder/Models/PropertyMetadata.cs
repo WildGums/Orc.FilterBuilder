@@ -127,7 +127,7 @@ namespace Orc.FilterBuilder.Models
                 value = modelEditor.GetValue(_propertyData.Name);
             }
 
-            if (value == null)
+            if (value is null)
             {
                 return default(TValue);
             }
@@ -149,7 +149,7 @@ namespace Orc.FilterBuilder.Models
                 _propertyInfo.SetValue(instance, value, null);
             }
 
-            if (_propertyData == null)
+            if (_propertyData is null)
             {
                 return;
             }
