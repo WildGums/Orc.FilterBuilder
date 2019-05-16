@@ -122,16 +122,23 @@ namespace Orc.FilterBuilder.ViewModels
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
-            if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            if (!(await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false))
             {
-                _filterSchemes.Schemes.Add(filterScheme);
-
-                UpdateFilterGroups();
-
-                ApplyFilterScheme(filterScheme, true);
-
-                await _filterSchemeManager.UpdateFiltersAsync();
+                return;
             }
+
+            if (_filterSchemes is null || _filterSchemeManager is null)
+            {
+                return;
+            }
+
+            _filterSchemes.Schemes.Add(filterScheme);
+
+            UpdateFilterGroups();
+
+            ApplyFilterScheme(filterScheme, true);
+
+            await _filterSchemeManager.UpdateFiltersAsync();
         }
 
         public TaskCommand<FilterScheme> EditSchemeCommand { get; private set; }
@@ -155,20 +162,30 @@ namespace Orc.FilterBuilder.ViewModels
         {
             try
             {
-                filterScheme.EnsureIntegrity(_reflectionService);
+                if (_filterService != null)
+                {
+                    filterScheme.EnsureIntegrity(_reflectionService);
+                }
 
                 var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
 
-                if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+                if (!(await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false))
                 {
-                    await _filterSchemeManager.UpdateFiltersAsync();
+                    return;
+                }
 
-                    if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
-                    {
-                        Log.Debug("Current filter has been edited, re-applying filter");
+                if (_filterSchemeManager is null || _filterService is null)
+                {
+                    return;
+                }
 
-                        _filterService.SelectedFilter = filterScheme;
-                    }
+                await _filterSchemeManager.UpdateFiltersAsync();
+
+                if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
+                {
+                    Log.Debug("Current filter has been edited, re-applying filter");
+
+                    _filterService.SelectedFilter = filterScheme;
                 }
             }
             catch (Exception ex)
@@ -205,14 +222,16 @@ namespace Orc.FilterBuilder.ViewModels
             Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
 
             //build filtered collection only if current mode is Collection
-            if (Mode == FilterBuilderMode.Collection)
+            if (Mode != FilterBuilderMode.Collection)
+            {
+                FilteringFunc = SelectedFilterScheme.CalculateResult;
+                return;
+            }
+            
+            if(_filterService != null)
             {
                 FilteringFunc = null;
                 await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
-            }
-            else
-            {
-                FilteringFunc = SelectedFilterScheme.CalculateResult;
             }
         }
 
@@ -274,12 +293,17 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async Task OnDeleteSchemeExecuteAsync(FilterScheme filterScheme)
         {
-            if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) == MessageResult.Yes)
+            if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) != MessageResult.Yes)
             {
-                _filterSchemeManager.FilterSchemes.Schemes.Remove(filterScheme);
+                return;
+            }
 
-                SelectedFilterScheme = _noFilterFilter;
+            _filterSchemeManager?.FilterSchemes.Schemes.Remove(filterScheme);
 
+            SelectedFilterScheme = _noFilterFilter;
+
+            if (_filterSchemeManager != null)
+            {
                 await _filterSchemeManager.UpdateFiltersAsync();
             }
         }
@@ -291,17 +315,34 @@ namespace Orc.FilterBuilder.ViewModels
             if (_filterSchemeManager != null)
             {
                 _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
-                _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
+                _filterSchemeManager = null;
             }
 
+            if (_filterService != null)
+            {
+                _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
+                _filterService = null;
+            }
+
+            _reflectionService = null;
+
             var scope = Scope;
-            _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(scope);
-            _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
+            if (_serviceLocator.IsTypeRegistered<IFilterSchemeManager>(scope))
+            {
+                _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(scope);
+                _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
+            }
 
-            _filterService = _serviceLocator.ResolveType<IFilterService>(scope);
-            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
+            if (_serviceLocator.IsTypeRegistered<IFilterService>(scope))
+            {
+                _filterService = _serviceLocator.ResolveType<IFilterService>(scope);
+                _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
+            }
 
-            _reflectionService = _serviceLocator.ResolveType<IReflectionService>(scope);
+            if (_serviceLocator.IsTypeRegistered<IReflectionService>(scope))
+            {
+                _reflectionService = _serviceLocator.ResolveType<IReflectionService>(scope);
+            }
 
             UpdateFilters();
         }
@@ -323,7 +364,7 @@ namespace Orc.FilterBuilder.ViewModels
                 SelectedFilterScheme = filterScheme;
             }
 
-            if (filterServiceSelectedFilterIsDifferent)
+            if (filterServiceSelectedFilterIsDifferent && _filterService != null)
             {
                 _filterService.SelectedFilter = filterScheme;
             }
@@ -371,7 +412,7 @@ namespace Orc.FilterBuilder.ViewModels
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
             }
 
-            _filterSchemes = _filterSchemeManager.FilterSchemes;
+            _filterSchemes = _filterSchemeManager?.FilterSchemes;
 
             if (_filterSchemes != null)
             {
@@ -434,8 +475,15 @@ namespace Orc.FilterBuilder.ViewModels
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
             }
 
-            _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
-            _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
+            if (_filterSchemeManager != null) 
+            {
+                _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
+            }
+
+            if (_filterService != null)
+            {
+                _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
+            }
 
             await base.CloseAsync();
         }
@@ -452,7 +500,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
         {
-            var newFilterScheme = _filterService.SelectedFilter ?? _noFilterFilter;
+            var newFilterScheme = _filterService?.SelectedFilter ?? _noFilterFilter;
             ApplyFilterScheme(newFilterScheme);
         }
         #endregion
