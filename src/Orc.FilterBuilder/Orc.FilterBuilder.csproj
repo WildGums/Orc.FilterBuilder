@@ -24,7 +24,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="ModuleInit.Fody" Version="2.0.0" PrivateAssets="all" />
-    <PackageReference Include="Obsolete.Fody" Version="4.4.3" PrivateAssets="all" />
+    <PackageReference Include="Obsolete.Fody" Version="5.0.0" PrivateAssets="all" />
     <PackageReference Include="Orc.FileSystem" Version="3.1.0" />
     <PackageReference Include="Orc.Metadata" Version="3.1.0" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
