@@ -17,7 +17,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="MethodTimer.Fody" Version="2.3.3" PrivateAssets="all" />
+    <PackageReference Include="MethodTimer.Fody" Version="3.0.0" PrivateAssets="all" />
     <PackageReference Include="Catel.Fody" Version="4.0.0" PrivateAssets="all" />
     <PackageReference Include="Catel.MVVM" Version="5.10.0" />
     <PackageReference Include="Expression.Blend.Sdk.WPF" Version="1.0.1" />
