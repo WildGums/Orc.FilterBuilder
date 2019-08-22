@@ -21,10 +21,10 @@
             var resultList = new List<TestFilterRuntimeModel>();
 
             var filterService = typeFactory.CreateInstance<FilterService>();
-            filterService.FilterCollection(filterScheme, initialCollection, resultList);
+            await filterService.FilterCollectionAsync(filterScheme, initialCollection, resultList);
 
             Assert.AreEqual(1, resultList.Count);
-            Assert.AreEqual(resultList[0].Attributes[AttributeTypeNames.StringAttribute].Value, "one");
+            Assert.AreEqual("one", resultList[0].Attributes[AttributeTypeNames.StringAttribute].Value);
         }
     }
 }
