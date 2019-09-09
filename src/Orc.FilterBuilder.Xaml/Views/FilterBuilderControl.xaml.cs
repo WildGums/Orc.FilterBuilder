@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Media;
     using Catel.MVVM.Views;
     using Orc.FilterBuilder.Models;
@@ -169,6 +170,12 @@
 
         private void OnFilterPreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            // Don't handle if source is a button
+            if (e.Source is Button)
+            {
+                return;
+            }
+
             var filterScheme = ((FrameworkElement)sender).DataContext as FilterScheme;
             if (filterScheme != null)
             {
