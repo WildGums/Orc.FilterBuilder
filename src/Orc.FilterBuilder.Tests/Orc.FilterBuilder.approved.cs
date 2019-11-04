@@ -478,7 +478,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
     }
     public class PropertyExpressionSerializerModifier : Catel.Runtime.Serialization.SerializerModifierBase<Orc.FilterBuilder.PropertyExpression>
     {
-        public PropertyExpressionSerializerModifier() { }
+        public PropertyExpressionSerializerModifier(Orc.FilterBuilder.Services.IReflectionService reflectionService) { }
         public override void DeserializeMember(Catel.Runtime.Serialization.ISerializationContext context, Catel.Runtime.Serialization.MemberValue memberValue) { }
         public override void SerializeMember(Catel.Runtime.Serialization.ISerializationContext context, Catel.Runtime.Serialization.MemberValue memberValue) { }
     }
