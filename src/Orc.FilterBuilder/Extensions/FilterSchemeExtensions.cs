@@ -56,10 +56,10 @@ namespace Orc.FilterBuilder
 
             IPropertyCollection typeProperties;
 
-            if (propertyExpression.Property != null)
+            var property = propertyExpression.Property;
+            if (property != null)
             {
                 // We already have it, but make sure to get the right instance
-                var property = propertyExpression.Property;
 
                 typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
                 propertyExpression.Property = typeProperties.GetProperty(property.Name);
@@ -86,6 +86,11 @@ namespace Orc.FilterBuilder
             }
 
             typeProperties = reflectionService.GetInstanceProperties(type);
+            if (typeProperties is null)
+            {
+                return;
+            }
+
             propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
         }
 
