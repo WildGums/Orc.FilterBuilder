@@ -492,13 +492,14 @@ namespace Orc.FilterBuilder.Services
     }
     public class FilterSchemeManager : Orc.FilterBuilder.Services.IFilterSchemeManager
     {
-        public FilterSchemeManager(Orc.FilterBuilder.IFilterSerializationService filterSerializationService) { }
+        public FilterSchemeManager(Orc.FilterBuilder.IFilterSerializationService filterSerializationService, Catel.Services.IAppDataService appDataService) { }
         public bool AutoSave { get; set; }
         public Orc.FilterBuilder.Models.FilterSchemes FilterSchemes { get; }
         public object Scope { get; set; }
         public event System.EventHandler<System.EventArgs> Loaded;
         public event System.EventHandler<System.EventArgs> Saved;
         public event System.EventHandler<System.EventArgs> Updated;
+        protected virtual string GetDefaultFileName() { }
         [System.ObsoleteAttribute("Use `IFilterSerializationService.LoadFiltersAsync` instead. Will be removed in ve" +
             "rsion 4.0.0.", true)]
         public void Load(string fileName = null) { }
