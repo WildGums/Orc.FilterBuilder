@@ -7,13 +7,27 @@
 
 namespace Orc.FilterBuilder.Runtime.Serialization
 {
+    using Catel;
     using Catel.Data;
+    using Catel.Reflection;
     using Catel.Runtime.Serialization;
     using Models;
+    using Orc.FilterBuilder.Services;
 
     public class PropertyExpressionSerializerModifier : SerializerModifierBase<PropertyExpression>
     {
         private const string Separator = "||";
+
+        private static readonly string[] Separators = new string[] { Separator };
+
+        private readonly IReflectionService _reflectionService;
+
+        public PropertyExpressionSerializerModifier(IReflectionService reflectionService)
+        {
+            Argument.IsNotNull(() => reflectionService);
+
+            _reflectionService = reflectionService;
+        }
 
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
@@ -31,11 +45,17 @@ namespace Orc.FilterBuilder.Runtime.Serialization
         {
             if (string.Equals(memberValue.Name, "Property"))
             {
-                var propertyName = memberValue.Value as string;
-                if (propertyName != null)
+                var propertyMetadata = memberValue.Value as string;
+                if (propertyMetadata != null)
                 {
                     // We need to delay this
-                    ((PropertyExpression)context.Model).PropertySerializationValue = propertyName;
+                    ((PropertyExpression)context.Model).PropertySerializationValue = propertyMetadata;
+
+                    var splitted = propertyMetadata.Split(Separators, System.StringSplitOptions.None);
+
+                    var type = TypeCache.GetTypeWithoutAssembly(splitted[0]);
+                    var instanceProperties = _reflectionService.GetInstanceProperties(type);
+                    memberValue.Value = instanceProperties.GetProperty(splitted[1]);
                 }
             }
         }

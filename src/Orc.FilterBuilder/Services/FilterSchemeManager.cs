@@ -13,6 +13,7 @@ namespace Orc.FilterBuilder.Services
     using Catel;
     using Catel.IoC;
     using Catel.Logging;
+    using Catel.Services;
     using Catel.Threading;
     using Models;
 
@@ -20,23 +21,23 @@ namespace Orc.FilterBuilder.Services
     {
         #region Constants
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        private static readonly string DefaultFileName = Path.Combine(Catel.IO.Path.GetApplicationDataDirectory(), "FilterSchemes.xml");
         #endregion
 
         #region Fields
         private readonly IFilterSerializationService _filterSerializationService;
-
+        private readonly IAppDataService _appDataService;
         private string _lastFileName;
         private object _scope;
         #endregion
 
         #region Constructors
-        public FilterSchemeManager(IFilterSerializationService filterSerializationService)
+        public FilterSchemeManager(IFilterSerializationService filterSerializationService, IAppDataService appDataService)
         {
             Argument.IsNotNull(() => filterSerializationService);
+            Argument.IsNotNull(() => appDataService);
 
             _filterSerializationService = filterSerializationService;
+            _appDataService = appDataService;
 
             AutoSave = true;
             FilterSchemes = new FilterSchemes();
@@ -128,11 +129,17 @@ namespace Orc.FilterBuilder.Services
         #endregion
 
         #region Methods
+        protected virtual string GetDefaultFileName()
+        {
+            var defaultFileName = Path.Combine(_appDataService.GetApplicationDataDirectory(Catel.IO.ApplicationDataTarget.UserRoaming), "FilterSchemes.xml");
+            return defaultFileName;
+        }
+
         private string GetFileName(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
             {
-                fileName = _lastFileName ?? DefaultFileName;
+                fileName = _lastFileName ?? GetDefaultFileName();
             }
 
             _lastFileName = fileName;
