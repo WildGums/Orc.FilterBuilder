@@ -13,7 +13,7 @@ namespace Orc.FilterBuilder.Example.Services
     using Catel;
     using Catel.IoC;
     using Catel.Threading;
-    using Orchestra.Markup;
+    using Orc.Controls;
     using Orchestra.Services;
 
     public class ApplicationInitializationService : ApplicationInitializationServiceBase
