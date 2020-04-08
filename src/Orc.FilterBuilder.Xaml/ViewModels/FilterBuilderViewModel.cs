@@ -145,17 +145,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
         {
-            if (filterScheme is null)
-            {
-                return false;
-            }
-
-            if (!filterScheme.CanEdit)
-            {
-                return false;
-            }
-
-            return true;
+            return filterScheme?.CanEdit ?? false;
         }
 
         private async Task OnEditSchemeExecuteAsync(FilterScheme filterScheme)
@@ -277,18 +267,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return false;
             }
 
-            var selectedFilterScheme = SelectedFilterScheme;
-            if (selectedFilterScheme is null)
-            {
-                return false;
-            }
-
-            if (!selectedFilterScheme.CanDelete)
-            {
-                return false;
-            }
-
-            return true;
+            return filterScheme?.CanDelete ?? false;
         }
 
         private async Task OnDeleteSchemeExecuteAsync(FilterScheme filterScheme)

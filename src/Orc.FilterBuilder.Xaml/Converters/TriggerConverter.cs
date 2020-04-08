@@ -9,6 +9,7 @@ namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Windows.Data;
+    using Catel.MVVM;
     using Catel.MVVM.Converters;
 
     /// <summary>
@@ -27,7 +28,13 @@ namespace Orc.FilterBuilder.Converters
                 return ConverterHelper.UnsetValue;
             }
 
-            return values[0];
+            if (values[0] is ICatelCommand command)
+            {
+                command.RaiseCanExecuteChanged();
+                return command;
+            }
+
+            return ConverterHelper.UnsetValue;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
