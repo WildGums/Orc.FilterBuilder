@@ -51,6 +51,9 @@ namespace Orc.FilterBuilder
                 case Condition.EqualTo:
                     return entityValue == Value;
 
+                case Condition.NotEqualTo:
+                    return entityValue != Value;
+
                 default:
                     throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
