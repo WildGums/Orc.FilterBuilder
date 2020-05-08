@@ -5,11 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
     using System.Collections.Generic;
     using Catel;
-    using Models;
     using System.Linq;
 
     public class FilterCustomizationService : IFilterCustomizationService

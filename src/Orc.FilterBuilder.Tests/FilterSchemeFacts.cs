@@ -5,9 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Tests.Shared.Models
+namespace Orc.FilterBuilder.Tests.Models
 {
-    using FilterBuilder.Models;
     using NUnit.Framework;
     using Tests.Models;
 

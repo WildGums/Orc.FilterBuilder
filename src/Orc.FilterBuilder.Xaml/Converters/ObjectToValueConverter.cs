@@ -12,7 +12,6 @@ namespace Orc.FilterBuilder.Converters
     using Catel.Logging;
     using Catel.MVVM.Converters;
     using Catel.Reflection;
-    using Models;
 
     public class ObjectToValueConverter : ValueConverterBase
     {

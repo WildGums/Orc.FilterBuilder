@@ -13,7 +13,6 @@ namespace Orc.FilterBuilder.Example
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
     using Catel.Logging;
-    using Orc.FilterBuilder.Services;
     using Catel.IoC;
     using Catel.Services;
     using Catel.Windows;

@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Models
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.ObjectModel;

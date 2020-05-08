@@ -9,7 +9,6 @@ namespace Orc.FilterBuilder.Tests.Models
 {
     using System.Linq;
     using Catel.Data;
-    using FilterBuilder.Models;
     using NUnit.Framework.Constraints;
 
     public static class FilterSchemeHelper

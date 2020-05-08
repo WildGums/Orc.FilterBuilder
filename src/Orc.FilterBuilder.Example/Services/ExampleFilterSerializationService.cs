@@ -9,7 +9,6 @@
     using global::FilterBuilder.Example.Models;
     using Orc.FileSystem;
     using Orc.FilterBuilder;
-    using Orc.FilterBuilder.Models;
 
     public class ExampleFilterSerializationService : FilterSerializationService
     {

@@ -6,7 +6,6 @@
     using System.Windows.Controls;
     using System.Windows.Media;
     using Catel.MVVM.Views;
-    using Orc.FilterBuilder.Models;
     using ViewModels;
     using PropertyMetadata = System.Windows.PropertyMetadata;
 
@@ -124,18 +123,6 @@
             typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
 
-        [ObsoleteEx(Message = "Will be removed", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
-        public Brush AccentColorBrush
-        {
-            get { return (Brush)GetValue(AccentColorBrushProperty); }
-            set { SetValue(AccentColorBrushProperty, value); }
-        }
-
-        [ObsoleteEx(Message = "Will be removed", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
-        public static readonly DependencyProperty AccentColorBrushProperty = DependencyProperty.Register(nameof(AccentColorBrush), typeof(Brush),
-            typeof(FilterBuilderControl), new PropertyMetadata(Brushes.LightGray, (sender, e) => ((FilterBuilderControl)sender).OnAccentColorBrushChanged()));
-
-
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
         public object Scope
         {
@@ -148,17 +135,6 @@
         #endregion
 
         #region Methods
-        [ObsoleteEx(Message = "Will be removed", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
-        private void OnAccentColorBrushChanged()
-        {
-            var solidColorBrush = AccentColorBrush as SolidColorBrush;
-            if (solidColorBrush != null)
-            {
-                var accentColor = ((SolidColorBrush)AccentColorBrush).Color;
-                accentColor.CreateAccentColorResourceDictionary("FilterBuilder");
-            }
-        }
-
         private void OnScopeChanged()
         {
             var vm = ViewModel as FilterBuilderViewModel;

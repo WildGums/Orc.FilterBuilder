@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
-    using Orc.FilterBuilder.Models;
 
     [DebuggerDisplay("{Title}")]
     public class FilterGroup

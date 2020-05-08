@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
@@ -14,7 +14,6 @@ namespace Orc.FilterBuilder.Services
     using Catel.IoC;
     using Catel.Threading;
     using MethodTimer;
-    using Models;
 
     public class FilterService : IFilterService
     {

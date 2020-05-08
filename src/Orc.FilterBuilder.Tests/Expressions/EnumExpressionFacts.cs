@@ -7,7 +7,6 @@
 namespace Orc.FilterBuilder.Tests.Expressions
 {
     using System;
-    using FilterBuilder.Models;
     using Moq;
     using NUnit.Framework;
 

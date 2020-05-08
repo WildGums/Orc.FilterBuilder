@@ -4,4 +4,10 @@
   <ModuleInit />
   <Obsolete />
   <Catel />
+  <LoadAssembliesOnStartup>
+    <IncludeAssemblies>
+      Orc.FileSystem
+      Orc.Metadata
+    </IncludeAssemblies>
+  </LoadAssembliesOnStartup>
 </Weavers>

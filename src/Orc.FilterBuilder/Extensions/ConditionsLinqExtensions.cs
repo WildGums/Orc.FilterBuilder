@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Conditions
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Linq;
@@ -15,7 +15,6 @@ namespace Orc.FilterBuilder.Conditions
     using Catel.Collections;
     using Catel.Logging;
     using Catel.Reflection;
-    using Orc.FilterBuilder.Models;
 
     public static class ConditionsLinqExtensions
     {

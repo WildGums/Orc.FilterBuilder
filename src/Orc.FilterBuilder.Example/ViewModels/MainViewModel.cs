@@ -14,7 +14,6 @@ namespace Orc.FilterBuilder.Example.ViewModels
     using Catel.Collections;
     using Catel.Logging;
     using Catel.MVVM;
-    using FilterBuilder.Services;
     using global::FilterBuilder.Example.Models;
     using global::FilterBuilder.Example.Services;
 

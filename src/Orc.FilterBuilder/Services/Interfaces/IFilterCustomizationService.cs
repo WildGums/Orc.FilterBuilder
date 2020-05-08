@@ -5,10 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
-    using Orc.FilterBuilder.Models;
-
     public interface IFilterCustomizationService
     {
         void CustomizeInstanceProperties(IPropertyCollection instanceProperties);

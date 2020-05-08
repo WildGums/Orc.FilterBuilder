@@ -21,6 +21,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder")]
 [assembly: XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Behaviors")]
 [assembly: XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Converters")]
+[assembly: XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Markup")]
 [assembly: XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Views")]
 
 [assembly: ThemeInfo(

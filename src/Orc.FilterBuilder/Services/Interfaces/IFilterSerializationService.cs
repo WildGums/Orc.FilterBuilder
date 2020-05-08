@@ -1,7 +1,6 @@
 ﻿namespace Orc.FilterBuilder
 {
     using System.Threading.Tasks;
-    using Orc.FilterBuilder.Models;
 
     public interface IFilterSerializationService
     {

@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
     using System;
     using System.IO;
@@ -15,7 +15,6 @@ namespace Orc.FilterBuilder.Services
     using Catel.Logging;
     using Catel.Services;
     using Catel.Threading;
-    using Models;
 
     public class FilterSchemeManager : IFilterSchemeManager
     {
@@ -66,24 +65,6 @@ namespace Orc.FilterBuilder.Services
         public event EventHandler<EventArgs> Loaded;
 
         public event EventHandler<EventArgs> Saved;
-
-        [ObsoleteEx(ReplacementTypeOrMember = "UpdateFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
-        public async void UpdateFilters()
-        {
-            await UpdateFiltersAsync();
-        }
-
-        [ObsoleteEx(ReplacementTypeOrMember = "IFilterSerializationService.LoadFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
-        public async void Load(string fileName = null)
-        {
-            await LoadAsync();
-        }
-
-        [ObsoleteEx(ReplacementTypeOrMember = "IFilterSerializationService.SaveFiltersAsync", TreatAsErrorFromVersion = "3.0", RemoveInVersion = "4.0")]
-        public async void Save(string fileName = null)
-        {
-            await SaveAsync();
-        }
 
         public virtual async Task UpdateFiltersAsync()
         {

@@ -15,7 +15,6 @@ namespace Orc.FilterBuilder
     using Catel.Logging;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
-    using Models;
     using Runtime.Serialization;
 
     [DebuggerDisplay("{Property} = {DataTypeExpression}")]

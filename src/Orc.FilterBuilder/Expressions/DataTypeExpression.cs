@@ -9,7 +9,6 @@ namespace Orc.FilterBuilder
 {
     using System.Runtime.Serialization;
     using Catel.Data;
-    using Models;
 
     public abstract class DataTypeExpression : ModelBase
     {

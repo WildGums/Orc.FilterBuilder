@@ -13,7 +13,6 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
     using Catel;
     using Catel.Runtime.Serialization;
-    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     [Serializable]

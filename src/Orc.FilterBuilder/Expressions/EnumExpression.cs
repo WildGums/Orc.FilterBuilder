@@ -16,7 +16,6 @@ namespace Orc.FilterBuilder
     using Catel.IoC;
     using Catel.Reflection;
     using Catel.Services;
-    using Models;
 
     /// <summary>
     /// The EnumExpression class.

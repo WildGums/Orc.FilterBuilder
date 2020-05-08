@@ -21,8 +21,6 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
     using Catel.Threading;
-    using Models;
-    using Services;
 
     [Serializable]
     public class EditFilterViewModel : ViewModelBase
@@ -64,7 +62,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             DeferValidationUntilFirstSaveCall = true;
 
-            FilterScheme = new FilterScheme
+            FilterScheme = new FilterScheme(_originalFilterScheme.TargetType)
             {
                 Scope = _originalFilterScheme.Scope
             };
