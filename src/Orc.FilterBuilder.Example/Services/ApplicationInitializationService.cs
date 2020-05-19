@@ -36,15 +36,9 @@ namespace Orc.FilterBuilder.Example.Services
 
         private void InitializeFonts()
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            Orchestra.Markup.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
-            Orchestra.Markup.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
-            Orchestra.Markup.FontImage.DefaultFontFamily = "FontAwesome";
-#pragma warning restore CS0618 // Type or member is obsolete
-
-            Orc.Controls.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
-            Orc.Controls.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
-            Orc.Controls.FontImage.DefaultFontFamily = "FontAwesome";
+            Orc.Theming.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
+            Orc.Theming.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
+            Orc.Theming.FontImage.DefaultFontFamily = "FontAwesome";
         }
     }
 }

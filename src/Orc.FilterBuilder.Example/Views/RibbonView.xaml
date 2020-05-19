@@ -3,16 +3,16 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:catel="http://schemas.catelproject.com"
                    xmlns:fluent="urn:fluent-ribbon"
-                   xmlns:orchestra="http://schemas.wildgums.com/orchestra"
                    xmlns:ribbon="clr-namespace:Orc.FilterBuilder.Example"
-                   xmlns:views="clr-namespace:Orc.FilterBuilder.Views;assembly=Orc.FilterBuilder.Xaml">
+                   xmlns:views="clr-namespace:Orc.FilterBuilder.Views;assembly=Orc.FilterBuilder.Xaml" 
+                   xmlns:orctheming="http://schemas.wildgums.com/orc/theming">
     <fluent:Ribbon>
         <fluent:Ribbon.Tabs>
             <fluent:RibbonTabItem Header="Filter">
                 <fluent:RibbonGroupBox Header="Filter">
                     
                     <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" Command="{Binding NewSchemeCommand}"
-                                        LargeIcon="{orchestra:FontImage {x:Static ribbon:FontAwesome.Plus}}" 
+                                        LargeIcon="{orctheming:FontImage {x:Static ribbon:FontAwesome.Plus}}" 
                                         ToolTip="{Binding SelectedFilterScheme}" ClosePopupOnMouseDown="True">
                         <views:FilterBuilderControl RawCollection="{Binding RawItems}" CloseViewModelOnUnloaded="False" />
                     </fluent:SplitButton>

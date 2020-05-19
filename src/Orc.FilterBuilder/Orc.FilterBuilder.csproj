@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Catel.Analyzers" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="Catel.Core" Version="5.12.5" />
+    <PackageReference Include="Catel.Core" Version="5.12.6-beta0005" />
     <PackageReference Include="Catel.Fody" Version="4.4.2" PrivateAssets="all" />
     <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -28,7 +28,7 @@
     <PackageReference Include="ModuleInit.Fody" Version="2.1.0" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
     <PackageReference Include="Orc.FileSystem" Version="3.2.0" />
-    <PackageReference Include="Orc.Metadata" Version="3.2.0" />
+    <PackageReference Include="Orc.Metadata" Version="4.0.0-alpha0095" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     <PackageReference Include="WpfAnalyzers" Version="3.1.0" PrivateAssets="all" />
