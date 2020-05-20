@@ -113,7 +113,7 @@ namespace Orc.FilterBuilder.ViewModels
             FilterScheme.Scope = _originalFilterScheme.Scope;
             FilterSchemeTitle = FilterScheme.Title;
 
-            RaisePropertyChanged(() => FilterScheme);
+            RaisePropertyChanged(nameof(FilterScheme));
 
             UpdatePreviewItems();
 

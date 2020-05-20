@@ -9,7 +9,7 @@
         <converters:IsCurrentFilterSchemeToCollapsingVisibilityConverter x:Key="IsCurrentFilterSchemeToCollapsingVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid x:Name="layoutRoot" Background="White">
+    <Grid x:Name="layoutRoot" Background="{DynamicResource Orc.Brushes.Control.Default.Background}">
         <ItemsControl ItemsSource="{Binding FilterGroups}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

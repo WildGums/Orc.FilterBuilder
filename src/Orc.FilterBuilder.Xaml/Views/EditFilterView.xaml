@@ -5,10 +5,10 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:catel="http://schemas.catelproject.com"
                    xmlns:converters="clr-namespace:Orc.FilterBuilder.Converters"
-                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                    xmlns:behaviors="clr-namespace:Orc.FilterBuilder.Behaviors"
                    xmlns:filterBuilder="clr-namespace:Orc.FilterBuilder;assembly=Orc.FilterBuilder"
-                   xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup"
+                   xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup" 
+                   xmlns:xamlbehaviors="http://schemas.microsoft.com/xaml/behaviors"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400">
 
     <UserControl.Resources>
@@ -51,10 +51,10 @@
     </UserControl.Resources>
 
     <Grid Margin="6 6 6 0">
-        <i:Interaction.Behaviors>
+        <xamlbehaviors:Interaction.Behaviors>
             <!-- Fix for SA-144 -->
             <catel:Focus FocusDelay="1000" FocusMoment="Loaded" />
-        </i:Interaction.Behaviors>
+        </xamlbehaviors:Interaction.Behaviors>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -71,9 +71,9 @@
         <TextBlock Grid.Column="0" Text="{catel:LanguageBinding FilterBuilder_Name}" Width="33" Margin="0" />
         <TextBox Grid.Column="1" Height="26" Margin="4 0 4 0"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
-            <i:Interaction.Behaviors>
+            <xamlbehaviors:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
-            </i:Interaction.Behaviors>
+            </xamlbehaviors:Interaction.Behaviors>
         </TextBox>
         <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0" Style="{DynamicResource FilterBuilderToggleButtonStyle}"
                       IsChecked="{Binding EnableLivePreview}" Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
@@ -81,9 +81,9 @@
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
-            <i:Interaction.Behaviors>
+            <xamlbehaviors:Interaction.Behaviors>
                 <behaviors:DisableSelectionInTreeView />
-            </i:Interaction.Behaviors>
+            </xamlbehaviors:Interaction.Behaviors>
 
             <TreeView.Resources>
                 <Style TargetType="DatePicker">
@@ -155,11 +155,11 @@
                                   Margin="0">
                                 <TextBox Text="{Binding DataTypeExpression.Value}"
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Text}}">
-                                    <i:Interaction.Behaviors>
+                                    <xamlbehaviors:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                         <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
                                                               IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
-                                    </i:Interaction.Behaviors>
+                                    </xamlbehaviors:Interaction.Behaviors>
                                 </TextBox>
 
                                 <TextBox Text="{Binding DataTypeExpression.Value}">
@@ -183,12 +183,12 @@
                                             </Binding.ConverterParameter>
                                         </Binding>
                                     </TextBox.Visibility>
-                                    <i:Interaction.Behaviors>
+                                    <xamlbehaviors:Interaction.Behaviors>
                                         <catel:NumericTextBox IsDecimalAllowed="{Binding DataTypeExpression.IsDecimal}"
                                                               IsNegativeAllowed="{Binding DataTypeExpression.IsSigned}"
                                                               UpdateBindingOnTextChanged="False" />
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                    </i:Interaction.Behaviors>
+                                    </xamlbehaviors:Interaction.Behaviors>
                                 </TextBox>
 
                                 <DatePicker SelectedDate="{Binding DataTypeExpression.Value}"
@@ -207,13 +207,13 @@
                                     <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}"
                                               SelectedValue="{Binding DataTypeExpression.SelectedSpanType}" />
                                     <TextBox Text="{Binding DataTypeExpression.Amount}">
-                                        <i:Interaction.Behaviors>
+                                        <xamlbehaviors:Interaction.Behaviors>
                                             <catel:NumericTextBox IsDecimalAllowed="False"
                                                                   IsNegativeAllowed="False"
                                                                   UpdateBindingOnTextChanged="False" />
 
                                             <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        </i:Interaction.Behaviors>
+                                        </xamlbehaviors:Interaction.Behaviors>
                                     </TextBox>
                                 </StackPanel>
                             </Grid>
