@@ -12,15 +12,8 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class DateTimeExpression : ValueDataTypeExpression<DateTime>
     {
-        #region Constructors
-        protected DateTimeExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public DateTimeExpression()
             : this(true)
         {
@@ -32,6 +25,5 @@ namespace Orc.FilterBuilder
             Value = DateTime.Now;
             ValueControlType = ValueControlType.DateTime;
         }
-        #endregion
     }
 }

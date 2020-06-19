@@ -22,7 +22,6 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.Services;
     using Catel.Threading;
 
-    [Serializable]
     public class EditFilterViewModel : ViewModelBase
     {
         #region Fields

@@ -24,7 +24,6 @@ namespace Orc.FilterBuilder.ViewModels
     using Views;
     using CollectionHelper = FilterBuilder.CollectionHelper;
 
-    [Serializable]
     public class FilterBuilderViewModel : ViewModelBase
     {
         #region Fields

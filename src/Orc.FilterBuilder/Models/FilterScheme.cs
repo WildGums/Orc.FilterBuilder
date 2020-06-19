@@ -42,11 +42,6 @@ namespace Orc.FilterBuilder
         {
         }
 
-        protected FilterScheme(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public FilterScheme(Type targetType, string title, ConditionTreeItem root)
         {
             Argument.IsNotNull(() => targetType);

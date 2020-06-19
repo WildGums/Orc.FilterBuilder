@@ -18,7 +18,6 @@ namespace Orc.FilterBuilder
     using Catel;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class StringExpression : DataTypeExpression
     {
         #region Fields
@@ -26,19 +25,12 @@ namespace Orc.FilterBuilder
         private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
         #endregion
 
-        #region Constructors
-        protected StringExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public StringExpression()
         {
             SelectedCondition = Condition.Contains;
             Value = string.Empty;
             ValueControlType = ValueControlType.Text;
         }
-        #endregion
 
         #region Properties
         public string Value { get; set; }

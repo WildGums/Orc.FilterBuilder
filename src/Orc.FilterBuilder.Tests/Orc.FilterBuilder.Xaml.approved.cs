@@ -94,7 +94,6 @@ namespace Orc.FilterBuilder.Markup
 }
 namespace Orc.FilterBuilder.ViewModels
 {
-    [System.Serializable]
     public class EditFilterViewModel : Catel.MVVM.ViewModelBase
     {
         public static readonly Catel.Data.PropertyData AllowLivePreviewProperty;
@@ -124,7 +123,6 @@ namespace Orc.FilterBuilder.ViewModels
         protected override System.Threading.Tasks.Task<bool> SaveAsync() { }
         protected override void ValidateFields(System.Collections.Generic.List<Catel.Data.IFieldValidationResult> validationResults) { }
     }
-    [System.Serializable]
     public class FilterBuilderViewModel : Catel.MVVM.ViewModelBase
     {
         public static readonly Catel.Data.PropertyData AllowDeleteProperty;

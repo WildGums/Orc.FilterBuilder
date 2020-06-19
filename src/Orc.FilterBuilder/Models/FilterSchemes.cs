@@ -14,24 +14,15 @@ namespace Orc.FilterBuilder
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
-    [Serializable]
     public class FilterSchemes : ModelBase
     {
         private object _scope;
 
-        #region Constructors
         public FilterSchemes()
         {
             Schemes = new ObservableCollection<FilterScheme>();
         }
 
-        protected FilterSchemes(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-        #endregion
-
-        #region Properties
         [ExcludeFromSerialization]
         public object Scope
         {
@@ -53,6 +44,5 @@ namespace Orc.FilterBuilder
         }
 
         public ObservableCollection<FilterScheme> Schemes { get; private set; }
-        #endregion
     }
 }

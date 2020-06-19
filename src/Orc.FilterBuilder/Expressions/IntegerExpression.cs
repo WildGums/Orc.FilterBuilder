@@ -12,15 +12,8 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class IntegerExpression : NumericExpression<int>
     {
-        #region Constructors
-        protected IntegerExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public IntegerExpression()
             : this(true)
         {
@@ -33,6 +26,5 @@ namespace Orc.FilterBuilder
             IsSigned = true;
             ValueControlType = ValueControlType.Integer;
         }
-        #endregion
     }
 }

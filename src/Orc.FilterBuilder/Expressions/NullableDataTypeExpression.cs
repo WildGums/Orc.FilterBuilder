@@ -11,19 +11,12 @@ namespace Orc.FilterBuilder
 
     public abstract class NullableDataTypeExpression : DataTypeExpression
     {
-        protected NullableDataTypeExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         protected NullableDataTypeExpression()
             : base()
         {
 
         }
 
-        #region Properties
         public bool IsNullable { get; set; }
-        #endregion
     }
 }

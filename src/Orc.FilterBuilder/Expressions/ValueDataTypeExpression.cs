@@ -19,11 +19,6 @@ namespace Orc.FilterBuilder
         private readonly Comparer<TValue> _comparer;
         #endregion
 
-        protected ValueDataTypeExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         protected ValueDataTypeExpression()
             : base()
         {

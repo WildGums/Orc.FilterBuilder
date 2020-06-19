@@ -18,15 +18,8 @@ namespace Orc.FilterBuilder
     using Catel.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class TimeSpanExpression : NullableDataTypeExpression
     {
-        #region Constructors
-        protected TimeSpanExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public TimeSpanExpression()
             : this(true)
         {
@@ -42,7 +35,6 @@ namespace Orc.FilterBuilder
             SpanTypes = Enum.GetValues(typeof (TimeSpanType)).Cast<TimeSpanType>().ToList();
             SelectedSpanType = TimeSpanType.Hours;
         }
-        #endregion
 
         #region Properties
         public TimeSpan Value { get; set; }

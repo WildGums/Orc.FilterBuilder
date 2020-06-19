@@ -12,15 +12,8 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class ByteExpression : NumericExpression<byte>
     {
-        #region Constructors
-        protected ByteExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public ByteExpression()
             : this(true)
         {
@@ -33,6 +26,5 @@ namespace Orc.FilterBuilder
             IsSigned = false;
             ValueControlType = ValueControlType.Byte;
         }
-        #endregion
     }
 }

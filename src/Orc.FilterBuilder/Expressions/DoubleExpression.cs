@@ -12,15 +12,8 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class DoubleExpression : NumericExpression<double>
     {
-        #region Constructors
-        protected DoubleExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public DoubleExpression()
             : this(true)
         {
@@ -33,6 +26,5 @@ namespace Orc.FilterBuilder
             IsSigned = true;
             ValueControlType = ValueControlType.Double;
         }
-        #endregion
     }
 }

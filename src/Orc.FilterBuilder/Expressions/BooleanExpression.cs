@@ -15,15 +15,9 @@ namespace Orc.FilterBuilder
     using Catel.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class BooleanExpression : DataTypeExpression
     {
         #region Constructors
-        protected BooleanExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public BooleanExpression()
         {
             BooleanValues = new List<bool> {true, false};

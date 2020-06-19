@@ -18,17 +18,10 @@ namespace Orc.FilterBuilder
 
     public abstract class ConditionTreeItem : ValidatableModelBase
     {
-        #region Constructors
-        protected ConditionTreeItem(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         protected ConditionTreeItem()
         {
             Items = new ObservableCollection<ConditionTreeItem>();
         }
-        #endregion
 
         #region Properties
         [ExcludeFromSerialization]
@@ -44,11 +37,6 @@ namespace Orc.FilterBuilder
         public event EventHandler<EventArgs> Updated;
 
         #region Methods
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
-
         private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)

@@ -12,15 +12,8 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class ShortExpression : NumericExpression<short>
     {
-        #region Constructors
-        protected ShortExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public ShortExpression()
             : this(true)
         {
@@ -33,6 +26,5 @@ namespace Orc.FilterBuilder
             IsSigned = true;
             ValueControlType = ValueControlType.Short;
         }
-        #endregion
     }
 }

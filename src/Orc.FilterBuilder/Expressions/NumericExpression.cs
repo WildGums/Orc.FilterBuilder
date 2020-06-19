@@ -12,14 +12,8 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class NumericExpression : NumericExpression<double>
     {
-        protected NumericExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public NumericExpression()
         {
             IsDecimal = true;
