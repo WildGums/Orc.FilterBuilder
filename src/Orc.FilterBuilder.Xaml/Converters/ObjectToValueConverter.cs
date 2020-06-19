@@ -47,7 +47,7 @@ namespace Orc.FilterBuilder.Converters
                     if (propertyDataManager.IsPropertyRegistered(modelBase.GetType(), propertyName))
                     {
 #pragma warning disable CS0618 // Type or member is obsolete
-                        return modelBase.GetValueFastButUnsecure(propertyName);
+                        return modelBase.GetValueFastButUnsecure<object>(propertyName);
 #pragma warning restore CS0618 // Type or member is obsolete
                     }
                 }
