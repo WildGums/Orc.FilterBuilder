@@ -31,6 +31,8 @@ namespace Orc.FilterBuilder
         #region Constructors
         protected EnumExpression(SerializationInfo info, StreamingContext context)
             : base(info, context)
+        public EnumExpression()
+            : this(false)
         {
         }
 
