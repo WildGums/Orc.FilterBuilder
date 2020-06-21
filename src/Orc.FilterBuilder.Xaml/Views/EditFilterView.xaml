@@ -9,6 +9,7 @@
                    xmlns:filterBuilder="clr-namespace:Orc.FilterBuilder;assembly=Orc.FilterBuilder"
                    xmlns:markup="clr-namespace:Orc.FilterBuilder.Markup" 
                    xmlns:xamlbehaviors="http://schemas.microsoft.com/xaml/behaviors"
+                   xmlns:orccontrols="http://schemas.wildgums.com/orc/controls"
                    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400">
 
     <UserControl.Resources>
@@ -37,7 +38,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="dataGridContainerStyle" TargetType="{x:Type Grid}">
+        <Style x:Key="DataGridContainerStyle" TargetType="{x:Type Grid}">
             <Style.Triggers>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -75,8 +76,9 @@
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </xamlbehaviors:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0" Style="{DynamicResource FilterBuilderToggleButtonStyle}"
-                      IsChecked="{Binding EnableLivePreview}" Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
+        <ToggleButton Grid.Row="0" Grid.Column="2" Height="26" Padding="4 0 4 0" Margin="0"
+                      IsChecked="{Binding EnableLivePreview}" 
+                      Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
         <TreeView Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="17 0 0 0" BorderBrush="Transparent"
@@ -86,20 +88,37 @@
             </xamlbehaviors:Interaction.Behaviors>
 
             <TreeView.Resources>
-                <Style TargetType="DatePicker">
+                <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
                     <Setter Property="Width" Value="173" />
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="Padding" Value="2 4 2 2" />
                     <Setter Property="Height" Value="26" />
                 </Style>
 
-                <Style TargetType="ComboBox" BasedOn="{StaticResource FilterBuilderComboBoxStyle}"/>
-
-                <Style TargetType="TextBox">
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                     <Setter Property="Width" Value="173" />
                     <Setter Property="MinWidth" Value="123" />
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+
+                <Style TargetType="{x:Type orccontrols:NumericTextBox}" 
+                       BasedOn="{StaticResource {x:Type orccontrols:NumericTextBox}}">
+                    <Setter Property="Height" Value="27" />
+                    <Setter Property="Width" Value="173" />
+                    <Setter Property="MinWidth" Value="123" />
+                    <Setter Property="Margin" Value="2" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Height" Value="26"/>
+                    <Setter Property="Width" Value="26"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
                 </Style>
             </TreeView.Resources>
 
@@ -120,20 +139,42 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource AddGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}"
+                                    BorderThickness="0"
                                     Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
+
+                                <Path Data="{StaticResource AddGeometry}"
+                                      Margin="2"
+                                      Stretch="Fill"
+                                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+
                             </Button>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource AddGroupGeometry}" 
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}"
+                                    BorderThickness="0"
                                     Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
+
+                                <Path Data="{StaticResource AddGroupGeometry}"
+                                      Margin="2"
+                                      Stretch="Fill"
+                                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+
                             </Button>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource DeleteGeometry}" Padding="3"
+                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" 
+                                    Padding="3"
+                                    BorderThickness="0"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}"
                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
+
+                                <Path Data="{StaticResource DeleteGeometry}"
+                                      Margin="2"
+                                      Stretch="Fill"
+                                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+
                             </Button>
                         </StackPanel>
 
@@ -154,6 +195,7 @@
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
                                   Margin="0">
                                 <TextBox Text="{Binding DataTypeExpression.Value}"
+                                         Height="27"
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Text}}">
                                     <xamlbehaviors:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
@@ -162,7 +204,10 @@
                                     </xamlbehaviors:Interaction.Behaviors>
                                 </TextBox>
 
-                                <TextBox Text="{Binding DataTypeExpression.Value}">
+                                <orccontrols:NumericTextBox Value="{Binding DataTypeExpression.Value}"
+                                                            Height="27"
+                                                            IsDecimalAllowed="{Binding DataTypeExpression.IsDecimal}"
+                                                            IsNegativeAllowed="{Binding DataTypeExpression.IsSigned}">
                                     <TextBox.Visibility>
                                         <Binding Path="DataTypeExpression.ValueControlType" Converter="{StaticResource ValueControlTypeVisibilityConverter}">
                                             <Binding.ConverterParameter>
@@ -184,14 +229,11 @@
                                         </Binding>
                                     </TextBox.Visibility>
                                     <xamlbehaviors:Interaction.Behaviors>
-                                        <catel:NumericTextBox IsDecimalAllowed="{Binding DataTypeExpression.IsDecimal}"
-                                                              IsNegativeAllowed="{Binding DataTypeExpression.IsSigned}"
-                                                              UpdateBindingOnTextChanged="False" />
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
                                     </xamlbehaviors:Interaction.Behaviors>
-                                </TextBox>
+                                </orccontrols:NumericTextBox>
 
-                                <DatePicker SelectedDate="{Binding DataTypeExpression.Value}"
+                                <orccontrols:DateTimePicker Value="{Binding DataTypeExpression.Value}"
                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
 
                                 <ComboBox ItemsSource="{Binding DataTypeExpression.BooleanValues}"
@@ -202,25 +244,23 @@
                                           SelectedValue="{Binding DataTypeExpression.Value}"
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
 
-                                <StackPanel Orientation="Horizontal"
-                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}">
-                                    <ComboBox ItemsSource="{Binding DataTypeExpression.SpanTypes}"
-                                              SelectedValue="{Binding DataTypeExpression.SelectedSpanType}" />
-                                    <TextBox Text="{Binding DataTypeExpression.Amount}">
-                                        <xamlbehaviors:Interaction.Behaviors>
-                                            <catel:NumericTextBox IsDecimalAllowed="False"
-                                                                  IsNegativeAllowed="False"
-                                                                  UpdateBindingOnTextChanged="False" />
+                                <orccontrols:TimeSpanPicker Value="{Binding DataTypeExpression.Value}"
+                                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"></orccontrols:TimeSpanPicker>
 
-                                            <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        </xamlbehaviors:Interaction.Behaviors>
-                                    </TextBox>
-                                </StackPanel>
                             </Grid>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" Style="{StaticResource FilterBuilderIconButtonStyle}" Content="{StaticResource DeleteGeometry}"
+                            <Button x:Name="DeleteButton"
+                                    BorderThickness="0"
+                                    Padding="3"
+                                    ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" 
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
+
+                                <Path Data="{StaticResource DeleteGeometry}"
+                                      Margin="2"
+                                      Stretch="Fill"
+                                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+
                             </Button>
                         </StackPanel>
                     </Grid>
@@ -228,9 +268,13 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Grid x:Name="dataGridContainer" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource dataGridContainerStyle}">
-            <DataGrid x:Name="dataGrid" Margin="0" BorderThickness="1" BorderBrush="LightGray"
-                      AutoGenerateColumns="False" ItemsSource="{Binding PreviewItems}"
+        <Grid x:Name="DataGridContainer" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource DataGridContainerStyle}">
+            <DataGrid x:Name="dataGrid"
+                      Margin="0" 
+                      BorderThickness="1" 
+                      BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
+                      AutoGenerateColumns="False" 
+                      ItemsSource="{Binding PreviewItems}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
             </DataGrid>
         </Grid>

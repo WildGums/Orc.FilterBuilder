@@ -67,7 +67,8 @@
                                                        Style="{DynamicResource ResourceKey=FilterBuilderBrokenTextBlockStyle}"/>
                                         </Grid>
 
-                                        <Button Grid.Column="2" Width="24" CommandParameter="{Binding }" Style="{DynamicResource FilterBuilderButtonStyle}"
+                                        <Button Grid.Column="2" Width="24" CommandParameter="{Binding}"
+                                                Style="{DynamicResource FilterBuilderButtonStyle}"
                                                     Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
                                             <!-- NOTE: important to fix commands where command parameter is not yet available when
                                                      the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->

@@ -9,11 +9,10 @@ namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
     using Catel;
 
     public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
-        where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>
+        where TValue : struct, IComparable, IFormattable, IComparable<TValue>, IEquatable<TValue>
     {
         #region Fields
         private readonly Comparer<TValue> _comparer;

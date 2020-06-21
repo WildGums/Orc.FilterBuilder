@@ -1,8 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeSpanExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿ //--------------------------------------------------------------------------------------------------------------------
+ //<copyright file = "TimeSpanExpression.cs" company="WildGums">
+ //  Copyright(c) 2008 - 2014 WildGums.All rights reserved.
+ //</copyright>
+ //--------------------------------------------------------------------------------------------------------------------
 
 
 namespace Orc.FilterBuilder
@@ -12,18 +12,18 @@ namespace Orc.FilterBuilder
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
-    using System.Runtime.Serialization;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
+    [ObsoleteEx(ReplacementTypeOrMember = "Use TimeSpanValueExpression instead")]
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class TimeSpanExpression : NullableDataTypeExpression
     {
         public TimeSpanExpression()
             : this(true)
         {
-            
+
         }
 
         public TimeSpanExpression(bool isNullable)
@@ -32,7 +32,7 @@ namespace Orc.FilterBuilder
             SelectedCondition = Condition.EqualTo;
             Value = TimeSpan.FromHours(1);
             ValueControlType = ValueControlType.TimeSpan;
-            SpanTypes = Enum.GetValues(typeof (TimeSpanType)).Cast<TimeSpanType>().ToList();
+            SpanTypes = Enum.GetValues(typeof(TimeSpanType)).Cast<TimeSpanType>().ToList();
             SelectedSpanType = TimeSpanType.Hours;
         }
 

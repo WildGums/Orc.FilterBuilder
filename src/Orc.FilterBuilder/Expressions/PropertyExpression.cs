@@ -131,7 +131,7 @@ namespace Orc.FilterBuilder
                     break;
 
                 case Type _ when propertyType == typeof(TimeSpan):
-                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(isNullable));
+                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanValueExpression(isNullable));
                     break;
 
                 case Type _ when propertyType == typeof(decimal):
