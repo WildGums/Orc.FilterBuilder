@@ -431,6 +431,8 @@ namespace Orc.FilterBuilder
         public override string ToString() { }
     }
     [System.Diagnostics.DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    [System.Obsolete("Use `Use TimeSpanValueExpression instead` instead. Will be treated as an error fr" +
+        "om version 5.0.0. Will be removed in version 6.0.0.", false)]
     public class TimeSpanExpression : Orc.FilterBuilder.NullableDataTypeExpression
     {
         public static readonly Catel.Data.PropertyData AmountProperty;
@@ -456,6 +458,12 @@ namespace Orc.FilterBuilder
         Hours = 3,
         Minutes = 4,
         Seconds = 5,
+    }
+    [System.Diagnostics.DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+    public class TimeSpanValueExpression : Orc.FilterBuilder.ValueDataTypeExpression<System.TimeSpan>
+    {
+        public TimeSpanValueExpression() { }
+        public TimeSpanValueExpression(bool isNullable) { }
     }
     [System.Diagnostics.DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class UnsignedIntegerExpression : Orc.FilterBuilder.NumericExpression<uint>
@@ -496,7 +504,7 @@ namespace Orc.FilterBuilder
         Enum = 16,
     }
     public abstract class ValueDataTypeExpression<TValue> : Orc.FilterBuilder.NullableDataTypeExpression
-        where TValue :  struct, System.IComparable, System.IFormattable, System.IConvertible, System.IComparable<TValue>, System.IEquatable<TValue>
+        where TValue :  struct, System.IComparable, System.IFormattable, System.IComparable<TValue>, System.IEquatable<TValue>
     {
         public static readonly Catel.Data.PropertyData ValueProperty;
         protected ValueDataTypeExpression() { }
