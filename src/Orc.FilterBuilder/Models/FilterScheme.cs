@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Models
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
@@ -19,10 +19,8 @@ namespace Orc.FilterBuilder.Models
     using Catel.IoC;
     using Catel.Runtime.Serialization;
     using Runtime.Serialization;
-    using Services;
 
     [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
-    [Serializable]
     public class FilterScheme : ModelBase
     {
         private static readonly Type DefaultTargetType = typeof(object);
@@ -44,11 +42,6 @@ namespace Orc.FilterBuilder.Models
         {
         }
 
-        protected FilterScheme(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public FilterScheme(Type targetType, string title, ConditionTreeItem root)
         {
             Argument.IsNotNull(() => targetType);
@@ -65,6 +58,7 @@ namespace Orc.FilterBuilder.Models
         #endregion
 
         #region Properties
+        [IncludeInSerialization]
         public Type TargetType { get; private set; }
 
         public string Title { get; set; }

@@ -14,8 +14,6 @@ namespace Orc.FilterBuilder
     using Catel.Collections;
     using Catel.Reflection;
     using MethodTimer;
-    using Models;
-    using Services;
 
     public static class FilterSchemeExtensions
     {

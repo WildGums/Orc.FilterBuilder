@@ -12,8 +12,7 @@ namespace Orc.FilterBuilder.Tests
     using System.Linq;
     using System.Linq.Expressions;
     using NUnit.Framework;
-    using Orc.FilterBuilder.Conditions;
-    using Orc.FilterBuilder.Models;
+    using Orc.FilterBuilder;
 
     [TestFixture]
     public class ConditionsLinqExtensionsFacts

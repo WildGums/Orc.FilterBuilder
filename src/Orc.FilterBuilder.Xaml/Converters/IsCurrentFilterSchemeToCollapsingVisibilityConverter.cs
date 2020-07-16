@@ -12,7 +12,6 @@ namespace Orc.FilterBuilder.Converters
     using System.Windows;
     using System.Windows.Data;
     using Catel;
-    using Models;
 
     public class IsCurrentFilterSchemeToCollapsingVisibilityConverter : IMultiValueConverter
     {

@@ -1,27 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionGroup.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
 
-    [Serializable]
     public class ConditionGroup : ConditionTreeItem
     {
         #region Constructors
-        protected ConditionGroup(SerializationInfo info, StreamingContext context)
-        : base(info, context)
-        {
-            
-        }
-
         public ConditionGroup()
         {
             Type = ConditionGroupType.And;

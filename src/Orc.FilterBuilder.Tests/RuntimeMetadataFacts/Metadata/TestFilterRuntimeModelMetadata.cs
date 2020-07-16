@@ -8,7 +8,6 @@
 namespace Orc.FilterBuilder.Tests
 {
     using System;
-    using FilterBuilder.Models;
 
     public class TestFilterRuntimeModelMetadata : IPropertyMetadata
     {

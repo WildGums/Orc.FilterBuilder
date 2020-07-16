@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Catel.IoC;
-    using FilterBuilder.Services;
     using NUnit.Framework;
 
     [TestFixture]

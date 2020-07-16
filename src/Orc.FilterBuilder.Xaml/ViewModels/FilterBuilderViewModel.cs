@@ -21,12 +21,9 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.MVVM;
     using Catel.Reflection;
     using Catel.Services;
-    using Models;
-    using Services;
     using Views;
     using CollectionHelper = FilterBuilder.CollectionHelper;
 
-    [Serializable]
     public class FilterBuilderViewModel : ViewModelBase
     {
         #region Fields

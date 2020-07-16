@@ -13,18 +13,11 @@ namespace Orc.FilterBuilder
     using System.Runtime.Serialization;
     using Catel;
     using Catel.Runtime.Serialization;
-    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class BooleanExpression : DataTypeExpression
     {
         #region Constructors
-        protected BooleanExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public BooleanExpression()
         {
             BooleanValues = new List<bool> {true, false};
@@ -50,6 +43,9 @@ namespace Orc.FilterBuilder
             {
                 case Condition.EqualTo:
                     return entityValue == Value;
+
+                case Condition.NotEqualTo:
+                    return entityValue != Value;
 
                 default:
                     throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));

@@ -7,7 +7,6 @@
     using Catel.Logging;
     using Catel.Runtime.Serialization.Xml;
     using Orc.FileSystem;
-    using Orc.FilterBuilder.Models;
 
     public class FilterSerializationService : IFilterSerializationService
     {

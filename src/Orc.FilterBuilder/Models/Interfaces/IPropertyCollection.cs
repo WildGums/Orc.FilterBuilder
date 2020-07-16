@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Orc.FilterBuilder.Models
+namespace Orc.FilterBuilder
 {
     using System.Collections.Generic;
 

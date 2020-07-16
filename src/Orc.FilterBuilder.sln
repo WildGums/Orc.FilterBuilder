@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder", "Orc.Fi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Xaml", "Orc.FilterBuilder.Xaml\Orc.FilterBuilder.Xaml.csproj", "{E276E661-3DDB-47E2-8030-D87DBF0361FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Example.NET", "Orc.FilterBuilder.Example.NET\Orc.FilterBuilder.Example.NET.csproj", "{E9D22451-EBDB-467C-9AE6-3EC790C6EB81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Example", "Orc.FilterBuilder.Example\Orc.FilterBuilder.Example.csproj", "{E9D22451-EBDB-467C-9AE6-3EC790C6EB81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Tests", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.csproj", "{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}"
 EndProject

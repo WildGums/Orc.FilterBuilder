@@ -4,8 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Catel.IoC;
-    using FilterBuilder.Models;
-    using FilterBuilder.Services;
     using Services;
 
     public static class FilterSchemeInitializationHelper

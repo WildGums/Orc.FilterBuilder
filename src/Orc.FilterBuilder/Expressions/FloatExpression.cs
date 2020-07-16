@@ -10,18 +10,10 @@ namespace Orc.FilterBuilder
     using System;
     using System.Diagnostics;
     using System.Runtime.Serialization;
-    using Models;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class FloatExpression : NumericExpression<float>
     {
-        #region Constructors
-        protected FloatExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public FloatExpression()
             : this(true)
         {
@@ -34,6 +26,5 @@ namespace Orc.FilterBuilder
             IsSigned = true;
             ValueControlType = ValueControlType.Float;
         }
-        #endregion
     }
 }

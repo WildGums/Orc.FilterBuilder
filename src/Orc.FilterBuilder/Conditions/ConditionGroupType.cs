@@ -5,11 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-using Catel.ComponentModel;
-using Orc.FilterBuilder.Properties;
-
 namespace Orc.FilterBuilder
 {
+    using Catel.ComponentModel;
+
     public enum ConditionGroupType
     {
         [DisplayName("FilterBuilder_And")]

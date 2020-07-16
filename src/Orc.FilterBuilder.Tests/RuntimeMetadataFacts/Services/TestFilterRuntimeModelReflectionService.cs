@@ -12,8 +12,6 @@ namespace Orc.FilterBuilder.Tests.Services
     using System.Threading.Tasks;
     using Catel;
     using Catel.Threading;
-    using FilterBuilder.Models;
-    using FilterBuilder.Services;
 
     public class TestFilterRuntimeModelReflectionService : IReflectionService
     {

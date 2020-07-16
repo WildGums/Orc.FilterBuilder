@@ -1,7 +1,6 @@
 ﻿using Catel.IoC;
 using Catel.Services;
 using Orc.FilterBuilder;
-using Orc.FilterBuilder.Services;
 
 /// <summary>
 /// Used by the ModuleInit. All code inside the Initialize method is ran as soon as the assembly is loaded.

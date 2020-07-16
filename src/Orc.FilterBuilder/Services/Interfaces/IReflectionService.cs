@@ -5,10 +5,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
     using System;
-    using Models;
 
     public interface IReflectionService
     {

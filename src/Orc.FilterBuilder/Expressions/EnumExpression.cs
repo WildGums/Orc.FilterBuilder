@@ -16,7 +16,6 @@ namespace Orc.FilterBuilder
     using Catel.IoC;
     using Catel.Reflection;
     using Catel.Services;
-    using Models;
 
     /// <summary>
     /// The EnumExpression class.
@@ -25,13 +24,11 @@ namespace Orc.FilterBuilder
     /// The enum type parameter.
     /// </typeparam>
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [Serializable]
     public class EnumExpression<TEnum> : NullableDataTypeExpression
         where TEnum : struct
     {
-        #region Constructors
-        protected EnumExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        public EnumExpression()
+            : this(false)
         {
         }
 
@@ -51,7 +48,6 @@ namespace Orc.FilterBuilder
             Value = EnumValues.FirstOrDefault();
             ValueControlType = ValueControlType.Enum;
         }
-        #endregion
 
         #region Properties
         /// <summary>

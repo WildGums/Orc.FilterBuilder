@@ -9,7 +9,7 @@
         <converters:IsCurrentFilterSchemeToCollapsingVisibilityConverter x:Key="IsCurrentFilterSchemeToCollapsingVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid x:Name="layoutRoot" Background="White">
+    <Grid x:Name="layoutRoot" Background="{DynamicResource Orc.Brushes.Control.Default.Background}">
         <ItemsControl ItemsSource="{Binding FilterGroups}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -67,8 +67,12 @@
                                                        Style="{DynamicResource ResourceKey=FilterBuilderBrokenTextBlockStyle}"/>
                                         </Grid>
 
-                                        <Button Grid.Column="2" Width="24" CommandParameter="{Binding }" Style="{DynamicResource FilterBuilderButtonStyle}"
-                                                    Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
+                                        <Button Grid.Column="2"
+                                                Width="24"
+                                                Content="..."
+                                                HorizontalContentAlignment="Center"
+                                                CommandParameter="{Binding}"
+                                                Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
                                             <!-- NOTE: important to fix commands where command parameter is not yet available when
                                                      the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
                                             <Button.Command>
@@ -77,9 +81,11 @@
                                                     <Binding />
                                                 </MultiBinding>
                                             </Button.Command>
-                                            <Image Source="/Orc.FilterBuilder.Xaml;component/Resources/Images/edit.png" Stretch="None" />
                                         </Button>
-                                        <Button Grid.Column="4" Width="24" CommandParameter="{Binding }" Style="{DynamicResource FilterBuilderButtonStyle}"
+                                        <Button Grid.Column="4" 
+                                                Width="24"
+                                                Padding="7 8.5 7 8.5"
+                                                CommandParameter="{Binding}" 
                                                 Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
                                             <!-- NOTE: important to fix commands where command parameter is not yet available when
                                                      the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
@@ -89,7 +95,10 @@
                                                     <Binding />
                                                 </MultiBinding>
                                             </Button.Command>
-                                            <Image Source="/Orc.FilterBuilder.Xaml;component/Resources/Images/remove.png" Stretch="None" />
+
+                                            <Path Data="{StaticResource DeleteGeometry}"
+                                                  Stretch="Fill"
+                                                  Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
                                         </Button>
                                     </Grid>
                                 </DataTemplate>

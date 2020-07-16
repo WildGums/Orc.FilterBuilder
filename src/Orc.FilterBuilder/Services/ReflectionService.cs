@@ -5,14 +5,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
     using System;
     using System.Threading.Tasks;
     using Catel;
     using Catel.Caching;
     using Catel.Threading;
-    using Models;
 
     public class ReflectionService : IReflectionService
     {

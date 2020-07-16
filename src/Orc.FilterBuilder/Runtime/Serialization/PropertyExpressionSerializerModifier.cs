@@ -11,8 +11,6 @@ namespace Orc.FilterBuilder.Runtime.Serialization
     using Catel.Data;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
-    using Models;
-    using Orc.FilterBuilder.Services;
 
     public class PropertyExpressionSerializerModifier : SerializerModifierBase<PropertyExpression>
     {
@@ -31,7 +29,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
 
         public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
         {
-            if (string.Equals(memberValue.Name, "Property"))
+            if (string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
             {
                 var propertyInfo = memberValue.Value as IPropertyMetadata;
                 if (propertyInfo != null)
@@ -43,7 +41,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
 
         public override void DeserializeMember(ISerializationContext context, MemberValue memberValue)
         {
-            if (string.Equals(memberValue.Name, "Property"))
+            if (string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
             {
                 var propertyMetadata = memberValue.Value as string;
                 if (propertyMetadata != null)

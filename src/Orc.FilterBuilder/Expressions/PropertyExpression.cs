@@ -15,13 +15,11 @@ namespace Orc.FilterBuilder
     using Catel.Logging;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
-    using Models;
     using Runtime.Serialization;
 
     [DebuggerDisplay("{Property} = {DataTypeExpression}")]
     [SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
     [ValidateModel(typeof(PropertyExpressionValidator))]
-    [Serializable]
     public class PropertyExpression : ConditionTreeItem
     {
         #region Fields
@@ -30,11 +28,6 @@ namespace Orc.FilterBuilder
 
         #region Constructors
         public PropertyExpression()
-        {
-        }
-
-        protected PropertyExpression(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
         #endregion
@@ -49,11 +42,6 @@ namespace Orc.FilterBuilder
         #endregion
 
         #region Methods
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
-
         private void OnPropertyChanged()
         {
             var dataTypeExpression = DataTypeExpression;
@@ -143,7 +131,7 @@ namespace Orc.FilterBuilder
                     break;
 
                 case Type _ when propertyType == typeof(TimeSpan):
-                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanExpression(isNullable));
+                    CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanValueExpression(isNullable));
                     break;
 
                 case Type _ when propertyType == typeof(decimal):

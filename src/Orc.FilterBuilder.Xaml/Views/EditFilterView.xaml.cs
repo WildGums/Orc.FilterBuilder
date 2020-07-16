@@ -11,7 +11,6 @@ namespace Orc.FilterBuilder.Views
     using System.Windows.Data;
     using Catel.IoC;
     using Converters;
-    using Services;
     using ViewModels;
 
     public sealed partial class EditFilterView

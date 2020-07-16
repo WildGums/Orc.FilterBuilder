@@ -5,11 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.FilterBuilder.Services
+namespace Orc.FilterBuilder
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models;
 
     public static class IFilterServiceExtensions
     {

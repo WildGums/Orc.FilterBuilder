@@ -11,11 +11,9 @@
     using Catel.MVVM;
     using Catel.Reflection;
     using Catel.Services;
-    using FilterBuilder.Services;
     using FilterBuilder.ViewModels;
     using global::FilterBuilder.Example.Models;
     using global::FilterBuilder.Example.Services;
-    using Models;
 
     using CollectionHelper = Orc.FilterBuilder.CollectionHelper;
 
@@ -45,7 +43,7 @@
 
         public ObservableCollection<TestEntity> RawItems { get; private set; }
 
-        public ObservableCollection<FilterScheme> AvailableSchemes { get; private set; }
+        public List<FilterScheme> AvailableSchemes { get; private set; }
 
         public FilterScheme SelectedFilterScheme { get; set; }
 
@@ -116,7 +114,7 @@
                 _filterSchemes.Schemes.CollectionChanged += OnFilterSchemesCollectionChanged;
             }
 
-            var newSchemes = new ObservableCollection<FilterScheme>();
+            var newSchemes = new List<FilterScheme>();
 
             if (RawItems is null)
             {
@@ -125,9 +123,9 @@
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawItems);
-                ((ICollection<FilterScheme>)newSchemes).AddRange(from scheme in _filterSchemes.Schemes
-                                                                 where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
-                                                                 select scheme);
+                newSchemes.AddRange(from scheme in _filterSchemes.Schemes
+                                    where _targetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
+                                    select scheme);
             }
 
             newSchemes.Insert(0, _noFilterFilter);

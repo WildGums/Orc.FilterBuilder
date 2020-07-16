@@ -1,9 +1,8 @@
-﻿namespace Orc.FilterBuilder.Services
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
     using System.Threading.Tasks;
-    using Models;
 
     public interface IFilterService
     {
