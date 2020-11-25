@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder.Example</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Example</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -24,6 +24,7 @@
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
     <PackageReference Include="Orc.Controls" Version="4.1.1" />
     <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.1.1" />
+    <PackageReference Include="System.Security.Permissions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
