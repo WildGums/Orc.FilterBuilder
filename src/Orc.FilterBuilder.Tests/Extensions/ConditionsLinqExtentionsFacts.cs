@@ -561,12 +561,12 @@ namespace Orc.FilterBuilder.Tests
             [Test]
             public void Filters_Correctly_With_DateTime_Property()
             {
-                var predicate = BuildPredicate(human => human.DATE, new DateTimeExpression
+                var predicate = BuildPredicate(human => human.NullDATE, new DateTimeExpression
                 {
                     SelectedCondition = Condition.IsNull
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People, HumanComparer);
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(x => x.NullDATE is null), HumanComparer);
             }
 
             [Test]
