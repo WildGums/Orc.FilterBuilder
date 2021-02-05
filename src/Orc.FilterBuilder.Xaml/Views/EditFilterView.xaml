@@ -312,6 +312,7 @@
             <DataGrid x:Name="dataGrid"
                       Style="{StaticResource FilterBuilderDataGridStyle}"
                       Margin="0" 
+                      IsReadOnly="True"
                       BorderThickness="1" 
                       BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
                       ItemsSource="{Binding PreviewItems}"
