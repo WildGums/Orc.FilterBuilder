@@ -138,7 +138,7 @@
         private void OnScopeChanged()
         {
             var vm = ViewModel as FilterBuilderViewModel;
-            if (vm != null)
+            if (vm is not null)
             {
                 vm.Scope = Scope;
             }
@@ -153,10 +153,10 @@
             }
 
             var filterScheme = ((FrameworkElement)sender).DataContext as FilterScheme;
-            if (filterScheme != null)
+            if (filterScheme is not null)
             {
                 var vm = ViewModel as FilterBuilderViewModel;
-                if (vm != null)
+                if (vm is not null)
                 {
                     vm.SelectedFilterScheme = filterScheme;
                 }

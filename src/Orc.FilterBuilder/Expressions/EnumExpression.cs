@@ -110,7 +110,7 @@ namespace Orc.FilterBuilder
                     return entityValue is null;
 
                 case Condition.NotIsNull:
-                    return entityValue != null;
+                    return entityValue is not null;
 
                 default:
                     throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));

@@ -116,7 +116,7 @@ namespace Orc.FilterBuilder
                     var type = dataTypeExpression.GetType();
                     var baseType = type.GetBaseTypeEx();
 
-                    if (baseType != null && baseType.IsGenericTypeEx() && baseType.GetGenericTypeDefinition() == typeof(NumericExpression<>))
+                    if (baseType is not null && baseType.IsGenericTypeEx() && baseType.GetGenericTypeDefinition() == typeof(NumericExpression<>))
                     {
                         return dataTypeExpression.BuildNumericExpression(parameterExpression, propertyMetadata.Name);
                     }

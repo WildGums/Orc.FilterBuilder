@@ -107,7 +107,7 @@ namespace Orc.FilterBuilder.Tests
                     Value = "Ann"
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING != null && t.STRING == "Ann"),
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING is not null && t.STRING == "Ann"),
                     HumanComparer);
             }
         }
@@ -125,7 +125,7 @@ namespace Orc.FilterBuilder.Tests
                     Value = "nn"
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING != null && t.STRING.Contains("nn")),
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING is not null && t.STRING.Contains("nn")),
                     HumanComparer);
             }
         }
@@ -160,7 +160,7 @@ namespace Orc.FilterBuilder.Tests
                     Value = "A"
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING != null && t.STRING.StartsWith("A")),
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING is not null && t.STRING.StartsWith("A")),
                     HumanComparer);
             }
         }
@@ -194,7 +194,7 @@ namespace Orc.FilterBuilder.Tests
                     Value = "io"
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING != null && t.STRING.EndsWith("io")),
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.STRING is not null && t.STRING.EndsWith("io")),
                     HumanComparer);
             }
         }
@@ -649,7 +649,7 @@ namespace Orc.FilterBuilder.Tests
                     SelectedCondition = Condition.NotIsNull
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.NullDATE != null), HumanComparer);
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.NullDATE is not null), HumanComparer);
             }
 
             [Test]
@@ -660,7 +660,7 @@ namespace Orc.FilterBuilder.Tests
                     SelectedCondition = Condition.NotIsNull
                 });
 
-                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.NullINT != null), HumanComparer);
+                CollectionAssert.AreEqual(People.Where(predicate), People.Where(t => t.NullINT is not null), HumanComparer);
             }
 
             [Test]
@@ -673,7 +673,7 @@ namespace Orc.FilterBuilder.Tests
 
                 CollectionAssert.AreEqual(
                     People.Where(predicate),
-                    People.Where(t => t.STRING != null), HumanComparer);
+                    People.Where(t => t.STRING is not null), HumanComparer);
             }
         }
 

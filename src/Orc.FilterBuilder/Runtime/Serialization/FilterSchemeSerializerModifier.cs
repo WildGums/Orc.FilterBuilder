@@ -18,7 +18,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
             if (string.Equals(memberValue.Name, nameof(FilterScheme.TargetType)))
             {
                 var targetType = memberValue.Value as Type;
-                if (targetType != null)
+                if (targetType is not null)
                 {
                     memberValue.Value = targetType.FullName;
                 }
@@ -30,7 +30,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
             if (string.Equals(memberValue.Name, nameof(FilterScheme.TargetType)))
             {
                 var targetTypeAsString = memberValue.Value as string;
-                if (targetTypeAsString != null)
+                if (targetTypeAsString is not null)
                 {
                     memberValue.Value = TypeCache.GetType(targetTypeAsString);
                 }

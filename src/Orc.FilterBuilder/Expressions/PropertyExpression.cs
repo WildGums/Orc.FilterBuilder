@@ -45,18 +45,18 @@ namespace Orc.FilterBuilder
         private void OnPropertyChanged()
         {
             var dataTypeExpression = DataTypeExpression;
-            if (dataTypeExpression != null)
+            if (dataTypeExpression is not null)
             {
                 dataTypeExpression.PropertyChanged -= OnDataTypeExpressionPropertyChanged;
             }
 
-            if (Property != null)
+            if (Property is not null)
             {
                 CreateDataTypeExpression();
             }
 
             dataTypeExpression = DataTypeExpression;
-            if (dataTypeExpression != null)
+            if (dataTypeExpression is not null)
             {
                 dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
             }
@@ -212,7 +212,7 @@ namespace Orc.FilterBuilder
             base.OnDeserialized();
 
             var dataTypeExpression = DataTypeExpression;
-            if (dataTypeExpression != null)
+            if (dataTypeExpression is not null)
             {
                 dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
             }

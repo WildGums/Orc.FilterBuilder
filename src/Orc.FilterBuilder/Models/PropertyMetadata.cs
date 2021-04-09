@@ -53,7 +53,7 @@ namespace Orc.FilterBuilder
         {
             get
             {
-                if (_displayName != null)
+                if (_displayName is not null)
                 {
                     return _displayName;
                 }
@@ -100,9 +100,9 @@ namespace Orc.FilterBuilder
         {
             unchecked
             {
-                var hashCode = _propertyData != null ? _propertyData.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Type != null ? Type.GetHashCode() : 0);
+                var hashCode = _propertyData is not null ? _propertyData.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (Name is not null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Type is not null ? Type.GetHashCode() : 0);
                 return hashCode;
             }
         }
@@ -118,11 +118,11 @@ namespace Orc.FilterBuilder
 
             object value = null;
 
-            if (_propertyInfo != null)
+            if (_propertyInfo is not null)
             {
                 value = _propertyInfo.GetValue(instance, null);
             }
-            else if (_propertyData != null && instance is IModelEditor modelEditor)
+            else if (_propertyData is not null && instance is IModelEditor modelEditor)
             {
                 value = modelEditor.GetValue(_propertyData.Name);
             }
@@ -144,7 +144,7 @@ namespace Orc.FilterBuilder
         {
             Argument.IsNotNull(() => instance);
 
-            if (_propertyInfo != null)
+            if (_propertyInfo is not null)
             {
                 _propertyInfo.SetValue(instance, value, null);
             }

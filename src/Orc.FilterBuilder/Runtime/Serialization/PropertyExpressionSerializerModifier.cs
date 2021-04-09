@@ -32,7 +32,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
             if (string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
             {
                 var propertyInfo = memberValue.Value as IPropertyMetadata;
-                if (propertyInfo != null)
+                if (propertyInfo is not null)
                 {
                     memberValue.Value = string.Format("{0}{1}{2}", propertyInfo.OwnerType.FullName, Separator, propertyInfo.Name);
                 }
@@ -44,7 +44,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
             if (string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
             {
                 var propertyMetadata = memberValue.Value as string;
-                if (propertyMetadata != null)
+                if (propertyMetadata is not null)
                 {
                     // We need to delay this
                     ((PropertyExpression)context.Model).PropertySerializationValue = propertyMetadata;

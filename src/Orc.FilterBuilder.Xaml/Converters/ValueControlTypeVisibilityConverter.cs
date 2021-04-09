@@ -19,7 +19,7 @@ namespace Orc.FilterBuilder.Converters
         protected override object Convert(object value, Type targetType, object parameter)
         {
             var controlType = (ValueControlType)value;
-            if (parameter != null && parameter.GetType().IsArrayEx())
+            if (parameter is not null && parameter.GetType().IsArrayEx())
             {
                 var parameterType = (ValueControlType[])parameter;
                 return parameterType.Contains(controlType) ? Visibility.Visible : Visibility.Collapsed;

@@ -149,7 +149,7 @@ namespace Orc.FilterBuilder.ViewModels
         {
             try
             {
-                if (_filterService != null)
+                if (_filterService is not null)
                 {
                     filterScheme.EnsureIntegrity(_reflectionService);
                 }
@@ -215,7 +215,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return;
             }
             
-            if(_filterService != null)
+            if(_filterService is not null)
             {
                 FilteringFunc = null;
                 await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
@@ -278,7 +278,7 @@ namespace Orc.FilterBuilder.ViewModels
 
             SelectedFilterScheme = _noFilterFilter;
 
-            if (_filterSchemeManager != null)
+            if (_filterSchemeManager is not null)
             {
                 await _filterSchemeManager.UpdateFiltersAsync();
             }
@@ -288,13 +288,13 @@ namespace Orc.FilterBuilder.ViewModels
         #region Methods
         private void OnScopeChanged()
         {
-            if (_filterSchemeManager != null)
+            if (_filterSchemeManager is not null)
             {
                 _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
                 _filterSchemeManager = null;
             }
 
-            if (_filterService != null)
+            if (_filterService is not null)
             {
                 _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
                 _filterService = null;
@@ -340,7 +340,7 @@ namespace Orc.FilterBuilder.ViewModels
                 SelectedFilterScheme = filterScheme;
             }
 
-            if (filterServiceSelectedFilterIsDifferent && _filterService != null)
+            if (filterServiceSelectedFilterIsDifferent && _filterService is not null)
             {
                 _filterService.SelectedFilter = filterScheme;
             }
@@ -383,14 +383,14 @@ namespace Orc.FilterBuilder.ViewModels
         {
             Log.Debug("Updating filters");
 
-            if (_filterSchemes != null)
+            if (_filterSchemes is not null)
             {
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
             }
 
             _filterSchemes = _filterSchemeManager?.FilterSchemes;
 
-            if (_filterSchemes != null)
+            if (_filterSchemes is not null)
             {
                 _filterSchemes.Schemes.CollectionChanged += OnFilterSchemesCollectionChanged;
             }
@@ -410,7 +410,7 @@ namespace Orc.FilterBuilder.ViewModels
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
 
-                if (_targetType != null && _filterSchemes != null)
+                if (_targetType is not null && _filterSchemes is not null)
                 {
                     ((ICollection<FilterScheme>)applicableFilterSchemes).AddRange((from scheme in _filterSchemes.Schemes
                                                                                    where scheme.TargetType != null && _targetType.IsAssignableFromEx(scheme.TargetType)
@@ -446,17 +446,17 @@ namespace Orc.FilterBuilder.ViewModels
 
         protected override async Task CloseAsync()
         {
-            if (_filterSchemes != null)
+            if (_filterSchemes is not null)
             {
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
             }
 
-            if (_filterSchemeManager != null) 
+            if (_filterSchemeManager is not null) 
             {
                 _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
             }
 
-            if (_filterService != null)
+            if (_filterService is not null)
             {
                 _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
             }
