@@ -41,7 +41,7 @@ namespace Orc.FilterBuilder.Converters
             try
             {
                 var modelBase = value as IModelEditor;
-                if (modelBase != null)
+                if (modelBase is not null)
                 {
                     var propertyDataManager = PropertyDataManager.Default;
                     if (propertyDataManager.IsPropertyRegistered(modelBase.GetType(), propertyName))
@@ -52,12 +52,12 @@ namespace Orc.FilterBuilder.Converters
                     }
                 }
 
-                if (_propertyMetadata != null)
+                if (_propertyMetadata is not null)
                 {
                     return _propertyMetadata.GetValue(value);
                 }
 
-                if (value != null)
+                if (value is not null)
                 {
                     return PropertyHelper.GetPropertyValue(value, propertyName, false);
                 }

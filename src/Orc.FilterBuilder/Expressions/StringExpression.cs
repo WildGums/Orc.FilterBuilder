@@ -43,7 +43,7 @@ namespace Orc.FilterBuilder
             if (entityValue is null && propertyMetadata.Type.IsEnumEx())
             {
                 var entityValueAsObject = propertyMetadata.GetValue(entity);
-                if (entityValueAsObject != null)
+                if (entityValueAsObject is not null)
                 {
                     entityValue = entityValueAsObject.ToString();
                 }
@@ -52,16 +52,16 @@ namespace Orc.FilterBuilder
             switch (SelectedCondition)
             {
                 case Condition.Contains:
-                    return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1;
+                    return entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1;
 
                 case Condition.DoesNotContain:
-                    return entityValue != null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1;
+                    return entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1;
 
                 case Condition.EndsWith:
-                    return entityValue != null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+                    return entityValue is not null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.DoesNotEndWith:
-                    return entityValue != null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+                    return entityValue is not null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.EqualTo:
                     return entityValue == Value;
@@ -91,22 +91,20 @@ namespace Orc.FilterBuilder
                     return entityValue != string.Empty;
 
                 case Condition.NotIsNull:
-                    return entityValue != null;
+                    return entityValue is not null;
 
                 case Condition.StartsWith:
-                    return entityValue != null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+                    return entityValue is not null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.DoesNotStartWith:
-                    return entityValue != null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
+                    return entityValue is not null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
 
                 case Condition.Matches:
-                    return entityValue != null
-                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
+                    return entityValue is not null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
                         && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 case Condition.DoesNotMatch:
-                    return entityValue != null
-                        && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
+                    return entityValue is not null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
                         && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:

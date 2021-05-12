@@ -46,22 +46,22 @@ namespace Orc.FilterBuilder
                         return !object.Equals(entityValue, Value);
 
                     case Condition.GreaterThan:
-                        return entityValue != null && _comparer.Compare(entityValue.Value, Value) > 0;
+                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) > 0;
 
                     case Condition.LessThan:
-                        return entityValue != null && _comparer.Compare(entityValue.Value, Value) < 0;
+                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) < 0;
 
                     case Condition.GreaterThanOrEqualTo:
-                        return entityValue != null && _comparer.Compare(entityValue.Value, Value) >= 0;
+                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) >= 0;
 
                     case Condition.LessThanOrEqualTo:
-                        return entityValue != null && _comparer.Compare(entityValue.Value, Value) <= 0;
+                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) <= 0;
 
                     case Condition.IsNull:
                         return entityValue is null;
 
                     case Condition.NotIsNull:
-                        return entityValue != null;
+                        return entityValue is not null;
 
                     default:
                         throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));

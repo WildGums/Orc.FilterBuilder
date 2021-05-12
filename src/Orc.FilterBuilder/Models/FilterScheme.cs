@@ -90,7 +90,7 @@ namespace Orc.FilterBuilder
                     RaisePropertyChanged(nameof(Scope));
 
                     var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
-                    if (reflectionService != null)
+                    if (reflectionService is not null)
                     {
                         this.EnsureIntegrity(reflectionService);
                     }
@@ -108,7 +108,7 @@ namespace Orc.FilterBuilder
         #region Methods
         private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            if (e.OldItems is not null)
             {
                 foreach (var item in e.OldItems)
                 {
@@ -117,7 +117,7 @@ namespace Orc.FilterBuilder
             }
 
             var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
-            if (newCollection != null)
+            if (newCollection is not null)
             {
                 foreach (var item in newCollection)
                 {
@@ -140,7 +140,7 @@ namespace Orc.FilterBuilder
 
         private void CheckForInvalidItems()
         {
-            HasInvalidConditionItems = (ConditionItems != null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
+            HasInvalidConditionItems = (ConditionItems is not null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
         }
 
         private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
@@ -165,7 +165,7 @@ namespace Orc.FilterBuilder
         private void SubscribeToEvents()
         {
             var items = ConditionItems;
-            if (items != null)
+            if (items is not null)
             {
                 items.CollectionChanged += OnConditionItemsCollectionChanged;
                 foreach (var item in items)
@@ -187,7 +187,7 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => entity);
 
             var root = Root;
-            if (root != null)
+            if (root is not null)
             {
                 return root.CalculateResult(entity);
             }

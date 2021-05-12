@@ -11,7 +11,7 @@
             Title = title;
             FilterSchemes = new List<FilterScheme>();
 
-            if (filterSchemes != null)
+            if (filterSchemes is not null)
             {
                 FilterSchemes.AddRange(filterSchemes);
             }

@@ -17,7 +17,7 @@ namespace Orc.FilterBuilder
         #region Methods
         public static string GetDisplayName(this PropertyInfo propertyInfo)
         {
-            if (propertyInfo != null)
+            if (propertyInfo is not null)
             {
                 if (propertyInfo.TryGetAttribute(out DisplayNameAttribute catelDispNameAttr))
                 {

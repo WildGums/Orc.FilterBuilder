@@ -55,7 +55,7 @@ namespace Orc.FilterBuilder
             IPropertyCollection typeProperties;
 
             var property = propertyExpression.Property;
-            if (property != null)
+            if (property is not null)
             {
                 // We already have it, but make sure to get the right instance
 

@@ -33,7 +33,7 @@ namespace Orc.FilterBuilder.Behaviors
         {
             var treeView = AssociatedObject;
             var selectedItem = treeView.SelectedItem;
-            if (selectedItem != null)
+            if (selectedItem is not null)
             {
                 ClearTreeViewItemsControlSelection(treeView.Items, treeView.ItemContainerGenerator);
             }
@@ -41,12 +41,12 @@ namespace Orc.FilterBuilder.Behaviors
 
         private static void ClearTreeViewItemsControlSelection(ItemCollection ic, ItemContainerGenerator icg)
         {
-            if ((ic != null) && (icg != null))
+            if ((ic is not null) && (icg is not null))
             {
                 for (var i = 0; i < ic.Count; i++)
                 {
                     var tvi = icg.ContainerFromIndex(i) as TreeViewItem;
-                    if (tvi != null)
+                    if (tvi is not null)
                     {
                         if (tvi.IsSelected)
                         {

@@ -39,7 +39,7 @@ namespace Orc.FilterBuilder
         #region Methods
         private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            if (e.OldItems is not null)
             {
                 foreach (var item in e.OldItems)
                 {
@@ -55,7 +55,7 @@ namespace Orc.FilterBuilder
             }
 
             var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
-            if (newCollection != null)
+            if (newCollection is not null)
             {
                 foreach (var item in newCollection)
                 {
@@ -94,7 +94,7 @@ namespace Orc.FilterBuilder
         private void SubscribeToEvents()
         {
             var items = Items;
-            if (items != null)
+            if (items is not null)
             {
                 items.CollectionChanged += OnConditionItemsCollectionChanged;
                 foreach (var item in items)

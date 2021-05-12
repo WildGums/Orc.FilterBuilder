@@ -89,7 +89,7 @@
 
         protected override async Task CloseAsync()
         {
-            if (_filterSchemes != null)
+            if (_filterSchemes is not null)
             {
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
             }
@@ -102,14 +102,14 @@
 
         private void UpdateFilters()
         {
-            if (_filterSchemes != null)
+            if (_filterSchemes is not null)
             {
                 _filterSchemes.Schemes.CollectionChanged -= OnFilterSchemesCollectionChanged;
             }
 
             _filterSchemes = _filterSchemeManager.FilterSchemes;
 
-            if (_filterSchemes != null)
+            if (_filterSchemes is not null)
             {
                 _filterSchemes.Schemes.CollectionChanged += OnFilterSchemesCollectionChanged;
             }
