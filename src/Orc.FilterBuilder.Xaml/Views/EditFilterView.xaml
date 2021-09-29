@@ -313,6 +313,8 @@
 
             <DataGrid x:Name="dataGrid"
                       Focusable="False"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
                       IsTabStop="False"
                       Style="{StaticResource FilterBuilderDataGridStyle}"
                       Margin="0" 
