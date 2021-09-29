@@ -28,7 +28,7 @@ namespace Orc.FilterBuilder.Views
 
             dataGrid.Columns.Clear();
 
-            if (!(ViewModel is EditFilterViewModel vm))
+            if (ViewModel is not EditFilterViewModel vm)
             {
                 return;
             }
