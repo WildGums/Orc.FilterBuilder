@@ -336,8 +336,6 @@
             <Run Text="{Binding RawCollection.Count, Mode=OneWay}" FontWeight="SemiBold"/>
             <Run Text=" filtered"/>
         </TextBlock>
-
-
     </Grid>
 
 </catel:UserControl>
