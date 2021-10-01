@@ -97,6 +97,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Style="{StaticResource RowDefinition3Style}"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -306,7 +307,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Grid x:Name="DataGridContainer" 
+        <Grid x:Name="DataGridContainer"
               Grid.Row="2"
               Grid.ColumnSpan="3"
               Style="{StaticResource DataGridContainerStyle}">
@@ -323,8 +324,20 @@
                       BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
                       ItemsSource="{Binding PreviewItems}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
-
         </Grid>
+
+        <TextBlock VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Grid.ColumnSpan="3"
+                   FontSize="14"
+                   Grid.Row="3">
+            <Run Text="{Binding PreviewItems.Count, Mode=OneWay}" FontWeight="SemiBold"/>
+            <Run Text=" items of "/>
+            <Run Text="{Binding RawCollection.Count, Mode=OneWay}" FontWeight="SemiBold"/>
+            <Run Text=" filtered"/>
+        </TextBlock>
+
+
     </Grid>
 
 </catel:UserControl>

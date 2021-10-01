@@ -52,7 +52,6 @@ namespace Orc.FilterBuilder.ViewModels
             RawCollection = filterSchemeEditInfo.RawCollection;
             EnableAutoCompletion = filterSchemeEditInfo.EnableAutoCompletion;
             AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
-            EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
 
             var filterScheme = filterSchemeEditInfo.FilterScheme;
             _originalFilterScheme = filterScheme;
@@ -238,12 +237,6 @@ namespace Orc.FilterBuilder.ViewModels
 
             if (!AllowLivePreview)
             {
-                return;
-            }
-
-            if (!EnableLivePreview)
-            {
-                PreviewItems.Clear();
                 return;
             }
 
