@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder.Example</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Example</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -16,14 +16,13 @@
 
   <ItemGroup>
     <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Fody" Version="6.5.1" PrivateAssets="all">
+    <PackageReference Include="Fody" Version="6.5.3" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.5.0" PrivateAssets="all" />
+    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.6.0" PrivateAssets="all" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
-    <PackageReference Include="Orc.Controls" Version="4.3.0" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.2.5" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="6.6.0-alpha0068" />
     <PackageReference Include="System.Security.Permissions" Version="5.0.0" />
   </ItemGroup>
 

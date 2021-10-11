@@ -13,6 +13,7 @@ namespace Orc.FilterBuilder.ViewModels
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows.Threading;
     using Catel;
     using Catel.Collections;
     using Catel.Data;
@@ -30,6 +31,8 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IXmlSerializer _xmlSerializer;
         private readonly IMessageService _messageService;
         private readonly ILanguageService _languageService;
+
+        private readonly DispatcherTimer _applyFilterTimer;
 
         private bool _isFilterDirty;
         #endregion
@@ -52,7 +55,6 @@ namespace Orc.FilterBuilder.ViewModels
             RawCollection = filterSchemeEditInfo.RawCollection;
             EnableAutoCompletion = filterSchemeEditInfo.EnableAutoCompletion;
             AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
-            EnableLivePreview = filterSchemeEditInfo.AllowLivePreview;
 
             var filterScheme = filterSchemeEditInfo.FilterScheme;
             _originalFilterScheme = filterScheme;
@@ -69,6 +71,10 @@ namespace Orc.FilterBuilder.ViewModels
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
             DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
+
+            _applyFilterTimer = new DispatcherTimer();
+            _applyFilterTimer.Interval = TimeSpan.FromMilliseconds(200);
+            _applyFilterTimer.Tick += OnApplyFilterTimerTick;
         }
         #endregion
 
@@ -241,13 +247,15 @@ namespace Orc.FilterBuilder.ViewModels
                 return;
             }
 
-            if (!EnableLivePreview)
-            {
-                PreviewItems.Clear();
-                return;
-            }
+            _applyFilterTimer.Stop();
+            _applyFilterTimer.Start();
+        }
 
-            FilterScheme.Apply(RawCollection, PreviewItems);
+        private void OnApplyFilterTimerTick(object sender, EventArgs e)
+        {
+            _applyFilterTimer.Stop();
+
+            FilterScheme?.Apply(RawCollection, PreviewItems);
         }
         #endregion
     }

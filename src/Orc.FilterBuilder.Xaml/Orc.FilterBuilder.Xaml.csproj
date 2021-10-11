@@ -18,14 +18,13 @@
   
   <ItemGroup>
     <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Catel.MVVM" Version="5.12.15" />
-    <PackageReference Include="Fody" Version="6.5.1" PrivateAssets="all">
+    <PackageReference Include="Catel.MVVM" Version="5.12.18" />
+    <PackageReference Include="Fody" Version="6.5.3" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MethodTimer.Fody" Version="3.2.0" PrivateAssets="all" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
-    <PackageReference Include="Orc.Controls" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

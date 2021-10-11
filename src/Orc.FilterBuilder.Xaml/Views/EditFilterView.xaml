@@ -97,6 +97,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Style="{StaticResource RowDefinition3Style}"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -236,6 +237,7 @@
                                   Margin="0">
                                 <TextBox Text="{Binding DataTypeExpression.Value}"
                                          Height="27"
+                                         orccontrols:EnterKeyTraversal.IsEnabled="True"
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Text}}">
                                     <xamlbehaviors:Interaction.Behaviors>
                                         <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
@@ -244,11 +246,11 @@
                                     </xamlbehaviors:Interaction.Behaviors>
                                 </TextBox>
 
-                                <orccontrols:NumericTextBox Value="{Binding DataTypeExpression.Value}"
-                                                            Height="27"
-                                                            IsDecimalAllowed="{Binding DataTypeExpression.IsDecimal}"
-                                                            IsNegativeAllowed="{Binding DataTypeExpression.IsSigned}">
-                                    <TextBox.Visibility>
+                                <orccontrols:NumericUpDown Value="{Binding DataTypeExpression.Value, Mode=TwoWay}"
+                                                           Height="27"
+                                                           orccontrols:EnterKeyTraversal.IsEnabled="True"
+                                                           IsDecimalPointDynamic="{Binding DataTypeExpression.IsDecimal}">
+                                    <orccontrols:NumericUpDown.Visibility>
                                         <Binding Path="DataTypeExpression.ValueControlType" Converter="{StaticResource ValueControlTypeVisibilityConverter}">
                                             <Binding.ConverterParameter>
                                                 <x:Array Type="{x:Type filterBuilder:ValueControlType}">
@@ -267,11 +269,8 @@
                                                 </x:Array>
                                             </Binding.ConverterParameter>
                                         </Binding>
-                                    </TextBox.Visibility>
-                                    <xamlbehaviors:Interaction.Behaviors>
-                                        <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                    </xamlbehaviors:Interaction.Behaviors>
-                                </orccontrols:NumericTextBox>
+                                    </orccontrols:NumericUpDown.Visibility>
+                                </orccontrols:NumericUpDown>
 
                                 <orccontrols:DateTimePicker Value="{Binding DataTypeExpression.Value}"
                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
@@ -308,8 +307,16 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Grid x:Name="DataGridContainer" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource DataGridContainerStyle}">
+        <Grid x:Name="DataGridContainer"
+              Grid.Row="2"
+              Grid.ColumnSpan="3"
+              Style="{StaticResource DataGridContainerStyle}">
+
             <DataGrid x:Name="dataGrid"
+                      Focusable="False"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
+                      IsTabStop="False"
                       Style="{StaticResource FilterBuilderDataGridStyle}"
                       Margin="0" 
                       IsReadOnly="True"
@@ -318,6 +325,17 @@
                       ItemsSource="{Binding PreviewItems}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
         </Grid>
+
+        <TextBlock VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Grid.ColumnSpan="3"
+                   FontSize="14"
+                   Grid.Row="3">
+            <Run Text="{Binding PreviewItems.Count, Mode=OneWay}" FontWeight="SemiBold"/>
+            <Run Text=" items of "/>
+            <Run Text="{Binding RawCollection.Count, Mode=OneWay}" FontWeight="SemiBold"/>
+            <Run Text=" filtered"/>
+        </TextBlock>
     </Grid>
 
 </catel:UserControl>
