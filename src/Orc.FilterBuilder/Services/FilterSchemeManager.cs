@@ -88,6 +88,8 @@ namespace Orc.FilterBuilder
         {
             fileName = GetFileName(fileName);
 
+            _lastFileName = fileName;
+
             var filterSchemes = await _filterSerializationService.LoadFiltersAsync(fileName);
             filterSchemes.Scope = Scope;
 
