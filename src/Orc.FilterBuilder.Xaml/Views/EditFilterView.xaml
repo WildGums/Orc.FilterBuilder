@@ -39,18 +39,6 @@
                 </Style.Triggers>
             </Style>
 
-            <Style x:Key="DataGridContainerStyle" TargetType="{x:Type Grid}">
-                <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding AllowLivePreview}" Value="True" />
-                            <Condition Binding="{Binding EnableLivePreview}" Value="False" />
-                        </MultiDataTrigger.Conditions>
-                        <Setter Property="Visibility" Value="Collapsed" />
-                    </MultiDataTrigger>
-                </Style.Triggers>
-            </Style>
-
             <!--Template-->
             <DataTemplate x:Key="RowDetailsDataTemplate">
                 <StackPanel>
@@ -96,6 +84,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Style="{StaticResource RowDefinition3Style}"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -107,18 +96,23 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Text="{catel:LanguageBinding FilterBuilder_Name}" Width="33" Margin="0" />
-        <TextBox Grid.Column="1" 
+        <TextBox Grid.Row="0" 
+                 Grid.Column="1" 
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <xamlbehaviors:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </xamlbehaviors:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" Grid.Column="2"
+        <ToggleButton Grid.Row="0" 
+                      Grid.Column="2"
+                      Width="100"
+                      Margin="0 6 0 6"
                       IsChecked="{Binding EnableLivePreview}" 
                       Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
         <TreeView Grid.Row="1" 
+                  Grid.Column="0"
                   Grid.ColumnSpan="3"
                   BorderThickness="1" 
                   Margin="15 0 0 0" 
@@ -307,30 +301,40 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Grid x:Name="DataGridContainer"
-              Grid.Row="2"
-              Grid.ColumnSpan="3"
-              Style="{StaticResource DataGridContainerStyle}">
+        <Button Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Command="{Binding Apply}"
+                IsEnabled="{Binding EnableLivePreview, Converter={catel:BooleanToOppositeBooleanConverter}}"
+                Margin="0 6 0 6"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Width="100"
+                Content="Apply"/>
 
-            <DataGrid x:Name="dataGrid"
-                      Focusable="False"
-                      EnableRowVirtualization="True"
-                      EnableColumnVirtualization="True"
-                      IsTabStop="False"
-                      Style="{StaticResource FilterBuilderDataGridStyle}"
-                      Margin="0" 
-                      IsReadOnly="True"
-                      BorderThickness="1" 
-                      BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
-                      ItemsSource="{Binding PreviewItems}"
-                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
-        </Grid>
+        <DataGrid x:Name="dataGrid"
+                  Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  Focusable="False"
+                  EnableRowVirtualization="True"
+                  EnableColumnVirtualization="True"
+                  IsTabStop="False"
+                  Style="{StaticResource FilterBuilderDataGridStyle}"
+                  Margin="0" 
+                  IsReadOnly="True"
+                  BorderThickness="1" 
+                  BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
+                  ItemsSource="{Binding PreviewItems}"
+                  Visibility="{Binding ShowFilteredItems, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
 
-        <TextBlock VerticalAlignment="Center"
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    Grid.ColumnSpan="3"
                    FontSize="14"
-                   Grid.Row="3">
+                   Visibility="{Binding ShowFilteredItemsInfo, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
             <Run Text="{Binding PreviewItems.Count, Mode=OneWay}" FontWeight="SemiBold"/>
             <Run Text=" items of "/>
             <Run Text="{Binding RawCollection.Count, Mode=OneWay}" FontWeight="SemiBold"/>
