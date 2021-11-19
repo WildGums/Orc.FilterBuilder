@@ -280,7 +280,6 @@
                   EnableRowVirtualization="True"
                   EnableColumnVirtualization="True"
                   IsTabStop="False"
-                  Style="{StaticResource FilterBuilderDataGridStyle}"
                   Margin="0" 
                   IsReadOnly="True"
                   BorderThickness="1" 
