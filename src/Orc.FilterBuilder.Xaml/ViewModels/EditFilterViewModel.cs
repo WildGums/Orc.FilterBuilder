@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EditFilterViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.ViewModels
+﻿namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
@@ -72,6 +65,7 @@ namespace Orc.FilterBuilder.ViewModels
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
             DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
             Apply = new Command(OnApply);
+            UpdatePreviewGrid = new Command(OnUpdatePreviewGrid);
 
             _applyFilterTimer = new DispatcherTimer();
             _applyFilterTimer.Interval = TimeSpan.FromMilliseconds(200);
@@ -91,9 +85,10 @@ namespace Orc.FilterBuilder.ViewModels
         public bool AllowLivePreview { get; private set; }
         public bool EnableLivePreview { get; set; }
         public bool IsLivePreviewDirty { get; set; }
+        public bool IsLivePreviewInfoDirty { get; set; }
 
         public bool ShowFilteredItemsInfo => EnableLivePreview || !IsLivePreviewDirty;
-        public bool ShowFilteredItems => (EnableLivePreview || !IsLivePreviewDirty) && PreviewItems.Any();
+        public bool ShowFilteredItems => (EnableLivePreview || (!IsLivePreviewInfoDirty && !IsLivePreviewDirty)) && PreviewItems.Any();
 
         public IEnumerable RawCollection { get; private set; }
         public FastObservableCollection<object> PreviewItems { get; private set; }
@@ -104,6 +99,7 @@ namespace Orc.FilterBuilder.ViewModels
         public Command<ConditionGroup> AddExpressionCommand { get; }
         public Command<ConditionTreeItem> DeleteConditionItem { get; }
         public Command Apply { get; }
+        public Command UpdatePreviewGrid { get; set; }
         #endregion
 
         #region Methods
@@ -192,12 +188,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return true;
             }
 
-            if (FilterScheme.ConditionItems.Count > 1)
-            {
-                return true;
-            }
-
-            return false;
+            return FilterScheme.ConditionItems.Count > 1;
         }
 
         private void OnDeleteCondition(ConditionTreeItem item)
@@ -223,7 +214,14 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnApply()
         {
+            IsLivePreviewInfoDirty = true;
+
             UpdatePreviewItems(true);
+        }
+
+        private void OnUpdatePreviewGrid()
+        {
+            IsLivePreviewInfoDirty = false;
         }
 
         private void OnAddExpression(ConditionGroup group)
