@@ -14,7 +14,6 @@
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
-    using Catel.Threading;
 
     public class EditFilterViewModel : ViewModelBase
     {
@@ -66,7 +65,7 @@
             DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
             ShowHidePreview = new Command(OnShowHidePreview);
 
-                _applyFilterTimer = new DispatcherTimer();
+            _applyFilterTimer = new DispatcherTimer();
             _applyFilterTimer.Interval = TimeSpan.FromMilliseconds(200);
             _applyFilterTimer.Tick += OnApplyFilterTimerTick;
         }
@@ -232,6 +231,11 @@
 
         private void OnEnableLivePreviewChanged()
         {
+            if (!EnableLivePreview)
+            {
+                IsPreviewVisible = false;
+            }
+
             UpdatePreviewItems();
         }
 
