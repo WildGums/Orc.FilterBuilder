@@ -110,13 +110,13 @@ namespace Orc.FilterBuilder.ViewModels
         public static readonly Catel.Data.PropertyData InstancePropertiesProperty;
         public static readonly Catel.Data.PropertyData IsLivePreviewDirtyProperty;
         public static readonly Catel.Data.PropertyData IsLivePreviewInfoDirtyProperty;
+        public static readonly Catel.Data.PropertyData IsPreviewVisibleProperty;
         public static readonly Catel.Data.PropertyData PreviewItemsProperty;
         public static readonly Catel.Data.PropertyData RawCollectionProperty;
         public EditFilterViewModel(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Catel.Services.ILanguageService languageService) { }
         public Catel.MVVM.Command<Orc.FilterBuilder.ConditionGroup> AddExpressionCommand { get; }
         public Catel.MVVM.Command<Orc.FilterBuilder.ConditionGroup> AddGroupCommand { get; }
         public bool AllowLivePreview { get; }
-        public Catel.MVVM.Command Apply { get; }
         public Catel.MVVM.Command<Orc.FilterBuilder.ConditionTreeItem> DeleteConditionItem { get; }
         public bool EnableAutoCompletion { get; }
         public bool EnableLivePreview { get; set; }
@@ -125,16 +125,14 @@ namespace Orc.FilterBuilder.ViewModels
         public System.Collections.Generic.List<Orc.FilterBuilder.IPropertyMetadata> InstanceProperties { get; }
         public bool IsLivePreviewDirty { get; set; }
         public bool IsLivePreviewInfoDirty { get; set; }
+        public bool IsPreviewVisible { get; set; }
         public Catel.Collections.FastObservableCollection<object> PreviewItems { get; }
         public System.Collections.IEnumerable RawCollection { get; }
-        public bool ShowFilteredItems { get; }
-        public bool ShowFilteredItemsInfo { get; }
+        public Catel.MVVM.Command ShowHidePreview { get; }
         public override string Title { get; }
-        public Catel.MVVM.Command UpdatePreviewGrid { get; set; }
         protected override System.Threading.Tasks.Task<bool> CancelAsync() { }
         protected override System.Threading.Tasks.Task CloseAsync() { }
         protected override System.Threading.Tasks.Task InitializeAsync() { }
-        protected override void OnPropertyChanged(Catel.Data.AdvancedPropertyChangedEventArgs e) { }
         protected override System.Threading.Tasks.Task<bool> SaveAsync() { }
         protected override void ValidateFields(System.Collections.Generic.List<Catel.Data.IFieldValidationResult> validationResults) { }
     }

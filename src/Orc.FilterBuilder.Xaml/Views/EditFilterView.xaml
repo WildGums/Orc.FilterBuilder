@@ -55,24 +55,18 @@
                    Margin="6" />
         <TextBox Grid.Row="0" 
                  Grid.Column="1" 
+                 Grid.ColumnSpan="2"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <xamlbehaviors:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </xamlbehaviors:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" 
-                      Grid.Column="2"
-                      Width="100"
-                      Margin="6 6 0 6"
-                      IsChecked="{Binding EnableLivePreview}" 
-                      Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
-                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
         <TreeView Grid.Row="1" 
                   Grid.Column="0"
                   Grid.ColumnSpan="3"
                   BorderThickness="1" 
-                  Margin="-1 6 6 6"
+                  Margin="25 6 6 6"
                   BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
             <xamlbehaviors:Interaction.Behaviors>
@@ -258,34 +252,43 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <orccontrols:LinkLabel Grid.Row="2"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="2"
-                               FontSize="14"
-                               HorizontalAlignment="Left"
-                               Command="{Binding UpdatePreviewGrid}"
-                               Visibility="{Binding ShowFilteredItemsInfo, Converter={catel:BooleanToCollapsingVisibilityConverter}}">
-            <orccontrols:LinkLabel.Content>
-                <MultiBinding Converter="{StaticResource FilterResultMultiValueConverter}">
-                    <Binding Path="PreviewItems.Count"/>
-                    <Binding Path="RawCollection.Count"/>
-                </MultiBinding>
-            </orccontrols:LinkLabel.Content>
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="3">
 
-        </orccontrols:LinkLabel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="2"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Right"
-                Margin="6 6 0 6"
-                Command="{Binding Apply}"
-                IsEnabled="{Binding EnableLivePreview, Converter={catel:BooleanToOppositeBooleanConverter}}"
-                Width="100"
-                Content="Apply"/>
+            <CheckBox x:Name ="LivePreviewCheckBox"
+                      HorizontalAlignment="Left"
+                      FontWeight="SemiBold"
+                      Content="Live update"
+                      IsChecked="{Binding EnableLivePreview}" 
+                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-        <DataGrid x:Name="dataGrid"
-                  Visibility="{Binding ShowFilteredItems, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+            <orccontrols:LinkLabel Grid.Column="2"
+                                   FontSize="12"
+                                   HorizontalAlignment="Right"
+                                   Command="{Binding ShowHidePreview}"
+                                   IsEnabled="{Binding ElementName=LivePreviewCheckBox, Path=IsChecked}">
+                    <orccontrols:LinkLabel.Content>
+                        <MultiBinding Converter="{StaticResource FilterResultMultiValueConverter}">
+                            <Binding Path="IsEnabled" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="IsPreviewVisible"/>
+                            <Binding Path="PreviewItems.Count"/>
+                            <Binding Path="RawCollection.Count"/>
+                        </MultiBinding>
+                    </orccontrols:LinkLabel.Content>
+
+                </orccontrols:LinkLabel>
+
+        </Grid>
+
+        <DataGrid x:Name="PreviewDataGrid"
+                  Visibility="{Binding IsPreviewVisible, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
                   Grid.Row="3"
                   Grid.Column="0"
                   Grid.ColumnSpan="3"
@@ -305,6 +308,8 @@
                   BorderThickness="1" 
                   BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
                   ItemsSource="{Binding PreviewItems}"/>
+
+
     </Grid>
 
 </catel:UserControl>

@@ -64,10 +64,9 @@
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
             DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
-            Apply = new Command(OnApply);
-            UpdatePreviewGrid = new Command(OnUpdatePreviewGrid);
+            ShowHidePreview = new Command(OnShowHidePreview);
 
-            _applyFilterTimer = new DispatcherTimer();
+                _applyFilterTimer = new DispatcherTimer();
             _applyFilterTimer.Interval = TimeSpan.FromMilliseconds(200);
             _applyFilterTimer.Tick += OnApplyFilterTimerTick;
         }
@@ -86,11 +85,8 @@
         public bool EnableLivePreview { get; set; }
         public bool IsLivePreviewDirty { get; set; }
         public bool IsLivePreviewInfoDirty { get; set; }
-
-        public bool ShowFilteredItemsInfo => EnableLivePreview || !IsLivePreviewDirty;
-        public bool ShowFilteredItems => (EnableLivePreview || (!IsLivePreviewInfoDirty && !IsLivePreviewDirty)) && PreviewItems.Any();
-
         public IEnumerable RawCollection { get; private set; }
+        public bool IsPreviewVisible { get; set; }
         public FastObservableCollection<object> PreviewItems { get; private set; }
 
         public List<IPropertyMetadata> InstanceProperties { get; private set; }
@@ -98,8 +94,7 @@
         public Command<ConditionGroup> AddGroupCommand { get; }
         public Command<ConditionGroup> AddExpressionCommand { get; }
         public Command<ConditionTreeItem> DeleteConditionItem { get; }
-        public Command Apply { get; }
-        public Command UpdatePreviewGrid { get; set; }
+        public Command ShowHidePreview { get; }
         #endregion
 
         #region Methods
@@ -176,6 +171,11 @@
             return true;
         }
 
+        private void OnShowHidePreview()
+        {
+            IsPreviewVisible = !IsPreviewVisible;
+        }
+
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
         {
             if (item is null)
@@ -210,18 +210,6 @@
             _isFilterDirty = true;
 
             UpdatePreviewItems();
-        }
-
-        private void OnApply()
-        {
-            IsLivePreviewInfoDirty = true;
-
-            UpdatePreviewItems(true);
-        }
-
-        private void OnUpdatePreviewGrid()
-        {
-            IsLivePreviewInfoDirty = false;
         }
 
         private void OnAddExpression(ConditionGroup group)
