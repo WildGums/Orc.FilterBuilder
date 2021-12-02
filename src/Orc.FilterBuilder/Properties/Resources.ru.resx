@@ -99,9 +99,6 @@
   <data name="FilterBuilder_StartsWith" xml:space="preserve">
     <value>starts with</value>
   </data>
-  <data name="FilterBuilder_Generic_TextBlock_Text_DetailsView" xml:space="preserve">
-    <value>Details View</value>
-  </data>
   <data name="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" xml:space="preserve">
     <value>broken</value>
   </data>
@@ -119,5 +116,11 @@
   </data>
   <data name="FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern" xml:space="preserve">
     <value>Are you sure you want to delete filter '{0}'?</value>
+  </data>
+  <data name="FilterBuilder_Hide" xml:space="preserve">
+    <value>Скрыть</value>
+  </data>
+  <data name="FilterBuilder_Show" xml:space="preserve">
+    <value>Отображать</value>
   </data>
 </root>

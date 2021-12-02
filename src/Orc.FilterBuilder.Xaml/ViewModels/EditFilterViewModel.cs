@@ -63,10 +63,12 @@
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
             DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
-            ShowHidePreview = new Command(OnShowHidePreview);
+            TogglePreview = new Command(OnTogglePreview);
 
-            _applyFilterTimer = new DispatcherTimer();
-            _applyFilterTimer.Interval = TimeSpan.FromMilliseconds(200);
+            _applyFilterTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(200)
+            };
             _applyFilterTimer.Tick += OnApplyFilterTimerTick;
         }
         #endregion
@@ -78,22 +80,21 @@
         }
 
         public string FilterSchemeTitle { get; set; }
-        public FilterScheme FilterScheme { get; private set; }
-        public bool EnableAutoCompletion { get; private set; }
-        public bool AllowLivePreview { get; private set; }
+        public FilterScheme FilterScheme { get; }
+        public bool EnableAutoCompletion { get; }
+        public bool AllowLivePreview { get; }
         public bool EnableLivePreview { get; set; }
-        public bool IsLivePreviewDirty { get; set; }
-        public bool IsLivePreviewInfoDirty { get; set; }
-        public IEnumerable RawCollection { get; private set; }
+        public bool IsLivePreviewDirty { get; private set; }
+        public IEnumerable RawCollection { get; }
         public bool IsPreviewVisible { get; set; }
-        public FastObservableCollection<object> PreviewItems { get; private set; }
+        public FastObservableCollection<object> PreviewItems { get; }
 
         public List<IPropertyMetadata> InstanceProperties { get; private set; }
 
         public Command<ConditionGroup> AddGroupCommand { get; }
         public Command<ConditionGroup> AddExpressionCommand { get; }
         public Command<ConditionTreeItem> DeleteConditionItem { get; }
-        public Command ShowHidePreview { get; }
+        public Command TogglePreview { get; }
         #endregion
 
         #region Methods
@@ -103,11 +104,11 @@
 
             InstanceProperties = _reflectionService.GetInstanceProperties(_originalFilterScheme.TargetType).Properties;
 
-            using (var memoryStream = new MemoryStream())
+            await using (var memoryStream = new MemoryStream())
             {
-                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream, null);
+                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
                 memoryStream.Position = 0L;
-                _xmlSerializer.Deserialize(FilterScheme, memoryStream, null);
+                _xmlSerializer.Deserialize(FilterScheme, memoryStream);
             }
 
             FilterScheme.EnsureIntegrity(_reflectionService);
@@ -170,7 +171,7 @@
             return true;
         }
 
-        private void OnShowHidePreview()
+        private void OnTogglePreview()
         {
             IsPreviewVisible = !IsPreviewVisible;
         }

@@ -99,9 +99,6 @@
   <data name="FilterBuilder_StartsWith" xml:space="preserve">
     <value>starts with</value>
   </data>
-  <data name="FilterBuilder_Generic_TextBlock_Text_DetailsView" xml:space="preserve">
-    <value>Details View</value>
-  </data>
   <data name="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" xml:space="preserve">
     <value>broken</value>
   </data>

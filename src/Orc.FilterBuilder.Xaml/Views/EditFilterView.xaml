@@ -265,14 +265,14 @@
             <CheckBox x:Name ="LivePreviewCheckBox"
                       HorizontalAlignment="Left"
                       FontWeight="SemiBold"
-                      Content="Live update"
+                      Content="{catel:LanguageBinding FilterBuilder_LiveUpdate}"
                       IsChecked="{Binding EnableLivePreview}" 
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
             <orccontrols:LinkLabel Grid.Column="2"
                                    FontSize="12"
                                    HorizontalAlignment="Right"
-                                   Command="{Binding ShowHidePreview}"
+                                   Command="{Binding TogglePreview}"
                                    IsEnabled="{Binding ElementName=LivePreviewCheckBox, Path=IsChecked}">
                     <orccontrols:LinkLabel.Content>
                         <MultiBinding Converter="{StaticResource FilterResultMultiValueConverter}">

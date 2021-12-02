@@ -151,11 +151,6 @@
           <target state="needs-review-translation">starts with</target>
           <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
         </trans-unit>
-        <trans-unit id="FilterBuilder_Generic_TextBlock_Text_DetailsView" translate="yes" xml:space="preserve">
-          <source>Details View</source>
-          <target state="needs-review-translation">Details View</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
-        </trans-unit>
         <trans-unit id="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" translate="yes" xml:space="preserve">
           <source>broken</source>
           <target state="needs-review-translation">broken</target>
@@ -185,6 +180,26 @@
           <source>Are you sure you want to delete filter '{0}'?</source>
           <target state="needs-review-translation">Are you sure you want to delete filter '{0}'?</target>
           <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Hide" translate="yes" xml:space="preserve">
+          <source>Hide</source>
+          <target state="new">Hide</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_NotFiltered" translate="yes" xml:space="preserve">
+          <source>Not filtered</source>
+          <target state="new">Not filtered</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Show" translate="yes" xml:space="preserve">
+          <source>Show</source>
+          <target state="new">Show</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_FilteredItemsOfPattern" translate="yes" xml:space="preserve">
+          <source>"{0} items of {1}"</source>
+          <target state="new">"{0} items of {1}"</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_LiveUpdate" translate="yes" xml:space="preserve">
+          <source>Live update</source>
+          <target state="new">Live update</target>
         </trans-unit>
       </group>
     </body>

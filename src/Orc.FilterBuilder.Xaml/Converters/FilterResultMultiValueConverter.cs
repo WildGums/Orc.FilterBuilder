@@ -3,6 +3,7 @@
     using System;
     using System.Globalization;
     using System.Windows.Data;
+    using Catel;
 
     public class FilterResultMultiValueConverter : IMultiValueConverter
     {
@@ -23,10 +24,10 @@
             {
                 var isPreviewVisible = (bool)values[1];
 
-                return $"{(isPreviewVisible ? "Hide" : "Show")} {values[2]} items of {values[3]}";
+                return $"{(isPreviewVisible ? LanguageHelper.GetString("FilterBuilder_Hide", culture) : LanguageHelper.GetString("FilterBuilder_Show", culture))} {string.Format(LanguageHelper.GetString("FilterBuilder_FilteredItemsOfPattern"), values[2], values[3])}";
             }
             
-            return "Not filtered";
+            return LanguageHelper.GetString("FilterBuilder_NotFiltered", culture);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
