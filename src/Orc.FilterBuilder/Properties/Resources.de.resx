@@ -117,4 +117,19 @@
   <data name="FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern" xml:space="preserve">
     <value>Möchten Sie den Filter '{0}' wirklich löschen?</value>
   </data>
+  <data name="FilterBuilder_Hide" xml:space="preserve">
+    <value>Verstecken</value>
+  </data>
+  <data name="FilterBuilder_NotFiltered" xml:space="preserve">
+    <value>Nicht gefiltert</value>
+  </data>
+  <data name="FilterBuilder_Show" xml:space="preserve">
+    <value>Zeigen</value>
+  </data>
+  <data name="FilterBuilder_FilteredItemsOfPattern" xml:space="preserve">
+    <value>"{0} artikel von {1}"</value>
+  </data>
+  <data name="FilterBuilder_LiveUpdate" xml:space="preserve">
+    <value>Live update</value>
+  </data>
 </root>
