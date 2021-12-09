@@ -26,17 +26,13 @@ namespace FilterBuilder.Example.Services
 
         public ObservableCollection<TestEntity> GetTestItems()
         {
-            if (_testItems is null)
-            {
-                _testItems = GenerateTestItems();
-            }
-            return _testItems;
+            return _testItems ??= GenerateTestItems();
         }
 
         public ObservableCollection<TestEntity> GenerateTestItems()
         {
             var items = new ObservableCollection<TestEntity>();
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 10000; i++)
             {
                 items.Add(GenerateRandomEntity());
             }

@@ -10,7 +10,7 @@
 
 namespace Orc.FilterBuilder.Properties {
     using System;
-    using Catel.Reflection;
+    
     
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
@@ -19,7 +19,7 @@ namespace Orc.FilterBuilder.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace Orc.FilterBuilder.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Orc.FilterBuilder.Properties.Resources", typeof(Resources).GetAssemblyEx());
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Orc.FilterBuilder.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -223,11 +223,11 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Details View.
+        ///   Looks up a localized string similar to &quot;{0} items of {1}&quot;.
         /// </summary>
-        internal static string FilterBuilder_Generic_TextBlock_Text_DetailsView {
+        internal static string FilterBuilder_FilteredItemsOfPattern {
             get {
-                return ResourceManager.GetString("FilterBuilder_Generic_TextBlock_Text_DetailsView", resourceCulture);
+                return ResourceManager.GetString("FilterBuilder_FilteredItemsOfPattern", resourceCulture);
             }
         }
         
@@ -246,6 +246,15 @@ namespace Orc.FilterBuilder.Properties {
         internal static string FilterBuilder_GreaterThanOrEqualTo {
             get {
                 return ResourceManager.GetString("FilterBuilder_GreaterThanOrEqualTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        internal static string FilterBuilder_Hide {
+            get {
+                return ResourceManager.GetString("FilterBuilder_Hide", resourceCulture);
             }
         }
         
@@ -295,6 +304,15 @@ namespace Orc.FilterBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Live update.
+        /// </summary>
+        internal static string FilterBuilder_LiveUpdate {
+            get {
+                return ResourceManager.GetString("FilterBuilder_LiveUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to matches.
         /// </summary>
         internal static string FilterBuilder_Matches {
@@ -318,6 +336,15 @@ namespace Orc.FilterBuilder.Properties {
         internal static string FilterBuilder_NotEqualTo {
             get {
                 return ResourceManager.GetString("FilterBuilder_NotEqualTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not filtered.
+        /// </summary>
+        internal static string FilterBuilder_NotFiltered {
+            get {
+                return ResourceManager.GetString("FilterBuilder_NotFiltered", resourceCulture);
             }
         }
         
@@ -354,6 +381,15 @@ namespace Orc.FilterBuilder.Properties {
         internal static string FilterBuilder_SaveBroken {
             get {
                 return ResourceManager.GetString("FilterBuilder_SaveBroken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        internal static string FilterBuilder_Show {
+            get {
+                return ResourceManager.GetString("FilterBuilder_Show", resourceCulture);
             }
         }
         
