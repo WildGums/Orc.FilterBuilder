@@ -22,67 +22,7 @@
             <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
             <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
             <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter"/>
-
-            <Style x:Key="RowDefinition3Style" TargetType="{x:Type RowDefinition}">
-                <Setter Property="Height" Value="1.5*" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding AllowLivePreview}" Value="False">
-                        <Setter Property="Height" Value="Auto" />
-                    </DataTrigger>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding AllowLivePreview}" Value="True" />
-                            <Condition Binding="{Binding EnableLivePreview}" Value="False" />
-                        </MultiDataTrigger.Conditions>
-                        <Setter Property="Height" Value="Auto" />
-                    </MultiDataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="DataGridContainerStyle" TargetType="{x:Type Grid}">
-                <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding AllowLivePreview}" Value="True" />
-                            <Condition Binding="{Binding EnableLivePreview}" Value="False" />
-                        </MultiDataTrigger.Conditions>
-                        <Setter Property="Visibility" Value="Collapsed" />
-                    </MultiDataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <!--Template-->
-            <DataTemplate x:Key="RowDetailsDataTemplate">
-                <StackPanel>
-                    <TextBlock Text="{catel:LanguageBinding FilterBuilder_Generic_TextBlock_Text_DetailsView}"/>
-                </StackPanel>
-            </DataTemplate>
-
-            <!--Row Style-->
-            <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
-                <Setter Property="DetailsTemplate" Value="{StaticResource RowDetailsDataTemplate}" />
-                <Setter Property="DetailsVisibility" Value="Collapsed" />
-                <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding Path=IsSelected}" Value="true" />
-                            <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="true" />
-                        </MultiDataTrigger.Conditions>
-                        <Setter Property="DetailsVisibility" Value="Visible" />
-                    </MultiDataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <!--DataGrid Style-->
-            <Style x:Key="FilterBuilderDataGridStyle" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
-                <Setter Property="SelectionMode" Value="Single" />
-                <Setter Property="RowStyle" Value="{StaticResource DefaultRowStyle}" />
-                <Setter Property="RowHeaderWidth" Value="0" />
-                <Setter Property="AutoGenerateColumns" Value="False" />
-                <Setter Property="CanUserAddRows" Value="False" />
-                <Setter Property="CanUserDeleteRows" Value="False" />
-                <Setter Property="CanUserReorderColumns" Value="False" />
-            </Style>
+            <converters:FilterResultMultiValueConverter x:Key="FilterResultMultiValueConverter"/>
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -95,8 +35,8 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Style="{StaticResource RowDefinition3Style}"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -106,22 +46,27 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Text="{catel:LanguageBinding FilterBuilder_Name}" Width="33" Margin="0" />
-        <TextBox Grid.Column="1" 
+        <TextBlock Grid.Row="0" 
+                   Grid.Column="0" 
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Left"
+                   Text="{catel:LanguageBinding FilterBuilder_Name}" 
+                   Width="33"
+                   Margin="6" />
+        <TextBox Grid.Row="0" 
+                 Grid.Column="1" 
+                 Grid.ColumnSpan="2"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
             <xamlbehaviors:Interaction.Behaviors>
                 <catel:UpdateBindingOnTextChanged UpdateDelay="0" />
             </xamlbehaviors:Interaction.Behaviors>
         </TextBox>
-        <ToggleButton Grid.Row="0" Grid.Column="2"
-                      IsChecked="{Binding EnableLivePreview}" 
-                      Content="{catel:LanguageBinding FilterBuilder_LivePreview}"
-                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
         <TreeView Grid.Row="1" 
+                  Grid.Column="0"
                   Grid.ColumnSpan="3"
                   BorderThickness="1" 
-                  Margin="15 0 0 0" 
+                  Margin="25 6 6 6"
                   BorderBrush="Transparent"
                   ItemsSource="{Binding FilterScheme.ConditionItems}">
             <xamlbehaviors:Interaction.Behaviors>
@@ -307,35 +252,64 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Grid x:Name="DataGridContainer"
-              Grid.Row="2"
-              Grid.ColumnSpan="3"
-              Style="{StaticResource DataGridContainerStyle}">
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="3">
 
-            <DataGrid x:Name="dataGrid"
-                      Focusable="False"
-                      EnableRowVirtualization="True"
-                      EnableColumnVirtualization="True"
-                      IsTabStop="False"
-                      Style="{StaticResource FilterBuilderDataGridStyle}"
-                      Margin="0" 
-                      IsReadOnly="True"
-                      BorderThickness="1" 
-                      BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
-                      ItemsSource="{Binding PreviewItems}"
-                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox x:Name ="LivePreviewCheckBox"
+                      HorizontalAlignment="Left"
+                      FontWeight="SemiBold"
+                      Content="{catel:LanguageBinding FilterBuilder_LiveUpdate}"
+                      IsChecked="{Binding EnableLivePreview}" 
+                      Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
+
+            <orccontrols:LinkLabel Grid.Column="2"
+                                   FontSize="12"
+                                   HorizontalAlignment="Right"
+                                   Command="{Binding TogglePreview}"
+                                   IsEnabled="{Binding ElementName=LivePreviewCheckBox, Path=IsChecked}">
+                    <orccontrols:LinkLabel.Content>
+                        <MultiBinding Converter="{StaticResource FilterResultMultiValueConverter}">
+                            <Binding Path="IsEnabled" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="IsPreviewVisible"/>
+                            <Binding Path="PreviewItems.Count"/>
+                            <Binding Path="RawCollection.Count"/>
+                        </MultiBinding>
+                    </orccontrols:LinkLabel.Content>
+
+                </orccontrols:LinkLabel>
+
         </Grid>
 
-        <TextBlock VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   Grid.ColumnSpan="3"
-                   FontSize="14"
-                   Grid.Row="3">
-            <Run Text="{Binding PreviewItems.Count, Mode=OneWay}" FontWeight="SemiBold"/>
-            <Run Text=" items of "/>
-            <Run Text="{Binding RawCollection.Count, Mode=OneWay}" FontWeight="SemiBold"/>
-            <Run Text=" filtered"/>
-        </TextBlock>
+        <DataGrid x:Name="PreviewDataGrid"
+                  Visibility="{Binding IsPreviewVisible, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                  Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  Height="150"
+                  SelectionMode="Single"
+                  RowHeaderWidth="0"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  Focusable="False"
+                  EnableRowVirtualization="True"
+                  EnableColumnVirtualization="True"
+                  IsTabStop="False"
+                  Margin="6" 
+                  IsReadOnly="True"
+                  BorderThickness="1" 
+                  BorderBrush="{DynamicResource Orc.Brushes.Control.Default.Border}"
+                  ItemsSource="{Binding PreviewItems}"/>
+
+
     </Grid>
 
 </catel:UserControl>

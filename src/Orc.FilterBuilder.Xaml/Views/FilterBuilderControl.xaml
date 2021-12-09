@@ -63,7 +63,9 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Label Grid.Column="0" Content="{Binding Title}" ToolTip="{Binding}"/>
-                                            <TextBlock Grid.Column="2" Text="{catel:LanguageBinding FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken}" Visibility="{Binding HasInvalidConditionItems, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
+                                            <TextBlock Grid.Column="2" 
+                                                       Text="{catel:LanguageBinding FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken}" 
+                                                       Visibility="{Binding HasInvalidConditionItems, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
                                                        Style="{DynamicResource ResourceKey=FilterBuilderBrokenTextBlockStyle}"/>
                                         </Grid>
 

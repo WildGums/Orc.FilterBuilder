@@ -122,10 +122,6 @@
           <source>starts with</source>
           <target state="translated">beginnt mit</target>
         </trans-unit>
-        <trans-unit id="FilterBuilder_Generic_TextBlock_Text_DetailsView" translate="yes" xml:space="preserve">
-          <source>Details View</source>
-          <target state="translated">Detailansicht</target>
-        </trans-unit>
         <trans-unit id="FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken" translate="yes" xml:space="preserve">
           <source>broken</source>
           <target state="translated">beschädigt</target>
@@ -149,6 +145,26 @@
         <trans-unit id="FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern" translate="yes" xml:space="preserve">
           <source>Are you sure you want to delete filter '{0}'?</source>
           <target state="translated">Möchten Sie den Filter '{0}' wirklich löschen?</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Hide" translate="yes" xml:space="preserve">
+          <source>Hide</source>
+          <target state="translated">Verstecken</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_NotFiltered" translate="yes" xml:space="preserve">
+          <source>Not filtered</source>
+          <target state="translated">Nicht gefiltert</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_Show" translate="yes" xml:space="preserve">
+          <source>Show</source>
+          <target state="translated">Zeigen</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_FilteredItemsOfPattern" translate="yes" xml:space="preserve">
+          <source>"{0} items of {1}"</source>
+          <target state="translated">"{0} artikel von {1}"</target>
+        </trans-unit>
+        <trans-unit id="FilterBuilder_LiveUpdate" translate="yes" xml:space="preserve">
+          <source>Live update</source>
+          <target state="translated">Live update</target>
         </trans-unit>
       </group>
     </body>

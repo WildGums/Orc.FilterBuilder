@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EditFilterViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.ViewModels
+﻿namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
@@ -21,7 +14,6 @@ namespace Orc.FilterBuilder.ViewModels
     using Catel.MVVM;
     using Catel.Runtime.Serialization.Xml;
     using Catel.Services;
-    using Catel.Threading;
 
     public class EditFilterViewModel : ViewModelBase
     {
@@ -71,9 +63,12 @@ namespace Orc.FilterBuilder.ViewModels
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
             DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
+            TogglePreview = new Command(OnTogglePreview);
 
-            _applyFilterTimer = new DispatcherTimer();
-            _applyFilterTimer.Interval = TimeSpan.FromMilliseconds(200);
+            _applyFilterTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(200)
+            };
             _applyFilterTimer.Tick += OnApplyFilterTimerTick;
         }
         #endregion
@@ -85,19 +80,21 @@ namespace Orc.FilterBuilder.ViewModels
         }
 
         public string FilterSchemeTitle { get; set; }
-        public FilterScheme FilterScheme { get; private set; }
-        public bool EnableAutoCompletion { get; private set; }
-        public bool AllowLivePreview { get; private set; }
+        public FilterScheme FilterScheme { get; }
+        public bool EnableAutoCompletion { get; }
+        public bool AllowLivePreview { get; }
         public bool EnableLivePreview { get; set; }
-
-        public IEnumerable RawCollection { get; private set; }
-        public FastObservableCollection<object> PreviewItems { get; private set; }
+        public bool IsLivePreviewDirty { get; private set; }
+        public IEnumerable RawCollection { get; }
+        public bool IsPreviewVisible { get; set; }
+        public FastObservableCollection<object> PreviewItems { get; }
 
         public List<IPropertyMetadata> InstanceProperties { get; private set; }
 
-        public Command<ConditionGroup> AddGroupCommand { get; private set; }
-        public Command<ConditionGroup> AddExpressionCommand { get; private set; }
-        public Command<ConditionTreeItem> DeleteConditionItem { get; private set; }
+        public Command<ConditionGroup> AddGroupCommand { get; }
+        public Command<ConditionGroup> AddExpressionCommand { get; }
+        public Command<ConditionTreeItem> DeleteConditionItem { get; }
+        public Command TogglePreview { get; }
         #endregion
 
         #region Methods
@@ -107,11 +104,11 @@ namespace Orc.FilterBuilder.ViewModels
 
             InstanceProperties = _reflectionService.GetInstanceProperties(_originalFilterScheme.TargetType).Properties;
 
-            using (var memoryStream = new MemoryStream())
+            await using (var memoryStream = new MemoryStream())
             {
-                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream, null);
+                _xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
                 memoryStream.Position = 0L;
-                _xmlSerializer.Deserialize(FilterScheme, memoryStream, null);
+                _xmlSerializer.Deserialize(FilterScheme, memoryStream);
             }
 
             FilterScheme.EnsureIntegrity(_reflectionService);
@@ -174,6 +171,11 @@ namespace Orc.FilterBuilder.ViewModels
             return true;
         }
 
+        private void OnTogglePreview()
+        {
+            IsPreviewVisible = !IsPreviewVisible;
+        }
+
         private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
         {
             if (item is null)
@@ -186,12 +188,7 @@ namespace Orc.FilterBuilder.ViewModels
                 return true;
             }
 
-            if (FilterScheme.ConditionItems.Count > 1)
-            {
-                return true;
-            }
-
-            return false;
+            return FilterScheme.ConditionItems.Count > 1;
         }
 
         private void OnDeleteCondition(ConditionTreeItem item)
@@ -217,8 +214,11 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnAddExpression(ConditionGroup group)
         {
-            var propertyExpression = new PropertyExpression();
-            propertyExpression.Property = InstanceProperties.FirstOrDefault();
+            var propertyExpression = new PropertyExpression
+            {
+                Property = InstanceProperties.FirstOrDefault()
+            };
+
             group.Items.Add(propertyExpression);
             propertyExpression.Parent = group;
         }
@@ -232,10 +232,15 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnEnableLivePreviewChanged()
         {
+            if (!EnableLivePreview)
+            {
+                IsPreviewVisible = false;
+            }
+
             UpdatePreviewItems();
         }
 
-        private void UpdatePreviewItems()
+        private void UpdatePreviewItems(bool forceUpdate = false)
         {
             if (FilterScheme is null || RawCollection is null)
             {
@@ -247,15 +252,36 @@ namespace Orc.FilterBuilder.ViewModels
                 return;
             }
 
-            _applyFilterTimer.Stop();
-            _applyFilterTimer.Start();
+            if (EnableLivePreview)
+            {
+                _applyFilterTimer.Stop();
+                _applyFilterTimer.Start();
+            }
+            else
+            {
+                if (forceUpdate)
+                {
+                    ApplyFilterScheme();
+                }
+                else
+                {
+                    IsLivePreviewDirty = true;
+                }
+            }
+        }
+
+        private void ApplyFilterScheme()
+        {
+            FilterScheme?.Apply(RawCollection, PreviewItems);
+
+            IsLivePreviewDirty = false;
         }
 
         private void OnApplyFilterTimerTick(object sender, EventArgs e)
         {
             _applyFilterTimer.Stop();
 
-            FilterScheme?.Apply(RawCollection, PreviewItems);
+            ApplyFilterScheme();
         }
         #endregion
     }

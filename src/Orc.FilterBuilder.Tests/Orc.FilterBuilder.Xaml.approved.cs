@@ -32,6 +32,12 @@ namespace Orc.FilterBuilder.Converters
         public DataTypeExpressionToConditionsConverter() { }
         protected override object Convert(object value, System.Type targetType, object parameter) { }
     }
+    public class FilterResultMultiValueConverter : System.Windows.Data.IMultiValueConverter
+    {
+        public FilterResultMultiValueConverter() { }
+        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) { }
+        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture) { }
+    }
     public class IsCurrentFilterSchemeToCollapsingVisibilityConverter : System.Windows.Data.IMultiValueConverter
     {
         public IsCurrentFilterSchemeToCollapsingVisibilityConverter() { }
@@ -102,6 +108,9 @@ namespace Orc.FilterBuilder.ViewModels
         public static readonly Catel.Data.PropertyData FilterSchemeProperty;
         public static readonly Catel.Data.PropertyData FilterSchemeTitleProperty;
         public static readonly Catel.Data.PropertyData InstancePropertiesProperty;
+        public static readonly Catel.Data.PropertyData IsLivePreviewDirtyProperty;
+        public static readonly Catel.Data.PropertyData IsLivePreviewInfoDirtyProperty;
+        public static readonly Catel.Data.PropertyData IsPreviewVisibleProperty;
         public static readonly Catel.Data.PropertyData PreviewItemsProperty;
         public static readonly Catel.Data.PropertyData RawCollectionProperty;
         public EditFilterViewModel(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Catel.Services.ILanguageService languageService) { }
@@ -114,8 +123,12 @@ namespace Orc.FilterBuilder.ViewModels
         public Orc.FilterBuilder.FilterScheme FilterScheme { get; }
         public string FilterSchemeTitle { get; set; }
         public System.Collections.Generic.List<Orc.FilterBuilder.IPropertyMetadata> InstanceProperties { get; }
+        public bool IsLivePreviewDirty { get; set; }
+        public bool IsLivePreviewInfoDirty { get; set; }
+        public bool IsPreviewVisible { get; set; }
         public Catel.Collections.FastObservableCollection<object> PreviewItems { get; }
         public System.Collections.IEnumerable RawCollection { get; }
+        public Catel.MVVM.Command ShowHidePreview { get; }
         public override string Title { get; }
         protected override System.Threading.Tasks.Task<bool> CancelAsync() { }
         protected override System.Threading.Tasks.Task CloseAsync() { }

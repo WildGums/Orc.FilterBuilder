@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EditFilterView.xaml.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Orc.FilterBuilder.Views
+﻿namespace Orc.FilterBuilder.Views
 {
     using System;
     using System.Windows.Controls;
@@ -26,7 +20,7 @@ namespace Orc.FilterBuilder.Views
         {
             base.OnViewModelChanged();
 
-            dataGrid.Columns.Clear();
+            PreviewDataGrid.Columns.Clear();
 
             if (ViewModel is not EditFilterViewModel vm)
             {
@@ -56,7 +50,7 @@ namespace Orc.FilterBuilder.Views
 
                     column.Binding = binding;
 
-                    dataGrid.Columns.Add(column);
+                    PreviewDataGrid.Columns.Add(column);
                 }
             }
 
