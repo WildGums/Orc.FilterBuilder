@@ -89,7 +89,9 @@ namespace Orc.FilterBuilder
 
                     RaisePropertyChanged(nameof(Scope));
 
+#pragma warning disable IDISP004 // Don't ignore created IDisposable.
                     var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
+#pragma warning restore IDISP004 // Don't ignore created IDisposable.
                     if (reflectionService is not null)
                     {
                         this.EnsureIntegrity(reflectionService);
