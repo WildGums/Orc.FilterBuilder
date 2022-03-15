@@ -11,10 +11,13 @@
             <fluent:RibbonTabItem Header="Filter">
                 <fluent:RibbonGroupBox Header="Filter">
                     
-                    <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" Command="{Binding NewSchemeCommand}"
+                    <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" 
+                                        Command="{Binding NewSchemeCommand}"
                                         LargeIcon="{orctheming:FontImage {x:Static ribbon:FontAwesome.Plus}}" 
-                                        ToolTip="{Binding SelectedFilterScheme}" ClosePopupOnMouseDown="True">
-                        <views:FilterBuilderControl RawCollection="{Binding RawItems}" CloseViewModelOnUnloaded="False" />
+                                        ToolTip="{Binding SelectedFilterScheme}"
+                                        ClosePopupOnMouseDown="True">
+                        <views:FilterBuilderControl RawCollection="{Binding RawItems}"
+                                                    CloseViewModelOnUnloaded="False" />
                     </fluent:SplitButton>
 
                 </fluent:RibbonGroupBox>

@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Orc.Automation\src\Orc.Automation\Orc.Automation.csproj" />
     <ProjectReference Include="..\Orc.FilterBuilder\Orc.FilterBuilder.csproj" />
     <ProjectReference Include="..\Orc.FilterBuilder.Xaml\Orc.FilterBuilder.Xaml.csproj" />
   </ItemGroup>
