@@ -36,9 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Automation\Controls\Maps\" />
-    <Folder Include="Automation\Controls\AutomationMethods\" />
-    <Folder Include="Automation\SerializationConverters\" />
+    <Folder Include="Automation\Controls\TreeItems\" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />

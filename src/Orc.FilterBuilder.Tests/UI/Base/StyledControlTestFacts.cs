@@ -17,16 +17,18 @@
             testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\DiffEngine.dll");
             testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\ApprovalUtilities.dll");
             testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\ApprovalTests.dll");
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Controls.dll");
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Automation.Tests.dll");
+            //testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Controls.dll");
 
             testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.FilterBuilder.dll");
             testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.FilterBuilder.Xaml.dll");
+            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Automation.Tests.dll");
+
             testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.FilterBuilder.Tests.dll");
 
             //var result = testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Controls.Tests.dll");
 
             //testHost.TryLoadResources("pack://application:,,,/Orc.FilterBuilder;component/Themes/Generic.xaml");
+            testHost.TryLoadResources("pack://application:,,,/Orc.Controls;component/Themes/Generic.xaml");
             testHost.TryLoadResources("pack://application:,,,/Orc.FilterBuilder.Xaml;component/Themes/Generic.xaml");
 
             return testHost.TryLoadControlWithForwarders(controlType, out testedControlAutomationId, $"pack://application:,,,/{controlType.Assembly.GetName().Name};component/Themes/Generic.xaml");

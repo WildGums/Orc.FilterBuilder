@@ -53,7 +53,8 @@
                    Text="{catel:LanguageBinding FilterBuilder_Name}" 
                    Width="33"
                    Margin="6" />
-        <TextBox Grid.Row="0" 
+        <TextBox x:Name="PART_FilterSchemeTitleTextBox"
+                 Grid.Row="0" 
                  Grid.Column="1" 
                  Grid.ColumnSpan="2"
                  Text="{Binding FilterSchemeTitle, NotifyOnValidationError=True, ValidatesOnDataErrors=True}">
@@ -62,7 +63,8 @@
             </xamlbehaviors:Interaction.Behaviors>
         </TextBox>
 
-        <TreeView Grid.Row="1" 
+        <TreeView x:Name="PART_ConditionTreeView"
+                  Grid.Row="1" 
                   Grid.Column="0"
                   Grid.ColumnSpan="3"
                   BorderThickness="1" 
@@ -117,7 +119,9 @@
                     <Grid HorizontalAlignment="Stretch" Background="Transparent">
                         <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
-                            <ComboBox ItemsSource="{markup:EnumBinding {x:Type filterBuilder:ConditionGroupType}}" SelectedItem="{Binding Type}">
+                            <ComboBox x:Name="PART_GroupTypeComboBox"
+                                      ItemsSource="{markup:EnumBinding {x:Type filterBuilder:ConditionGroupType}}"
+                                      SelectedItem="{Binding Type}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Converter={StaticResource ObjectToDisplayNameConverter}}"/>
@@ -125,7 +129,8 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}"
+                            <Button x:Name="PART_AddExpressionButton"
+                                    ToolTip="{catel:LanguageBinding FilterBuilder_AddExpression}"
                                     BorderThickness="0"
                                     Command="{Binding DataContext.AddExpressionCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
@@ -137,7 +142,8 @@
 
                             </Button>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}"
+                            <Button x:Name="PART_AddGroupButton"
+                                    ToolTip="{catel:LanguageBinding FilterBuilder_AddGroup}"
                                     BorderThickness="0"
                                     Command="{Binding DataContext.AddGroupCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                     CommandParameter="{Binding}">
@@ -149,7 +155,8 @@
 
                             </Button>
 
-                            <Button ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" 
+                            <Button x:Name="PART_DeleteGroupButton"
+                                    ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" 
                                     Padding="3"
                                     BorderThickness="0"
                                     Command="{Binding DataContext.DeleteConditionItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
@@ -166,10 +173,12 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0"
                                     Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
-                            <ComboBox ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                            <ComboBox x:Name="PART_PropertiesComboBox"
+                                      ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                       DisplayMemberPath="DisplayName" SelectedItem="{Binding Property, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
 
-                            <ComboBox ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
+                            <ComboBox x:Name="PART_ConditionComboBox"
+                                      ItemsSource="{Binding DataTypeExpression, Converter={converters:DataTypeExpressionToConditionsConverter}}"
                                       SelectedItem="{Binding DataTypeExpression.SelectedCondition}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -180,7 +189,8 @@
 
                             <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
                                   Margin="0">
-                                <TextBox Text="{Binding DataTypeExpression.Value}"
+                                <TextBox x:Name="PART_ValueTextBox"
+                                         Text="{Binding DataTypeExpression.Value}"
                                          Height="27"
                                          orccontrols:EnterKeyTraversal.IsEnabled="True"
                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Text}}">
@@ -191,7 +201,8 @@
                                     </xamlbehaviors:Interaction.Behaviors>
                                 </TextBox>
 
-                                <orccontrols:NumericUpDown Value="{Binding DataTypeExpression.Value, Mode=TwoWay}"
+                                <orccontrols:NumericUpDown x:Name="PART_ValueNumericUpDown"
+                                                           Value="{Binding DataTypeExpression.Value, Mode=TwoWay}"
                                                            Height="27"
                                                            orccontrols:EnterKeyTraversal.IsEnabled="True"
                                                            IsDecimalPointDynamic="{Binding DataTypeExpression.IsDecimal}">
@@ -217,23 +228,27 @@
                                     </orccontrols:NumericUpDown.Visibility>
                                 </orccontrols:NumericUpDown>
 
-                                <orccontrols:DateTimePicker Value="{Binding DataTypeExpression.Value}"
-                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
+                                <orccontrols:DateTimePicker x:Name="PART_ValueDateTimePicker"
+                                                            Value="{Binding DataTypeExpression.Value}"
+                                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
 
-                                <ComboBox ItemsSource="{Binding DataTypeExpression.BooleanValues}"
+                                <ComboBox x:Name="PART_BooleanValueComboBox"
+                                          ItemsSource="{Binding DataTypeExpression.BooleanValues}"
                                           SelectedValue="{Binding DataTypeExpression.Value}"
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Boolean}}"/>
 
-                                <ComboBox ItemsSource="{Binding DataTypeExpression.EnumValues}"
+                                <ComboBox x:Name="PART_EnumValueComboBox"
+                                          ItemsSource="{Binding DataTypeExpression.EnumValues}"
                                           SelectedValue="{Binding DataTypeExpression.Value}"
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
 
-                                <orccontrols:TimeSpanPicker Value="{Binding DataTypeExpression.Value}"
+                                <orccontrols:TimeSpanPicker x:Name="PART_ValueTimeSpanPicker"
+                                                            Value="{Binding DataTypeExpression.Value}"
                                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"></orccontrols:TimeSpanPicker>
 
                             </Grid>
 
-                            <Button x:Name="DeleteButton"
+                            <Button x:Name="PART_DeleteExpressionButton"
                                     BorderThickness="0"
                                     Padding="3"
                                     ToolTip="{catel:LanguageBinding FilterBuilder_DeleteItem}" 
@@ -269,7 +284,8 @@
                       IsChecked="{Binding EnableLivePreview}" 
                       Visibility="{Binding AllowLivePreview, Converter={catel:BooleanToCollapsingVisibilityConverter}}" />
 
-            <orccontrols:LinkLabel Grid.Column="2"
+            <orccontrols:LinkLabel x:Name ="TogglePreviewLinkLabel"
+                                   Grid.Column="2"
                                    FontSize="12"
                                    HorizontalAlignment="Right"
                                    Command="{Binding TogglePreview}"
