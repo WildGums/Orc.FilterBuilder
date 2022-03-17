@@ -46,11 +46,11 @@
 
         public IReadOnlyList<object> PreviewCollection
         {
-            get => Map.PreviewDataGrid.Rows.Select(x => x.Current.DataContext).ToList();
+            get => Map.PreviewDataGrid.Current.ItemsSource?.OfType<object>().ToList();
         }
 
         public EditFilterConditionTreeItemBase Root => Map.ConditionTree?.Children?.FirstOrDefault();
-
+        
         public void Clear()
         {
             Map.ConditionTree?.Children?.ForEach(x => x.Delete());
