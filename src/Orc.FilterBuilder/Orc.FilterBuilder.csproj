@@ -28,7 +28,7 @@
     <PackageReference Include="Obsolete.Fody" Version="5.3.0" PrivateAssets="all" />
     <PackageReference Include="Orc.Controls" Version="4.6.8" />
     <PackageReference Include="Orc.FileSystem" Version="4.2.0" />
-    <PackageReference Include="Orc.Metadata" Version="4.1.0" />
+    <PackageReference Include="Orc.Metadata" Version="4.2.0" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
