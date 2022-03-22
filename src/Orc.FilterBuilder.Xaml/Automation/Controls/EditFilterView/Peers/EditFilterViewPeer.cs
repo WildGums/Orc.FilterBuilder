@@ -3,7 +3,7 @@
     using Catel.IoC;
     using Orc.Automation;
 
-    public class EditFilterViewPeer : ControlRunMethodAutomationPeerBase<Views.EditFilterView>
+    public class EditFilterViewPeer : AutomationControlPeerBase<Views.EditFilterView>
     {
         public EditFilterViewPeer(Views.EditFilterView owner)
             : base(owner)

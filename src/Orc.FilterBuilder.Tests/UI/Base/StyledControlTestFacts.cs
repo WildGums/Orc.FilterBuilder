@@ -1,33 +1,42 @@
 ﻿namespace Orc.FilterBuilder.Tests
 {
     using System;
+    using System.IO;
     using System.Linq;
+    using System.Windows;
+    using NUnit.Framework;
+    using Orc.Automation;
     using Orc.Automation.Controls;
     using Orc.Automation.Tests;
     using Theming;
+    using FrameworkElement = System.Windows.FrameworkElement;
 
     //TODO:Vladimir: create base type in Orc.Automation
     public abstract class StyledControlTestFacts<TControl> : ControlUiTestFactsBase<TControl>
-        where TControl : System.Windows.FrameworkElement
+        where TControl : FrameworkElement
     {
+        protected TestHostAutomationControl TestHost { get; private set; }
+
         protected override bool TryLoadControl(TestHostAutomationControl testHost, out string testedControlAutomationId)
         {
             var controlType = typeof(TControl);
 
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\DiffEngine.dll");
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\ApprovalUtilities.dll");
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\ApprovalTests.dll");
-            //testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Controls.dll");
+            TestHost = testHost;
 
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.FilterBuilder.dll");
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.FilterBuilder.Xaml.dll");
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Automation.Tests.dll");
+            var testDirectory = TestContext.CurrentContext.TestDirectory;
 
-            testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.FilterBuilder.Tests.dll");
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "DiffEngine.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "ApprovalUtilities.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "ApprovalTests.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "ControlzEx.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "Orc.Theming.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "Orc.Controls.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "Orc.Automation.Tests.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "Orc.FilterBuilder.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "Orc.FilterBuilder.Xaml.dll"));
+            testHost.TryLoadAssembly(Path.Combine(testDirectory, "Orc.FilterBuilder.Tests.dll"));
 
-            //var result = testHost.TryLoadAssembly(@"C:\Source\Orc.FilterBuilder\output\Debug\Orc.FilterBuilder.Tests\net6.0-windows\Orc.Controls.Tests.dll");
-
-            //testHost.TryLoadResources("pack://application:,,,/Orc.FilterBuilder;component/Themes/Generic.xaml");
+            testHost.TryLoadResources("pack://application:,,,/Orc.Theming;component/Themes/Generic.xaml");
             testHost.TryLoadResources("pack://application:,,,/Orc.Controls;component/Themes/Generic.xaml");
             testHost.TryLoadResources("pack://application:,,,/Orc.FilterBuilder.Xaml;component/Themes/Generic.xaml");
 
@@ -63,7 +72,6 @@
 
             //Apply style forwarders
             testHost.RunMethod(typeof(StyleHelper), nameof(StyleHelper.CreateStyleForwardersForDefaultStyles));
-            //testHost.ExecuteAutomationMethod<CreateStyleForwardersMethodRun>();
 
             testHostAutomationId = testHost.PutControl(controlTypeFullName);
             if (string.IsNullOrWhiteSpace(testHostAutomationId) || testHostAutomationId.StartsWith("Error"))
@@ -71,6 +79,28 @@
                 testHostAutomationId = $"Error! Can't put control inside test host control: {controlTypeFullName}";
 
                 return false;
+            }
+
+            //Apply theme
+            testHost.Execute<SynchronizeThemeAutomationMethodRun>();
+
+            return true;
+        }
+    }
+
+    public class SynchronizeThemeAutomationMethodRun : NamedAutomationMethodRun
+    {
+        public override bool TryInvoke(FrameworkElement owner, AutomationMethod method, out AutomationValue result)
+        {
+            result = AutomationValue.FromValue(true);
+
+            try
+            {
+                ThemeManager.Current.SynchronizeTheme();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
 
             return true;

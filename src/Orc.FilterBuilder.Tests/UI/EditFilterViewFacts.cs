@@ -46,7 +46,7 @@
 
             EditFilterViewAssert.Match(target, filterScheme);
         }
-        
+
         [Test]
         public void CorrectlyInitializeTree()
         {

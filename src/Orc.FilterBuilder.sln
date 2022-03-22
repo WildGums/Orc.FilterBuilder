@@ -34,12 +34,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Example",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.FilterBuilder.Tests", "Orc.FilterBuilder.Tests\Orc.FilterBuilder.Tests.csproj", "{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.Controls", "..\..\Orc.Controls\src\Orc.Controls\Orc.Controls.csproj", "{84E22240-D816-4B43-AC37-92B805A2BEE3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.Automation", "..\..\Orc.Automation\src\Orc.Automation\Orc.Automation.csproj", "{8946028D-A6F7-4A64-98CC-71F1669E1D8E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.Automation.Tests", "..\..\Orc.Automation\src\Orc.Automation.Tests\Orc.Automation.Tests.csproj", "{8EBD8595-0992-4FFA-BCA2-EE7BF507B507}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,18 +56,6 @@ Global
 		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EEF65FC-133A-4BDD-A153-1C50DF6B960C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84E22240-D816-4B43-AC37-92B805A2BEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84E22240-D816-4B43-AC37-92B805A2BEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84E22240-D816-4B43-AC37-92B805A2BEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84E22240-D816-4B43-AC37-92B805A2BEE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8946028D-A6F7-4A64-98CC-71F1669E1D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8946028D-A6F7-4A64-98CC-71F1669E1D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8946028D-A6F7-4A64-98CC-71F1669E1D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8946028D-A6F7-4A64-98CC-71F1669E1D8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EBD8595-0992-4FFA-BCA2-EE7BF507B507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EBD8595-0992-4FFA-BCA2-EE7BF507B507}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EBD8595-0992-4FFA-BCA2-EE7BF507B507}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EBD8595-0992-4FFA-BCA2-EE7BF507B507}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

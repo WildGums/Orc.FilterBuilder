@@ -14,6 +14,7 @@ namespace Orc.FilterBuilder.ViewModels
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows;
     using Catel;
     using Catel.Collections;
     using Catel.IoC;
@@ -409,7 +410,7 @@ namespace Orc.FilterBuilder.ViewModels
             else
             {
                 _targetType = CollectionHelper.GetTargetType(RawCollection);
-
+                
                 if (_targetType is not null && _filterSchemes is not null)
                 {
                     ((ICollection<FilterScheme>)applicableFilterSchemes).AddRange((from scheme in _filterSchemes.Schemes
@@ -417,7 +418,7 @@ namespace Orc.FilterBuilder.ViewModels
                                                                                    select scheme));
                 }
             }
-
+            
             applicableFilterSchemes.Insert(0, _noFilterFilter);
 
             var filterGroups = (from filterScheme in applicableFilterSchemes
