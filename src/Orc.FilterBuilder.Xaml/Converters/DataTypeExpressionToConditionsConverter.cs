@@ -21,7 +21,7 @@ namespace Orc.FilterBuilder.Converters
         #region Methods
         protected override object Convert(object value, Type targetType, object parameter)
         {
-            if (!(value is DataTypeExpression dataTypeExpression))
+            if (value is not DataTypeExpression dataTypeExpression)
             {
                 return null;
             }

@@ -3,8 +3,9 @@
     using System;
     using System.Collections;
     using System.Windows;
+    using System.Windows.Automation.Peers;
     using System.Windows.Controls;
-    using System.Windows.Media;
+    using Automation;
     using Catel.MVVM.Views;
     using ViewModels;
     using PropertyMetadata = System.Windows.PropertyMetadata;
@@ -137,8 +138,7 @@
         #region Methods
         private void OnScopeChanged()
         {
-            var vm = ViewModel as FilterBuilderViewModel;
-            if (vm is not null)
+            if (ViewModel is FilterBuilderViewModel vm)
             {
                 vm.Scope = Scope;
             }
@@ -152,15 +152,20 @@
                 return;
             }
 
-            var filterScheme = ((FrameworkElement)sender).DataContext as FilterScheme;
-            if (filterScheme is not null)
+            if (((FrameworkElement)sender).DataContext is not FilterScheme filterScheme)
             {
-                var vm = ViewModel as FilterBuilderViewModel;
-                if (vm is not null)
-                {
-                    vm.SelectedFilterScheme = filterScheme;
-                }
+                return;
             }
+
+            if (ViewModel is FilterBuilderViewModel vm)
+            {
+                vm.SelectedFilterScheme = filterScheme;
+            }
+        }
+
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            return new FilterBuilderControlPeer(this);
         }
         #endregion
     }

@@ -14,6 +14,8 @@ namespace Orc.FilterBuilder.ViewModels
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Media;
     using Catel;
     using Catel.Collections;
     using Catel.IoC;
@@ -33,7 +35,7 @@ namespace Orc.FilterBuilder.ViewModels
         private readonly IMessageService _messageService;
         private readonly IServiceLocator _serviceLocator;
 
-        private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default")
+        private readonly FilterScheme _noFilterFilter = new(typeof(object), "Default")
         {
             CanEdit = false,
             CanDelete = false
@@ -340,7 +342,7 @@ namespace Orc.FilterBuilder.ViewModels
                 SelectedFilterScheme = filterScheme;
             }
 
-            if (filterServiceSelectedFilterIsDifferent && _filterService is not null)
+            if (filterServiceSelectedFilterIsDifferent)
             {
                 _filterService.SelectedFilter = filterScheme;
             }
