@@ -1,5 +1,6 @@
 ﻿namespace Orc.FilterBuilder.Automation
 {
+    using System.Collections.Generic;
     using System.Windows.Automation;
     using Orc.Automation;
     using Orc.Automation.Controls;
@@ -11,5 +12,8 @@
             : base(element)
         {
         }
+
+        public IReadOnlyList<FilterBuilderControlListItem> Items
+            => Map.FilterSchemesListBox.GetItemsOfType<FilterBuilderControlListItem>();
     }
 }

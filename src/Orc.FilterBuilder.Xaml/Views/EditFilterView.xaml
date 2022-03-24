@@ -298,9 +298,7 @@
                             <Binding Path="RawCollection.Count"/>
                         </MultiBinding>
                     </orccontrols:LinkLabel.Content>
-
                 </orccontrols:LinkLabel>
-
         </Grid>
 
         <DataGrid x:Name="PreviewDataGrid"

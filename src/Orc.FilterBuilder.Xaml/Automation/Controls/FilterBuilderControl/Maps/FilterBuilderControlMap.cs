@@ -9,5 +9,7 @@
             : base(element)
         {
         }
+
+        public Orc.Automation.Controls.List FilterSchemesListBox => By.Id().One<Orc.Automation.Controls.List>();
     }
 }

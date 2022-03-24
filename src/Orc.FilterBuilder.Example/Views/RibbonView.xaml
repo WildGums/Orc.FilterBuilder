@@ -10,7 +10,7 @@
         <fluent:Ribbon.Tabs>
             <fluent:RibbonTabItem Header="Filter">
                 <fluent:RibbonGroupBox Header="Filter">
-                    
+
                     <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" 
                                         Command="{Binding NewSchemeCommand}"
                                         LargeIcon="{orctheming:FontImage {x:Static ribbon:FontAwesome.Plus}}" 

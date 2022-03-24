@@ -17,11 +17,11 @@
         [ActiveAutomationProperty]
         public IEnumerable RawCollection { get; set; }
 
-        public FilterBuilderFilteringFunctionBase FilteringFunc
-        {
-            get;
-            set;
-        }
+        //public FilterBuilderFilteringFunctionBase FilteringFunc
+        //{
+        //    get;
+        //    set;
+        //}
 
         [ActiveAutomationProperty]
         public object Scope { get; set; }
@@ -37,8 +37,8 @@
         public bool AutoApplyFilter { get; set; }
     }
 
-    public abstract class FilterBuilderFilteringFunctionBase
-    {
-        public abstract bool Invoke(object func);
-    }
+    //public abstract class FilterBuilderFilteringFunctionBase
+    //{
+    //    public abstract bool Invoke(object func);
+    //}
 }

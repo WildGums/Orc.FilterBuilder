@@ -7,6 +7,7 @@
     using Orc.Automation;
     using EditFilterView = Views.EditFilterView;
 
+    [Explicit]
     [TestFixture]
     public class EditFilterViewFacts : StyledControlTestFacts<EditFilterView>
     {

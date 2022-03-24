@@ -1,7 +1,6 @@
 ﻿namespace Orc.FilterBuilder.Automation
 {
     using System;
-    using System.CodeDom;
 
     public class FilterSchemeBuilder
     {

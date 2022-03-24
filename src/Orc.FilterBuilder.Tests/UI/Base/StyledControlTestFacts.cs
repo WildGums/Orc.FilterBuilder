@@ -40,7 +40,9 @@
             testHost.TryLoadResources("pack://application:,,,/Orc.Controls;component/Themes/Generic.xaml");
             testHost.TryLoadResources("pack://application:,,,/Orc.FilterBuilder.Xaml;component/Themes/Generic.xaml");
 
-            return testHost.TryLoadControlWithForwarders(controlType, out testedControlAutomationId, $"pack://application:,,,/{controlType.Assembly.GetName().Name};component/Themes/Generic.xaml");
+            var result = testHost.TryLoadControlWithForwarders(controlType, out testedControlAutomationId, $"pack://application:,,,/{controlType.Assembly.GetName().Name};component/Themes/Generic.xaml");
+
+            return result;
         }
     }
 
@@ -100,7 +102,7 @@
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                System.Windows.MessageBox.Show(e.Message);
             }
 
             return true;
