@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder.Tests</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Tests</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -13,28 +13,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ApprovalTests" Version="5.7.1" />
+    <PackageReference Include="ApprovalTests" Version="5.7.2" />
     <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Fody" Version="6.5.3" PrivateAssets="all">
+    <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.6.0" PrivateAssets="all" />
-    <PackageReference Include="MethodTimer.Fody" Version="3.2.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
-    <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="NUnit" Version="3.13.2" PrivateAssets="all" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" PrivateAssets="all" />
-    <PackageReference Include="Obsolete.Fody" Version="5.2.1" PrivateAssets="all" />
-    <PackageReference Include="PublicApiGenerator" Version="10.2.0" PrivateAssets="all" /> 
+    <PackageReference Include="Moq" Version="4.17.2" />
+    <PackageReference Include="NUnit" Version="3.13.3" PrivateAssets="all" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" PrivateAssets="all" />
+    <PackageReference Include="Orc.Automation.Tests" Version="4.0.5" />
+    <PackageReference Include="PublicApiGenerator" Version="10.3.0" PrivateAssets="all" /> 
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" Version="2.0.3" />
-    <PackageReference Update="WpfAnalyzers" Version="3.5.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -45,11 +43,12 @@
   <ItemGroup>
     <Compile Remove="*.approved.cs;*.received.cs" />
     <Content Include="Resources\**\*.xml">
-      
-    </Content>
-    <Content Include="Resources\**\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UI\Fluent\SplitButton\Maps\" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />

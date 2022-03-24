@@ -16,7 +16,7 @@
             var reflectionService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<TestFilterRuntimeModelReflectionService>(TestAttributeTypeProvider.AttributeTypes.Values.ToList());
             serviceLocator.RegisterInstance<IReflectionService>(reflectionService);
 
-            var tempFileContext = new TemporaryFilesContext("filters");
+            using var tempFileContext = new TemporaryFilesContext("filters");
             var tempFile = tempFileContext.GetFile($"testFilters.xml", true);
             var sourceFile = Path.Combine(AssemblyDirectoryHelper.GetCurrentDirectory(), $"Resources\\Files\\filters.xml");
             File.Copy(sourceFile, tempFile, true);

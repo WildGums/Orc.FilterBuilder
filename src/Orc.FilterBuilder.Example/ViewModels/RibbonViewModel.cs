@@ -6,7 +6,6 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
-    using Catel.Collections;
     using Catel.Logging;
     using Catel.MVVM;
     using Catel.Reflection;
@@ -14,9 +13,7 @@
     using FilterBuilder.ViewModels;
     using global::FilterBuilder.Example.Models;
     using global::FilterBuilder.Example.Services;
-
-    using CollectionHelper = Orc.FilterBuilder.CollectionHelper;
-
+    
     public class RibbonViewModel : ViewModelBase
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();

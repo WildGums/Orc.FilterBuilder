@@ -33,7 +33,7 @@ namespace Orc.FilterBuilder.Tests.Services
         #region IReflectionService Members
         public IPropertyCollection GetInstanceProperties(Type targetType)
         {
-            return _propertyCollection ?? (_propertyCollection = new TestFilterRuntimeModelPropertyCollection(_attributeTypes));
+            return _propertyCollection ??= new TestFilterRuntimeModelPropertyCollection(_attributeTypes);
         }
 
         public Task<IPropertyCollection> GetInstancePropertiesAsync(Type targetType)

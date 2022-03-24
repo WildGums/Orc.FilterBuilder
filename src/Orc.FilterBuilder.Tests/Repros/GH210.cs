@@ -26,7 +26,7 @@
             var fSchemes = new FilterSchemes();
             fSchemes.Schemes.Add(filterscheme);
 
-            var tempFileContext = new TemporaryFilesContext("filters");
+            using var tempFileContext = new TemporaryFilesContext("filters");
             var tempFile = tempFileContext.GetFile($"GH210-basic-save.xml", true);
 
             fSchemes.SaveAsXml(tempFile);
@@ -62,7 +62,7 @@
 
             filterscheme.Root.Items.Add(pe);
 
-            var tempFileContext = new TemporaryFilesContext("filters");
+            using var tempFileContext = new TemporaryFilesContext("filters");
             var tempFile = tempFileContext.GetFile($"GH210-save.xml", true);
 
             await filterSerializationService.SaveFiltersAsync(tempFile, fSchemes);
@@ -102,7 +102,7 @@
 
             var filterSchemes = new FilterSchemes();
 
-            var tempFileContext = new TemporaryFilesContext("filters");
+            using var tempFileContext = new TemporaryFilesContext("filters");
             var tempFile = tempFileContext.GetFile($"GH210-serialize.xml", true);
 
             using (var fs = new FileStream(tempFile, FileMode.Create))
@@ -123,7 +123,7 @@
             var pos = memStream.Position;
             memStream.Position = 0;
 
-            var reader = new StreamReader(memStream);
+            using var reader = new StreamReader(memStream);
             var str = reader.ReadToEnd();
 
             // Reset the position so that subsequent writes are correct.

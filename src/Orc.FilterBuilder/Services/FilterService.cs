@@ -28,8 +28,10 @@ namespace Orc.FilterBuilder
             Argument.IsNotNull(() => filterSchemeManager);
 
             var scope = filterSchemeManager.Scope;
+#pragma warning disable IDISP004 // Don't ignore created IDisposable.
             _reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(scope);
-            
+#pragma warning restore IDISP004 // Don't ignore created IDisposable.
+
             filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
         }
         #endregion

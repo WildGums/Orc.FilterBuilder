@@ -19,14 +19,15 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="0"
+                        <Label x:Name="TitleLabel"
+                               Grid.Row="0"
                                Margin="8,4,0,0"
                                FontSize="14"
                                FontWeight="SemiBold"
                                Content="{Binding Title, Mode=OneWay}"
                                Visibility="{Binding Title, Converter={catel:ReferenceToCollapsingVisibilityConverter}}" />
 
-                        <ListBox x:Name="listBox" 
+                        <ListBox x:Name="FilterSchemesListBox" 
                                  Grid.Row="1"
                                  ItemsSource="{Binding FilterSchemes}"
                                  BorderThickness="0" 
@@ -36,6 +37,7 @@
                                     <Grid Width="286" 
                                           Background="Transparent"
                                           PreviewMouseLeftButtonDown="OnFilterPreviewMouseLeftButtonDown">
+                         
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="14" />
                                             <ColumnDefinition Width="200" />
@@ -44,8 +46,12 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Image Grid.Column="0" Source="/Orc.FilterBuilder.Xaml;component/Resources/Images/selected.png" Stretch="None"
-                                               Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Grid.Column="0" 
+                                               Source="/Orc.FilterBuilder.Xaml;component/Resources/Images/selected.png"
+                                               Stretch="None"
+                                               Margin="0,2,0,0" 
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center">
                                             <Image.Visibility>
                                                 <MultiBinding Converter="{StaticResource IsCurrentFilterSchemeToCollapsingVisibilityConverter}">
                                                     <Binding />
@@ -62,14 +68,19 @@
                                                 <ColumnDefinition Width="5"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Label Grid.Column="0" Content="{Binding Title}" ToolTip="{Binding}"/>
+                                            <Label x:Name="SchemeTitleLabel"
+                                                   Grid.Column="0"
+                                                   Content="{Binding Title}" 
+                                                   ToolTip="{Binding}"/>
+
                                             <TextBlock Grid.Column="2" 
                                                        Text="{catel:LanguageBinding FilterBuilder_FilterBuilderControl_TextBlock_Text_Broken}" 
                                                        Visibility="{Binding HasInvalidConditionItems, Converter={catel:BooleanToCollapsingVisibilityConverter}}"
                                                        Style="{DynamicResource ResourceKey=FilterBuilderBrokenTextBlockStyle}"/>
                                         </Grid>
 
-                                        <Button Grid.Column="2"
+                                        <Button x:Name="EditSchemeButton"
+                                                Grid.Column="2"
                                                 Width="24"
                                                 Content="..."
                                                 HorizontalContentAlignment="Center"
@@ -84,7 +95,9 @@
                                                 </MultiBinding>
                                             </Button.Command>
                                         </Button>
-                                        <Button Grid.Column="4" 
+
+                                        <Button x:Name="DeleteSchemeButton"
+                                                Grid.Column="4" 
                                                 Width="24"
                                                 Padding="7 8.5 7 8.5"
                                                 CommandParameter="{Binding}" 
