@@ -15,6 +15,7 @@
         private FilterBuilderControlListItemMap Map => Map<FilterBuilderControlListItemMap>();
 
         public string Title => Map.Title?.Value;
+        public override string DisplayText => Title;
 
         public bool CanEdit()
         {
