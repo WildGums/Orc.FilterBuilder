@@ -36,10 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Orc.Controls\src\Orc.Controls\Orc.Controls.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Update="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
 
