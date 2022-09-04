@@ -11,29 +11,6 @@ public static class ModuleInitializer
 {
     public static void Initialize() { }
 }
-namespace Orc.Automation
-{
-    [Orc.Automation.AutomatedControl(ClassName="#32770")]
-    public class MessageBox : Orc.Automation.AutomationControl
-    {
-        public MessageBox(System.Windows.Automation.AutomationElement element) { }
-        public string Message { get; }
-        public string Title { get; }
-        public void Cancel() { }
-        public void No() { }
-        public void Ok() { }
-        public void Yes() { }
-    }
-    public class MessageBoxMap : Orc.Automation.AutomationBase
-    {
-        public MessageBoxMap(System.Windows.Automation.AutomationElement element) { }
-        public Orc.Automation.Controls.Button CancelButton { get; }
-        public Orc.Automation.Controls.Text ContentText { get; }
-        public Orc.Automation.Controls.Button NoButton { get; }
-        public Orc.Automation.Controls.Button OkButton { get; }
-        public Orc.Automation.Controls.Button YesButton { get; }
-    }
-}
 namespace Orc.FilterBuilder.Automation
 {
     public class EditFilterConditionGroupTreeItem : Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase
@@ -172,6 +149,7 @@ namespace Orc.FilterBuilder.Automation
     public class FilterBuilderControlListItem : Orc.Automation.Controls.ListItem
     {
         public FilterBuilderControlListItem(System.Windows.Automation.AutomationElement element) { }
+        public override string DisplayText { get; }
         public string Title { get; }
         public bool CanDelete() { }
         public bool CanEdit() { }
@@ -188,7 +166,7 @@ namespace Orc.FilterBuilder.Automation
     public class FilterBuilderControlMap : Orc.Automation.AutomationBase
     {
         public FilterBuilderControlMap(System.Windows.Automation.AutomationElement element) { }
-        public Orc.Automation.Controls.List FilterSchemesListBox { get; }
+        public Orc.Automation.Controls.ListBox FilterSchemesListBox { get; }
     }
     public class FilterBuilderControlModel : Orc.Automation.FrameworkElementModel
     {

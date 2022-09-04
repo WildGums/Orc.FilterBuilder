@@ -19,7 +19,7 @@
   <ItemGroup>
     <PackageReference Include="Catel.Fody" Version="4.7.0" PrivateAssets="all" />
     <PackageReference Include="Catel.MVVM" Version="5.12.22" />
-    <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all">
+    <PackageReference Include="Fody" Version="6.6.3" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MethodTimer.Fody" Version="3.2.0" PrivateAssets="all" />
@@ -33,10 +33,6 @@
 
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" Version="2.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Automation\Controls\TreeItems\" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.shared.explicit.props')" />
