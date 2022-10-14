@@ -1,18 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterScheme.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Runtime.Serialization;
     using System.Text;
     using Catel;
     using Catel.Data;
@@ -24,9 +16,8 @@ namespace Orc.FilterBuilder
     public class FilterScheme : ModelBase
     {
         private static readonly Type DefaultTargetType = typeof(object);
-        private object _scope;
+        private object? _scope;
 
-        #region Constructors
         public FilterScheme()
             : this(DefaultTargetType)
         {
@@ -44,26 +35,28 @@ namespace Orc.FilterBuilder
 
         public FilterScheme(Type targetType, string title, ConditionTreeItem root)
         {
-            Argument.IsNotNull(() => targetType);
-            Argument.IsNotNull(() => title);
-            Argument.IsNotNull(() => root);
+            ArgumentNullException.ThrowIfNull(targetType);
+            ArgumentNullException.ThrowIfNull(title);
+            ArgumentNullException.ThrowIfNull(root);
 
             TargetType = targetType;
             Title = title;
-            ConditionItems = new ObservableCollection<ConditionTreeItem>();
-            ConditionItems.Add(root);
+
+            ConditionItems = new ObservableCollection<ConditionTreeItem>
+            {
+                root
+            };
+
             CanEdit = true;
             CanDelete = true;
         }
-        #endregion
 
-        #region Properties
         [IncludeInSerialization]
         public Type TargetType { get; private set; }
 
         public string Title { get; set; }
 
-        public string FilterGroup { get; set; }
+        public string? FilterGroup { get; set; }
 
         [ExcludeFromSerialization]
         public bool CanEdit { get; set; }
@@ -74,11 +67,11 @@ namespace Orc.FilterBuilder
         [ExcludeFromSerialization]
         public ConditionTreeItem Root
         {
-            get { return ConditionItems.FirstOrDefault(); }
+            get { return ConditionItems.First(); }
         }
 
         [ExcludeFromSerialization]
-        public object Scope
+        public object? Scope
         {
             get { return _scope; }
             set
@@ -103,13 +96,17 @@ namespace Orc.FilterBuilder
         public bool HasInvalidConditionItems { get; private set; }
 
         public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
-        #endregion
 
-        public event EventHandler<EventArgs> Updated;
+        public event EventHandler<EventArgs>? Updated;
 
-        #region Methods
-        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnConditionItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            var senderList = sender as IList;
+            if (senderList is null)
+            {
+                return;
+            }
+
             if (e.OldItems is not null)
             {
                 foreach (var item in e.OldItems)
@@ -118,7 +115,7 @@ namespace Orc.FilterBuilder
                 }
             }
 
-            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
+            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? senderList : e.NewItems;
             if (newCollection is not null)
             {
                 foreach (var item in newCollection)
@@ -147,13 +144,16 @@ namespace Orc.FilterBuilder
 
         private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
         {
-            var items = conditionTreeItem?.Items;
+            ArgumentNullException.ThrowIfNull(conditionTreeItem);
+
+            var items = conditionTreeItem.Items;
             if (items is null || items.Count == 0)
             {
                 return conditionTreeItem?.IsValid??true ? 0 : 1;
             }
 
             var invalidCount = 0;
+
             foreach (var item in items)
             {
                 invalidCount += CountInvalidItems(item);
@@ -177,7 +177,7 @@ namespace Orc.FilterBuilder
             }
         }
 
-        private void OnConditionUpdated(object sender, EventArgs e)
+        private void OnConditionUpdated(object? sender, EventArgs e)
         {
             CheckForInvalidItems();
 
@@ -186,7 +186,7 @@ namespace Orc.FilterBuilder
 
         public bool CalculateResult(object entity)
         {
-            Argument.IsNotNull(() => entity);
+            ArgumentNullException.ThrowIfNull(entity);
 
             var root = Root;
             if (root is not null)
@@ -199,7 +199,7 @@ namespace Orc.FilterBuilder
 
         public void Update(FilterScheme otherScheme)
         {
-            Argument.IsNotNull(() => otherScheme);
+            ArgumentNullException.ThrowIfNull(otherScheme);
 
             Title = otherScheme.Title;
             ConditionItems.Clear();
@@ -222,9 +222,12 @@ namespace Orc.FilterBuilder
             stringBuilder.Append(Title);
 
             var rootString = Root.ToString();
-            if (rootString.StartsWith("((") && rootString.EndsWith("))"))
+            if (!string.IsNullOrEmpty(rootString))
             {
-                rootString = rootString.Substring(1, rootString.Length - 2);
+                if (rootString.StartsWith("((") && rootString.EndsWith("))"))
+                {
+                    rootString = rootString.Substring(1, rootString.Length - 2);
+                }
             }
 
             if (!string.IsNullOrEmpty(rootString))
@@ -236,7 +239,7 @@ namespace Orc.FilterBuilder
             return stringBuilder.ToString();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var filterScheme = obj as FilterScheme;
             if (filterScheme is null)
@@ -251,6 +254,5 @@ namespace Orc.FilterBuilder
         {
             return Title.GetHashCode();
         }
-        #endregion
     }
 }

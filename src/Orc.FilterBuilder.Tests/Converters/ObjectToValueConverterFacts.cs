@@ -22,7 +22,7 @@
                 MyIntegerValue = 42
             };
 
-            var converter = new ObjectToValueConverter();
+            var converter = new ObjectToValueConverter(null);
 
             Assert.AreEqual(42, converter.Convert(model, null, nameof(TestModel.MyIntegerValue), null));
             Assert.AreEqual("test", converter.Convert(model, null, nameof(TestModel.Reference), null));

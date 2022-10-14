@@ -1,23 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BooleanExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Runtime.Serialization;
     using Catel;
     using Catel.Runtime.Serialization;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class BooleanExpression : DataTypeExpression
     {
-        #region Constructors
         public BooleanExpression()
         {
             BooleanValues = new List<bool> {true, false};
@@ -25,16 +16,12 @@ namespace Orc.FilterBuilder
             SelectedCondition = Condition.EqualTo;
             ValueControlType = ValueControlType.Boolean;
         }
-        #endregion
 
-        #region Properties
         public bool Value { get; set; }
 
         [ExcludeFromSerialization]
         public List<bool> BooleanValues { get; set; }
-        #endregion
 
-        #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             var entityValue = propertyMetadata.GetValue<bool>(entity);
@@ -48,7 +35,7 @@ namespace Orc.FilterBuilder
                     return entityValue != Value;
 
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 
@@ -56,6 +43,5 @@ namespace Orc.FilterBuilder
         {
             return $"{SelectedCondition.Humanize()} '{Value}'";
         }
-        #endregion
     }
 }

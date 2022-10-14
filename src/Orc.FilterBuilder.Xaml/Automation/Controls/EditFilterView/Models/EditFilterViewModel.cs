@@ -9,7 +9,7 @@
         {
         }
 
-        public FilterSchemeEditInfo FilterSchemeEditInfo
+        public FilterSchemeEditInfo? FilterSchemeEditInfo
         {
             get => _accessor.Execute<FilterSchemeEditInfo>(nameof(EditFilterViewPeer.GetFilterSchemeEditInfo));
             set => _accessor.Execute(nameof(EditFilterViewPeer.SetFilterSchemeEditInfo), value);

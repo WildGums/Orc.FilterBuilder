@@ -3,7 +3,7 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:catel="http://schemas.catelproject.com"
                    xmlns:fluent="urn:fluent-ribbon"
-                   xmlns:ribbon="clr-namespace:Orc.FilterBuilder.Example"
+                   xmlns:orcfilterbuilderexample="clr-namespace:Orc.FilterBuilder.Example"
                    xmlns:views="clr-namespace:Orc.FilterBuilder.Views;assembly=Orc.FilterBuilder.Xaml" 
                    xmlns:orctheming="http://schemas.wildgums.com/orc/theming">
     <fluent:Ribbon>
@@ -13,11 +13,11 @@
 
                     <fluent:SplitButton Header="{Binding SelectedFilterScheme.Title}" 
                                         Command="{Binding NewSchemeCommand}"
-                                        LargeIcon="{orctheming:FontImage {x:Static ribbon:FontAwesome.Plus}}" 
+                                        LargeIcon="{orctheming:FontImage {x:Static orcfilterbuilderexample:FontAwesome.Plus}}" 
                                         ToolTip="{Binding SelectedFilterScheme}"
                                         ClosePopupOnMouseDown="True">
                         <views:FilterBuilderControl RawCollection="{Binding RawItems}"
-                                                    CloseViewModelOnUnloaded="False" />
+                                                    UnloadBehavior="SaveAndCloseViewModel" />
                     </fluent:SplitButton>
 
                 </fluent:RibbonGroupBox>

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Globalization;
@@ -15,9 +8,13 @@ namespace Orc.FilterBuilder.Converters
 
     public class IsCurrentFilterSchemeToCollapsingVisibilityConverter : IMultiValueConverter
     {
-        #region IMultiValueConverter Members
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object?[]? values, Type targetType, object? parameter, CultureInfo? culture)
         {
+            if (values is null)
+            {
+                return null;
+            }
+
             var filterScheme = values[0] as FilterScheme;
             var selectedFilterScheme = values[1] as FilterScheme;
 
@@ -36,10 +33,9 @@ namespace Orc.FilterBuilder.Converters
             return visibility;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object?[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo? culture)
         {
             throw new NotImplementedException();
         }
-        #endregion
     }
 }

@@ -11,11 +11,13 @@
         }
 
         [ActiveAutomationProperty]
-        public IList FilteredCollection { get; set; }
+        public IList? FilteredCollection { get; set; }
+
         [ActiveAutomationProperty]
-        public FilterBuilderMode Mode { get; set; }
+        public FilterBuilderMode? Mode { get; set; }
+
         [ActiveAutomationProperty]
-        public IEnumerable RawCollection { get; set; }
+        public IEnumerable? RawCollection { get; set; }
 
         //public FilterBuilderFilteringFunctionBase FilteringFunc
         //{
@@ -24,15 +26,20 @@
         //}
 
         [ActiveAutomationProperty]
-        public object Scope { get; set; }
+        public object? Scope { get; set; }
+
         [ActiveAutomationProperty]
         public bool AllowDelete { get; set; }
+
         [ActiveAutomationProperty]
         public bool AllowReset { get; set; }
+
         [ActiveAutomationProperty]
         public bool EnableAutoCompletion { get; set; }
+
         [ActiveAutomationProperty]
         public bool AllowLivePreview { get; set; }
+
         [ActiveAutomationProperty]
         public bool AutoApplyFilter { get; set; }
     }

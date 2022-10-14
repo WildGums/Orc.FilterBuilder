@@ -88,11 +88,11 @@
         [Category("Serialize")]
         public async Task OrcFilterSerializeScenarioAsync()
         {
-            var xmlSerializer = new XmlSerializer(ServiceLocator.Default.ResolveType<Catel.Runtime.Serialization.SerializationManager>(),
-                ServiceLocator.Default.ResolveType<IDataContractSerializerFactory>(),
-                ServiceLocator.Default.ResolveType<IXmlNamespaceManager>(),
-                ServiceLocator.Default.ResolveType<ITypeFactory>(),
-                ServiceLocator.Default.ResolveType<Catel.Runtime.Serialization.IObjectAdapter>());
+            var xmlSerializer = new XmlSerializer(ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.SerializationManager>(),
+                ServiceLocator.Default.ResolveRequiredType<IDataContractSerializerFactory>(),
+                ServiceLocator.Default.ResolveRequiredType<IXmlNamespaceManager>(),
+                ServiceLocator.Default.ResolveRequiredType<ITypeFactory>(),
+                ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.IObjectAdapter>());
 
             using (var memoryStream = new MemoryStream())
             {
@@ -113,7 +113,7 @@
             var fileService = new FileService();
             var fSchemes = new FilterSerializationService(
                 new DirectoryService(fileService), fileService,
-                ServiceLocator.Default.ResolveType<Catel.Runtime.Serialization.Xml.IXmlSerializer>());
+                ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.Xml.IXmlSerializer>());
             var filters = await fSchemes.LoadFiltersAsync(tempFile);
             var res = filters;
         }

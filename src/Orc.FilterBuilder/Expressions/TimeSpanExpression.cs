@@ -1,11 +1,4 @@
-﻿ //--------------------------------------------------------------------------------------------------------------------
- //<copyright file = "TimeSpanExpression.cs" company="WildGums">
- //  Copyright(c) 2008 - 2014 WildGums.All rights reserved.
- //</copyright>
- //--------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +6,6 @@ namespace Orc.FilterBuilder
     using System.Diagnostics;
     using System.Linq;
     using Catel;
-    using Catel.Data;
     using Catel.Runtime.Serialization;
 
     [ObsoleteEx(ReplacementTypeOrMember = "Use TimeSpanValueExpression instead")]
@@ -36,7 +28,6 @@ namespace Orc.FilterBuilder
             SelectedSpanType = TimeSpanType.Hours;
         }
 
-        #region Properties
         public TimeSpan Value { get; set; }
 
         [ExcludeFromSerialization]
@@ -45,10 +36,8 @@ namespace Orc.FilterBuilder
         public TimeSpanType SelectedSpanType { get; set; }
 
         public float Amount { get; set; }
-        #endregion
 
-        #region Methods
-        protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
 
@@ -87,7 +76,7 @@ namespace Orc.FilterBuilder
                     break;
 
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
             }
         }
 
@@ -115,7 +104,7 @@ namespace Orc.FilterBuilder
                     return entityValue <= Value;
 
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 
@@ -123,6 +112,5 @@ namespace Orc.FilterBuilder
         {
             return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
         }
-        #endregion
     }
 }

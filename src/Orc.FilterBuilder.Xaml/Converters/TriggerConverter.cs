@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TriggerConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Windows.Data;
@@ -18,9 +11,13 @@ namespace Orc.FilterBuilder.Converters
     /// </summary>
     public class TriggerConverter : IMultiValueConverter
     {
-        #region IMultiValueConverter Members
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object?[]? values, Type targetType, object? parameter, System.Globalization.CultureInfo? culture)
         {
+            if (values is null)
+            {
+                return ConverterHelper.UnsetValue;
+            }
+
             // First value is target value.
             // All others are update triggers only.
             if (values.Length < 1)
@@ -37,10 +34,9 @@ namespace Orc.FilterBuilder.Converters
             return ConverterHelper.UnsetValue;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object?[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture)
         {
             return new object[]{};
         }
-        #endregion
     }
 }

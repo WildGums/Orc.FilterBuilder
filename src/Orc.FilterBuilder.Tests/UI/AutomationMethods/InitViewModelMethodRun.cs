@@ -22,7 +22,9 @@
                 RegisterScope(scope);
             }
 
+#pragma warning disable IDISP004 // Don't ignore created IDisposable
             var vm = this.GetTypeFactory().CreateInstanceWithParametersAndAutoCompletion<FilterBuilderViewModel>();
+#pragma warning restore IDISP004 // Don't ignore created IDisposable
 
             control.DataContext = vm;
 

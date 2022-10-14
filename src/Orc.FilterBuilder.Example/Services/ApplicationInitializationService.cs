@@ -22,7 +22,7 @@ namespace Orc.FilterBuilder.Example.Services
 
         public ApplicationInitializationService(IServiceLocator serviceLocator)
         {
-            Argument.IsNotNull(() => serviceLocator);
+            ArgumentNullException.ThrowIfNull(serviceLocator);
 
             _serviceLocator = serviceLocator;
         }
@@ -31,7 +31,7 @@ namespace Orc.FilterBuilder.Example.Services
         {
             InitializeFonts();
 
-            return TaskHelper.Completed;
+            return Task.CompletedTask;
         }
 
         private void InitializeFonts()

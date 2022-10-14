@@ -11,8 +11,8 @@ public class EditFilterConditionGroupTreeItemMap : AutomationBase
     {
     }
 
-    public ComboBox GroupTypeComboBox => By.Id("PART_GroupTypeComboBox").One<ComboBox>();
-    public Button AddExpressionButton => By.Id("PART_AddExpressionButton").One<Button>();
-    public Button AddGroupButton => By.Id("PART_AddGroupButton").One<Button>();
-    public Button DeleteButton => By.Id("PART_DeleteGroupButton").One<Button>();
+    public ComboBox? GroupTypeComboBox => By.Id("PART_GroupTypeComboBox").One<ComboBox>();
+    public Button? AddExpressionButton => By.Id("PART_AddExpressionButton").One<Button>();
+    public Button? AddGroupButton => By.Id("PART_AddGroupButton").One<Button>();
+    public Button? DeleteButton => By.Id("PART_DeleteGroupButton").One<Button>();
 }

@@ -1,21 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterCustomizationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System.Collections.Generic;
-    using Catel;
-    using System.Linq;
+    using System;
 
     public class FilterCustomizationService : IFilterCustomizationService
     {
         public virtual void CustomizeInstanceProperties(IPropertyCollection instanceProperties)
         {
-            Argument.IsNotNull(() => instanceProperties);
+            ArgumentNullException.ThrowIfNull(instanceProperties);
 
             var catelProperties = new HashSet<string> {
                 "BusinessRuleErrorCount",

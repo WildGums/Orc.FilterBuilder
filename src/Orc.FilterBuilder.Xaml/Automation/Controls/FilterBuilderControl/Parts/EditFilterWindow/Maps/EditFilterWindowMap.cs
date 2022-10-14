@@ -11,8 +11,8 @@
         {
         }
 
-        public EditFilterView EditFilterView => By.One<EditFilterView>();
-        public Button OkButton => By.Name("OK").One<Button>();
-        public Button CancelButton => By.Name("Cancel").One<Button>();
+        public EditFilterView? EditFilterView => By.One<EditFilterView>();
+        public Button? OkButton => By.Name("OK").One<Button>();
+        public Button? CancelButton => By.Name("Cancel").One<Button>();
     }
 }

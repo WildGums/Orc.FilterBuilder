@@ -13,8 +13,10 @@
         {
             var serviceLocator = ServiceLocator.Default;
 
+#pragma warning disable IDISP001 // Dispose created
             var typeFactory = serviceLocator.ResolveType<ITypeFactory>();
-            
+#pragma warning restore IDISP001 // Dispose created
+
             var filterScheme = await FilterSchemeInitializationHelper.GetTestFilterSchemeAsync();
             var initialCollection = TestDataProvider.GetInitialCollection();
             var resultList = new List<TestFilterRuntimeModel>();

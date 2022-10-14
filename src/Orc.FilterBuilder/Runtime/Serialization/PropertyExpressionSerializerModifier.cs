@@ -1,14 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeSerializerModifier.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Runtime.Serialization
+﻿namespace Orc.FilterBuilder.Runtime.Serialization
 {
-    using Catel;
-    using Catel.Data;
+    using System;
     using Catel.Reflection;
     using Catel.Runtime.Serialization;
 
@@ -22,7 +14,7 @@ namespace Orc.FilterBuilder.Runtime.Serialization
 
         public PropertyExpressionSerializerModifier(IReflectionService reflectionService)
         {
-            Argument.IsNotNull(() => reflectionService);
+            ArgumentNullException.ThrowIfNull(reflectionService);
 
             _reflectionService = reflectionService;
         }
@@ -52,8 +44,11 @@ namespace Orc.FilterBuilder.Runtime.Serialization
                     var splitted = propertyMetadata.Split(Separators, System.StringSplitOptions.None);
 
                     var type = TypeCache.GetTypeWithoutAssembly(splitted[0]);
-                    var instanceProperties = _reflectionService.GetInstanceProperties(type);
-                    memberValue.Value = instanceProperties.GetProperty(splitted[1]);
+                    if (type is not null)
+                    {
+                        var instanceProperties = _reflectionService.GetInstanceProperties(type);
+                        memberValue.Value = instanceProperties.GetProperty(splitted[1]);
+                    }
                 }
             }
         }

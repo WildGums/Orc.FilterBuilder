@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectToValueConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters
 {
     using System;
     using Catel.Data;
@@ -15,23 +8,22 @@ namespace Orc.FilterBuilder.Converters
 
     public class ObjectToValueConverter : ValueConverterBase
     {
-        private readonly IPropertyMetadata _propertyMetadata;
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public ObjectToValueConverter(IPropertyMetadata propertyMetadata)
+        private readonly IPropertyMetadata? _propertyMetadata;
+
+        public ObjectToValueConverter(IPropertyMetadata? propertyMetadata)
         {
             _propertyMetadata = propertyMetadata;
         }
 
-        public ObjectToValueConverter()
+        protected override object? Convert(object? value, Type targetType, object? parameter)
         {
+            if (value is null)
+            {
+                return null;
+            }
 
-        }
-
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        #region Methods
-        protected override object Convert(object value, Type targetType, object parameter)
-        {
             var propertyName = parameter as string;
             if (string.IsNullOrEmpty(propertyName))
             {
@@ -69,6 +61,5 @@ namespace Orc.FilterBuilder.Converters
 
             return null;
         }
-        #endregion
     }
 }

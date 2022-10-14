@@ -63,7 +63,8 @@
             var filterScheme = new FilterScheme(_targetType);
             var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, true, true);
 
-            if (await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false)
+            var result = await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo);
+            if (result.DialogResult ?? false)
             {
                 AvailableSchemes.Add(filterScheme);
 

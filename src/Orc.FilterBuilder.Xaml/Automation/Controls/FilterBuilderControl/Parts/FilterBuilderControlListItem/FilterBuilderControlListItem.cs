@@ -14,38 +14,38 @@
 
         private FilterBuilderControlListItemMap Map => Map<FilterBuilderControlListItemMap>();
 
-        public string Title => Map.Title?.Value;
-        public override string DisplayText => Title;
+        public string Title => Map.Title?.Value ?? string.Empty;
+        public override string DisplayText => Title ?? string.Empty;
 
         public bool CanEdit()
         {
-            return Map.EditSchemeButton.IsVisible();
+            return Map.EditSchemeButton?.IsVisible() ?? false;
         }
 
-        public EditFilterWindow Edit()
+        public EditFilterWindow? Edit()
         {
-            Map.EditSchemeButton.Click();
+            Map.EditSchemeButton?.Click();
 
             Wait.UntilResponsive(200);
 
             var hostWindow = Element.GetHostWindow();
 
-            return hostWindow.Find<EditFilterWindow>(name: "Filter scheme");
+            return hostWindow?.Find<EditFilterWindow>(name: "Filter scheme");
         }
 
         public bool CanDelete()
         {
-            return Map.DeleteSchemeButton.IsVisible();
+            return Map.DeleteSchemeButton?.IsVisible() ?? false;
         }
 
         public void Delete()
         {
-            Map.DeleteSchemeButton.Click();
+            Map.DeleteSchemeButton?.Click();
 
             Wait.UntilResponsive();
 
             var hostWindow = Element.GetHostWindow();
-            var messageBox = hostWindow.Find<MessageBox>();
+            var messageBox = hostWindow?.Find<MessageBox>();
             messageBox?.Yes();
         }
     }

@@ -12,7 +12,6 @@
 
     public partial class FilterBuilderControl
     {
-        #region Constructors
         static FilterBuilderControl()
         {
             typeof(FilterBuilderControl).AutoDetectViewPropertiesToSubscribe();
@@ -22,13 +21,11 @@
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region Properties
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
-        public IEnumerable RawCollection
+        public IEnumerable? RawCollection
         {
-            get { return (IEnumerable)GetValue(RawCollectionProperty); }
+            get { return (IEnumerable?)GetValue(RawCollectionProperty); }
             set { SetValue(RawCollectionProperty, value); }
         }
 
@@ -48,9 +45,9 @@
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
-        public Func<object, bool> FilteringFunc
+        public Func<object, bool>? FilteringFunc
         {
-            get { return (Func<object, bool>)GetValue(FilteringFuncProperty); }
+            get { return (Func<object, bool>?)GetValue(FilteringFuncProperty); }
             set { SetValue(FilteringFuncProperty, value); }
         }
 
@@ -59,9 +56,9 @@
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
-        public IList FilteredCollection
+        public IList? FilteredCollection
         {
-            get { return (IList)GetValue(FilteredCollectionProperty); }
+            get { return (IList?)GetValue(FilteredCollectionProperty); }
             set { SetValue(FilteredCollectionProperty, value); }
         }
 
@@ -125,7 +122,7 @@
 
 
         [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
-        public object Scope
+        public object? Scope
         {
             get { return GetValue(ScopeProperty); }
             set { SetValue(ScopeProperty, value); }
@@ -133,9 +130,7 @@
 
         public static readonly DependencyProperty ScopeProperty = DependencyProperty.Register(nameof(Scope), typeof(object),
             typeof(FilterBuilderControl), new FrameworkPropertyMetadata((sender, e) => ((FilterBuilderControl)sender).OnScopeChanged()));
-        #endregion
 
-        #region Methods
         private void OnScopeChanged()
         {
             if (ViewModel is FilterBuilderViewModel vm)
@@ -167,6 +162,5 @@
         {
             return new FilterBuilderControlPeer(this);
         }
-        #endregion
     }
 }

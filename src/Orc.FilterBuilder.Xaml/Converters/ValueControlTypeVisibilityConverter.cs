@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueControlTypeVisibilityConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Linq;
@@ -13,23 +6,32 @@ namespace Orc.FilterBuilder.Converters
     using Catel.MVVM.Converters;
     using Catel.Reflection;
 
-    public class ValueControlTypeVisibilityConverter : ValueConverterBase
+    public class ValueControlTypeVisibilityConverter : VisibilityConverterBase
     {
-        #region Methods
-        protected override object Convert(object value, Type targetType, object parameter)
+        public ValueControlTypeVisibilityConverter()
+            : base(Visibility.Collapsed)
         {
-            var controlType = (ValueControlType)value;
+
+        }
+
+        protected override bool IsVisible(object? value, Type targetType, object? parameter)
+        {
+            if (value is not ValueControlType controlType)
+            {
+                return false;
+            }
+
             if (parameter is not null && parameter.GetType().IsArrayEx())
             {
                 var parameterType = (ValueControlType[])parameter;
-                return parameterType.Contains(controlType) ? Visibility.Visible : Visibility.Collapsed;
+                return parameterType.Contains(controlType);
             }
-            else
+            else if (parameter is ValueControlType valueControlType)
             {
-                var parameterType = (ValueControlType)parameter;
-                return controlType == parameterType ? Visibility.Visible : Visibility.Collapsed;
+                return controlType == valueControlType;
             }
+
+            return false;
         }
-        #endregion
     }
 }

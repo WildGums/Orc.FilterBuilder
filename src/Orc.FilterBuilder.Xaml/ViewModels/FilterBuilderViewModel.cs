@@ -1,22 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterBuilderViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.ViewModels
+﻿namespace Orc.FilterBuilder.ViewModels
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Media;
-    using Catel;
     using Catel.Collections;
     using Catel.IoC;
     using Catel.Logging;
@@ -28,7 +17,6 @@ namespace Orc.FilterBuilder.ViewModels
 
     public class FilterBuilderViewModel : ViewModelBase
     {
-        #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly IUIVisualizerService _uiVisualizerService;
@@ -41,26 +29,24 @@ namespace Orc.FilterBuilder.ViewModels
             CanDelete = false
         };
 
-        private IFilterSchemeManager _filterSchemeManager;
-        private IFilterService _filterService;
-        private IReflectionService _reflectionService;
         private readonly ILanguageService _languageService;
-        private Type _targetType;
-        private FilterSchemes _filterSchemes;
+        private IFilterSchemeManager? _filterSchemeManager;
+        private IFilterService? _filterService;
+        private IReflectionService? _reflectionService;
+        private Type? _targetType;
+        private FilterSchemes? _filterSchemes;
         private bool _applyingFilter;
-        #endregion
 
-        #region Constructors
         public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
             IFilterService filterService, IMessageService messageService, IServiceLocator serviceLocator, IReflectionService reflectionService, ILanguageService languageService)
         {
-            Argument.IsNotNull(() => uiVisualizerService);
-            Argument.IsNotNull(() => filterSchemeManager);
-            Argument.IsNotNull(() => filterService);
-            Argument.IsNotNull(() => messageService);
-            Argument.IsNotNull(() => serviceLocator);
-            Argument.IsNotNull(() => reflectionService);
-            Argument.IsNotNull(() => languageService);
+            ArgumentNullException.ThrowIfNull(uiVisualizerService);
+            ArgumentNullException.ThrowIfNull(filterSchemeManager);
+            ArgumentNullException.ThrowIfNull(filterService);
+            ArgumentNullException.ThrowIfNull(messageService);
+            ArgumentNullException.ThrowIfNull(serviceLocator);
+            ArgumentNullException.ThrowIfNull(reflectionService);
+            ArgumentNullException.ThrowIfNull(languageService);
 
             _uiVisualizerService = uiVisualizerService;
             _filterSchemeManager = filterSchemeManager;
@@ -78,11 +64,9 @@ namespace Orc.FilterBuilder.ViewModels
             ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
             DeleteSchemeCommand = new TaskCommand<FilterScheme>(OnDeleteSchemeExecuteAsync, OnDeleteSchemeCanExecute);
         }
-        #endregion
 
-        #region Properties
         public List<FilterGroup> FilterGroups { get; private set; }
-        public FilterScheme SelectedFilterScheme { get; set; }
+        public FilterScheme? SelectedFilterScheme { get; set; }
 
         public bool AllowLivePreview { get; set; }
         public bool EnableAutoCompletion { get; set; }
@@ -90,8 +74,8 @@ namespace Orc.FilterBuilder.ViewModels
         public bool AllowReset { get; set; }
         public bool AllowDelete { get; set; }
 
-        public IEnumerable RawCollection { get; set; }
-        public IList FilteredCollection { get; set; }
+        public IEnumerable? RawCollection { get; set; }
+        public IList? FilteredCollection { get; set; }
 
         /// <summary>
         /// Current <see cref="FilterBuilderControl"/> mode
@@ -102,12 +86,10 @@ namespace Orc.FilterBuilder.ViewModels
         /// Filtering function if <see cref="FilterBuilderControl"/> mode is 
         /// <see cref="FilterBuilderMode.FilteringFunction"/>
         /// </summary>
-        public Func<object, bool> FilteringFunc { get; set; }
+        public Func<object, bool>? FilteringFunc { get; set; }
 
-        public object Scope { get; set; }
-        #endregion
+        public object? Scope { get; set; }
 
-        #region Commands
         public TaskCommand NewSchemeCommand { get; private set; }
 
         private async Task OnNewSchemeExecuteAsync()
@@ -118,10 +100,17 @@ namespace Orc.FilterBuilder.ViewModels
                 return;
             }
 
-            var filterScheme = new FilterScheme(_targetType);
-            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+            var rawCollection = RawCollection;
+            if (rawCollection is null)
+            {
+                return;
+            }
 
-            if (!(await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false))
+            var filterScheme = new FilterScheme(_targetType);
+            var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, rawCollection, AllowLivePreview, EnableAutoCompletion);
+
+            var result = await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo);
+            if (!(result.DialogResult ?? false))
             {
                 return;
             }
@@ -142,13 +131,25 @@ namespace Orc.FilterBuilder.ViewModels
 
         public TaskCommand<FilterScheme> EditSchemeCommand { get; private set; }
 
-        private bool OnEditSchemeCanExecute(FilterScheme filterScheme)
+        private bool OnEditSchemeCanExecute(FilterScheme? filterScheme)
         {
             return filterScheme?.CanEdit ?? false;
         }
 
-        private async Task OnEditSchemeExecuteAsync(FilterScheme filterScheme)
+        private async Task OnEditSchemeExecuteAsync(FilterScheme? filterScheme)
         {
+            if (filterScheme is null ||
+                _reflectionService is null)
+            {
+                return;
+            }
+
+            var rawCollection = RawCollection;
+            if (rawCollection is null)
+            {
+                return;
+            }
+
             try
             {
                 if (_filterService is not null)
@@ -156,9 +157,10 @@ namespace Orc.FilterBuilder.ViewModels
                     filterScheme.EnsureIntegrity(_reflectionService);
                 }
 
-                var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawCollection, AllowLivePreview, EnableAutoCompletion);
+                var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, rawCollection, AllowLivePreview, EnableAutoCompletion);
 
-                if (!(await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo) ?? false))
+                var result = await _uiVisualizerService.ShowDialogAsync<EditFilterViewModel>(filterSchemeEditInfo);
+                if (!(result.DialogResult ?? false))
                 {
                     return;
                 }
@@ -208,19 +210,37 @@ namespace Orc.FilterBuilder.ViewModels
 
         private async Task OnApplySchemeExecuteAsync()
         {
-            Log.Debug("Applying filter scheme '{0}'", SelectedFilterScheme);
+            var selectedFilterScheme = SelectedFilterScheme;
+            if (selectedFilterScheme is null)
+            {
+                return;
+            }
+
+            var rawCollection = RawCollection;
+            if (rawCollection is null)
+            {
+                return;
+            }
+
+            var filteredCollection = FilteredCollection;
+            if (filteredCollection is null)
+            {
+                return;
+            }
+
+            Log.Debug("Applying filter scheme '{0}'", selectedFilterScheme);
 
             //build filtered collection only if current mode is Collection
             if (Mode != FilterBuilderMode.Collection)
             {
-                FilteringFunc = SelectedFilterScheme.CalculateResult;
+                FilteringFunc = selectedFilterScheme.CalculateResult;
                 return;
             }
             
             if(_filterService is not null)
             {
                 FilteringFunc = null;
-                await _filterService.FilterCollectionAsync(SelectedFilterScheme, RawCollection, FilteredCollection);
+                await _filterService.FilterCollectionAsync(selectedFilterScheme, rawCollection, filteredCollection);
             }
         }
 
@@ -259,7 +279,7 @@ namespace Orc.FilterBuilder.ViewModels
 
         public TaskCommand<FilterScheme> DeleteSchemeCommand { get; private set; }
 
-        private bool OnDeleteSchemeCanExecute(FilterScheme filterScheme)
+        private bool OnDeleteSchemeCanExecute(FilterScheme? filterScheme)
         {
             if (!AllowDelete)
             {
@@ -269,9 +289,15 @@ namespace Orc.FilterBuilder.ViewModels
             return filterScheme?.CanDelete ?? false;
         }
 
-        private async Task OnDeleteSchemeExecuteAsync(FilterScheme filterScheme)
+        private async Task OnDeleteSchemeExecuteAsync(FilterScheme? filterScheme)
         {
-            if (await _messageService.ShowAsync(string.Format(_languageService.GetString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), _languageService.GetString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) != MessageResult.Yes)
+            if (filterScheme is null)
+            {
+                return;
+            }
+
+            if (await _messageService.ShowAsync(string.Format(_languageService.GetRequiredString("FilterBuilder_ShowAsync_Message_AreYouSureYouWantToDeleteFilterQuestion_Pattern"), filterScheme.Title), 
+                _languageService.GetRequiredString("FilterBuilder_ShowAsync_DeleteFilterQuestion_Caption"), MessageButton.YesNo) != MessageResult.Yes)
             {
                 return;
             }
@@ -285,9 +311,7 @@ namespace Orc.FilterBuilder.ViewModels
                 await _filterSchemeManager.UpdateFiltersAsync();
             }
         }
-        #endregion
 
-        #region Methods
         private void OnScopeChanged()
         {
             if (_filterSchemeManager is not null)
@@ -307,19 +331,19 @@ namespace Orc.FilterBuilder.ViewModels
             var scope = Scope;
             if (_serviceLocator.IsTypeRegistered<IFilterSchemeManager>(scope))
             {
-                _filterSchemeManager = _serviceLocator.ResolveType<IFilterSchemeManager>(scope);
+                _filterSchemeManager = _serviceLocator.ResolveRequiredType<IFilterSchemeManager>(scope);
                 _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
             }
 
             if (_serviceLocator.IsTypeRegistered<IFilterService>(scope))
             {
-                _filterService = _serviceLocator.ResolveType<IFilterService>(scope);
+                _filterService = _serviceLocator.ResolveRequiredType<IFilterService>(scope);
                 _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
             }
 
             if (_serviceLocator.IsTypeRegistered<IReflectionService>(scope))
             {
-                _reflectionService = _serviceLocator.ResolveType<IReflectionService>(scope);
+                _reflectionService = _serviceLocator.ResolveRequiredType<IReflectionService>(scope);
             }
 
             UpdateFilters();
@@ -328,6 +352,11 @@ namespace Orc.FilterBuilder.ViewModels
         private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
         {
             if (filterScheme is null || _applyingFilter)
+            {
+                return;
+            }
+
+            if (_filterService is null)
             {
                 return;
             }
@@ -357,6 +386,11 @@ namespace Orc.FilterBuilder.ViewModels
 
         private void OnSelectedFilterSchemeChanged()
         {
+            if (SelectedFilterScheme is null)
+            {
+                return;
+            }
+
             ApplyFilterScheme(SelectedFilterScheme);
         }
 
@@ -440,8 +474,15 @@ namespace Orc.FilterBuilder.ViewModels
         {
             await base.InitializeAsync();
 
-            _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
-            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
+            if (_filterSchemeManager is not null)
+            {
+                _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
+            }
+
+            if (_filterService is not null)
+            {
+                _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
+            }
 
             UpdateFilters();
         }
@@ -466,21 +507,20 @@ namespace Orc.FilterBuilder.ViewModels
             await base.CloseAsync();
         }
 
-        private void OnFilterSchemesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnFilterSchemesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateFilters();
         }
 
-        private void OnFilterSchemeManagerLoaded(object sender, EventArgs eventArgs)
+        private void OnFilterSchemeManagerLoaded(object? sender, EventArgs eventArgs)
         {
             UpdateFilters();
         }
 
-        private void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
+        private void OnFilterServiceSelectedFilterChanged(object? sender, EventArgs e)
         {
             var newFilterScheme = _filterService?.SelectedFilter ?? _noFilterFilter;
             ApplyFilterScheme(newFilterScheme);
         }
-        #endregion
     }
 }

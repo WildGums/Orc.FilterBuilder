@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyInfoExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
@@ -14,17 +7,16 @@ namespace Orc.FilterBuilder
 
     internal static class PropertyInfoExtensions
     {
-        #region Methods
-        public static string GetDisplayName(this PropertyInfo propertyInfo)
+        public static string? GetDisplayName(this PropertyInfo propertyInfo)
         {
             if (propertyInfo is not null)
             {
-                if (propertyInfo.TryGetAttribute(out DisplayNameAttribute catelDispNameAttr))
+                if (propertyInfo.TryGetAttribute<DisplayNameAttribute>(out var catelDispNameAttr))
                 {
                     return catelDispNameAttr.DisplayName;
                 }
 
-                if (propertyInfo.TryGetAttribute(out DisplayAttribute dispAttr))
+                if (propertyInfo.TryGetAttribute<DisplayAttribute>(out var dispAttr))
                 {
                     return dispAttr.GetName();
                 }
@@ -32,6 +24,5 @@ namespace Orc.FilterBuilder
 
             return null;
         }
-        #endregion
     }
 }

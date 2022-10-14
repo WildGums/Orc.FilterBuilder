@@ -1,21 +1,12 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Runtime.Serialization;
     using Catel;
-    using Catel.IoC;
     using Catel.Reflection;
-    using Catel.Services;
 
     /// <summary>
     /// The EnumExpression class.
@@ -49,7 +40,6 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.Enum;
         }
 
-        #region Properties
         /// <summary>
         /// Gets the enum values.
         /// </summary>
@@ -59,9 +49,7 @@ namespace Orc.FilterBuilder
         /// Gets and sets the value.
         /// </summary>
         public TEnum Value { get; set; }
-        #endregion
 
-        #region Methods
         /// <summary>
         /// Calculates the result
         /// </summary>
@@ -83,7 +71,7 @@ namespace Orc.FilterBuilder
 
             if (!IsNullable && (SelectedCondition == Condition.IsNull || SelectedCondition == Condition.NotIsNull))
             {
-                throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
 
             switch (SelectedCondition)
@@ -113,7 +101,7 @@ namespace Orc.FilterBuilder
                     return entityValue is not null;
 
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 
@@ -125,6 +113,5 @@ namespace Orc.FilterBuilder
         {
             return $"{SelectedCondition.Humanize()} '{Value}'";
         }
-        #endregion
     }
 }

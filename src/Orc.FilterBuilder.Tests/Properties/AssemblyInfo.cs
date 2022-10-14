@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-// All other assembly info is defined in SharedAssembly.cs
+﻿// All other assembly info is defined in SharedAssembly.cs
 
 using System.Reflection;
 using System.Runtime.InteropServices;

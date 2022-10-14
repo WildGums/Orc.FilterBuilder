@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using Catel.Reflection;
     using System;
@@ -14,16 +7,13 @@ namespace Orc.FilterBuilder
     using Catel.Caching;
     using Catel.Caching.Policies;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
     using Catel;
 
     [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
     public class StringExpression : DataTypeExpression
     {
-        #region Fields
         private static readonly CacheStorage<string, Regex> _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
         private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
-        #endregion
 
         public StringExpression()
         {
@@ -32,11 +22,8 @@ namespace Orc.FilterBuilder
             ValueControlType = ValueControlType.Text;
         }
 
-        #region Properties
         public string Value { get; set; }
-        #endregion
 
-        #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             var entityValue = propertyMetadata.GetValue<string>(entity);
@@ -108,7 +95,7 @@ namespace Orc.FilterBuilder
                         && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
 
                 default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                    throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
             }
         }
 
@@ -116,6 +103,5 @@ namespace Orc.FilterBuilder
         {
             return $"{SelectedCondition.Humanize()} '{Value}'";
         }
-        #endregion
     }
 }

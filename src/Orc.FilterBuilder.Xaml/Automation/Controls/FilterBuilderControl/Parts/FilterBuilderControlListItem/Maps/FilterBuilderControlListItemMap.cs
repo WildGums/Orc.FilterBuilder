@@ -11,8 +11,8 @@
         {
         }
 
-        public Text Title => By.One<Text>();
-        public Button EditSchemeButton => By.Id().One<Button>();
-        public Button DeleteSchemeButton => By.Id().One<Button>();
+        public Text? Title => By.One<Text>();
+        public Button? EditSchemeButton => By.Id().One<Button>();
+        public Button? DeleteSchemeButton => By.Id().One<Button>();
     }
 }

@@ -1,17 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InstanceProperties.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Catel;
     using Catel.Data;
     using Catel.Reflection;
 
@@ -19,7 +11,7 @@ namespace Orc.FilterBuilder
     {
         public InstanceProperties(Type type)
         {
-            Argument.IsNotNull(() => type);
+            ArgumentNullException.ThrowIfNull(type);
 
             var finalProperties = new Dictionary<string, IPropertyMetadata>();
 
@@ -31,7 +23,7 @@ namespace Orc.FilterBuilder
                 finalProperties[property.Name] = new PropertyMetadata(type, property);
             }
 
-            var catelProperties = new List<PropertyData>();
+            var catelProperties = new List<IPropertyData>();
             if (typeof(ModelBase).IsAssignableFromEx(type))
             {
                 var propertyDataManager = PropertyDataManager.Default;
@@ -47,17 +39,13 @@ namespace Orc.FilterBuilder
             Properties = new List<IPropertyMetadata>(finalProperties.Values.OrderBy(m => m.Name));
         }
 
-        #region Properties
         public List<IPropertyMetadata> Properties { get; private set; }
-        #endregion
 
-        #region Methods
-        public IPropertyMetadata GetProperty(string propertyName)
+        public IPropertyMetadata? GetProperty(string propertyName)
         {
             return (from property in Properties
                     where string.Equals(property.Name, propertyName)
                     select property).FirstOrDefault();
         }
-        #endregion
     }
 }

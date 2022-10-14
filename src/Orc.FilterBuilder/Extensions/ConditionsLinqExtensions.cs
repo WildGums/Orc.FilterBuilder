@@ -1,18 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionsLinqExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
     using Catel;
-    using Catel.Collections;
     using Catel.Logging;
     using Catel.Reflection;
 
@@ -22,18 +13,20 @@ namespace Orc.FilterBuilder
 
         public static Expression<Func<T, bool>> BuildLambda<T>(this ConditionTreeItem conditionTreeItem)
         {
+            ArgumentNullException.ThrowIfNull(conditionTreeItem);
+
             var type = typeof(T);
             var parameterExpression = Expression.Parameter(type, "item");
             var expression = conditionTreeItem.BuildExpression(parameterExpression);
             if (expression is null)
             {
-                return null;
+                throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'");
             }
 
             return Expression.Lambda<Func<T, bool>>(expression, parameterExpression);
         }
 
-        private static Expression BuildExpression(this ConditionTreeItem conditionTreeItem,
+        private static Expression? BuildExpression(this ConditionTreeItem conditionTreeItem,
             ParameterExpression parameterExpression)
         {
             switch (conditionTreeItem)
@@ -45,11 +38,11 @@ namespace Orc.FilterBuilder
                     return propertyExpression.BuildExpression(parameterExpression);
 
                 default:
-                    return null;
+                    throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'");
             }
         }
 
-        private static Expression BuildExpression(this ConditionGroup conditionGroup, ParameterExpression parameterExpression)
+        private static Expression? BuildExpression(this ConditionGroup conditionGroup, ParameterExpression parameterExpression)
         {
             if (!conditionGroup.Items.Any())
             {
@@ -57,8 +50,9 @@ namespace Orc.FilterBuilder
             }
 
             //// Revision: Why final is required.
-            Expression final = null;
-            Expression left = null;
+            Expression? final = null;
+            Expression? left = null;
+
             foreach (var item in conditionGroup.Items)
             {
                 var curExp = item?.BuildExpression(parameterExpression);
@@ -66,6 +60,7 @@ namespace Orc.FilterBuilder
                 {
                     continue;
                 }
+
                 if (left is null)
                 {
                     left = curExp;
@@ -89,14 +84,19 @@ namespace Orc.FilterBuilder
             return final ?? left;
         }
 
-        private static Expression BuildExpression(this PropertyExpression propertyExpression,
+        private static Expression? BuildExpression(this PropertyExpression propertyExpression,
             ParameterExpression parameterExpression)
         {
-            return propertyExpression.DataTypeExpression.BuildExpression(parameterExpression,
-                propertyExpression.Property);
+            if (propertyExpression.DataTypeExpression is null ||
+                propertyExpression.Property is null)
+            {
+                return null;
+            }
+
+            return propertyExpression.DataTypeExpression.BuildExpression(parameterExpression, propertyExpression.Property);
         }
 
-        private static Expression BuildExpression(this DataTypeExpression dataTypeExpression,
+        private static Expression? BuildExpression(this DataTypeExpression dataTypeExpression,
             ParameterExpression parameterExpression, IPropertyMetadata propertyMetadata)
         {
             switch (dataTypeExpression)
@@ -172,7 +172,7 @@ namespace Orc.FilterBuilder
 
                 default:
                     throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(
-                        LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
+                        LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
                         condition));
             }
         }
@@ -189,7 +189,7 @@ namespace Orc.FilterBuilder
 
                 default:
                     throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(
-                        LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
+                        LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
                         expression.SelectedCondition));
             }
         }
@@ -207,57 +207,56 @@ namespace Orc.FilterBuilder
             switch (condition)
             {
                 case Condition.Contains:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>()), propertyExpression)),
-                        Expression.Call(propertyExpression, typeof(string).GetMethod("Contains", TypeArray.From<string>()),
+                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                        Expression.Call(propertyExpression, typeof(string).GetMethod("Contains", TypeArray.From<string>())!,
                             valueExpression));
 
                 case Condition.DoesNotContain:
                     return Expression.Not(BuildStringExpression(Condition.Contains, propertyExpression, valueExpression));
 
                 case Condition.StartsWith:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>()), propertyExpression)),
-                        Expression.Call(propertyExpression, typeof(string).GetMethod("StartsWith", TypeArray.From<string>()),
+                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                        Expression.Call(propertyExpression, typeof(string).GetMethod("StartsWith", TypeArray.From<string>())!,
                             valueExpression));
 
                 case Condition.DoesNotStartWith:
                     return Expression.Not(BuildStringExpression(Condition.StartsWith, propertyExpression, valueExpression));
 
                 case Condition.EndsWith:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>()), propertyExpression)),
-                        Expression.Call(propertyExpression, typeof(string).GetMethod("EndsWith", TypeArray.From<string>()),
+                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                        Expression.Call(propertyExpression, typeof(string).GetMethod("EndsWith", TypeArray.From<string>())!,
                             valueExpression));
 
                 case Condition.DoesNotEndWith:
                     return Expression.Not(BuildStringExpression(Condition.EndsWith, propertyExpression, valueExpression));
 
                 case Condition.EqualTo:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>()), propertyExpression)),
+                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
                         Expression.Equal(propertyExpression, valueExpression));
 
                 case Condition.NotEqualTo:
                     return Expression.Not(BuildStringExpression(Condition.EqualTo, propertyExpression, valueExpression));
 
                 case Condition.GreaterThan:
-                    return Expression.GreaterThan(Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>()),
+                    return Expression.GreaterThan(Expression.Call(typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
                             propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
                         Expression.Constant(0));
 
                 case Condition.GreaterThanOrEqualTo:
                     return Expression.GreaterThanOrEqual(
                         Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>()),
+                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
                             propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)), Expression.Constant(0));
 
                 case Condition.LessThan:
                     return Expression.LessThan(Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>()),
+                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
                             propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
                         Expression.Constant(0));
 
                 case Condition.LessThanOrEqualTo:
                     return Expression.LessThanOrEqual(Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>()),
+                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
                             propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
                         Expression.Constant(0));
 
@@ -275,7 +274,7 @@ namespace Orc.FilterBuilder
 
                 default:
                     throw new NotSupportedException(string.Format(
-                        LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
+                        LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
                         condition));
             }
         }

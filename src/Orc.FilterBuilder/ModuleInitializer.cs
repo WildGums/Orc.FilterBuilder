@@ -7,7 +7,6 @@ using Orc.FilterBuilder;
 /// </summary>
 public static class ModuleInitializer
 {
-    #region Methods
     /// <summary>
     /// Initializes the module.
     /// </summary>
@@ -21,8 +20,7 @@ public static class ModuleInitializer
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterCustomizationService, FilterCustomizationService>();
         serviceLocator.RegisterTypeIfNotYetRegistered<IFilterSerializationService, FilterSerializationService>();
 
-        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        var languageService = serviceLocator.ResolveRequiredType<ILanguageService>();
         languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.FilterBuilder", "Orc.FilterBuilder.Properties", "Resources"));
     }
-    #endregion
 }

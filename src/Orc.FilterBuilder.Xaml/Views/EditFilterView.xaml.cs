@@ -10,13 +10,11 @@
 
     public sealed partial class EditFilterView
     {
-        #region Constructors
         public EditFilterView()
         {
             InitializeComponent();
         }
-        #endregion
-
+        
         protected override void OnViewModelChanged()
         {
             base.OnViewModelChanged();
@@ -31,27 +29,30 @@
             if (vm.AllowLivePreview)
             {
                 var dependencyResolver = this.GetDependencyResolver();
-                var reflectionService = dependencyResolver.Resolve<IReflectionService>(vm.FilterScheme.Scope);
+                var reflectionService = dependencyResolver.ResolveRequired<IReflectionService>(vm.FilterScheme.Scope);
 
                 var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
-                var instanceProperties = reflectionService.GetInstanceProperties(targetType);
-
-                foreach (var instanceProperty in instanceProperties.Properties)
+                if (targetType is not null)
                 {
-                    var column = new DataGridTextColumn
+                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
+
+                    foreach (var instanceProperty in instanceProperties.Properties)
                     {
-                        Header = instanceProperty.DisplayName
-                    };
+                        var column = new DataGridTextColumn
+                        {
+                            Header = instanceProperty.DisplayName
+                        };
 
-                    var binding = new Binding
-                    {
-                        Converter = new ObjectToValueConverter(instanceProperty),
-                        ConverterParameter = instanceProperty.Name
-                    };
+                        var binding = new Binding
+                        {
+                            Converter = new ObjectToValueConverter(instanceProperty),
+                            ConverterParameter = instanceProperty.Name
+                        };
 
-                    column.Binding = binding;
+                        column.Binding = binding;
 
-                    PreviewDataGrid.Columns.Add(column);
+                        PreviewDataGrid.Columns.Add(column);
+                    }
                 }
             }
 

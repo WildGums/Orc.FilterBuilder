@@ -16,7 +16,7 @@
 
         private readonly FilterScheme _filterScheme;
 
-        private ConditionGroup _currentConditionGroup;
+        private ConditionGroup? _currentConditionGroup;
 
         private FilterSchemeBuilder(Type type, ConditionGroupType groupType)
         {
@@ -57,19 +57,24 @@
             return this;
         }
 
-        public FilterSchemeBuilder Property(string name, Condition condition, string value = default)
+        public FilterSchemeBuilder Property(string name, Condition condition, string? value = default)
         {
             var type = _filterScheme.TargetType;
+            var property = type.GetProperty(name);
+            if (property is null)
+            {
+                throw new InvalidOperationException($"Cannot find property '{type.Name}.{name}'");
+            }
 
             var propertyExpression = new PropertyExpression
             {
-                Property = new PropertyMetadata(type, type.GetProperty(name))
+                Property = new PropertyMetadata(type, property)
             };
 
             var dataTypeExpression = propertyExpression.DataTypeExpression;
             if (dataTypeExpression is StringExpression expression)
             {
-                expression.Value = value;
+                expression.Value = value ?? string.Empty;
                 expression.SelectedCondition = condition;
             }
 
@@ -82,10 +87,15 @@
             where TValue : struct, IComparable, IFormattable, IComparable<TValue>, IEquatable<TValue>
         {
             var type = _filterScheme.TargetType;
+            var property = type.GetProperty(name);
+            if (property is null)
+            {
+                throw new InvalidOperationException($"Cannot find property '{type.Name}.{name}'");
+            }
 
             var propertyExpression = new PropertyExpression
             {
-                Property = new PropertyMetadata(type, type.GetProperty(name))
+                Property = new PropertyMetadata(type, property)
             };
 
             var dataTypeExpression = propertyExpression.DataTypeExpression;
@@ -103,9 +113,15 @@
         public FilterSchemeBuilder Property(string name, DataTypeExpression expression)
         {
             var type = _filterScheme.TargetType;
+            var property = type.GetProperty(name);
+            if (property is null)
+            {
+                throw new InvalidOperationException($"Cannot find property '{type.Name}.{name}'");
+            }
+
             var propertyExpression = new PropertyExpression
             {
-                Property = new PropertyMetadata(type, type.GetProperty(name)),
+                Property = new PropertyMetadata(type, property),
                 DataTypeExpression = expression
             };
 

@@ -1,31 +1,20 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
     using System.Linq;
-    using Catel;
     using Catel.Collections;
     using Catel.Reflection;
     using MethodTimer;
 
     public static class FilterSchemeExtensions
     {
-        #region Constants
         private const string Separator = "||";
-        #endregion
 
-        #region Methods
         public static void EnsureIntegrity(this FilterScheme filterScheme, IReflectionService reflectionService)
         {
-            Argument.IsNotNull(() => filterScheme);
-            Argument.IsNotNull(() => reflectionService);
+            ArgumentNullException.ThrowIfNull(filterScheme);
+            ArgumentNullException.ThrowIfNull(reflectionService);
 
             foreach (var item in filterScheme.ConditionItems)
             {
@@ -35,8 +24,8 @@ namespace Orc.FilterBuilder
 
         private static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
         {
-            Argument.IsNotNull(() => conditionTreeItem);
-            Argument.IsNotNull(() => reflectionService);
+            ArgumentNullException.ThrowIfNull(conditionTreeItem);
+            ArgumentNullException.ThrowIfNull(reflectionService);
 
             var propertyExpression = conditionTreeItem as PropertyExpression;
             propertyExpression?.EnsureIntegrity(reflectionService);
@@ -49,8 +38,8 @@ namespace Orc.FilterBuilder
 
         private static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
         {
-            Argument.IsNotNull(() => propertyExpression);
-            Argument.IsNotNull(() => reflectionService);
+            ArgumentNullException.ThrowIfNull(propertyExpression);
+            ArgumentNullException.ThrowIfNull(reflectionService);
 
             IPropertyCollection typeProperties;
 
@@ -95,11 +84,11 @@ namespace Orc.FilterBuilder
         [Time]
         public static void Apply(this FilterScheme filterScheme, IEnumerable rawCollection, IList filteredCollection)
         {
-            Argument.IsNotNull(() => filterScheme);
-            Argument.IsNotNull(() => rawCollection);
-            Argument.IsNotNull(() => filteredCollection);
+            ArgumentNullException.ThrowIfNull(filterScheme);
+            ArgumentNullException.ThrowIfNull(rawCollection);
+            ArgumentNullException.ThrowIfNull(filteredCollection);
 
-            IDisposable suspendToken = null;
+            IDisposable? suspendToken = null;
             if (filteredCollection is ISuspendChangeNotificationsCollection collection)
             {
                 suspendToken = collection.SuspendChangeNotifications();
@@ -114,6 +103,5 @@ namespace Orc.FilterBuilder
 
             suspendToken?.Dispose();
         }
-        #endregion
     }
 }

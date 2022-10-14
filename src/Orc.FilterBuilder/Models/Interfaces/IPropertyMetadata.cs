@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPropertyMetadata.cs" company="WildGums">
-//     Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
 
@@ -21,10 +15,10 @@ namespace Orc.FilterBuilder
 
         Type Type { get; }
 
-        object GetValue(object instance);
+        object? GetValue(object instance);
 
         TValue GetValue<TValue>(object instance);
 
-        void SetValue(object instance, object value);
+        void SetValue(object instance, object? value);
     }
 }

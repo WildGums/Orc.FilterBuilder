@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeSerializerModifier.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Runtime.Serialization
+﻿namespace Orc.FilterBuilder.Runtime.Serialization
 {
     using System;
     using Catel.Reflection;

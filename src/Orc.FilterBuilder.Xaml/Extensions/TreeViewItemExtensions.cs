@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TreeViewItemExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -15,7 +8,7 @@ namespace Orc.FilterBuilder
         public static int GetDepth(this TreeViewItem item)
         {
             var parent = GetParent(item);
-            if (!(parent is null))
+            if (parent is not null)
             {
                 return GetDepth(parent) + 1;
             }
@@ -23,13 +16,17 @@ namespace Orc.FilterBuilder
             return 0;
         }
 
-        private static TreeViewItem GetParent(TreeViewItem item)
+        private static TreeViewItem? GetParent(TreeViewItem item)
         {
             var parent = VisualTreeHelper.GetParent(item);
 
             while (!(parent is TreeViewItem || parent is TreeView))
             {
-                if (parent is null) return null;
+                if (parent is null)
+                {
+                    return null;
+                }
+
                 parent = VisualTreeHelper.GetParent(parent);
             }
 

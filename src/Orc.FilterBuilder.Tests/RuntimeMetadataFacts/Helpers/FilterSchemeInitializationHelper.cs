@@ -12,7 +12,9 @@
         {
             var serviceLocator = ServiceLocator.Default;
 
+#pragma warning disable IDISP001 // Dispose created
             var typeFactory = serviceLocator.ResolveType<ITypeFactory>();
+#pragma warning restore IDISP001 // Dispose created
             var reflectionService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<TestFilterRuntimeModelReflectionService>(TestAttributeTypeProvider.AttributeTypes.Values.ToList());
             serviceLocator.RegisterInstance<IReflectionService>(reflectionService);
 

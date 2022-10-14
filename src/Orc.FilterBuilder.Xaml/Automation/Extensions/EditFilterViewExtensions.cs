@@ -1,13 +1,13 @@
 ﻿namespace Orc.FilterBuilder.Automation
 {
+    using System;
     using System.Collections.Generic;
-    using Catel;
 
     public static class EditFilterViewExtensions
     {
         public static void Initialize<T>(this EditFilterView target, IEnumerable<T> testCollection)
         {
-            Argument.IsNotNull(() => target);
+            ArgumentNullException.ThrowIfNull(target);
 
             var model = target.Current;
 

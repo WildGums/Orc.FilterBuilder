@@ -1,18 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionTreeItem.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Runtime.Serialization;
-    using Catel;
+    using System.ComponentModel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
@@ -23,22 +15,26 @@ namespace Orc.FilterBuilder
             Items = new ObservableCollection<ConditionTreeItem>();
         }
 
-        #region Properties
         [ExcludeFromSerialization]
-        public ConditionTreeItem Parent { get; set; }
+        public ConditionTreeItem? Parent { get; set; }
 
         [ExcludeFromSerialization]
         [ExcludeFromValidation]
         public bool IsValid { get; private set; } = true;
 
         public ObservableCollection<ConditionTreeItem> Items { get; private set; }
-        #endregion
 
-        public event EventHandler<EventArgs> Updated;
 
-        #region Methods
-        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public event EventHandler<EventArgs>? Updated;
+
+        private void OnConditionItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            var listSender = sender as IList;
+            if (listSender is null)
+            {
+                return;
+            }
+
             if (e.OldItems is not null)
             {
                 foreach (var item in e.OldItems)
@@ -54,7 +50,7 @@ namespace Orc.FilterBuilder
                 }
             }
 
-            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
+            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? listSender : e.NewItems;
             if (newCollection is not null)
             {
                 foreach (var item in newCollection)
@@ -97,6 +93,7 @@ namespace Orc.FilterBuilder
             if (items is not null)
             {
                 items.CollectionChanged += OnConditionItemsCollectionChanged;
+
                 foreach (var item in items)
                 {
                     item.Updated += OnConditionUpdated;
@@ -104,7 +101,7 @@ namespace Orc.FilterBuilder
             }
         }
 
-        protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
 
@@ -116,7 +113,7 @@ namespace Orc.FilterBuilder
             Updated?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnConditionUpdated(object sender, EventArgs e)
+        private void OnConditionUpdated(object? sender, EventArgs e)
         {
             RaiseUpdated();
         }
@@ -128,7 +125,7 @@ namespace Orc.FilterBuilder
             return Items.Equals(other.Items);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is null)
             {
@@ -152,6 +149,5 @@ namespace Orc.FilterBuilder
         {
             return Items.GetHashCode();
         }
-        #endregion
     }
 }

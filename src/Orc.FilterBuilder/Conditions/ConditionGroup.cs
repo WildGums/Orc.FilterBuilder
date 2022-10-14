@@ -2,25 +2,21 @@
 {
     using System;
     using System.Linq;
-    using System.Runtime.Serialization;
     using System.Text;
 
     public class ConditionGroup : ConditionTreeItem
     {
-        #region Constructors
         public ConditionGroup()
         {
             Type = ConditionGroupType.And;
         }
-        #endregion
 
-        #region Properties
         public ConditionGroupType Type { get; set; }
-        #endregion
 
-        #region Methods
         public override bool CalculateResult(object entity)
         {
+            ArgumentNullException.ThrowIfNull(entity);
+
             if (!Items.Any())
             {
                 return true;
@@ -67,6 +63,5 @@
 
             return stringBuilder.ToString();
         }
-        #endregion
     }
 }

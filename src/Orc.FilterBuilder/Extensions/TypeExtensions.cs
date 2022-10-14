@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TypeExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Linq;
@@ -16,7 +9,6 @@ namespace Orc.FilterBuilder
     /// </summary>
     internal static class TypeExtensions
     {
-        #region Methods
         /// <summary>
         /// Gets non nullable type used to create nullable type.
         /// </summary>
@@ -24,6 +16,8 @@ namespace Orc.FilterBuilder
         /// <returns></returns>
         internal static Type GetNonNullable(this Type type)
         {
+            ArgumentNullException.ThrowIfNull(type);
+
             var genericArguments = type.GetGenericArgumentsEx();
             return type.IsNullable() ? genericArguments.Single() : type;
         }
@@ -35,8 +29,9 @@ namespace Orc.FilterBuilder
         /// <returns></returns>
         internal static bool IsNullable(this Type type)
         {
+            ArgumentNullException.ThrowIfNull(type);
+
             return type.IsGenericTypeEx() && type.GetGenericTypeDefinition() == typeof (Nullable<>);
         }
-        #endregion
     }
 }

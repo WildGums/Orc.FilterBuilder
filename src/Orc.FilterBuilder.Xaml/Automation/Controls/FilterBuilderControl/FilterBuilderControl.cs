@@ -13,7 +13,7 @@
         {
         }
 
-        public IReadOnlyList<FilterBuilderControlListItem> Items
-            => Map.FilterSchemesListBox.GetItemsOfType<FilterBuilderControlListItem>();
+        public IReadOnlyList<FilterBuilderControlListItem>? Items
+            => Map.FilterSchemesListBox?.GetItemsOfType<FilterBuilderControlListItem>();
     }
 }

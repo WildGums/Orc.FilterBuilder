@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionHelper.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +6,6 @@ namespace Orc.FilterBuilder
 
     public static class ConditionHelper
     {
-        #region Methods
         public static List<Condition> GetValueConditions()
         {
             return new List<Condition>
@@ -82,6 +74,5 @@ namespace Orc.FilterBuilder
                 condition == Condition.Matches ||
                 condition == Condition.DoesNotMatch;
         }
-        #endregion
     }
 }

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LeftMarginMultiplierConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters
 {
     using System;
     using System.Windows;
@@ -14,12 +7,9 @@ namespace Orc.FilterBuilder.Converters
 
     public class LeftMarginMultiplierConverter : ValueConverterBase
     {
-        #region Properties
         public double Length { get; set; }
-        #endregion
 
-        #region Methods
-        protected override object Convert(object value, Type targetType, object parameter)
+        protected override object? Convert(object? value, Type targetType, object? parameter)
         {
             var item = value as TreeViewItem;
             if (item is null)
@@ -29,6 +19,5 @@ namespace Orc.FilterBuilder.Converters
 
             return new Thickness(Length*item.GetDepth(), 0, 0, 0);
         }
-        #endregion
     }
 }

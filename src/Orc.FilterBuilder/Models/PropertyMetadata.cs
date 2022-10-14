@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyMetadata.cs" company="WildGums">
-//     Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Diagnostics;
@@ -16,15 +9,14 @@ namespace Orc.FilterBuilder
     [DebuggerDisplay("{OwnerType}.{Name}")]
     public class PropertyMetadata : IPropertyMetadata
     {
-        private readonly PropertyData _propertyData;
-        private readonly PropertyInfo _propertyInfo;
-        private string _displayName;
+        private readonly IPropertyData? _propertyData;
+        private readonly PropertyInfo? _propertyInfo;
+        private string? _displayName;
 
-        #region Constructors
         public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
         {
-            Argument.IsNotNull(() => ownerType);
-            Argument.IsNotNull(() => propertyInfo);
+            ArgumentNullException.ThrowIfNull(ownerType);
+            ArgumentNullException.ThrowIfNull(propertyInfo);
 
             _propertyInfo = propertyInfo;
 
@@ -34,21 +26,19 @@ namespace Orc.FilterBuilder
             Type = propertyInfo.PropertyType;
         }
 
-        public PropertyMetadata(Type ownerType, PropertyData propertyData)
+        public PropertyMetadata(Type ownerType, IPropertyData propertyData)
         {
-            Argument.IsNotNull(() => ownerType);
-            Argument.IsNotNull(() => propertyData);
+            ArgumentNullException.ThrowIfNull(ownerType);
+            ArgumentNullException.ThrowIfNull(propertyData);
 
             _propertyData = propertyData;
 
             OwnerType = ownerType;
             Name = propertyData.Name;
-            DisplayName = ownerType.GetProperty(Name).GetDisplayName() ?? Name;
+            DisplayName = ownerType.GetProperty(propertyData.Name)?.GetDisplayName() ?? Name;
             Type = propertyData.Type;
         }
-        #endregion Constructors
 
-        #region Properties
         public string DisplayName
         {
             get
@@ -68,15 +58,13 @@ namespace Orc.FilterBuilder
         public Type OwnerType { get; }
 
         public Type Type { get; }
-        #endregion Properties
 
-        #region Methods
         private bool Equals(PropertyMetadata other)
         {
             return Equals(_propertyData, other._propertyData) && string.Equals(Name, other.Name) && Type == other.Type;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is null)
             {
@@ -107,16 +95,16 @@ namespace Orc.FilterBuilder
             }
         }
 
-        public object GetValue(object instance)
+        public object? GetValue(object instance)
         {
-            return GetValue<object>(instance);
+            return GetValue<object?>(instance);
         }
 
         public TValue GetValue<TValue>(object instance)
         {
-            Argument.IsNotNull(() => instance);
+            ArgumentNullException.ThrowIfNull(instance);
 
-            object value = null;
+            object? value = null;
 
             if (_propertyInfo is not null)
             {
@@ -124,12 +112,12 @@ namespace Orc.FilterBuilder
             }
             else if (_propertyData is not null && instance is IModelEditor modelEditor)
             {
-                value = modelEditor.GetValue(_propertyData.Name);
+                value = modelEditor.GetValue<TValue>(_propertyData.Name);
             }
 
             if (value is null)
             {
-                return default(TValue);
+                return default!;
             }
 
             if (typeof(TValue) == typeof(string))
@@ -140,9 +128,9 @@ namespace Orc.FilterBuilder
             return (TValue)value;
         }
 
-        public void SetValue(object instance, object value)
+        public void SetValue(object instance, object? value)
         {
-            Argument.IsNotNull(() => instance);
+            ArgumentNullException.ThrowIfNull(instance);
 
             if (_propertyInfo is not null)
             {
@@ -159,6 +147,5 @@ namespace Orc.FilterBuilder
                 modelEditor.SetValue(_propertyData.Name, value);
             }
         }
-        #endregion Methods
     }
 }

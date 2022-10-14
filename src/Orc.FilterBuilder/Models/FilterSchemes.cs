@@ -1,22 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemes.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
-    using System;
     using System.Collections.ObjectModel;
-    using System.Runtime.Serialization;
     using Catel;
     using Catel.Data;
     using Catel.Runtime.Serialization;
 
     public class FilterSchemes : ModelBase
     {
-        private object _scope;
+        private object? _scope;
 
         public FilterSchemes()
         {
@@ -24,7 +15,7 @@ namespace Orc.FilterBuilder
         }
 
         [ExcludeFromSerialization]
-        public object Scope
+        public object? Scope
         {
             get { return _scope; }
             set

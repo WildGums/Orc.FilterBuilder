@@ -12,9 +12,9 @@ public class EditFilterPropertyConditionTreeItemMap : AutomationBase
         EditFilterPropertyValueEditorPart = new EditFilterPropertyValueEditorPart(element);
     }
 
-    public ComboBox PropertiesComboBox => By.Id("PART_PropertiesComboBox").One<ComboBox>();
-    public ComboBox ConditionComboBox => By.Id("PART_ConditionComboBox").One<ComboBox>();
-    public Button DeleteButton => By.Id("PART_DeleteExpressionButton").One<Button>();
+    public ComboBox? PropertiesComboBox => By.Id("PART_PropertiesComboBox").One<ComboBox>();
+    public ComboBox? ConditionComboBox => By.Id("PART_ConditionComboBox").One<ComboBox>();
+    public Button? DeleteButton => By.Id("PART_DeleteExpressionButton").One<Button>();
 
     public EditFilterPropertyValueEditorPart EditFilterPropertyValueEditorPart { get; }
 }

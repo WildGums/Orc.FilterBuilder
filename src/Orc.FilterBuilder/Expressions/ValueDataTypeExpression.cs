@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueDataTypeExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections.Generic;
@@ -14,9 +7,7 @@ namespace Orc.FilterBuilder
     public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
         where TValue : struct, IComparable, IFormattable, IComparable<TValue>, IEquatable<TValue>
     {
-        #region Fields
         private readonly Comparer<TValue> _comparer;
-        #endregion
 
         protected ValueDataTypeExpression()
             : base()
@@ -27,16 +18,14 @@ namespace Orc.FilterBuilder
             Value = default(TValue);
         }
 
-        #region Properties
         public TValue Value { get; set; }
-        #endregion
 
-        #region Methods
         public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
         {
             if (IsNullable)
             {
                 var entityValue = propertyMetadata.GetValue<TValue?>(entity);
+
                 switch (SelectedCondition)
                 {
                     case Condition.EqualTo:
@@ -64,7 +53,7 @@ namespace Orc.FilterBuilder
                         return entityValue is not null;
 
                     default:
-                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                        throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
                 }
             }
             else
@@ -91,7 +80,7 @@ namespace Orc.FilterBuilder
                         return _comparer.Compare(entityValue, Value) <= 0;
 
                     default:
-                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+                        throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
                 }
             }
         }
@@ -100,6 +89,5 @@ namespace Orc.FilterBuilder
         {
             return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
         }
-        #endregion
     }
 }

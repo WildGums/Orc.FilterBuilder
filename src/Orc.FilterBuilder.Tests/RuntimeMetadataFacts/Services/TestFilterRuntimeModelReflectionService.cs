@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestFilterRuntimeModelReflectionService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Tests.Services
+﻿namespace Orc.FilterBuilder.Tests.Services
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +17,7 @@ namespace Orc.FilterBuilder.Tests.Services
         #region Constructors
         public TestFilterRuntimeModelReflectionService(IList<TestAttributeType> attributeTypes)
         {
-            Argument.IsNotNull(() => attributeTypes);
+            ArgumentNullException.ThrowIfNull(attributeTypes);
 
             _attributeTypes = attributeTypes;
         }
@@ -38,7 +31,7 @@ namespace Orc.FilterBuilder.Tests.Services
 
         public Task<IPropertyCollection> GetInstancePropertiesAsync(Type targetType)
         {
-            return TaskHelper<IPropertyCollection>.FromResult(GetInstanceProperties(targetType));
+            return Task.FromResult<IPropertyCollection>(GetInstanceProperties(targetType));
         }
 
         public void ClearCache()

@@ -10,6 +10,6 @@
         {
         }
 
-        public Orc.Automation.Controls.ListBox FilterSchemesListBox => By.One<Orc.Automation.Controls.ListBox>();
+        public Orc.Automation.Controls.ListBox? FilterSchemesListBox => By.One<Orc.Automation.Controls.ListBox>();
     }
 }

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTypeToConditionsConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters
 {
     using System;
     using Catel.MVVM.Converters;
@@ -13,13 +6,7 @@ namespace Orc.FilterBuilder.Converters
 
     public class DataTypeExpressionToConditionsConverter : ValueConverterBase
     {
-        public DataTypeExpressionToConditionsConverter()
-        {
-            
-        }
-
-        #region Methods
-        protected override object Convert(object value, Type targetType, object parameter)
+        protected override object? Convert(object? value, Type targetType, object? parameter)
         {
             if (value is not DataTypeExpression dataTypeExpression)
             {
@@ -76,6 +63,5 @@ namespace Orc.FilterBuilder.Converters
             return conditions;
 
         }
-        #endregion
     }
 }

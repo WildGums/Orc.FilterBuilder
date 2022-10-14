@@ -8,7 +8,6 @@ using Orc.FilterBuilder.Views;
 /// </summary>
 public static class ModuleInitializer
 {
-    #region Methods
     /// <summary>
     /// Initializes the module.
     /// </summary>
@@ -16,12 +15,11 @@ public static class ModuleInitializer
     {
         var serviceLocator = ServiceLocator.Default;
 
-        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        var languageService = serviceLocator.ResolveRequiredType<ILanguageService>();
         languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.FilterBuilder.Xaml", "Orc.FilterBuilder.Properties", "Resources"));
 
         // Register some custom windows (since we combine windows and views)
-        var uiVisualizerService = serviceLocator.ResolveType<IUIVisualizerService>();
+        var uiVisualizerService = serviceLocator.ResolveRequiredType<IUIVisualizerService>();
         uiVisualizerService.Register<EditFilterViewModel, EditFilterWindow>();
     }
-    #endregion
 }

@@ -1,16 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Runtime.Serialization;
     using Catel.Data;
     using Catel.Logging;
     using Catel.Reflection;
@@ -22,26 +14,19 @@ namespace Orc.FilterBuilder
     [ValidateModel(typeof(PropertyExpressionValidator))]
     public class PropertyExpression : ConditionTreeItem
     {
-        #region Fields
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        #endregion
 
-        #region Constructors
         public PropertyExpression()
         {
         }
-        #endregion
 
-        #region Properties
         [ExcludeFromSerialization]
-        internal string PropertySerializationValue { get; set; }
+        internal string? PropertySerializationValue { get; set; }
 
-        public IPropertyMetadata Property { get; set; }
+        public IPropertyMetadata? Property { get; set; }
 
-        public DataTypeExpression DataTypeExpression { get; set; }
-        #endregion
+        public DataTypeExpression? DataTypeExpression { get; set; }
 
-        #region Methods
         private void OnPropertyChanged()
         {
             var dataTypeExpression = DataTypeExpression;
@@ -64,7 +49,13 @@ namespace Orc.FilterBuilder
 
         private void CreateDataTypeExpression()
         {
-            var propertyType = Property.Type;
+            var property = Property;
+            if (property is null)
+            {
+                throw Log.ErrorAndCreateException<InvalidOperationException>("Cannot create data type expression without valid property");
+            }
+
+            var propertyType = property.Type;
             var isNullable = propertyType.IsNullableType();
             if (isNullable)
             {
@@ -173,7 +164,14 @@ namespace Orc.FilterBuilder
             }
 
             var constructorInfo = enumExpressionGenericType.GetConstructorEx(TypeArray.From<bool>());
-            DataTypeExpression = (DataTypeExpression)constructorInfo?.Invoke(new object[] {isNullable});
+
+            var dataTypeExpression = (DataTypeExpression?)constructorInfo?.Invoke(new object[] { isNullable });
+            if (dataTypeExpression is null)
+            {
+                throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create data type expression for enum '{propertyType.Name}'");
+            }
+
+            DataTypeExpression = dataTypeExpression;
 
             return true;
         }
@@ -222,7 +220,7 @@ namespace Orc.FilterBuilder
             }
         }
 
-        private void OnDataTypeExpressionPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnDataTypeExpressionPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             RaiseUpdated();
         }
@@ -235,6 +233,11 @@ namespace Orc.FilterBuilder
             }
 
             if (DataTypeExpression is null)
+            {
+                return true;
+            }
+
+            if (Property is null)
             {
                 return true;
             }
@@ -259,6 +262,5 @@ namespace Orc.FilterBuilder
             var dataTypeExpressionString = dataTypeExpression.ToString();
             return string.Format("{0} {1}", property.DisplayName ?? property.Name, dataTypeExpressionString);
         }
-        #endregion
     }
 }

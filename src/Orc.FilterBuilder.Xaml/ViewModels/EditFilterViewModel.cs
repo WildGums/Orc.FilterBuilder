@@ -17,7 +17,6 @@
 
     public class EditFilterViewModel : ViewModelBase
     {
-        #region Fields
         private readonly FilterScheme _originalFilterScheme;
         private readonly IReflectionService _reflectionService;
         private readonly IXmlSerializer _xmlSerializer;
@@ -27,21 +26,21 @@
         private readonly DispatcherTimer _applyFilterTimer;
 
         private bool _isFilterDirty;
-        #endregion
 
-        #region Constructors
         public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer,
             IMessageService messageService, IServiceLocator serviceLocator, ILanguageService languageService)
         {
-            Argument.IsNotNull(() => filterSchemeEditInfo);
-            Argument.IsNotNull(() => xmlSerializer);
-            Argument.IsNotNull(() => messageService);
-            Argument.IsNotNull(() => serviceLocator);
-            Argument.IsNotNull(() => languageService);
+            ArgumentNullException.ThrowIfNull(filterSchemeEditInfo);
+            ArgumentNullException.ThrowIfNull(xmlSerializer);
+            ArgumentNullException.ThrowIfNull(messageService);
+            ArgumentNullException.ThrowIfNull(serviceLocator);
+            ArgumentNullException.ThrowIfNull(languageService);
 
             _xmlSerializer = xmlSerializer;
             _messageService = messageService;
             _languageService = languageService;
+
+            DeferValidationUntilFirstSaveCall = true;
 
             PreviewItems = new FastObservableCollection<object>();
             RawCollection = filterSchemeEditInfo.RawCollection;
@@ -51,14 +50,15 @@
             var filterScheme = filterSchemeEditInfo.FilterScheme;
             _originalFilterScheme = filterScheme;
 
-            _reflectionService = serviceLocator.ResolveType<IReflectionService>(filterScheme.Scope);
-
-            DeferValidationUntilFirstSaveCall = true;
+            _reflectionService = serviceLocator.ResolveRequiredType<IReflectionService>(filterScheme.Scope);
+            InstanceProperties = _reflectionService.GetInstanceProperties(_originalFilterScheme.TargetType).Properties.ToList();
 
             FilterScheme = new FilterScheme(_originalFilterScheme.TargetType)
             {
                 Scope = _originalFilterScheme.Scope
             };
+
+            FilterSchemeTitle = string.Empty;
 
             AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
             AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
@@ -71,9 +71,7 @@
             };
             _applyFilterTimer.Tick += OnApplyFilterTimerTick;
         }
-        #endregion
 
-        #region Properties
         public override string Title
         {
             get { return "Filter scheme"; }
@@ -95,14 +93,10 @@
         public Command<ConditionGroup> AddExpressionCommand { get; }
         public Command<ConditionTreeItem> DeleteConditionItem { get; }
         public Command TogglePreview { get; }
-        #endregion
 
-        #region Methods
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            InstanceProperties = _reflectionService.GetInstanceProperties(_originalFilterScheme.TargetType).Properties;
 
             await using (var memoryStream = new MemoryStream())
             {
@@ -129,7 +123,7 @@
             await base.CloseAsync();
         }
 
-        private void OnFilterSchemeUpdated(object sender, EventArgs e)
+        private void OnFilterSchemeUpdated(object? sender, EventArgs e)
         {
             _isFilterDirty = true;
 
@@ -140,7 +134,7 @@
         {
             if (string.IsNullOrEmpty(FilterSchemeTitle))
             {
-                validationResults.Add(FieldValidationResult.CreateError("FilterSchemeTitle", _languageService.GetString("FilterBuilder_FieldIsRequired")));
+                validationResults.Add(FieldValidationResult.CreateError("FilterSchemeTitle", _languageService.GetRequiredString("FilterBuilder_FieldIsRequired")));
             }
 
             base.ValidateFields(validationResults);
@@ -148,8 +142,8 @@
 
         protected override async Task<bool> CancelAsync()
         {
-            if (_isFilterDirty && await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_DiscardChanges"),
-                    _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
+            if (_isFilterDirty && await _messageService.ShowAsync(_languageService.GetRequiredString("FilterBuilder_DiscardChanges"),
+                    _languageService.GetRequiredString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
             {
                 return false;
             }
@@ -159,8 +153,8 @@
 
         protected override async Task<bool> SaveAsync()
         {
-            if (FilterScheme.HasInvalidConditionItems && await _messageService.ShowAsync(_languageService.GetString("FilterBuilder_SaveBroken"),
-                    _languageService.GetString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
+            if (FilterScheme.HasInvalidConditionItems && await _messageService.ShowAsync(_languageService.GetRequiredString("FilterBuilder_SaveBroken"),
+                    _languageService.GetRequiredString("FilterBuilder_AreYouSure"), MessageButton.YesNo) == MessageResult.No)
             {
                 return false;
             }
@@ -176,7 +170,7 @@
             IsPreviewVisible = !IsPreviewVisible;
         }
 
-        private bool OnDeleteConditionCanExecute(ConditionTreeItem item)
+        private bool OnDeleteConditionCanExecute(ConditionTreeItem? item)
         {
             if (item is null)
             {
@@ -191,8 +185,13 @@
             return FilterScheme.ConditionItems.Count > 1;
         }
 
-        private void OnDeleteCondition(ConditionTreeItem item)
+        private void OnDeleteCondition(ConditionTreeItem? item)
         {
+            if (item is null)
+            {
+                return;
+            }
+
             if (item.Parent is null)
             {
                 FilterScheme.ConditionItems.Remove(item);
@@ -212,8 +211,13 @@
             UpdatePreviewItems();
         }
 
-        private void OnAddExpression(ConditionGroup group)
+        private void OnAddExpression(ConditionGroup? group)
         {
+            if (group is null)
+            {
+                return;
+            }
+
             var propertyExpression = new PropertyExpression
             {
                 Property = InstanceProperties.FirstOrDefault()
@@ -223,8 +227,13 @@
             propertyExpression.Parent = group;
         }
 
-        private void OnAddGroup(ConditionGroup group)
+        private void OnAddGroup(ConditionGroup? group)
         {
+            if (group is null)
+            {
+                return;
+            }
+
             var newGroup = new ConditionGroup();
             group.Items.Add(newGroup);
             newGroup.Parent = group;
@@ -277,12 +286,11 @@
             IsLivePreviewDirty = false;
         }
 
-        private void OnApplyFilterTimerTick(object sender, EventArgs e)
+        private void OnApplyFilterTimerTick(object? sender, EventArgs e)
         {
             _applyFilterTimer.Stop();
 
             ApplyFilterScheme();
         }
-        #endregion
     }
 }

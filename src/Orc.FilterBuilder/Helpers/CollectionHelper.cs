@@ -1,24 +1,16 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollectionHelper.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
     using System;
     using System.Collections;
-    using Catel;
     using Catel.Logging;
 
     public static class CollectionHelper
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static Type GetTargetType(IEnumerable collection)
+        public static Type? GetTargetType(IEnumerable collection)
         {
-            Argument.IsNotNull(() => collection);
+            ArgumentNullException.ThrowIfNull(collection);
 
             var enumerator = collection.GetEnumerator();
             if (!enumerator.MoveNext())

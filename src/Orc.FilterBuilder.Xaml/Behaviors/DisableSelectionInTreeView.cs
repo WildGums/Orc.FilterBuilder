@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DisableSelectionInTreeView.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Behaviors
+﻿namespace Orc.FilterBuilder.Behaviors
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -29,7 +22,7 @@ namespace Orc.FilterBuilder.Behaviors
             base.OnAssociatedObjectUnloaded();
         }
 
-        private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void OnSelectedItemChanged(object? sender, RoutedPropertyChangedEventArgs<object?> e)
         {
             var treeView = AssociatedObject;
             var selectedItem = treeView.SelectedItem;

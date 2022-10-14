@@ -19,9 +19,9 @@
         public FilterSerializationService(IDirectoryService directoryService, IFileService fileService,
             IXmlSerializer xmlSerializer)
         {
-            Argument.IsNotNull(() => directoryService);
-            Argument.IsNotNull(() => fileService);
-            Argument.IsNotNull(() => xmlSerializer);
+            ArgumentNullException.ThrowIfNull(directoryService);
+            ArgumentNullException.ThrowIfNull(fileService);
+            ArgumentNullException.ThrowIfNull(xmlSerializer);
 
             _directoryService = directoryService;
             _fileService = fileService;
@@ -59,7 +59,7 @@
         public async virtual Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes)
         {
             Argument.IsNotNullOrWhitespace(() => fileName);
-            Argument.IsNotNull(() => filterSchemes);
+            ArgumentNullException.ThrowIfNull(filterSchemes);
 
             Log.Info($"Saving filter schemes to '{fileName}'");
 

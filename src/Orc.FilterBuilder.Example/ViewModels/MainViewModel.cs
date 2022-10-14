@@ -27,8 +27,8 @@ namespace Orc.FilterBuilder.Example.ViewModels
         #region Constructors
         public MainViewModel(ITestDataService testDataService, IFilterService filterService)
         {
-            Argument.IsNotNull(() => testDataService);
-            Argument.IsNotNull(() => filterService);
+            ArgumentNullException.ThrowIfNull(testDataService);
+            ArgumentNullException.ThrowIfNull(filterService);
 
             _testDataService = testDataService;
             _filterService = filterService;

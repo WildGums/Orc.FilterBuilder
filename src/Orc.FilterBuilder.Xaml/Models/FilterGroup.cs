@@ -6,7 +6,7 @@
     [DebuggerDisplay("{Title}")]
     public class FilterGroup
     {
-        public FilterGroup(string title, IEnumerable<FilterScheme> filterSchemes)
+        public FilterGroup(string title, IEnumerable<FilterScheme>? filterSchemes)
         {
             Title = title;
             FilterSchemes = new List<FilterScheme>();

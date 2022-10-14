@@ -1,13 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InstancePropertyHelper.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder
 {
-    using Catel;
     using Catel.Reflection;
     using System;
     using System.Collections.Generic;
@@ -49,21 +41,21 @@ namespace Orc.FilterBuilder
 
         public static bool IsSupportedType(this IPropertyMetadata property)
         {
-            Argument.IsNotNull(() => property);
+            ArgumentNullException.ThrowIfNull(property);
 
             return IsSupportedType(property.Type);
         }
 
         public static bool IsSupportedType(this PropertyInfo property)
         {
-            Argument.IsNotNull(() => property);
+            ArgumentNullException.ThrowIfNull(property);
 
             return IsSupportedType(property.PropertyType);
         }
 
         public static bool IsSupportedType(this Type type)
         {
-            Argument.IsNotNull(() => type);
+            ArgumentNullException.ThrowIfNull(type);
 
             if (UnsupportedTypes.Contains(type))
             {
