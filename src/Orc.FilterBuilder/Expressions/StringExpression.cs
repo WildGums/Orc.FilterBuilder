@@ -88,11 +88,11 @@
 
                 case Condition.Matches:
                     return entityValue is not null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
-                        && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
+                        && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue);
 
                 case Condition.DoesNotMatch:
                     return entityValue is not null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
-                        && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled)).IsMatch(entityValue);
+                        && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue);
 
                 default:
                     throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));

@@ -11,7 +11,7 @@
 
             try
             {
-                new Regex(pattern, RegexOptions.None).IsMatch(string.Empty);
+                new Regex(pattern, RegexOptions.None, TimeSpan.FromSeconds(1)).IsMatch(string.Empty);
             }
             catch
             {
