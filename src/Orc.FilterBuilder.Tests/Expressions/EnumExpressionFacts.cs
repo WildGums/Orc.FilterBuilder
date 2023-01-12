@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Orc.FilterBuilder.Tests.Expressions
+﻿namespace Orc.FilterBuilder.Tests.Expressions
 {
     using System;
     using Moq;

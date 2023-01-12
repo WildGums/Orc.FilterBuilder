@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestDataService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace FilterBuilder.Example.Services
+﻿namespace FilterBuilder.Example.Services
 {
     using System;
     using System.Collections.ObjectModel;
@@ -68,7 +61,7 @@ namespace FilterBuilder.Example.Services
 
         public string GetRandomString()
         {
-            return _random.Next(10) < 1 ? null : Path.GetRandomFileName().Replace(".", "");
+            return _random.Next(10) < 1 ? null : Path.GetRandomFileName().Replace(".", string.Empty);
         }
     }
 }

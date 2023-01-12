@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionsLinqExtentionsFacts.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -750,7 +743,7 @@ namespace Orc.FilterBuilder.Tests
         {
             new Human("Ann", false, true, 0, 0, new DateTime(1990, 1, 1), new DateTime(1990, 1, 1)),
             new Human("Sergio", true, false, 5, 5, new DateTime(2000, 1, 1), new DateTime(2000, 1, 1)),
-            new Human("", true, true, 5, 5, new DateTime(2010, 1, 1), null),
+            new Human(string.Empty, true, true, 5, 5, new DateTime(2010, 1, 1), null),
             new Human(null, true, null, 10, null, new DateTime(2020, 1, 1), null)
         };
 

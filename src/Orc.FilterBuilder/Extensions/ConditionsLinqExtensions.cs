@@ -273,9 +273,8 @@
                     return Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(string.Empty)));
 
                 default:
-                    throw new NotSupportedException(string.Format(
-                        LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
-                        condition));
+                    throw Log.ErrorAndCreateException((x) => new NotSupportedException(x), 
+                        string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition));
             }
         }
 

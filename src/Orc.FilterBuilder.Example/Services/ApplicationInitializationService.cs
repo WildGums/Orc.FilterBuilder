@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationInitializationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Example.Services
+﻿namespace Orc.FilterBuilder.Example.Services
 {
     using System;
     using System.Threading.Tasks;

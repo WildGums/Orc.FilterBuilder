@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestAttributeValueProvider.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
