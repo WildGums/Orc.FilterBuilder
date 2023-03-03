@@ -20,7 +20,7 @@
 
             <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
             <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
-            <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter"/>
+            <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter" SupportInversionUsingCommandParameter="False"/>
             <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter"/>
             <converters:FilterResultMultiValueConverter x:Key="FilterResultMultiValueConverter"/>
         </ResourceDictionary>
@@ -53,6 +53,7 @@
                    Text="{catel:LanguageBinding FilterBuilder_Name}" 
                    Width="33"
                    Margin="6" />
+
         <TextBox x:Name="PART_FilterSchemeTitleTextBox"
                  Grid.Row="0" 
                  Grid.Column="1" 
@@ -244,7 +245,7 @@
 
                                 <orccontrols:TimeSpanPicker x:Name="PART_ValueTimeSpanPicker"
                                                             Value="{Binding DataTypeExpression.Value}"
-                                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"></orccontrols:TimeSpanPicker>
+                                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"/>
 
                             </Grid>
 
