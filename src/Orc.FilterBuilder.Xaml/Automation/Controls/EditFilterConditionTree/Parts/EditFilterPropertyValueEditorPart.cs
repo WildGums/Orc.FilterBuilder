@@ -75,9 +75,14 @@ public class EditFilterPropertyValueEditorPart : AutomationBase
     private void SetEditorValue(object? value)
     {
         var valueEdit = ValueEdit;
-        if (valueEdit?.IsVisible() ?? false)
+        if (valueEdit is null)
         {
-            valueEdit.Text = (string?)value;
+            return;
+        }
+
+        if (valueEdit.IsVisible())
+        {
+            valueEdit.Text = (string?)value ?? string.Empty;
             return;
         }
 

@@ -19,14 +19,32 @@
 
         public string Title
         {
-            get => Map.GetMapValue<string>(Map.FilterSchemeTitleEdit, nameof(Edit.Text)) ?? string.Empty;
-            set => Map.SetMapValue(Map.FilterSchemeTitleEdit, nameof(Edit.Text), value);
+            get => Map.FilterSchemeTitleEdit?.Text ?? string.Empty;
+            set
+            {
+                var filterSchemeTitleEdit = Map.FilterSchemeTitleEdit;
+                if (filterSchemeTitleEdit is null)
+                {
+                    return;
+                }
+
+                filterSchemeTitleEdit.Text = value;
+            }
         }
 
         public bool IsLivePreviewEnabled
         {
-            get => Map.GetMapValue<bool>(Map.LivePreviewCheckBox, nameof(CheckBox.IsChecked));
-            set => Map.SetMapValue(Map.LivePreviewCheckBox, nameof(CheckBox.IsChecked), value);
+            get => Map.LivePreviewCheckBox?.IsChecked ?? false;
+            set
+            {
+                var livePreviewCheckBox = Map.LivePreviewCheckBox;
+                if (livePreviewCheckBox is null)
+                {
+                    return;
+                }
+
+                livePreviewCheckBox.IsChecked = value;
+            }
         }
 
         public bool IsPreviewCollectionVisible
