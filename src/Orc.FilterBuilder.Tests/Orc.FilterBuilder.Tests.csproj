@@ -26,7 +26,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" PrivateAssets="all" />
     <PackageReference Include="Orc.Automation.Tests" Version="5.0.0-alpha0175" />
     <PackageReference Include="PublicApiGenerator" Version="11.0.0" PrivateAssets="all" /> 
-    <PackageReference Include="Verify.NUnit" Version="19.12.3" />
+    <PackageReference Include="Verify.NUnit" Version="19.13.0" />
   </ItemGroup>
 
   <ItemGroup>
