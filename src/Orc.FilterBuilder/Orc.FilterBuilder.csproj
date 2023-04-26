@@ -1,4 +1,4 @@
-<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder</AssemblyName>
@@ -25,8 +25,8 @@
     <PackageReference Include="MethodTimer.Fody" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="5.3.0" PrivateAssets="all" />
-    <PackageReference Include="Orc.Controls" Version="5.0.0-alpha0274" />
-    <PackageReference Include="Orc.Metadata" Version="5.0.0-alpha0146" />
+    <PackageReference Include="Orc.Controls" Version="5.0.0-alpha0284" />
+    <PackageReference Include="Orc.Metadata" Version="5.0.0-alpha0170" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.nullable.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.nullable.props')" />
