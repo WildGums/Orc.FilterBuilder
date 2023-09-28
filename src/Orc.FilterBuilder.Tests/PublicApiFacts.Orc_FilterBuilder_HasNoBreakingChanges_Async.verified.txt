@@ -98,6 +98,7 @@ namespace Orc.FilterBuilder
     public abstract class ConditionTreeItem : Catel.Data.ValidatableModelBase
     {
         public static readonly Catel.Data.IPropertyData IsValidProperty;
+        public static readonly Catel.Data.IPropertyData ItemsProperty;
         public static readonly Catel.Data.IPropertyData ParentProperty;
         protected ConditionTreeItem() { }
         [Catel.Data.ExcludeFromValidation]
@@ -237,6 +238,7 @@ namespace Orc.FilterBuilder
     }
     public class FilterSchemes : Catel.Data.ModelBase
     {
+        public static readonly Catel.Data.IPropertyData SchemesProperty;
         public FilterSchemes() { }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.FilterScheme> Schemes { get; }
         [Catel.Runtime.Serialization.ExcludeFromSerialization]

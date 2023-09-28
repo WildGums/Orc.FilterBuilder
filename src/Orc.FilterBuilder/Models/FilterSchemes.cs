@@ -31,5 +31,5 @@ public class FilterSchemes : ModelBase
         }
     }
 
-    public ObservableCollection<FilterScheme> Schemes { get; } = new();
+    public ObservableCollection<FilterScheme> Schemes { get; private set; } = new();
 }
