@@ -43,7 +43,9 @@ public abstract class ConditionTreeItem : ValidatableModelBase
             }
         }
 
-        var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? listSender : e.NewItems;
+        var newCollection = e.Action == NotifyCollectionChangedAction.Reset 
+            ? listSender
+            : e.NewItems;
         if (newCollection is null)
         {
             return;
