@@ -1,258 +1,257 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Text;
+using Catel;
+using Catel.Data;
+using Catel.IoC;
+using Catel.Runtime.Serialization;
+using Runtime.Serialization;
+
+[SerializerModifier(typeof(FilterSchemeSerializerModifier))]
+public class FilterScheme : ModelBase
 {
-    using System;
-    using System.Collections;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.Linq;
-    using System.Text;
-    using Catel;
-    using Catel.Data;
-    using Catel.IoC;
-    using Catel.Runtime.Serialization;
-    using Runtime.Serialization;
+    private static readonly Type DefaultTargetType = typeof(object);
+    private object? _scope;
 
-    [SerializerModifier(typeof(FilterSchemeSerializerModifier))]
-    public class FilterScheme : ModelBase
+    public FilterScheme()
+        : this(DefaultTargetType)
     {
-        private static readonly Type DefaultTargetType = typeof(object);
-        private object? _scope;
+    }
 
-        public FilterScheme()
-            : this(DefaultTargetType)
+    public FilterScheme(Type targetType)
+        : this(targetType, string.Empty)
+    {
+    }
+
+    public FilterScheme(Type targetType, string title)
+        : this(targetType, title, new ConditionGroup())
+    {
+    }
+
+    public FilterScheme(Type targetType, string title, ConditionTreeItem root)
+    {
+        ArgumentNullException.ThrowIfNull(targetType);
+        ArgumentNullException.ThrowIfNull(title);
+        ArgumentNullException.ThrowIfNull(root);
+
+        TargetType = targetType;
+        Title = title;
+
+        ConditionItems = new ObservableCollection<ConditionTreeItem>
         {
-        }
+            root
+        };
 
-        public FilterScheme(Type targetType)
-            : this(targetType, string.Empty)
+        CanEdit = true;
+        CanDelete = true;
+    }
+
+    [IncludeInSerialization]
+    public Type TargetType { get; private set; }
+
+    public string Title { get; set; }
+
+    public string? FilterGroup { get; set; }
+
+    [ExcludeFromSerialization]
+    public bool CanEdit { get; set; }
+
+    [ExcludeFromSerialization]
+    public bool CanDelete { get; set; }
+
+    [ExcludeFromSerialization]
+    public ConditionTreeItem Root
+    {
+        get { return ConditionItems.First(); }
+    }
+
+    [ExcludeFromSerialization]
+    public object? Scope
+    {
+        get { return _scope; }
+        set
         {
-        }
-
-        public FilterScheme(Type targetType, string title)
-            : this(targetType, title, new ConditionGroup())
-        {
-        }
-
-        public FilterScheme(Type targetType, string title, ConditionTreeItem root)
-        {
-            ArgumentNullException.ThrowIfNull(targetType);
-            ArgumentNullException.ThrowIfNull(title);
-            ArgumentNullException.ThrowIfNull(root);
-
-            TargetType = targetType;
-            Title = title;
-
-            ConditionItems = new ObservableCollection<ConditionTreeItem>
+            if (!ObjectHelper.AreEqual(_scope, value))
             {
-                root
-            };
+                _scope = value;
 
-            CanEdit = true;
-            CanDelete = true;
-        }
-
-        [IncludeInSerialization]
-        public Type TargetType { get; private set; }
-
-        public string Title { get; set; }
-
-        public string? FilterGroup { get; set; }
-
-        [ExcludeFromSerialization]
-        public bool CanEdit { get; set; }
-
-        [ExcludeFromSerialization]
-        public bool CanDelete { get; set; }
-
-        [ExcludeFromSerialization]
-        public ConditionTreeItem Root
-        {
-            get { return ConditionItems.First(); }
-        }
-
-        [ExcludeFromSerialization]
-        public object? Scope
-        {
-            get { return _scope; }
-            set
-            {
-                if (!ObjectHelper.AreEqual(_scope, value))
-                {
-                    _scope = value;
-
-                    RaisePropertyChanged(nameof(Scope));
+                RaisePropertyChanged(nameof(Scope));
 
 #pragma warning disable IDISP004 // Don't ignore created IDisposable.
-                    var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
+                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
 #pragma warning restore IDISP004 // Don't ignore created IDisposable.
-                    if (reflectionService is not null)
-                    {
-                        this.EnsureIntegrity(reflectionService);
-                    }
-                }
-            }
-        }
-
-        public bool HasInvalidConditionItems { get; private set; }
-
-        public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
-
-        public event EventHandler<EventArgs>? Updated;
-
-        private void OnConditionItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            var senderList = sender as IList;
-            if (senderList is null)
-            {
-                return;
-            }
-
-            if (e.OldItems is not null)
-            {
-                foreach (var item in e.OldItems)
+                if (reflectionService is not null)
                 {
-                    ((ConditionTreeItem)item).Updated -= OnConditionUpdated;
-                }
-            }
-
-            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? senderList : e.NewItems;
-            if (newCollection is not null)
-            {
-                foreach (var item in newCollection)
-                {
-                    ((ConditionTreeItem)item).Updated += OnConditionUpdated;
+                    this.EnsureIntegrity(reflectionService);
                 }
             }
         }
+    }
 
-        private void OnConditionItemsChanged()
+    public bool HasInvalidConditionItems { get; private set; }
+
+    public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
+
+    public event EventHandler<EventArgs>? Updated;
+
+    private void OnConditionItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        var senderList = sender as IList;
+        if (senderList is null)
         {
-            SubscribeToEvents();
+            return;
         }
 
-        protected override void OnDeserialized()
+        if (e.OldItems is not null)
         {
-            base.OnDeserialized();
-
-            SubscribeToEvents();
-        }
-
-        private void CheckForInvalidItems()
-        {
-            HasInvalidConditionItems = (ConditionItems is not null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
-        }
-
-        private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
-        {
-            ArgumentNullException.ThrowIfNull(conditionTreeItem);
-
-            var items = conditionTreeItem.Items;
-            if (items is null || items.Count == 0)
+            foreach (var item in e.OldItems)
             {
-                return conditionTreeItem?.IsValid??true ? 0 : 1;
+                ((ConditionTreeItem)item).Updated -= OnConditionUpdated;
             }
+        }
 
-            var invalidCount = 0;
+        var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? senderList : e.NewItems;
+        if (newCollection is not null)
+        {
+            foreach (var item in newCollection)
+            {
+                ((ConditionTreeItem)item).Updated += OnConditionUpdated;
+            }
+        }
+    }
 
+    private void OnConditionItemsChanged()
+    {
+        SubscribeToEvents();
+    }
+
+    protected override void OnDeserialized()
+    {
+        base.OnDeserialized();
+
+        SubscribeToEvents();
+    }
+
+    private void CheckForInvalidItems()
+    {
+        HasInvalidConditionItems = (ConditionItems is not null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
+    }
+
+    private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
+    {
+        ArgumentNullException.ThrowIfNull(conditionTreeItem);
+
+        var items = conditionTreeItem.Items;
+        if (items is null || items.Count == 0)
+        {
+            return conditionTreeItem?.IsValid??true ? 0 : 1;
+        }
+
+        var invalidCount = 0;
+
+        foreach (var item in items)
+        {
+            invalidCount += CountInvalidItems(item);
+        }
+
+        invalidCount += conditionTreeItem.IsValid ? 0 : 1;
+
+        return invalidCount;
+    }
+
+    private void SubscribeToEvents()
+    {
+        var items = ConditionItems;
+        if (items is not null)
+        {
+            items.CollectionChanged += OnConditionItemsCollectionChanged;
             foreach (var item in items)
             {
-                invalidCount += CountInvalidItems(item);
+                item.Updated += OnConditionUpdated;
             }
+        }
+    }
 
-            invalidCount += conditionTreeItem.IsValid ? 0 : 1;
+    private void OnConditionUpdated(object? sender, EventArgs e)
+    {
+        CheckForInvalidItems();
 
-            return invalidCount;
+        RaiseUpdated();
+    }
+
+    public bool CalculateResult(object entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        var root = Root;
+        if (root is not null)
+        {
+            return root.CalculateResult(entity);
         }
 
-        private void SubscribeToEvents()
+        return true;
+    }
+
+    public void Update(FilterScheme otherScheme)
+    {
+        ArgumentNullException.ThrowIfNull(otherScheme);
+
+        Title = otherScheme.Title;
+        ConditionItems.Clear();
+        ConditionItems.Add(otherScheme.Root);
+
+        CheckForInvalidItems();
+
+        RaiseUpdated();
+    }
+
+    protected void RaiseUpdated()
+    {
+        Updated?.Invoke(this, EventArgs.Empty);
+    }
+
+    public override string ToString()
+    {
+        var stringBuilder = new StringBuilder();
+
+        stringBuilder.Append(Title);
+
+        var rootString = Root.ToString();
+        if (!string.IsNullOrEmpty(rootString))
         {
-            var items = ConditionItems;
-            if (items is not null)
+            if (rootString.StartsWith("((") && rootString.EndsWith("))"))
             {
-                items.CollectionChanged += OnConditionItemsCollectionChanged;
-                foreach (var item in items)
-                {
-                    item.Updated += OnConditionUpdated;
-                }
+                rootString = rootString.Substring(1, rootString.Length - 2);
             }
         }
 
-        private void OnConditionUpdated(object? sender, EventArgs e)
+        if (!string.IsNullOrEmpty(rootString))
         {
-            CheckForInvalidItems();
-
-            RaiseUpdated();
+            stringBuilder.AppendLine();
+            stringBuilder.Append(rootString);
         }
 
-        public bool CalculateResult(object entity)
+        return stringBuilder.ToString();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        var filterScheme = obj as FilterScheme;
+        if (filterScheme is null)
         {
-            ArgumentNullException.ThrowIfNull(entity);
-
-            var root = Root;
-            if (root is not null)
-            {
-                return root.CalculateResult(entity);
-            }
-
-            return true;
+            return false;
         }
 
-        public void Update(FilterScheme otherScheme)
-        {
-            ArgumentNullException.ThrowIfNull(otherScheme);
+        return string.Equals(filterScheme.Title, Title);
+    }
 
-            Title = otherScheme.Title;
-            ConditionItems.Clear();
-            ConditionItems.Add(otherScheme.Root);
-
-            CheckForInvalidItems();
-
-            RaiseUpdated();
-        }
-
-        protected void RaiseUpdated()
-        {
-            Updated?.Invoke(this, EventArgs.Empty);
-        }
-
-        public override string ToString()
-        {
-            var stringBuilder = new StringBuilder();
-
-            stringBuilder.Append(Title);
-
-            var rootString = Root.ToString();
-            if (!string.IsNullOrEmpty(rootString))
-            {
-                if (rootString.StartsWith("((") && rootString.EndsWith("))"))
-                {
-                    rootString = rootString.Substring(1, rootString.Length - 2);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(rootString))
-            {
-                stringBuilder.AppendLine();
-                stringBuilder.Append(rootString);
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        public override bool Equals(object? obj)
-        {
-            var filterScheme = obj as FilterScheme;
-            if (filterScheme is null)
-            {
-                return false;
-            }
-
-            return string.Equals(filterScheme.Title, Title);
-        }
-
-        public override int GetHashCode()
-        {
-            return Title.GetHashCode();
-        }
+    public override int GetHashCode()
+    {
+        return Title.GetHashCode();
     }
 }

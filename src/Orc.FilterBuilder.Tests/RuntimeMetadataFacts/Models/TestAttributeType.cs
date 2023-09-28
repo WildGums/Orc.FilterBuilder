@@ -1,20 +1,15 @@
-﻿namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests;
+
+using System;
+
+public class TestAttributeType
 {
-    using System;
-
-    public class TestAttributeType
+    public TestAttributeType(string name, Type type)
     {
-        #region Constructors
-        public TestAttributeType(string name, Type type)
-        {
-            Name = name;
-            Type = type;
-        }
-        #endregion
-
-        #region Properties
-        public string Name { get; }
-        public Type Type { get; }
-        #endregion
+        Name = name;
+        Type = type;
     }
+
+    public string Name { get; }
+    public Type Type { get; }
 }

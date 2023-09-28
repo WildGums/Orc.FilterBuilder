@@ -1,107 +1,106 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Collections;
+using System.Linq;
+using Catel.Collections;
+using Catel.Reflection;
+using MethodTimer;
+
+public static class FilterSchemeExtensions
 {
-    using System;
-    using System.Collections;
-    using System.Linq;
-    using Catel.Collections;
-    using Catel.Reflection;
-    using MethodTimer;
+    private const string Separator = "||";
 
-    public static class FilterSchemeExtensions
+    public static void EnsureIntegrity(this FilterScheme filterScheme, IReflectionService reflectionService)
     {
-        private const string Separator = "||";
+        ArgumentNullException.ThrowIfNull(filterScheme);
+        ArgumentNullException.ThrowIfNull(reflectionService);
 
-        public static void EnsureIntegrity(this FilterScheme filterScheme, IReflectionService reflectionService)
+        foreach (var item in filterScheme.ConditionItems)
         {
-            ArgumentNullException.ThrowIfNull(filterScheme);
-            ArgumentNullException.ThrowIfNull(reflectionService);
+            item.EnsureIntegrity(reflectionService);
+        }
+    }
 
-            foreach (var item in filterScheme.ConditionItems)
-            {
-                item.EnsureIntegrity(reflectionService);
-            }
+    private static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
+    {
+        ArgumentNullException.ThrowIfNull(conditionTreeItem);
+        ArgumentNullException.ThrowIfNull(reflectionService);
+
+        var propertyExpression = conditionTreeItem as PropertyExpression;
+        propertyExpression?.EnsureIntegrity(reflectionService);
+
+        foreach (var item in conditionTreeItem.Items)
+        {
+            item.EnsureIntegrity(reflectionService);
+        }
+    }
+
+    private static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
+    {
+        ArgumentNullException.ThrowIfNull(propertyExpression);
+        ArgumentNullException.ThrowIfNull(reflectionService);
+
+        IPropertyCollection typeProperties;
+
+        var property = propertyExpression.Property;
+        if (property is not null)
+        {
+            // We already have it, but make sure to get the right instance
+
+            typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
+            propertyExpression.Property = typeProperties.GetProperty(property.Name);
+
+            return;
         }
 
-        private static void EnsureIntegrity(this ConditionTreeItem conditionTreeItem, IReflectionService reflectionService)
+        var serializationValue = propertyExpression.PropertySerializationValue;
+        if (string.IsNullOrWhiteSpace(serializationValue))
         {
-            ArgumentNullException.ThrowIfNull(conditionTreeItem);
-            ArgumentNullException.ThrowIfNull(reflectionService);
-
-            var propertyExpression = conditionTreeItem as PropertyExpression;
-            propertyExpression?.EnsureIntegrity(reflectionService);
-
-            foreach (var item in conditionTreeItem.Items)
-            {
-                item.EnsureIntegrity(reflectionService);
-            }
+            return;
         }
 
-        private static void EnsureIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
+        var splittedString = serializationValue.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
+        if (splittedString.Length != 2)
         {
-            ArgumentNullException.ThrowIfNull(propertyExpression);
-            ArgumentNullException.ThrowIfNull(reflectionService);
-
-            IPropertyCollection typeProperties;
-
-            var property = propertyExpression.Property;
-            if (property is not null)
-            {
-                // We already have it, but make sure to get the right instance
-
-                typeProperties = reflectionService.GetInstanceProperties(property.OwnerType);
-                propertyExpression.Property = typeProperties.GetProperty(property.Name);
-
-                return;
-            }
-
-            var serializationValue = propertyExpression.PropertySerializationValue;
-            if (string.IsNullOrWhiteSpace(serializationValue))
-            {
-                return;
-            }
-
-            var splittedString = serializationValue.Split(new[] {Separator}, StringSplitOptions.RemoveEmptyEntries);
-            if (splittedString.Length != 2)
-            {
-                return;
-            }
-
-            var type = TypeCache.GetType(splittedString[0]);
-            if (type is null)
-            {
-                return;
-            }
-
-            typeProperties = reflectionService.GetInstanceProperties(type);
-            if (typeProperties is null)
-            {
-                return;
-            }
-
-            propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
+            return;
         }
 
-        [Time]
-        public static void Apply(this FilterScheme filterScheme, IEnumerable rawCollection, IList filteredCollection)
+        var type = TypeCache.GetType(splittedString[0]);
+        if (type is null)
         {
-            ArgumentNullException.ThrowIfNull(filterScheme);
-            ArgumentNullException.ThrowIfNull(rawCollection);
-            ArgumentNullException.ThrowIfNull(filteredCollection);
-
-            IDisposable? suspendToken = null;
-            if (filteredCollection is ISuspendChangeNotificationsCollection collection)
-            {
-                suspendToken = collection.SuspendChangeNotifications();
-            }
-
-            filteredCollection.Clear();
-
-            foreach (var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
-            {
-                filteredCollection.Add(item);
-            }
-
-            suspendToken?.Dispose();
+            return;
         }
+
+        typeProperties = reflectionService.GetInstanceProperties(type);
+        if (typeProperties is null)
+        {
+            return;
+        }
+
+        propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
+    }
+
+    [Time]
+    public static void Apply(this FilterScheme filterScheme, IEnumerable rawCollection, IList filteredCollection)
+    {
+        ArgumentNullException.ThrowIfNull(filterScheme);
+        ArgumentNullException.ThrowIfNull(rawCollection);
+        ArgumentNullException.ThrowIfNull(filteredCollection);
+
+        IDisposable? suspendToken = null;
+        if (filteredCollection is ISuspendChangeNotificationsCollection collection)
+        {
+            suspendToken = collection.SuspendChangeNotifications();
+        }
+
+        filteredCollection.Clear();
+
+        foreach (var item in rawCollection.Cast<object>().Where(filterScheme.CalculateResult))
+        {
+            filteredCollection.Add(item);
+        }
+
+        suspendToken?.Dispose();
     }
 }

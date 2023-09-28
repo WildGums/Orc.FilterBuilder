@@ -1,13 +1,12 @@
-﻿namespace Orc.FilterBuilder.Tests
-{
-    using Orc.Automation;
+﻿namespace Orc.FilterBuilder.Tests;
 
-    [ActiveAutomationModel]
-    public class SplitButtonModel: AutomationControlModel
+using Orc.Automation;
+
+[ActiveAutomationModel]
+public class SplitButtonModel: AutomationControlModel
+{
+    public SplitButtonModel(AutomationElementAccessor accessor) 
+        : base(accessor)
     {
-        public SplitButtonModel(AutomationElementAccessor accessor) 
-            : base(accessor)
-        {
-        }
     }
 }

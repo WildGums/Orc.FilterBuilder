@@ -1,11 +1,10 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+
+public interface IReflectionService
 {
-    using System;
+    IPropertyCollection GetInstanceProperties(Type targetType);
 
-    public interface IReflectionService
-    {
-        IPropertyCollection GetInstanceProperties(Type targetType);
-
-        void ClearCache();
-    }
+    void ClearCache();
 }

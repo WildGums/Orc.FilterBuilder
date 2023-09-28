@@ -1,23 +1,22 @@
-﻿namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters;
+
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using Catel.MVVM.Converters;
+
+public class LeftMarginMultiplierConverter : ValueConverterBase
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Controls;
-    using Catel.MVVM.Converters;
+    public double Length { get; set; }
 
-    public class LeftMarginMultiplierConverter : ValueConverterBase
+    protected override object? Convert(object? value, Type targetType, object? parameter)
     {
-        public double Length { get; set; }
-
-        protected override object? Convert(object? value, Type targetType, object? parameter)
+        var item = value as TreeViewItem;
+        if (item is null)
         {
-            var item = value as TreeViewItem;
-            if (item is null)
-            {
-                return new Thickness(0);
-            }
-
-            return new Thickness(Length*item.GetDepth(), 0, 0, 0);
+            return new Thickness(0);
         }
+
+        return new Thickness(Length*item.GetDepth(), 0, 0, 0);
     }
 }

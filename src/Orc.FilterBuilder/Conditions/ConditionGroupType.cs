@@ -1,12 +1,11 @@
-﻿namespace Orc.FilterBuilder
-{
-    using Catel.ComponentModel;
+﻿namespace Orc.FilterBuilder;
 
-    public enum ConditionGroupType
-    {
-        [DisplayName("FilterBuilder_And")]
-        And,
-        [DisplayName("FilterBuilder_Or")]
-        Or
-    }
+using Catel.ComponentModel;
+
+public enum ConditionGroupType
+{
+    [DisplayName("FilterBuilder_And")]
+    And,
+    [DisplayName("FilterBuilder_Or")]
+    Or
 }

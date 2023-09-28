@@ -1,12 +1,11 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+public enum TimeSpanType
 {
-    public enum TimeSpanType
-    {
-        Years,
-        Months,
-        Days,
-        Hours,
-        Minutes,
-        Seconds
-    }
+    Years,
+    Months,
+    Days,
+    Hours,
+    Minutes,
+    Seconds
 }

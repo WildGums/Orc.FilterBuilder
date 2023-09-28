@@ -1,36 +1,35 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System.Windows.Controls;
+using System.Windows.Media;
+
+public static class TreeViewItemExtensions
 {
-    using System.Windows.Controls;
-    using System.Windows.Media;
-
-    public static class TreeViewItemExtensions
+    public static int GetDepth(this TreeViewItem item)
     {
-        public static int GetDepth(this TreeViewItem item)
+        var parent = GetParent(item);
+        if (parent is not null)
         {
-            var parent = GetParent(item);
-            if (parent is not null)
-            {
-                return GetDepth(parent) + 1;
-            }
-
-            return 0;
+            return GetDepth(parent) + 1;
         }
 
-        private static TreeViewItem? GetParent(TreeViewItem item)
+        return 0;
+    }
+
+    private static TreeViewItem? GetParent(TreeViewItem item)
+    {
+        var parent = VisualTreeHelper.GetParent(item);
+
+        while (!(parent is TreeViewItem || parent is TreeView))
         {
-            var parent = VisualTreeHelper.GetParent(item);
-
-            while (!(parent is TreeViewItem || parent is TreeView))
+            if (parent is null)
             {
-                if (parent is null)
-                {
-                    return null;
-                }
-
-                parent = VisualTreeHelper.GetParent(parent);
+                return null;
             }
 
-            return parent as TreeViewItem;
+            parent = VisualTreeHelper.GetParent(parent);
         }
+
+        return parent as TreeViewItem;
     }
 }

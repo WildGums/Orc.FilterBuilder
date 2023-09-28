@@ -1,21 +1,20 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System.Diagnostics;
+
+[DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+public class UnsignedLongExpression : NumericExpression<ulong>
 {
-    using System.Diagnostics;
-
-    [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class UnsignedLongExpression : NumericExpression<ulong>
+    public UnsignedLongExpression()
+        : this(true)
     {
-        public UnsignedLongExpression()
-            : this(true)
-        {
-        }
+    }
 
-        public UnsignedLongExpression(bool isNullable)
-        {
-            IsDecimal = false;
-            IsNullable = isNullable;
-            IsSigned = false;
-            ValueControlType = ValueControlType.UnsignedLong;
-        }
+    public UnsignedLongExpression(bool isNullable)
+    {
+        IsDecimal = false;
+        IsNullable = isNullable;
+        IsSigned = false;
+        ValueControlType = ValueControlType.UnsignedLong;
     }
 }

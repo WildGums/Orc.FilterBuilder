@@ -1,13 +1,12 @@
-﻿namespace Orc.FilterBuilder.Tests.Models
+﻿namespace Orc.FilterBuilder.Tests.Models;
+
+using Catel.Data;
+
+public class TestFilterModel : ModelBase
 {
-    using Catel.Data;
+    public string StringProperty { get; set; }
 
-    public class TestFilterModel : ModelBase
-    {
-        public string StringProperty { get; set; }
+    public bool BoolProperty { get; set; }
 
-        public bool BoolProperty { get; set; }
-
-        public int IntProperty { get; set; }
-    }
+    public int IntProperty { get; set; }
 }

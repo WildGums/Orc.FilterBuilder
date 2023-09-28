@@ -1,7 +1,6 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+public interface IFilterCustomizationService
 {
-    public interface IFilterCustomizationService
-    {
-        void CustomizeInstanceProperties(IPropertyCollection instanceProperties);
-    }
+    void CustomizeInstanceProperties(IPropertyCollection instanceProperties);
 }

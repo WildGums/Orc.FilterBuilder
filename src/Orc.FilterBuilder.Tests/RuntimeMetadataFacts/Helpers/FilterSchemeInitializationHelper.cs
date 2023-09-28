@@ -1,32 +1,31 @@
-﻿namespace Orc.FilterBuilder.Tests
-{
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Catel.IoC;
-    using Services;
+﻿namespace Orc.FilterBuilder.Tests;
 
-    public static class FilterSchemeInitializationHelper
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Catel.IoC;
+using Services;
+
+public static class FilterSchemeInitializationHelper
+{
+    public static async Task<FilterScheme> GetTestFilterSchemeAsync()
     {
-        public static async Task<FilterScheme> GetTestFilterSchemeAsync()
-        {
-            var serviceLocator = ServiceLocator.Default;
+        var serviceLocator = ServiceLocator.Default;
 
 #pragma warning disable IDISP001 // Dispose created
-            var typeFactory = serviceLocator.ResolveType<ITypeFactory>();
+        var typeFactory = serviceLocator.ResolveType<ITypeFactory>();
 #pragma warning restore IDISP001 // Dispose created
-            var reflectionService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<TestFilterRuntimeModelReflectionService>(TestAttributeTypeProvider.AttributeTypes.Values.ToList());
-            serviceLocator.RegisterInstance<IReflectionService>(reflectionService);
+        var reflectionService = typeFactory.CreateInstanceWithParametersAndAutoCompletion<TestFilterRuntimeModelReflectionService>(TestAttributeTypeProvider.AttributeTypes.Values.ToList());
+        serviceLocator.RegisterInstance<IReflectionService>(reflectionService);
 
-            using var tempFileContext = new TemporaryFilesContext("filters");
-            var tempFile = tempFileContext.GetFile($"testFilters.xml", true);
-            var sourceFile = Path.Combine(AssemblyDirectoryHelper.GetCurrentDirectory(), $"Resources\\Files\\filters.xml");
-            File.Copy(sourceFile, tempFile, true);
+        using var tempFileContext = new TemporaryFilesContext("filters");
+        var tempFile = tempFileContext.GetFile($"testFilters.xml", true);
+        var sourceFile = Path.Combine(AssemblyDirectoryHelper.GetCurrentDirectory(), $"Resources\\Files\\filters.xml");
+        File.Copy(sourceFile, tempFile, true);
 
-            var filterManager = serviceLocator.ResolveType<IFilterSchemeManager>();
-            await filterManager.LoadAsync(tempFile);
+        var filterManager = serviceLocator.ResolveType<IFilterSchemeManager>();
+        await filterManager.LoadAsync(tempFile);
 
-            return filterManager.FilterSchemes.Schemes.FirstOrDefault(x => x.Title == "Test");
-        }
+        return filterManager.FilterSchemes.Schemes.FirstOrDefault(x => x.Title == "Test");
     }
 }

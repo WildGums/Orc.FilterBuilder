@@ -1,25 +1,19 @@
-﻿namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests;
+
+using System.Collections.Generic;
+
+public static class TestAttributeTypeProvider
 {
-    using System;
-    using System.Collections.Generic;
+    public static readonly Dictionary<string, TestAttributeType> AttributeTypes;
 
-    public static class TestAttributeTypeProvider
+    static TestAttributeTypeProvider()
     {
-        #region Constants
-        public static readonly Dictionary<string, TestAttributeType> AttributeTypes;
-        #endregion
-
-        #region Constructors
-        static TestAttributeTypeProvider()
+        AttributeTypes = new Dictionary<string, TestAttributeType>()
         {
-            AttributeTypes = new Dictionary<string, TestAttributeType>()
-            {
-                {"StringAttribute", new TestAttributeType("StringAttribute", typeof (string))},
-                {"IntAttribute", new TestAttributeType("IntAttribute", typeof (string))},
-                {"DateTimeAttribute", new TestAttributeType("DateTimeAttribute", typeof (string))},
-                {"BoolAttribute", new TestAttributeType("BoolAttribute", typeof (string))},
-            };
-        }
-        #endregion
+            {"StringAttribute", new TestAttributeType("StringAttribute", typeof (string))},
+            {"IntAttribute", new TestAttributeType("IntAttribute", typeof (string))},
+            {"DateTimeAttribute", new TestAttributeType("DateTimeAttribute", typeof (string))},
+            {"BoolAttribute", new TestAttributeType("BoolAttribute", typeof (string))},
+        };
     }
 }

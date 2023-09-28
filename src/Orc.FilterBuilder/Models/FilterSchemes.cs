@@ -1,39 +1,38 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System.Collections.ObjectModel;
+using Catel;
+using Catel.Data;
+using Catel.Runtime.Serialization;
+
+public class FilterSchemes : ModelBase
 {
-    using System.Collections.ObjectModel;
-    using Catel;
-    using Catel.Data;
-    using Catel.Runtime.Serialization;
+    private object? _scope;
 
-    public class FilterSchemes : ModelBase
+    public FilterSchemes()
     {
-        private object? _scope;
+        Schemes = new ObservableCollection<FilterScheme>();
+    }
 
-        public FilterSchemes()
+    [ExcludeFromSerialization]
+    public object? Scope
+    {
+        get { return _scope; }
+        set
         {
-            Schemes = new ObservableCollection<FilterScheme>();
-        }
-
-        [ExcludeFromSerialization]
-        public object? Scope
-        {
-            get { return _scope; }
-            set
+            if (!ObjectHelper.AreEqual(_scope, value))
             {
-                if (!ObjectHelper.AreEqual(_scope, value))
+                _scope = value;
+
+                RaisePropertyChanged(nameof(Scope));
+
+                foreach (var filterScheme in Schemes)
                 {
-                    _scope = value;
-
-                    RaisePropertyChanged(nameof(Scope));
-
-                    foreach (var filterScheme in Schemes)
-                    {
-                        filterScheme.Scope = Scope;
-                    }
+                    filterScheme.Scope = Scope;
                 }
             }
         }
-
-        public ObservableCollection<FilterScheme> Schemes { get; private set; }
     }
+
+    public ObservableCollection<FilterScheme> Schemes { get; private set; }
 }

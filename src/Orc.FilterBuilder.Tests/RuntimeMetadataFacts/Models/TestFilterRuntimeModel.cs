@@ -1,9 +1,8 @@
-﻿namespace Orc.FilterBuilder.Tests
-{
-    using System.Collections.Generic;
+﻿namespace Orc.FilterBuilder.Tests;
 
-    public class TestFilterRuntimeModel
-    {
-        public Dictionary<string, TestAttributeValue> Attributes { get; set; }
-    }
+using System.Collections.Generic;
+
+public class TestFilterRuntimeModel
+{
+    public Dictionary<string, TestAttributeValue> Attributes { get; set; }
 }

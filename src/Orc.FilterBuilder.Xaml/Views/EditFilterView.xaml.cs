@@ -1,68 +1,67 @@
-﻿namespace Orc.FilterBuilder.Views
+﻿namespace Orc.FilterBuilder.Views;
+
+using System;
+using System.Windows.Automation.Peers;
+using System.Windows.Controls;
+using System.Windows.Data;
+using Catel.IoC;
+using Converters;
+using ViewModels;
+
+public sealed partial class EditFilterView
 {
-    using System;
-    using System.Windows.Automation.Peers;
-    using System.Windows.Controls;
-    using System.Windows.Data;
-    using Catel.IoC;
-    using Converters;
-    using ViewModels;
-
-    public sealed partial class EditFilterView
+    public EditFilterView()
     {
-        public EditFilterView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
         
-        protected override void OnViewModelChanged()
+    protected override void OnViewModelChanged()
+    {
+        base.OnViewModelChanged();
+
+        PreviewDataGrid.Columns.Clear();
+
+        if (ViewModel is not EditFilterViewModel vm)
         {
-            base.OnViewModelChanged();
+            return;
+        }
 
-            PreviewDataGrid.Columns.Clear();
+        if (vm.AllowLivePreview)
+        {
+            var dependencyResolver = this.GetDependencyResolver();
+            var reflectionService = dependencyResolver.ResolveRequired<IReflectionService>(vm.FilterScheme.Scope);
 
-            if (ViewModel is not EditFilterViewModel vm)
+            var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
+            if (targetType is not null)
             {
-                return;
-            }
+                var instanceProperties = reflectionService.GetInstanceProperties(targetType);
 
-            if (vm.AllowLivePreview)
-            {
-                var dependencyResolver = this.GetDependencyResolver();
-                var reflectionService = dependencyResolver.ResolveRequired<IReflectionService>(vm.FilterScheme.Scope);
-
-                var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
-                if (targetType is not null)
+                foreach (var instanceProperty in instanceProperties.Properties)
                 {
-                    var instanceProperties = reflectionService.GetInstanceProperties(targetType);
-
-                    foreach (var instanceProperty in instanceProperties.Properties)
+                    var column = new DataGridTextColumn
                     {
-                        var column = new DataGridTextColumn
-                        {
-                            Header = instanceProperty.DisplayName
-                        };
+                        Header = instanceProperty.DisplayName
+                    };
 
-                        var binding = new Binding
-                        {
-                            Converter = new ObjectToValueConverter(instanceProperty),
-                            ConverterParameter = instanceProperty.Name
-                        };
+                    var binding = new Binding
+                    {
+                        Converter = new ObjectToValueConverter(instanceProperty),
+                        ConverterParameter = instanceProperty.Name
+                    };
 
-                        column.Binding = binding;
+                    column.Binding = binding;
 
-                        PreviewDataGrid.Columns.Add(column);
-                    }
+                    PreviewDataGrid.Columns.Add(column);
                 }
             }
-
-            // Fix for SA-144
-            Dispatcher.BeginInvoke(new Action(() => Focus()));
         }
 
-        protected override AutomationPeer OnCreateAutomationPeer()
-        {
-            return new Automation.EditFilterViewPeer(this);
-        }
+        // Fix for SA-144
+        Dispatcher.BeginInvoke(new Action(() => Focus()));
+    }
+
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new Automation.EditFilterViewPeer(this);
     }
 }

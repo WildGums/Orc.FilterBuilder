@@ -1,13 +1,12 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+public abstract class NullableDataTypeExpression : DataTypeExpression
 {
-    public abstract class NullableDataTypeExpression : DataTypeExpression
+    protected NullableDataTypeExpression()
+        : base()
     {
-        protected NullableDataTypeExpression()
-            : base()
-        {
 
-        }
-
-        public bool IsNullable { get; set; }
     }
+
+    public bool IsNullable { get; set; }
 }

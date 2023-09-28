@@ -1,31 +1,30 @@
-﻿namespace Orc.FilterBuilder.Tests.Converters
+﻿namespace Orc.FilterBuilder.Tests.Converters;
+
+using Catel.Data;
+using NUnit.Framework;
+using Orc.FilterBuilder.Converters;
+
+[TestFixture]
+public class ObjectToValueConverterFacts
 {
-    using Catel.Data;
-    using NUnit.Framework;
-    using Orc.FilterBuilder.Converters;
-
-    [TestFixture]
-    public class ObjectToValueConverterFacts
+    private class TestModel : ModelBase
     {
-        private class TestModel : ModelBase
+        public string Reference { get => "test"; }
+
+        public int MyIntegerValue { get; set; }
+    }
+
+    [TestCase]
+    public void ConvertsGetterPropertiesFromCatelModelBase()
+    {
+        var model = new TestModel
         {
-            public string Reference { get => "test"; }
+            MyIntegerValue = 42
+        };
 
-            public int MyIntegerValue { get; set; }
-        }
+        var converter = new ObjectToValueConverter(null);
 
-        [TestCase]
-        public void ConvertsGetterPropertiesFromCatelModelBase()
-        {
-            var model = new TestModel
-            {
-                MyIntegerValue = 42
-            };
-
-            var converter = new ObjectToValueConverter(null);
-
-            Assert.AreEqual(42, converter.Convert(model, null, nameof(TestModel.MyIntegerValue), null));
-            Assert.AreEqual("test", converter.Convert(model, null, nameof(TestModel.Reference), null));
-        }
+        Assert.AreEqual(42, converter.Convert(model, null, nameof(TestModel.MyIntegerValue), null));
+        Assert.AreEqual("test", converter.Convert(model, null, nameof(TestModel.Reference), null));
     }
 }

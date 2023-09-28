@@ -1,388 +1,387 @@
-﻿namespace Orc.FilterBuilder.Tests.Expressions
+﻿namespace Orc.FilterBuilder.Tests.Expressions;
+
+using System;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+public class EnumExpressionFacts
 {
-    using System;
-    using Moq;
-    using NUnit.Framework;
+    public enum TestEnum
+    {
+        Enum1,
+        Enum2
+    }
+
+    private struct NonEnum
+    {
+    }
 
     [TestFixture]
-    public class EnumExpressionFacts
+    public class The_Constructor
     {
-        public enum TestEnum
+        [Test]
+        public void Succeeds()
         {
-            Enum1,
-            Enum2
+            new EnumExpression<TestEnum>(false);
         }
 
-        private struct NonEnum
+        [Test]
+        public void Throws_ArgumentException_Whether_The_Generic_Argument_Is_Not_An_Enum()
         {
+            Assert.Catch<ArgumentException>(() => new EnumExpression<NonEnum>(false));
         }
 
-        [TestFixture]
-        public class The_Constructor
+        [Test]
+        public void Initizalize_The_Value_Property_With_The_First_Enum_Value()
         {
-            [Test]
-            public void Succeeds()
-            {
-                new EnumExpression<TestEnum>(false);
-            }
-
-            [Test]
-            public void Throws_ArgumentException_Whether_The_Generic_Argument_Is_Not_An_Enum()
-            {
-                Assert.Catch<ArgumentException>(() => new EnumExpression<NonEnum>(false));
-            }
-
-            [Test]
-            public void Initizalize_The_Value_Property_With_The_First_Enum_Value()
-            {
-                var enumExpression = new EnumExpression<TestEnum>(false);
-                Assert.AreEqual(TestEnum.Enum1, enumExpression.Value);
-            }
-
-            [Test]
-            [TestCase(TestEnum.Enum1)]
-            [TestCase(TestEnum.Enum2)]
-            public void Initizalize_The_EnumValues_Property_With_All_Enum_Values(TestEnum value)
-            {
-                var enumExpression = new EnumExpression<TestEnum>(false);
-                Assert.Contains(value, enumExpression.EnumValues);
-            }
+            var enumExpression = new EnumExpression<TestEnum>(false);
+            Assert.AreEqual(TestEnum.Enum1, enumExpression.Value);
         }
 
-        [TestFixture]
-        public class The_CalculateResult_Method
+        [Test]
+        [TestCase(TestEnum.Enum1)]
+        [TestCase(TestEnum.Enum2)]
+        public void Initizalize_The_EnumValues_Property_With_All_Enum_Values(TestEnum value)
         {
-            [Test]
-            public void Throws_NotSupportedException_Whether_The_SelectedCondition_Is_IsNull_And_Is_Not_Nullable()
+            var enumExpression = new EnumExpression<TestEnum>(false);
+            Assert.Contains(value, enumExpression.EnumValues);
+        }
+    }
+
+    [TestFixture]
+    public class The_CalculateResult_Method
+    {
+        [Test]
+        public void Throws_NotSupportedException_Whether_The_SelectedCondition_Is_IsNull_And_Is_Not_Nullable()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
+
+            var enumExpression = new EnumExpression<TestEnum>(false) {SelectedCondition = Condition.IsNull};
+
+            Assert.Catch<NotSupportedException>(() => enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
+
+        [Test]
+        public void Throws_NotSupportedException_Whether_The_SelectedCondition_Is_NotIsNull_And_Is_Not_Nullable()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
+
+            var enumExpression = new EnumExpression<TestEnum>(false) {SelectedCondition = Condition.NotIsNull};
+
+            Assert.Catch<NotSupportedException>(() => enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
+
+        [Test]
+        [TestCase(Condition.Matches)]
+        [TestCase(Condition.DoesNotMatch)]
+        [TestCase(Condition.Contains)]
+        [TestCase(Condition.DoesNotContain)]
+        [TestCase(Condition.StartsWith)]
+        [TestCase(Condition.DoesNotStartWith)]
+        [TestCase(Condition.EndsWith)]
+        [TestCase(Condition.DoesNotEndWith)]
+        public void Throws_NotSupportedException_Whether_The_SelectedCondition_Is_Not_Supported(Condition condition)
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
+                Value = TestEnum.Enum1,
+                SelectedCondition = condition
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false) {SelectedCondition = Condition.IsNull};
+            Assert.Catch<NotSupportedException>(() => enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.Catch<NotSupportedException>(() => enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_EqualsTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Throws_NotSupportedException_Whether_The_SelectedCondition_Is_NotIsNull_And_Is_Not_Nullable()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.EqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false) {SelectedCondition = Condition.NotIsNull};
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.Catch<NotSupportedException>(() => enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Not_Equals_To_Value_And_SelectedCondition_Is_EqualsTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            [TestCase(Condition.Matches)]
-            [TestCase(Condition.DoesNotMatch)]
-            [TestCase(Condition.Contains)]
-            [TestCase(Condition.DoesNotContain)]
-            [TestCase(Condition.StartsWith)]
-            [TestCase(Condition.DoesNotStartWith)]
-            [TestCase(Condition.EndsWith)]
-            [TestCase(Condition.DoesNotEndWith)]
-            public void Throws_NotSupportedException_Whether_The_SelectedCondition_Is_Not_Supported(Condition condition)
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.EqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = condition
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.Catch<NotSupportedException>(() => enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Not_Equals_To_Value_And_SelectedCondition_Is_NotEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_EqualsTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.NotEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.EqualTo
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_NotEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Not_Equals_To_Value_And_SelectedCondition_Is_EqualsTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.NotEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.EqualTo
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_GreaterThan()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Not_Equals_To_Value_And_SelectedCondition_Is_NotEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.GreaterThan
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.NotEqualTo
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_GreaterThan()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_NotEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.GreaterThan
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.NotEqualTo
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_GreaterThanOrEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_GreaterThan()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.GreaterThanOrEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.GreaterThan
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_GreaterThanOrEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_GreaterThan()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.GreaterThanOrEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.GreaterThan
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_GreaterThanOrEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_GreaterThanOrEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.GreaterThanOrEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.GreaterThanOrEqualTo
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_LessThan()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_GreaterThanOrEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.LessThan
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.GreaterThanOrEqualTo
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_LessThan()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_GreaterThanOrEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.LessThan
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.GreaterThanOrEqualTo
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_LessThanOrEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_LessThan()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum2,
+                SelectedCondition = Condition.LessThanOrEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.LessThan
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_LessThanOrEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_LessThan()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.LessThanOrEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.LessThan
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_LessThanOrEqualTo()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Less_Than_To_Value_And_SelectedCondition_Is_LessThanOrEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(false)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                Value = TestEnum.Enum1,
+                SelectedCondition = Condition.LessThanOrEqualTo
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum2,
-                    SelectedCondition = Condition.LessThanOrEqualTo
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Is_Null_And_SelectedCondition_Is_IsNull()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Equals_To_Value_And_SelectedCondition_Is_LessThanOrEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(true)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum1);
+                SelectedCondition = Condition.IsNull
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.LessThanOrEqualTo
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Not_Is_Null_And_SelectedCondition_Is_IsNull()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Greater_Than_To_Value_And_SelectedCondition_Is_LessThanOrEqualTo()
+            var enumExpression = new EnumExpression<TestEnum>(true)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
+                SelectedCondition = Condition.IsNull
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(false)
-                {
-                    Value = TestEnum.Enum1,
-                    SelectedCondition = Condition.LessThanOrEqualTo
-                };
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_True_Whether_The_Entity_Property_Value_Not_Is_Null_And_SelectedCondition_Is_NotIsNull()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
 
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Is_Null_And_SelectedCondition_Is_IsNull()
+            var enumExpression = new EnumExpression<TestEnum>(true)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
+                SelectedCondition = Condition.NotIsNull
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(true)
-                {
-                    SelectedCondition = Condition.IsNull
-                };
+            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+        }
 
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+        [Test]
+        public void Returns_False_Whether_The_Entity_Property_Value_Is_Null_And_SelectedCondition_Is_NotIsNull()
+        {
+            var entity = new object();
+            var propertyMetadataMock = new Mock<IPropertyMetadata>();
+            propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
 
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Not_Is_Null_And_SelectedCondition_Is_IsNull()
+            var enumExpression = new EnumExpression<TestEnum>(true)
             {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
+                SelectedCondition = Condition.NotIsNull
+            };
 
-                var enumExpression = new EnumExpression<TestEnum>(true)
-                {
-                    SelectedCondition = Condition.IsNull
-                };
-
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
-
-            [Test]
-            public void Returns_True_Whether_The_Entity_Property_Value_Not_Is_Null_And_SelectedCondition_Is_NotIsNull()
-            {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(TestEnum.Enum2);
-
-                var enumExpression = new EnumExpression<TestEnum>(true)
-                {
-                    SelectedCondition = Condition.NotIsNull
-                };
-
-                Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
-
-            [Test]
-            public void Returns_False_Whether_The_Entity_Property_Value_Is_Null_And_SelectedCondition_Is_NotIsNull()
-            {
-                var entity = new object();
-                var propertyMetadataMock = new Mock<IPropertyMetadata>();
-                propertyMetadataMock.Setup(metadata => metadata.GetValue(entity)).Returns(null);
-
-                var enumExpression = new EnumExpression<TestEnum>(true)
-                {
-                    SelectedCondition = Condition.NotIsNull
-                };
-
-                Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
-            }
+            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
         }
     }
 }
