@@ -1,36 +1,35 @@
-﻿namespace Orc.FilterBuilder.Converters
+﻿namespace Orc.FilterBuilder.Converters;
+
+using System;
+using System.Windows;
+using Catel;
+using Catel.MVVM.Converters;
+
+public class ConditionTreeItemConverter : VisibilityConverterBase
 {
-    using System;
-    using System.Windows;
-    using Catel;
-    using Catel.MVVM.Converters;
-
-    public class ConditionTreeItemConverter : VisibilityConverterBase
+    public ConditionTreeItemConverter()
+        : base(Visibility.Collapsed)
     {
-        public ConditionTreeItemConverter()
-            : base(Visibility.Collapsed)
-        {
 
+    }
+
+    protected override bool IsVisible(object? value, Type targetType, object? parameter)
+    {
+        if (parameter is null)
+        {
+            return false;
         }
 
-        protected override bool IsVisible(object? value, Type targetType, object? parameter)
+        switch ((string) parameter)
         {
-            if (parameter is null)
-            {
-                return false;
-            }
+            case "Group":
+                return value is ConditionGroup;
 
-            switch ((string) parameter)
-            {
-                case "Group":
-                    return value is ConditionGroup;
+            case "Expression":
+                return value is PropertyExpression;
 
-                case "Expression":
-                    return value is PropertyExpression;
-
-                default:
-                    throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern"), parameter));
-            }
+            default:
+                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern"), parameter));
         }
     }
 }

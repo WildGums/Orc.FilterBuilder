@@ -1,21 +1,20 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System.Diagnostics;
+
+[DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
+public class SByteExpression : NumericExpression<sbyte>
 {
-    using System.Diagnostics;
-
-    [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    public class SByteExpression : NumericExpression<sbyte>
+    public SByteExpression()
+        : this(true)
     {
-        public SByteExpression()
-            : this(true)
-        {
-        }
+    }
 
-        public SByteExpression(bool isNullable)
-        {
-            IsDecimal = false;
-            IsNullable = isNullable;
-            IsSigned = true;
-            ValueControlType = ValueControlType.SByte;
-        }
+    public SByteExpression(bool isNullable)
+    {
+        IsDecimal = false;
+        IsNullable = isNullable;
+        IsSigned = true;
+        ValueControlType = ValueControlType.SByte;
     }
 }

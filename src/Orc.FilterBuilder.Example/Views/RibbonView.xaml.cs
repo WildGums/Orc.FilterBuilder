@@ -1,18 +1,17 @@
-﻿namespace Orc.FilterBuilder.Example.Views
-{
-    using Catel.Windows.Controls;
+﻿namespace Orc.FilterBuilder.Example.Views;
 
+using Catel.Windows.Controls;
+
+/// <summary>
+/// Interaction logic for RibbonView.xaml.
+/// </summary>
+public partial class RibbonView : UserControl
+{
     /// <summary>
-    /// Interaction logic for RibbonView.xaml.
+    /// Initializes a new instance of the <see cref="RibbonView"/> class.
     /// </summary>
-    public partial class RibbonView : UserControl
+    public RibbonView()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RibbonView"/> class.
-        /// </summary>
-        public RibbonView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

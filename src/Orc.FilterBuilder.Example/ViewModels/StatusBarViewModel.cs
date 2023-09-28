@@ -1,8 +1,7 @@
-﻿namespace Orc.FilterBuilder.Example.ViewModels
-{
-    using Catel.MVVM;
+﻿namespace Orc.FilterBuilder.Example.ViewModels;
 
-    public class StatusBarViewModel : ViewModelBase
-    {
-    }
+using Catel.MVVM;
+
+public class StatusBarViewModel : ViewModelBase
+{
 }

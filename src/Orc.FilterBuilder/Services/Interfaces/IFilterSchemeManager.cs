@@ -1,20 +1,19 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Threading.Tasks;
+
+public interface IFilterSchemeManager
 {
-    using System;
-    using System.Threading.Tasks;
-
-    public interface IFilterSchemeManager
-    {
-        bool AutoSave { get; set; }
-        FilterSchemes FilterSchemes { get; }
-        object? Scope { get; set; }
+    bool AutoSave { get; set; }
+    FilterSchemes FilterSchemes { get; }
+    object? Scope { get; set; }
         
-        event EventHandler<EventArgs>? Updated;
-        event EventHandler<EventArgs>? Loaded;
-        event EventHandler<EventArgs>? Saved;
+    event EventHandler<EventArgs>? Updated;
+    event EventHandler<EventArgs>? Loaded;
+    event EventHandler<EventArgs>? Saved;
 
-        Task UpdateFiltersAsync();
-        Task<bool> LoadAsync(string? fileName = null);
-        Task SaveAsync(string? fileName = null);
-    }
+    Task UpdateFiltersAsync();
+    Task<bool> LoadAsync(string? fileName = null);
+    Task SaveAsync(string? fileName = null);
 }

@@ -1,76 +1,71 @@
-﻿namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests;
+
+public class TestAttributeValue
 {
-    public class TestAttributeValue
+    public TestAttributeValue(object value, TestAttributeType attributeType)
     {
-        public TestAttributeValue(object value, TestAttributeType attributeType)
+        Value = value;
+        AttributeType = attributeType;
+    }
+
+    public object Value { get; set; }
+    public TestAttributeType AttributeType { get; set; }
+
+    public override string ToString()
+    {
+        return $"{AttributeType.Name}: {Value}";
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj))
         {
-            Value = value;
-            AttributeType = attributeType;
+            return false;
         }
 
-        #region Properties
-        public object Value { get; set; }
-        public TestAttributeType AttributeType { get; set; }
-        #endregion
-
-        #region Methods
-        public override string ToString()
+        if (ReferenceEquals(this, obj))
         {
-            return $"{AttributeType.Name}: {Value}";
+            return true;
         }
 
-        public override bool Equals(object obj)
+        if (obj.GetType() != GetType())
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((TestAttributeValue) obj);
+            return false;
         }
 
-        public bool Equals(TestAttributeValue other)
+        return Equals((TestAttributeValue) obj);
+    }
+
+    public bool Equals(TestAttributeValue other)
+    {
+        if (ReferenceEquals(null, other))
         {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return Equals(AttributeType, other.AttributeType) && Equals(Value, other.Value);
+            return false;
         }
 
-        public override int GetHashCode()
+        if (ReferenceEquals(this, other))
         {
-            unchecked
-            {
-                return ((AttributeType?.GetHashCode() ?? 0)*397) ^ (Value?.GetHashCode() ?? 0);
-            }
+            return true;
         }
 
-        public static bool operator ==(TestAttributeValue left, TestAttributeValue right)
-        {
-            return Equals(left, right);
-        }
+        return Equals(AttributeType, other.AttributeType) && Equals(Value, other.Value);
+    }
 
-        public static bool operator !=(TestAttributeValue left, TestAttributeValue right)
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            return !Equals(left, right);
+            return ((AttributeType?.GetHashCode() ?? 0)*397) ^ (Value?.GetHashCode() ?? 0);
         }
-        #endregion
+    }
+
+    public static bool operator ==(TestAttributeValue left, TestAttributeValue right)
+    {
+        return Equals(left, right);
+    }
+
+    public static bool operator !=(TestAttributeValue left, TestAttributeValue right)
+    {
+        return !Equals(left, right);
     }
 }

@@ -1,127 +1,126 @@
-﻿namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests;
+
+using System;
+using System.Collections.Generic;
+using Automation;
+using NUnit.Framework;
+using Orc.Automation;
+using EditFilterView = Views.EditFilterView;
+
+[Explicit]
+[TestFixture]
+public class EditFilterViewFacts : StyledControlTestFacts<EditFilterView>
 {
-    using System;
-    using System.Collections.Generic;
-    using Automation;
-    using NUnit.Framework;
-    using Orc.Automation;
-    using EditFilterView = Views.EditFilterView;
+    [Target]
+    public Automation.EditFilterView Target { get; set; }
 
-    [Explicit]
-    [TestFixture]
-    public class EditFilterViewFacts : StyledControlTestFacts<EditFilterView>
+    public static IReadOnlyList<TestEntity> TestCollection =>
+        new List<TestEntity>
+        {
+            new() { Age = 1, FirstName = "Record 1", DateOfBirth = DateTime.Today},
+            new() { Age = 2, FirstName = "Record 2", DateOfBirth = new DateTime(1989, 7, 4)},
+            new() { Age = 3, FirstName = "Record 3", DateOfBirth = new DateTime(1989, 4, 17)},
+        };
+
+    [Test]
+    public void VerifyApi()
     {
-        [Target]
-        public Automation.EditFilterView Target { get; set; }
+        var target = Target;
+        var model = target.Current;
 
-        public static IReadOnlyList<TestEntity> TestCollection =>
-            new List<TestEntity>
-            {
-                new() { Age = 1, FirstName = "Record 1", DateOfBirth = DateTime.Today},
-                new() { Age = 2, FirstName = "Record 2", DateOfBirth = new DateTime(1989, 7, 4)},
-                new() { Age = 3, FirstName = "Record 3", DateOfBirth = new DateTime(1989, 4, 17)},
-            };
+        var filterScheme = FilterSchemeBuilder.Start<TestEntity>()
+            .Or()
+            .And()
+            .Property(nameof(TestEntity.Age), Condition.EqualTo, 1)
+            .Property(nameof(TestEntity.FirstName), Condition.Contains, "1")
+            .FinishConditionGroup()
 
-        [Test]
-        public void VerifyApi()
-        {
-            var target = Target;
-            var model = target.Current;
+            .And()
+            .Property(nameof(TestEntity.Age), Condition.EqualTo, 2)
+            .Property(nameof(TestEntity.FirstName), Condition.Contains, "2")
+            .Property(nameof(TestEntity.DateOfBirth), Condition.EqualTo, new DateTime(1989, 4, 7))
+            .FinishConditionGroup()
 
-            var filterScheme = FilterSchemeBuilder.Start<TestEntity>()
-                .Or()
-                    .And()
-                        .Property(nameof(TestEntity.Age), Condition.EqualTo, 1)
-                        .Property(nameof(TestEntity.FirstName), Condition.Contains, "1")
-                    .FinishConditionGroup()
+            .ToFilterScheme();
 
-                    .And()
-                        .Property(nameof(TestEntity.Age), Condition.EqualTo, 2)
-                        .Property(nameof(TestEntity.FirstName), Condition.Contains, "2")
-                        .Property(nameof(TestEntity.DateOfBirth), Condition.EqualTo, new DateTime(1989, 4, 7))
-                    .FinishConditionGroup()
+        model.FilterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, TestCollection, true, true);
 
-                .ToFilterScheme();
+        EditFilterViewAssert.Match(target, filterScheme);
+    }
 
-            model.FilterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, TestCollection, true, true);
+    [Test]
+    public void CorrectlyInitializeTree()
+    {
+        var target = Target;
+        var model = target.Current;
 
-            EditFilterViewAssert.Match(target, filterScheme);
-        }
+        InitializeTestTree();
 
-        [Test]
-        public void CorrectlyInitializeTree()
-        {
-            var target = Target;
-            var model = target.Current;
+        var scheme = model.FilterSchemeEditInfo.FilterScheme;
 
-            InitializeTestTree();
+        EditFilterViewAssert.Match(target, scheme);
+    }
 
-            var scheme = model.FilterSchemeEditInfo.FilterScheme;
+    [Test]
+    public void CorrectlyFilterPreview()
+    {
+        var target = Target;
+        var model = target.Current;
+        var testCollection = TestCollection;
 
-            EditFilterViewAssert.Match(target, scheme);
-        }
+        //Init filter
+        var filterScheme = FilterSchemeBuilder.Start<TestEntity>()
+            .Or()
+            .And()
+            .Property(nameof(TestEntity.Age), Condition.EqualTo, 1)
+            .Property(nameof(TestEntity.FirstName), Condition.Contains, "1")
+            .FinishConditionGroup()
 
-        [Test]
-        public void CorrectlyFilterPreview()
-        {
-            var target = Target;
-            var model = target.Current;
-            var testCollection = TestCollection;
+            .And()
+            .Property(nameof(TestEntity.Age), Condition.EqualTo, 2)
+            .Property(nameof(TestEntity.FirstName), Condition.Contains, "2")
+            .FinishConditionGroup()
 
-            //Init filter
-            var filterScheme = FilterSchemeBuilder.Start<TestEntity>()
-                .Or()
-                .And()
-                    .Property(nameof(TestEntity.Age), Condition.EqualTo, 1)
-                    .Property(nameof(TestEntity.FirstName), Condition.Contains, "1")
-                .FinishConditionGroup()
+            .ToFilterScheme();
+        model.FilterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, testCollection, true, true);
 
-                .And()
-                    .Property(nameof(TestEntity.Age), Condition.EqualTo, 2)
-                    .Property(nameof(TestEntity.FirstName), Condition.Contains, "2")
-                .FinishConditionGroup()
+        var expectedPreviewCollection = new List<TestEntity>();
+        filterScheme.Apply(testCollection, expectedPreviewCollection);
 
-                .ToFilterScheme();
-            model.FilterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, testCollection, true, true);
+        target.IsLivePreviewEnabled = true;
+        target.IsPreviewCollectionVisible = true;
 
-            var expectedPreviewCollection = new List<TestEntity>();
-            filterScheme.Apply(testCollection, expectedPreviewCollection);
+        Wait.UntilResponsive();
 
-            target.IsLivePreviewEnabled = true;
-            target.IsPreviewCollectionVisible = true;
+        var previewCollection = target.PreviewCollection;
 
-            Wait.UntilResponsive();
+        CollectionAssert.AreEquivalent(previewCollection, expectedPreviewCollection);
+    }
 
-            var previewCollection = target.PreviewCollection;
+    private void InitializeTestTree()
+    {
+        var target = Target;
+        var testCollection = TestCollection;
 
-            CollectionAssert.AreEquivalent(previewCollection, expectedPreviewCollection);
-        }
+        target.Initialize(testCollection);
+        var root = target.Root as EditFilterConditionGroupTreeItem;
 
-        private void InitializeTestTree()
-        {
-            var target = Target;
-            var testCollection = TestCollection;
+        root.And()
+            .Property(nameof(TestEntity.Age), Condition.EqualTo, 1)
+            .Property(nameof(TestEntity.DateOfBirth), Condition.GreaterThan, DateTime.Today)
+            .Property(nameof(TestEntity.FirstName), Condition.Contains, "1")
+            .Property(nameof(TestEntity.IsActive), Condition.EqualTo, true)
+            .Or()
+            .Property(nameof(TestEntity.IsActive), Condition.EqualTo, false)
+            .Property(nameof(TestEntity.Duration), Condition.NotEqualTo, TimeSpan.FromMilliseconds(1000))
+            .Property(nameof(TestEntity.FirstName), Condition.IsEmpty)
+            .FinishCondition()
+            .FinishCondition()
 
-            target.Initialize(testCollection);
-            var root = target.Root as EditFilterConditionGroupTreeItem;
-
-            root.And()
-                    .Property(nameof(TestEntity.Age), Condition.EqualTo, 1)
-                    .Property(nameof(TestEntity.DateOfBirth), Condition.GreaterThan, DateTime.Today)
-                    .Property(nameof(TestEntity.FirstName), Condition.Contains, "1")
-                    .Property(nameof(TestEntity.IsActive), Condition.EqualTo, true)
-                    .Or()
-                        .Property(nameof(TestEntity.IsActive), Condition.EqualTo, false)
-                        .Property(nameof(TestEntity.Duration), Condition.NotEqualTo, TimeSpan.FromMilliseconds(1000))
-                        .Property(nameof(TestEntity.FirstName), Condition.IsEmpty)
-                    .FinishCondition()
-                .FinishCondition()
-
-                .And()
-                    .Property(nameof(TestEntity.Age), Condition.EqualTo, 2)
-                    .Property(nameof(TestEntity.DateOfBirth), Condition.GreaterThan, DateTime.Today)
-                    .Property(nameof(TestEntity.Duration), Condition.LessThan, TimeSpan.FromMilliseconds(200000))
-                .FinishCondition();
-        }
+            .And()
+            .Property(nameof(TestEntity.Age), Condition.EqualTo, 2)
+            .Property(nameof(TestEntity.DateOfBirth), Condition.GreaterThan, DateTime.Today)
+            .Property(nameof(TestEntity.Duration), Condition.LessThan, TimeSpan.FromMilliseconds(200000))
+            .FinishCondition();
     }
 }

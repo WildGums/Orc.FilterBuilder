@@ -1,67 +1,66 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Linq;
+using System.Text;
+
+public class ConditionGroup : ConditionTreeItem
 {
-    using System;
-    using System.Linq;
-    using System.Text;
-
-    public class ConditionGroup : ConditionTreeItem
+    public ConditionGroup()
     {
-        public ConditionGroup()
+        Type = ConditionGroupType.And;
+    }
+
+    public ConditionGroupType Type { get; set; }
+
+    public override bool CalculateResult(object entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        if (!Items.Any())
         {
-            Type = ConditionGroupType.And;
+            return true;
         }
 
-        public ConditionGroupType Type { get; set; }
-
-        public override bool CalculateResult(object entity)
+        if (Type == ConditionGroupType.And)
         {
-            ArgumentNullException.ThrowIfNull(entity);
+            return Items.Aggregate(true, (current, item) => current && item.CalculateResult(entity));
+        }
+        else
+        {
+            return Items.Aggregate(false, (current, item) => current || item.CalculateResult(entity));
+        }
+    }
 
-            if (!Items.Any())
-            {
-                return true;
-            }
+    public override string ToString()
+    {
+        var stringBuilder = new StringBuilder();
 
-            if (Type == ConditionGroupType.And)
-            {
-                return Items.Aggregate(true, (current, item) => current && item.CalculateResult(entity));
-            }
-            else
-            {
-                return Items.Aggregate(false, (current, item) => current || item.CalculateResult(entity));
-            }
+        var groupType = Type.ToString().ToLower();
+
+        var itemCount = Items.Count;
+        if (itemCount > 1)
+        {
+            stringBuilder.Append("(");
         }
 
-        public override string ToString()
+        for (var i = 0; i < itemCount; i++)
         {
-            var stringBuilder = new StringBuilder();
-
-            var groupType = Type.ToString().ToLower();
-
-            var itemCount = Items.Count;
-            if (itemCount > 1)
+            if (i > 0)
             {
-                stringBuilder.Append("(");
+                stringBuilder.AppendFormat(" {0} ", groupType);
             }
 
-            for (var i = 0; i < itemCount; i++)
-            {
-                if (i > 0)
-                {
-                    stringBuilder.AppendFormat(" {0} ", groupType);
-                }
-
-                var item = Items[i];
-                var itemString = item.ToString();
-                stringBuilder.Append(itemString);
-            }
-
-            if (itemCount > 1)
-            {
-                stringBuilder.Append(")");
-            }
-
-            return stringBuilder.ToString();
+            var item = Items[i];
+            var itemString = item.ToString();
+            stringBuilder.Append(itemString);
         }
+
+        if (itemCount > 1)
+        {
+            stringBuilder.Append(")");
+        }
+
+        return stringBuilder.ToString();
     }
 }

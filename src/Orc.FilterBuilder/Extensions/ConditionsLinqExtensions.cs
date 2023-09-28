@@ -1,117 +1,117 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using Catel;
+using Catel.Logging;
+using Catel.Reflection;
+
+public static class ConditionsLinqExtensions
 {
-    using System;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using Catel;
-    using Catel.Logging;
-    using Catel.Reflection;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public static class ConditionsLinqExtensions
+    public static Expression<Func<T, bool>> BuildLambda<T>(this ConditionTreeItem conditionTreeItem)
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        ArgumentNullException.ThrowIfNull(conditionTreeItem);
 
-        public static Expression<Func<T, bool>> BuildLambda<T>(this ConditionTreeItem conditionTreeItem)
+        var type = typeof(T);
+        var parameterExpression = Expression.Parameter(type, "item");
+        var expression = conditionTreeItem.BuildExpression(parameterExpression);
+        if (expression is null)
         {
-            ArgumentNullException.ThrowIfNull(conditionTreeItem);
+            throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'");
+        }
 
-            var type = typeof(T);
-            var parameterExpression = Expression.Parameter(type, "item");
-            var expression = conditionTreeItem.BuildExpression(parameterExpression);
-            if (expression is null)
-            {
+        return Expression.Lambda<Func<T, bool>>(expression, parameterExpression);
+    }
+
+    private static Expression? BuildExpression(this ConditionTreeItem conditionTreeItem,
+        ParameterExpression parameterExpression)
+    {
+        switch (conditionTreeItem)
+        {
+            case ConditionGroup conditionGroup:
+                return conditionGroup.BuildExpression(parameterExpression);
+
+            case PropertyExpression propertyExpression:
+                return propertyExpression.BuildExpression(parameterExpression);
+
+            default:
                 throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'");
-            }
+        }
+    }
 
-            return Expression.Lambda<Func<T, bool>>(expression, parameterExpression);
+    private static Expression? BuildExpression(this ConditionGroup conditionGroup, ParameterExpression parameterExpression)
+    {
+        if (!conditionGroup.Items.Any())
+        {
+            return null;
         }
 
-        private static Expression? BuildExpression(this ConditionTreeItem conditionTreeItem,
-            ParameterExpression parameterExpression)
+        //// Revision: Why final is required.
+        Expression? final = null;
+        Expression? left = null;
+
+        foreach (var item in conditionGroup.Items)
         {
-            switch (conditionTreeItem)
+            var curExp = item?.BuildExpression(parameterExpression);
+            if (curExp is null)
             {
-                case ConditionGroup conditionGroup:
-                    return conditionGroup.BuildExpression(parameterExpression);
-
-                case PropertyExpression propertyExpression:
-                    return propertyExpression.BuildExpression(parameterExpression);
-
-                default:
-                    throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'");
-            }
-        }
-
-        private static Expression? BuildExpression(this ConditionGroup conditionGroup, ParameterExpression parameterExpression)
-        {
-            if (!conditionGroup.Items.Any())
-            {
-                return null;
+                continue;
             }
 
-            //// Revision: Why final is required.
-            Expression? final = null;
-            Expression? left = null;
-
-            foreach (var item in conditionGroup.Items)
+            if (left is null)
             {
-                var curExp = item?.BuildExpression(parameterExpression);
-                if (curExp is null)
+                left = curExp;
+            }
+            else
+            {
+                var rigth = curExp;
+                if (conditionGroup.Type == ConditionGroupType.And)
                 {
-                    continue;
-                }
-
-                if (left is null)
-                {
-                    left = curExp;
+                    final = Expression.AndAlso(left, rigth);
                 }
                 else
                 {
-                    var rigth = curExp;
-                    if (conditionGroup.Type == ConditionGroupType.And)
-                    {
-                        final = Expression.AndAlso(left, rigth);
-                    }
-                    else
-                    {
-                        final = Expression.OrElse(left, rigth);
-                    }
-
-                    left = final;
+                    final = Expression.OrElse(left, rigth);
                 }
-            }
 
-            return final ?? left;
+                left = final;
+            }
         }
 
-        private static Expression? BuildExpression(this PropertyExpression propertyExpression,
-            ParameterExpression parameterExpression)
-        {
-            if (propertyExpression.DataTypeExpression is null ||
-                propertyExpression.Property is null)
-            {
-                return null;
-            }
+        return final ?? left;
+    }
 
-            return propertyExpression.DataTypeExpression.BuildExpression(parameterExpression, propertyExpression.Property);
+    private static Expression? BuildExpression(this PropertyExpression propertyExpression,
+        ParameterExpression parameterExpression)
+    {
+        if (propertyExpression.DataTypeExpression is null ||
+            propertyExpression.Property is null)
+        {
+            return null;
         }
 
-        private static Expression? BuildExpression(this DataTypeExpression dataTypeExpression,
-            ParameterExpression parameterExpression, IPropertyMetadata propertyMetadata)
+        return propertyExpression.DataTypeExpression.BuildExpression(parameterExpression, propertyExpression.Property);
+    }
+
+    private static Expression? BuildExpression(this DataTypeExpression dataTypeExpression,
+        ParameterExpression parameterExpression, IPropertyMetadata propertyMetadata)
+    {
+        switch (dataTypeExpression)
         {
-            switch (dataTypeExpression)
-            {
-                case BooleanExpression booleanExpression:
-                    return booleanExpression.BuildExpression(parameterExpression,
-                        propertyMetadata.Name);
+            case BooleanExpression booleanExpression:
+                return booleanExpression.BuildExpression(parameterExpression,
+                    propertyMetadata.Name);
 
-                case StringExpression stringExpression:
-                    return stringExpression.BuildExpression(parameterExpression, propertyMetadata.Name);
+            case StringExpression stringExpression:
+                return stringExpression.BuildExpression(parameterExpression, propertyMetadata.Name);
 
-                case DateTimeExpression _:
-                    return dataTypeExpression.BuildNumericExpression(parameterExpression, propertyMetadata.Name);
+            case DateTimeExpression _:
+                return dataTypeExpression.BuildNumericExpression(parameterExpression, propertyMetadata.Name);
 
-                default:
+            default:
                 {
                     var type = dataTypeExpression.GetType();
                     var baseType = type.GetBaseTypeEx();
@@ -123,181 +123,180 @@
 
                     return null;
                 }
-            }
         }
+    }
 
-        private static Expression BuildNumericExpression(this DataTypeExpression expression,
-            ParameterExpression parameterExpression, string propertyName)
+    private static Expression BuildNumericExpression(this DataTypeExpression expression,
+        ParameterExpression parameterExpression, string propertyName)
+    {
+        return NumericExpression(expression.SelectedCondition,
+            BuildPropertyExpression(parameterExpression, propertyName),
+            Expression.Constant(expression.GetType().GetProperty("Value")?.GetValue(expression)),
+            BuildIsNullExpression(parameterExpression, propertyName));
+    }
+
+    private static Expression NumericExpression(Condition condition, Expression propertyExpression,
+        Expression valueExpression, Expression isNullExpression)
+    {
+        switch (condition)
         {
-            return NumericExpression(expression.SelectedCondition,
-                BuildPropertyExpression(parameterExpression, propertyName),
-                Expression.Constant(expression.GetType().GetProperty("Value")?.GetValue(expression)),
-                BuildIsNullExpression(parameterExpression, propertyName));
-        }
+            case Condition.EqualTo:
+                return Expression.AndAlso(Expression.Not(isNullExpression),
+                    Expression.Equal(propertyExpression, valueExpression));
 
-        private static Expression NumericExpression(Condition condition, Expression propertyExpression,
-            Expression valueExpression, Expression isNullExpression)
+            case Condition.NotEqualTo:
+                return Expression.OrElse(isNullExpression,
+                    Expression.NotEqual(propertyExpression, valueExpression));
+
+            case Condition.GreaterThan:
+                return Expression.AndAlso(Expression.Not(isNullExpression),
+                    Expression.GreaterThan(propertyExpression, valueExpression));
+
+            case Condition.GreaterThanOrEqualTo:
+                return Expression.AndAlso(Expression.Not(isNullExpression),
+                    Expression.GreaterThanOrEqual(propertyExpression, valueExpression));
+
+            case Condition.LessThan:
+                return Expression.AndAlso(Expression.Not(isNullExpression),
+                    Expression.LessThan(propertyExpression, valueExpression));
+
+            case Condition.LessThanOrEqualTo:
+                return Expression.AndAlso(Expression.Not(isNullExpression),
+                    Expression.LessThanOrEqual(propertyExpression, valueExpression));
+
+            case Condition.IsNull:
+                return isNullExpression;
+
+            case Condition.NotIsNull:
+                return Expression.Not(isNullExpression);
+
+            default:
+                throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(
+                    LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
+                    condition));
+        }
+    }
+
+    private static Expression BuildExpression(this BooleanExpression expression,
+        ParameterExpression parameterExpression, string propertyName)
+    {
+        switch (expression.SelectedCondition)
         {
-            switch (condition)
-            {
-                case Condition.EqualTo:
-                    return Expression.AndAlso(Expression.Not(isNullExpression),
-                        Expression.Equal(propertyExpression, valueExpression));
+            case Condition.EqualTo:
+                return Expression.AndAlso(Expression.Not(BuildIsNullExpression(parameterExpression, propertyName)),
+                    Expression.Equal(BuildPropertyExpression(parameterExpression, propertyName),
+                        Expression.Constant(expression.Value)));
 
-                case Condition.NotEqualTo:
-                    return Expression.OrElse(isNullExpression,
-                        Expression.NotEqual(propertyExpression, valueExpression));
-
-                case Condition.GreaterThan:
-                    return Expression.AndAlso(Expression.Not(isNullExpression),
-                        Expression.GreaterThan(propertyExpression, valueExpression));
-
-                case Condition.GreaterThanOrEqualTo:
-                    return Expression.AndAlso(Expression.Not(isNullExpression),
-                        Expression.GreaterThanOrEqual(propertyExpression, valueExpression));
-
-                case Condition.LessThan:
-                    return Expression.AndAlso(Expression.Not(isNullExpression),
-                        Expression.LessThan(propertyExpression, valueExpression));
-
-                case Condition.LessThanOrEqualTo:
-                    return Expression.AndAlso(Expression.Not(isNullExpression),
-                        Expression.LessThanOrEqual(propertyExpression, valueExpression));
-
-                case Condition.IsNull:
-                    return isNullExpression;
-
-                case Condition.NotIsNull:
-                    return Expression.Not(isNullExpression);
-
-                default:
-                    throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(
-                        LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
-                        condition));
-            }
+            default:
+                throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(
+                    LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
+                    expression.SelectedCondition));
         }
+    }
 
-        private static Expression BuildExpression(this BooleanExpression expression,
-            ParameterExpression parameterExpression, string propertyName)
+    private static Expression BuildExpression(this StringExpression expression,
+        ParameterExpression parameterExpression, string propertyName)
+    {
+        return BuildStringExpression(expression.SelectedCondition, Expression.Property(parameterExpression, propertyName), Expression.Constant(expression.Value));
+    }
+
+    //// TODO: Try to combine expression builders as much as possible.
+    private static Expression BuildStringExpression(Condition condition, Expression propertyExpression,
+        Expression valueExpression)
+    {
+        switch (condition)
         {
-            switch (expression.SelectedCondition)
-            {
-                case Condition.EqualTo:
-                    return Expression.AndAlso(Expression.Not(BuildIsNullExpression(parameterExpression, propertyName)),
-                        Expression.Equal(BuildPropertyExpression(parameterExpression, propertyName),
-                            Expression.Constant(expression.Value)));
+            case Condition.Contains:
+                return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                    Expression.Call(propertyExpression, typeof(string).GetMethod("Contains", TypeArray.From<string>())!,
+                        valueExpression));
 
-                default:
-                    throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(
-                        LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"),
-                        expression.SelectedCondition));
-            }
+            case Condition.DoesNotContain:
+                return Expression.Not(BuildStringExpression(Condition.Contains, propertyExpression, valueExpression));
+
+            case Condition.StartsWith:
+                return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                    Expression.Call(propertyExpression, typeof(string).GetMethod("StartsWith", TypeArray.From<string>())!,
+                        valueExpression));
+
+            case Condition.DoesNotStartWith:
+                return Expression.Not(BuildStringExpression(Condition.StartsWith, propertyExpression, valueExpression));
+
+            case Condition.EndsWith:
+                return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                    Expression.Call(propertyExpression, typeof(string).GetMethod("EndsWith", TypeArray.From<string>())!,
+                        valueExpression));
+
+            case Condition.DoesNotEndWith:
+                return Expression.Not(BuildStringExpression(Condition.EndsWith, propertyExpression, valueExpression));
+
+            case Condition.EqualTo:
+                return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
+                    Expression.Equal(propertyExpression, valueExpression));
+
+            case Condition.NotEqualTo:
+                return Expression.Not(BuildStringExpression(Condition.EqualTo, propertyExpression, valueExpression));
+
+            case Condition.GreaterThan:
+                return Expression.GreaterThan(Expression.Call(typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
+                        propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
+                    Expression.Constant(0));
+
+            case Condition.GreaterThanOrEqualTo:
+                return Expression.GreaterThanOrEqual(
+                    Expression.Call(
+                        typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
+                        propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)), Expression.Constant(0));
+
+            case Condition.LessThan:
+                return Expression.LessThan(Expression.Call(
+                        typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
+                        propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
+                    Expression.Constant(0));
+
+            case Condition.LessThanOrEqualTo:
+                return Expression.LessThanOrEqual(Expression.Call(
+                        typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
+                        propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
+                    Expression.Constant(0));
+
+            case Condition.IsNull:
+                return Expression.Equal(propertyExpression, Expression.Constant(null));
+
+            case Condition.NotIsNull:
+                return Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(null)));
+
+            case Condition.IsEmpty:
+                return Expression.Equal(propertyExpression, Expression.Constant(string.Empty));
+
+            case Condition.NotIsEmpty:
+                return Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(string.Empty)));
+
+            default:
+                throw Log.ErrorAndCreateException((x) => new NotSupportedException(x), 
+                    string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition));
         }
+    }
 
-        private static Expression BuildExpression(this StringExpression expression,
-            ParameterExpression parameterExpression, string propertyName)
+    private static Expression BuildIsNullExpression(ParameterExpression parameterExpression, string propertyName)
+    {
+        var type = Expression.Property(parameterExpression, propertyName).Type;
+        if (type.IsGenericTypeEx() && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            return BuildStringExpression(expression.SelectedCondition, Expression.Property(parameterExpression, propertyName), Expression.Constant(expression.Value));
+            return Expression.Equal(Expression.Property(parameterExpression, propertyName), Expression.Constant(null));
         }
 
-        //// TODO: Try to combine expression builders as much as possible.
-        private static Expression BuildStringExpression(Condition condition, Expression propertyExpression,
-            Expression valueExpression)
+        return Expression.Constant(false);
+    }
+
+    private static Expression BuildPropertyExpression(ParameterExpression parameterExpression, string propertyName)
+    {
+        var type = Expression.Property(parameterExpression, propertyName).Type;
+        if (type.IsGenericTypeEx() && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            switch (condition)
-            {
-                case Condition.Contains:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
-                        Expression.Call(propertyExpression, typeof(string).GetMethod("Contains", TypeArray.From<string>())!,
-                            valueExpression));
-
-                case Condition.DoesNotContain:
-                    return Expression.Not(BuildStringExpression(Condition.Contains, propertyExpression, valueExpression));
-
-                case Condition.StartsWith:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
-                        Expression.Call(propertyExpression, typeof(string).GetMethod("StartsWith", TypeArray.From<string>())!,
-                            valueExpression));
-
-                case Condition.DoesNotStartWith:
-                    return Expression.Not(BuildStringExpression(Condition.StartsWith, propertyExpression, valueExpression));
-
-                case Condition.EndsWith:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
-                        Expression.Call(propertyExpression, typeof(string).GetMethod("EndsWith", TypeArray.From<string>())!,
-                            valueExpression));
-
-                case Condition.DoesNotEndWith:
-                    return Expression.Not(BuildStringExpression(Condition.EndsWith, propertyExpression, valueExpression));
-
-                case Condition.EqualTo:
-                    return Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)),
-                        Expression.Equal(propertyExpression, valueExpression));
-
-                case Condition.NotEqualTo:
-                    return Expression.Not(BuildStringExpression(Condition.EqualTo, propertyExpression, valueExpression));
-
-                case Condition.GreaterThan:
-                    return Expression.GreaterThan(Expression.Call(typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
-                            propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
-                        Expression.Constant(0));
-
-                case Condition.GreaterThanOrEqualTo:
-                    return Expression.GreaterThanOrEqual(
-                        Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
-                            propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)), Expression.Constant(0));
-
-                case Condition.LessThan:
-                    return Expression.LessThan(Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
-                            propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
-                        Expression.Constant(0));
-
-                case Condition.LessThanOrEqualTo:
-                    return Expression.LessThanOrEqual(Expression.Call(
-                            typeof(string).GetMethod("Compare", TypeArray.From<string, string, StringComparison>())!,
-                            propertyExpression, valueExpression, Expression.Constant(StringComparison.OrdinalIgnoreCase)),
-                        Expression.Constant(0));
-
-                case Condition.IsNull:
-                    return Expression.Equal(propertyExpression, Expression.Constant(null));
-
-                case Condition.NotIsNull:
-                    return Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(null)));
-
-                case Condition.IsEmpty:
-                    return Expression.Equal(propertyExpression, Expression.Constant(string.Empty));
-
-                case Condition.NotIsEmpty:
-                    return Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(string.Empty)));
-
-                default:
-                    throw Log.ErrorAndCreateException((x) => new NotSupportedException(x), 
-                        string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition));
-            }
+            return Expression.Property(Expression.Property(parameterExpression, propertyName), "Value");
         }
 
-        private static Expression BuildIsNullExpression(ParameterExpression parameterExpression, string propertyName)
-        {
-            var type = Expression.Property(parameterExpression, propertyName).Type;
-            if (type.IsGenericTypeEx() && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return Expression.Equal(Expression.Property(parameterExpression, propertyName), Expression.Constant(null));
-            }
-
-            return Expression.Constant(false);
-        }
-
-        private static Expression BuildPropertyExpression(ParameterExpression parameterExpression, string propertyName)
-        {
-            var type = Expression.Property(parameterExpression, propertyName).Type;
-            if (type.IsGenericTypeEx() && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return Expression.Property(Expression.Property(parameterExpression, propertyName), "Value");
-            }
-
-            return Expression.Property(parameterExpression, propertyName);
-        }
+        return Expression.Property(parameterExpression, propertyName);
     }
 }

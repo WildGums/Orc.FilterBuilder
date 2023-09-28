@@ -1,13 +1,12 @@
-﻿namespace Orc.FilterBuilder.Tests
-{
-    using System.Windows.Automation;
-    using Orc.Automation;
+﻿namespace Orc.FilterBuilder.Tests;
 
-    public class SplitButton : AutomationControl<SplitButtonModel>
+using System.Windows.Automation;
+using Orc.Automation;
+
+public class SplitButton : AutomationControl<SplitButtonModel>
+{
+    public SplitButton(AutomationElement element) 
+        : base(element)
     {
-        public SplitButton(AutomationElement element) 
-            : base(element)
-        {
-        }
     }
 }

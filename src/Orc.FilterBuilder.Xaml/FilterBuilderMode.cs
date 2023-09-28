@@ -1,20 +1,19 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using Views;
+
+/// <summary>
+/// Enumeration of <see cref="FilterBuilderControl"/> work modes
+/// </summary>
+public enum FilterBuilderMode
 {
-    using Views;
+    /// <summary>
+    /// <see cref="FilterBuilderControl"/> creates filtered collection
+    /// </summary>
+    Collection,
 
     /// <summary>
-    /// Enumeration of <see cref="FilterBuilderControl"/> work modes
+    /// <see cref="FilterBuilderControl"/> creates filtering function
     /// </summary>
-    public enum FilterBuilderMode
-    {
-        /// <summary>
-        /// <see cref="FilterBuilderControl"/> creates filtered collection
-        /// </summary>
-        Collection,
-
-        /// <summary>
-        /// <see cref="FilterBuilderControl"/> creates filtering function
-        /// </summary>
-        FilteringFunction
-    }
+    FilteringFunction
 }

@@ -1,18 +1,17 @@
-﻿namespace Orc.FilterBuilder.Example.Views
-{
-    using Catel.Windows.Controls;
+﻿namespace Orc.FilterBuilder.Example.Views;
 
+using Catel.Windows.Controls;
+
+/// <summary>
+/// Interaction logic for StatusBarView.xaml.
+/// </summary>
+public partial class StatusBarView : UserControl
+{
     /// <summary>
-    /// Interaction logic for StatusBarView.xaml.
+    /// Initializes a new instance of the <see cref="StatusBarView"/> class.
     /// </summary>
-    public partial class StatusBarView : UserControl
+    public StatusBarView()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StatusBarView"/> class.
-        /// </summary>
-        public StatusBarView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

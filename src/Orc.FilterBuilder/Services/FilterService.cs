@@ -1,78 +1,77 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Collections;
+using System.Threading.Tasks;
+using Catel.IoC;
+using MethodTimer;
+
+public class FilterService : IFilterService
 {
-    using System;
-    using System.Collections;
-    using System.Threading.Tasks;
-    using Catel.IoC;
-    using MethodTimer;
+    private readonly IReflectionService _reflectionService;
+    private FilterScheme? _selectedFilter;
 
-    public class FilterService : IFilterService
+    public FilterService(IFilterSchemeManager filterSchemeManager)
     {
-        private readonly IReflectionService _reflectionService;
-        private FilterScheme? _selectedFilter;
+        ArgumentNullException.ThrowIfNull(filterSchemeManager);
 
-        public FilterService(IFilterSchemeManager filterSchemeManager)
-        {
-            ArgumentNullException.ThrowIfNull(filterSchemeManager);
-
-            var scope = filterSchemeManager.Scope;
+        var scope = filterSchemeManager.Scope;
 #pragma warning disable IDISP004 // Don't ignore created IDisposable.
-            _reflectionService = this.GetServiceLocator().ResolveRequiredType<IReflectionService>(scope);
+        _reflectionService = this.GetServiceLocator().ResolveRequiredType<IReflectionService>(scope);
 #pragma warning restore IDISP004 // Don't ignore created IDisposable.
 
-            filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
-        }
+        filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
+    }
 
-        public FilterScheme? SelectedFilter
+    public FilterScheme? SelectedFilter
+    {
+        get { return _selectedFilter; }
+        set
         {
-            get { return _selectedFilter; }
-            set
-            {
-                // ORCOMP-257: don't check for equality
+            // ORCOMP-257: don't check for equality
 
-                _selectedFilter = value;
+            _selectedFilter = value;
 
-                SelectedFilterChanged?.Invoke(this, EventArgs.Empty);
-            }
+            SelectedFilterChanged?.Invoke(this, EventArgs.Empty);
         }
+    }
 
-        /// <summary>
-        /// Occurs when any of the filters has been updated.
-        /// </summary>
-        public event EventHandler<EventArgs>? FiltersUpdated;
+    /// <summary>
+    /// Occurs when any of the filters has been updated.
+    /// </summary>
+    public event EventHandler<EventArgs>? FiltersUpdated;
 
-        /// <summary>
-        /// Occurs when the currently selected filter has changed.
-        /// </summary>
-        public event EventHandler<EventArgs>? SelectedFilterChanged;
+    /// <summary>
+    /// Occurs when the currently selected filter has changed.
+    /// </summary>
+    public event EventHandler<EventArgs>? SelectedFilterChanged;
 
-        public Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+    public Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+    {
+        ArgumentNullException.ThrowIfNull(filter);
+
+        FilterCollection(filter, rawCollection, filteredCollection);
+
+        return Task.CompletedTask;
+    }
+
+    [Time]
+    public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+    {
+        ArgumentNullException.ThrowIfNull(filter);
+
+        filter.EnsureIntegrity(_reflectionService);
+
+        if (filteredCollection is null)
         {
-            ArgumentNullException.ThrowIfNull(filter);
-
-            FilterCollection(filter, rawCollection, filteredCollection);
-
-            return Task.CompletedTask;
+            return;
         }
 
-        [Time]
-        public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
-        {
-            ArgumentNullException.ThrowIfNull(filter);
+        filter.Apply(rawCollection, filteredCollection);
+    }
 
-            filter.EnsureIntegrity(_reflectionService);
-
-            if (filteredCollection is null)
-            {
-                return;
-            }
-
-            filter.Apply(rawCollection, filteredCollection);
-        }
-
-        private void OnFilterSchemeManagerUpdated(object? sender, EventArgs e)
-        {
-            FiltersUpdated?.Invoke(this, EventArgs.Empty);
-        }
+    private void OnFilterSchemeManagerUpdated(object? sender, EventArgs e)
+    {
+        FiltersUpdated?.Invoke(this, EventArgs.Empty);
     }
 }

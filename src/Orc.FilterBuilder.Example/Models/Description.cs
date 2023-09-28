@@ -1,12 +1,11 @@
-﻿namespace FilterBuilder.Example.Models
-{
-    public class Description
-    {
-        public Description(string value)
-        {
-            Value = value;
-        }
+﻿namespace FilterBuilder.Example.Models;
 
-        public string Value { get; }
+public class Description
+{
+    public Description(string value)
+    {
+        Value = value;
     }
+
+    public string Value { get; }
 }

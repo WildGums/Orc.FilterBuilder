@@ -1,13 +1,12 @@
-﻿namespace Orc.FilterBuilder.Tests
-{
-    using System;
+﻿namespace Orc.FilterBuilder.Tests;
 
-    internal static class AssemblyDirectoryHelper
+using System;
+
+internal static class AssemblyDirectoryHelper
+{
+    public static string GetCurrentDirectory()
     {
-        public static string GetCurrentDirectory()
-        {
-            var directory = AppDomain.CurrentDomain.BaseDirectory;
-            return directory;
-        }
+        var directory = AppDomain.CurrentDomain.BaseDirectory;
+        return directory;
     }
 }
