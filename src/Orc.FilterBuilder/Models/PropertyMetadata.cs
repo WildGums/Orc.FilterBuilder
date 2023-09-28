@@ -76,12 +76,8 @@
                 return true;
             }
 
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((PropertyMetadata)obj);
+            return obj.GetType() == GetType() 
+                   && Equals((PropertyMetadata)obj);
         }
 
         public override int GetHashCode()
@@ -132,10 +128,7 @@
         {
             ArgumentNullException.ThrowIfNull(instance);
 
-            if (_propertyInfo is not null)
-            {
-                _propertyInfo.SetValue(instance, value, null);
-            }
+            _propertyInfo?.SetValue(instance, value, null);
 
             if (_propertyData is null)
             {

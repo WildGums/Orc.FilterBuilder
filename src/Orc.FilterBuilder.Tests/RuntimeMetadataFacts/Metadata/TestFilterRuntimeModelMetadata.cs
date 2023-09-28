@@ -53,11 +53,6 @@
         {
             var attributeName = attributeType?.Name;
 
-            if (ReferenceEquals(attributeName, null))
-            {
-                return null;
-            }
-
             TestAttributeValue value;
             return operation.Attributes.TryGetValue(attributeName, out value) ? value.Value : null;
         }
