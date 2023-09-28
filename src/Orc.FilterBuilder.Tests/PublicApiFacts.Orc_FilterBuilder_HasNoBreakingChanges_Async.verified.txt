@@ -98,7 +98,6 @@ namespace Orc.FilterBuilder
     public abstract class ConditionTreeItem : Catel.Data.ValidatableModelBase
     {
         public static readonly Catel.Data.IPropertyData IsValidProperty;
-        public static readonly Catel.Data.IPropertyData ItemsProperty;
         public static readonly Catel.Data.IPropertyData ParentProperty;
         protected ConditionTreeItem() { }
         [Catel.Data.ExcludeFromValidation]
@@ -238,7 +237,6 @@ namespace Orc.FilterBuilder
     }
     public class FilterSchemes : Catel.Data.ModelBase
     {
-        public static readonly Catel.Data.IPropertyData SchemesProperty;
         public FilterSchemes() { }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.FilterScheme> Schemes { get; }
         [Catel.Runtime.Serialization.ExcludeFromSerialization]
@@ -246,7 +244,7 @@ namespace Orc.FilterBuilder
     }
     public class FilterSerializationService : Orc.FilterBuilder.IFilterSerializationService
     {
-        public FilterSerializationService(Orc.FileSystem.IDirectoryService directoryService, Orc.FileSystem.IFileService fileService, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer) { }
+        public FilterSerializationService(Orc.FileSystem.IFileService fileService, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer) { }
         public virtual System.Threading.Tasks.Task<Orc.FilterBuilder.FilterSchemes> LoadFiltersAsync(string fileName) { }
         public virtual System.Threading.Tasks.Task SaveFiltersAsync(string fileName, Orc.FilterBuilder.FilterSchemes filterSchemes) { }
     }
@@ -396,7 +394,7 @@ namespace Orc.FilterBuilder
         public override bool Equals(object? obj) { }
         public override int GetHashCode() { }
         public object? GetValue(object instance) { }
-        public TValue GetValue<TValue>(object instance) { }
+        public TValue? GetValue<TValue>(object instance) { }
         public void SetValue(object instance, object? value) { }
     }
     public class ReflectionService : Orc.FilterBuilder.IReflectionService
