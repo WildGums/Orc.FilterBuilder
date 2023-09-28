@@ -26,17 +26,12 @@ public class BooleanExpression : DataTypeExpression
     {
         var entityValue = propertyMetadata.GetValue<bool>(entity);
 
-        switch (SelectedCondition)
+        return SelectedCondition switch
         {
-            case Condition.EqualTo:
-                return entityValue == Value;
-
-            case Condition.NotEqualTo:
-                return entityValue != Value;
-
-            default:
-                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
-        }
+            Condition.EqualTo => entityValue == Value,
+            Condition.NotEqualTo => entityValue != Value,
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+        };
     }
 
     public override string ToString()

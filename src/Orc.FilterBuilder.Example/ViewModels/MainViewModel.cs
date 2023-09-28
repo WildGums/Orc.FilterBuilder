@@ -27,10 +27,10 @@ public class MainViewModel : ViewModelBase
         RawItems = _testDataService.GetTestItems();
         FilteredItems = new FastObservableCollection<TestEntity>();
 
-        FilteredItems.CollectionChanged += (sender, e) => Log.Info("Collection updated");
-
-        Title = "Orc.FilterBuilder example";
+        FilteredItems.CollectionChanged += (_, _) => Log.Info("Collection updated");
     }
+
+    public override string Title => "Filter Builder Test";
 
 #pragma warning disable AvoidAsyncVoid
     private async void OnFilterServiceSelectedFilterChanged(object sender, EventArgs e)
@@ -41,15 +41,10 @@ public class MainViewModel : ViewModelBase
             var filter = _filterService.SelectedFilter;
             var items = RawItems;
             var result = await _filterService.FilterCollectionAsync(filter, items);
-            ((ICollection<TestEntity>)FilteredItems).ReplaceRange(result);
+            FilteredItems.ReplaceRange(result);
         }
     }
 
-    public ObservableCollection<TestEntity> RawItems { get; private set; }
-    public FastObservableCollection<TestEntity> FilteredItems { get; private set; }
-
-    public override string Title
-    {
-        get { return "Filter Builder Test"; }
-    }
+    public ObservableCollection<TestEntity> RawItems { get; }
+    public FastObservableCollection<TestEntity> FilteredItems { get; }
 }

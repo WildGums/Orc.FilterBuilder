@@ -28,9 +28,7 @@ public class FilterSchemeManager : IFilterSchemeManager
     }
 
     public bool AutoSave { get; set; }
-
     public FilterSchemes FilterSchemes { get; private set; }
-
     public object? Scope
     {
         get { return _scope; }
@@ -42,9 +40,7 @@ public class FilterSchemeManager : IFilterSchemeManager
     }
 
     public event EventHandler<EventArgs>? Updated;
-
     public event EventHandler<EventArgs>? Loaded;
-
     public event EventHandler<EventArgs>? Saved;
 
     public virtual async Task UpdateFiltersAsync()

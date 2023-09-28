@@ -6,12 +6,7 @@ using System.Text;
 
 public class ConditionGroup : ConditionTreeItem
 {
-    public ConditionGroup()
-    {
-        Type = ConditionGroupType.And;
-    }
-
-    public ConditionGroupType Type { get; set; }
+    public ConditionGroupType Type { get; set; } = ConditionGroupType.And;
 
     public override bool CalculateResult(object entity)
     {
@@ -22,14 +17,9 @@ public class ConditionGroup : ConditionTreeItem
             return true;
         }
 
-        if (Type == ConditionGroupType.And)
-        {
-            return Items.Aggregate(true, (current, item) => current && item.CalculateResult(entity));
-        }
-        else
-        {
-            return Items.Aggregate(false, (current, item) => current || item.CalculateResult(entity));
-        }
+        return Type == ConditionGroupType.And
+            ? Items.Aggregate(true, (current, item) => current && item.CalculateResult(entity)) 
+            : Items.Aggregate(false, (current, item) => current || item.CalculateResult(entity));
     }
 
     public override string ToString()
@@ -41,14 +31,14 @@ public class ConditionGroup : ConditionTreeItem
         var itemCount = Items.Count;
         if (itemCount > 1)
         {
-            stringBuilder.Append("(");
+            stringBuilder.Append('(');
         }
 
         for (var i = 0; i < itemCount; i++)
         {
             if (i > 0)
             {
-                stringBuilder.AppendFormat(" {0} ", groupType);
+                stringBuilder.Append($" {groupType} ");
             }
 
             var item = Items[i];
@@ -58,7 +48,7 @@ public class ConditionGroup : ConditionTreeItem
 
         if (itemCount > 1)
         {
-            stringBuilder.Append(")");
+            stringBuilder.Append(')');
         }
 
         return stringBuilder.ToString();

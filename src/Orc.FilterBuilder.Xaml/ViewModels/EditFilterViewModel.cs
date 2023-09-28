@@ -85,8 +85,7 @@ public class EditFilterViewModel : ViewModelBase
     public IEnumerable RawCollection { get; }
     public bool IsPreviewVisible { get; set; }
     public FastObservableCollection<object> PreviewItems { get; }
-
-    public List<IPropertyMetadata> InstanceProperties { get; private set; }
+    public List<IPropertyMetadata> InstanceProperties { get; }
 
     public Command<ConditionGroup> AddGroupCommand { get; }
     public Command<ConditionGroup> AddExpressionCommand { get; }
@@ -250,11 +249,6 @@ public class EditFilterViewModel : ViewModelBase
 
     private void UpdatePreviewItems(bool forceUpdate = false)
     {
-        if (FilterScheme is null || RawCollection is null)
-        {
-            return;
-        }
-
         if (!AllowLivePreview)
         {
             return;
@@ -280,7 +274,7 @@ public class EditFilterViewModel : ViewModelBase
 
     private void ApplyFilterScheme()
     {
-        FilterScheme?.Apply(RawCollection, PreviewItems);
+        FilterScheme.Apply(RawCollection, PreviewItems);
 
         IsLivePreviewDirty = false;
     }

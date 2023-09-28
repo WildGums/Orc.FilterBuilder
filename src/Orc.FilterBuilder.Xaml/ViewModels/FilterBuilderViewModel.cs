@@ -13,7 +13,7 @@ using Catel.MVVM;
 using Catel.Reflection;
 using Catel.Services;
 using Views;
-using CollectionHelper = FilterBuilder.CollectionHelper;
+using CollectionHelper = CollectionHelper;
 
 public class FilterBuilderViewModel : ViewModelBase
 {
@@ -181,12 +181,12 @@ public class FilterBuilderViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Log.Error(ex, $"Failed to edit filter scheme '{filterScheme?.Title}'");
+            Log.Error(ex, $"Failed to edit filter scheme '{filterScheme.Title}'");
             throw;
         }
     }
 
-    public TaskCommand ApplySchemeCommand { get; private set; }
+    public TaskCommand ApplySchemeCommand { get; }
 
     private bool OnApplySchemeCanExecute()
     {
@@ -253,23 +253,13 @@ public class FilterBuilderViewModel : ViewModelBase
             return false;
         }
 
-        if (_noFilterFilter is null)
-        {
-            return false;
-        }
-
         var selectedFilterScheme = SelectedFilterScheme;
         if (selectedFilterScheme is null)
         {
             return false;
         }
 
-        if (ReferenceEquals(selectedFilterScheme, _noFilterFilter))
-        {
-            return false;
-        }
-
-        return true;
+        return !ReferenceEquals(selectedFilterScheme, _noFilterFilter);
     }
 
     private void OnResetSchemeExecute()
@@ -351,7 +341,7 @@ public class FilterBuilderViewModel : ViewModelBase
 
     private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
     {
-        if (filterScheme is null || _applyingFilter)
+        if (_applyingFilter)
         {
             return;
         }

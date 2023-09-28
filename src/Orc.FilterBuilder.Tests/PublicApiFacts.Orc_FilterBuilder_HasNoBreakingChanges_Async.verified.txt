@@ -311,7 +311,7 @@ namespace Orc.FilterBuilder
         System.Type OwnerType { get; }
         System.Type Type { get; }
         object? GetValue(object instance);
-        TValue GetValue<TValue>(object instance);
+        TValue? GetValue<TValue>(object instance);
         void SetValue(object instance, object? value);
     }
     public interface IReflectionService

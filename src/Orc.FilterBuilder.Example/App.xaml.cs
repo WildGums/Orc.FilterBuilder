@@ -30,12 +30,8 @@ public partial class App : Application
         languageService.PreferredCulture = CultureInfo.CurrentCulture;
         languageService.FallbackCulture = new CultureInfo("en-US");
 
-        //Log.Info("Starting application");
-
         this.ApplyTheme();
-
-        //Log.Info("Calling base.OnStartup");
-
+        
         var serviceLocator = ServiceLocator.Default;
         var shellService = serviceLocator.ResolveRequiredType<IShellService>();
         await shellService.CreateAsync<ShellWindow>();

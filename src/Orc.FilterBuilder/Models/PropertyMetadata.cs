@@ -41,15 +41,7 @@ public class PropertyMetadata : IPropertyMetadata
 
     public string DisplayName
     {
-        get
-        {
-            if (_displayName is not null)
-            {
-                return _displayName;
-            }
-
-            return Name;
-        }
+        get => _displayName ?? Name;
         set => _displayName = value;
     }
 
@@ -85,8 +77,8 @@ public class PropertyMetadata : IPropertyMetadata
         unchecked
         {
             var hashCode = _propertyData is not null ? _propertyData.GetHashCode() : 0;
-            hashCode = (hashCode * 397) ^ (Name is not null ? Name.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ (Type is not null ? Type.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ Name.GetHashCode();
+            hashCode = (hashCode * 397) ^ Type.GetHashCode();
             return hashCode;
         }
     }
@@ -96,7 +88,7 @@ public class PropertyMetadata : IPropertyMetadata
         return GetValue<object?>(instance);
     }
 
-    public TValue GetValue<TValue>(object instance)
+    public TValue? GetValue<TValue>(object instance)
     {
         ArgumentNullException.ThrowIfNull(instance);
 
@@ -113,7 +105,7 @@ public class PropertyMetadata : IPropertyMetadata
 
         if (value is null)
         {
-            return default!;
+            return default;
         }
 
         if (typeof(TValue) == typeof(string))

@@ -69,40 +69,23 @@ public class EnumExpression<TEnum> : NullableDataTypeExpression
     {
         var entityValue = propertyMetadata.GetValue(entity);
 
-        if (!IsNullable && (SelectedCondition == Condition.IsNull || SelectedCondition == Condition.NotIsNull))
+        if (!IsNullable && SelectedCondition is Condition.IsNull or Condition.NotIsNull)
         {
             throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
         }
 
-        switch (SelectedCondition)
+        return SelectedCondition switch
         {
-            case Condition.EqualTo:
-                return Equals(entityValue, Value);
-
-            case Condition.GreaterThan:
-                return Comparer.Default.Compare(entityValue, Value) > 0;
-
-            case Condition.GreaterThanOrEqualTo:
-                return Comparer.Default.Compare(entityValue, Value) >= 0;
-
-            case Condition.LessThan:
-                return Comparer.Default.Compare(entityValue, Value) < 0;
-
-            case Condition.LessThanOrEqualTo:
-                return Comparer.Default.Compare(entityValue, Value) <= 0;
-
-            case Condition.NotEqualTo:
-                return !Equals(entityValue, Value);
-
-            case Condition.IsNull:
-                return entityValue is null;
-
-            case Condition.NotIsNull:
-                return entityValue is not null;
-
-            default:
-                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
-        }
+            Condition.EqualTo => Equals(entityValue, Value),
+            Condition.GreaterThan => Comparer.Default.Compare(entityValue, Value) > 0,
+            Condition.GreaterThanOrEqualTo => Comparer.Default.Compare(entityValue, Value) >= 0,
+            Condition.LessThan => Comparer.Default.Compare(entityValue, Value) < 0,
+            Condition.LessThanOrEqualTo => Comparer.Default.Compare(entityValue, Value) <= 0,
+            Condition.NotEqualTo => !Equals(entityValue, Value),
+            Condition.IsNull => entityValue is null,
+            Condition.NotIsNull => entityValue is not null,
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+        };
     }
 
     /// <summary>

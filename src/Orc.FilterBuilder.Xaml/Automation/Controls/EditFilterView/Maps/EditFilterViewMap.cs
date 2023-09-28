@@ -18,14 +18,3 @@ public class EditFilterViewMap : AutomationBase
     public LinkLabel? TogglePreviewLinkLabel => By.Id("TogglePreviewLinkLabel").One<LinkLabel>();
     public DataGrid? PreviewDataGrid => By.One<DataGrid>();
 }
-
-//[AutomatedControl(ControlTypeName = nameof(ControlType.DataGrid))]
-//public class PreviewDataGridPart : DataGrid
-//{
-//    public PreviewDataGridPart(AutomationElement element) 
-//        : base(element)
-//    {
-//    }
-
-//    public IReadOnlyList<object> ItemsSource =>
-//}

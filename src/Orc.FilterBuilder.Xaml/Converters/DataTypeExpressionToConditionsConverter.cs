@@ -15,9 +15,9 @@ public class DataTypeExpressionToConditionsConverter : ValueConverterBase
 
         var isNullable = false;
 
-        if (PropertyHelper.IsPropertyAvailable(dataTypeExpression, "IsNullable", false))
+        if (PropertyHelper.IsPropertyAvailable(dataTypeExpression, "IsNullable"))
         {
-            isNullable = PropertyHelper.GetPropertyValue<bool>(dataTypeExpression, "IsNullable", false);
+            isNullable = PropertyHelper.GetPropertyValue<bool>(dataTypeExpression, "IsNullable");
         }
 
         object conditions = isNullable ? ConditionHelper.GetNullableValueConditions() : ConditionHelper.GetValueConditions();

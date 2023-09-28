@@ -5,29 +5,26 @@ using System.Threading.Tasks;
 using Catel;
 using Catel.Logging;
 using Catel.Runtime.Serialization.Xml;
-using Orc.FileSystem;
+using FileSystem;
 
 public class FilterSerializationService : IFilterSerializationService
 {
     private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    private readonly IDirectoryService _directoryService;
     private readonly IFileService _fileService;
     private readonly IXmlSerializer _xmlSerializer;
 
-    public FilterSerializationService(IDirectoryService directoryService, IFileService fileService,
+    public FilterSerializationService(IFileService fileService,
         IXmlSerializer xmlSerializer)
     {
-        ArgumentNullException.ThrowIfNull(directoryService);
         ArgumentNullException.ThrowIfNull(fileService);
         ArgumentNullException.ThrowIfNull(xmlSerializer);
 
-        _directoryService = directoryService;
         _fileService = fileService;
         _xmlSerializer = xmlSerializer;
     }
 
-    public async virtual Task<FilterSchemes> LoadFiltersAsync(string fileName)
+    public virtual async Task<FilterSchemes> LoadFiltersAsync(string fileName)
     {
         Argument.IsNotNullOrWhitespace(() => fileName);
 
@@ -39,10 +36,8 @@ public class FilterSerializationService : IFilterSerializationService
         {
             if (_fileService.Exists(fileName))
             {
-                using (var stream = _fileService.OpenRead(fileName))
-                {
-                    _xmlSerializer.Deserialize(filterSchemes, stream, null);
-                }
+                await using var stream = _fileService.OpenRead(fileName);
+                _xmlSerializer.Deserialize(filterSchemes, stream);
             }
 
             Log.Debug("Loaded filter schemes from '{0}'", fileName);
@@ -55,7 +50,7 @@ public class FilterSerializationService : IFilterSerializationService
         return filterSchemes;
     }
 
-    public async virtual Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes)
+    public virtual async Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes)
     {
         Argument.IsNotNullOrWhitespace(() => fileName);
         ArgumentNullException.ThrowIfNull(filterSchemes);
@@ -64,9 +59,9 @@ public class FilterSerializationService : IFilterSerializationService
 
         try
         {
-            using (var stream = _fileService.OpenWrite(fileName))
+            await using (var stream = _fileService.OpenWrite(fileName))
             {
-                _xmlSerializer.Serialize(filterSchemes, stream, null);
+                _xmlSerializer.Serialize(filterSchemes, stream);
             }
 
             Log.Debug("Saved filter schemes to '{0}'", fileName);

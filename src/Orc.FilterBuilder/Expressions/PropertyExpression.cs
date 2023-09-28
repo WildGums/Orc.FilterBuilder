@@ -16,10 +16,6 @@ public class PropertyExpression : ConditionTreeItem
 {
     private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public PropertyExpression()
-    {
-    }
-
     [ExcludeFromSerialization]
     internal string? PropertySerializationValue { get; set; }
 
@@ -77,63 +73,63 @@ public class PropertyExpression : ConditionTreeItem
     {
         switch (propertyType)
         {
-            case Type _ when propertyType == typeof(byte):
+            case not null when propertyType == typeof(byte):
                 CreateDataTypeExpressionIfNotCompatible(() => new ByteExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(sbyte):
+            case not null when propertyType == typeof(sbyte):
                 CreateDataTypeExpressionIfNotCompatible(() => new SByteExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(ushort):
+            case not null when propertyType == typeof(ushort):
                 CreateDataTypeExpressionIfNotCompatible(() => new UnsignedShortExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(short):
+            case not null when propertyType == typeof(short):
                 CreateDataTypeExpressionIfNotCompatible(() => new ShortExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(uint):
+            case not null when propertyType == typeof(uint):
                 CreateDataTypeExpressionIfNotCompatible(() => new UnsignedIntegerExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(int):
+            case not null when propertyType == typeof(int):
                 CreateDataTypeExpressionIfNotCompatible(() => new IntegerExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(ulong):
+            case not null when propertyType == typeof(ulong):
                 CreateDataTypeExpressionIfNotCompatible(() => new UnsignedLongExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(long):
+            case not null when propertyType == typeof(long):
                 CreateDataTypeExpressionIfNotCompatible(() => new LongExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(string):
+            case not null when propertyType == typeof(string):
                 CreateDataTypeExpressionIfNotCompatible(() => new StringExpression());
                 break;
 
-            case Type _ when propertyType == typeof(DateTime):
+            case not null when propertyType == typeof(DateTime):
                 CreateDataTypeExpressionIfNotCompatible(() => new DateTimeExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(bool):
+            case not null when propertyType == typeof(bool):
                 CreateDataTypeExpressionIfNotCompatible(() => new BooleanExpression());
                 break;
 
-            case Type _ when propertyType == typeof(TimeSpan):
+            case not null when propertyType == typeof(TimeSpan):
                 CreateDataTypeExpressionIfNotCompatible(() => new TimeSpanValueExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(decimal):
+            case not null when propertyType == typeof(decimal):
                 CreateDataTypeExpressionIfNotCompatible(() => new DecimalExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(float):
+            case not null when propertyType == typeof(float):
                 CreateDataTypeExpressionIfNotCompatible(() => new FloatExpression(isNullable));
                 break;
 
-            case Type _ when propertyType == typeof(double):
+            case not null when propertyType == typeof(double):
                 CreateDataTypeExpressionIfNotCompatible(() => new DoubleExpression(isNullable));
                 break;
 
@@ -183,13 +179,12 @@ public class PropertyExpression : ConditionTreeItem
 
         switch (dataTypeExpression)
         {
-            case TDataExpression _ when !(dataTypeExpression is NullableDataTypeExpression) || !typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)):
+            case TDataExpression _ when dataTypeExpression is not NullableDataTypeExpression || !typeof(NullableDataTypeExpression).IsAssignableFromEx(typeof(TDataExpression)):
                 return;
 
             case TDataExpression _:
                 var oldDataTypeExpression = (NullableDataTypeExpression)dataTypeExpression;
-                var newDataTypeExpression = createFunc() as NullableDataTypeExpression;
-                if (newDataTypeExpression is null)
+                if (createFunc() is not NullableDataTypeExpression newDataTypeExpression)
                 {
                     return;
                 }
@@ -237,12 +232,7 @@ public class PropertyExpression : ConditionTreeItem
             return true;
         }
 
-        if (Property is null)
-        {
-            return true;
-        }
-
-        return DataTypeExpression.CalculateResult(Property, entity);
+        return Property is null || DataTypeExpression.CalculateResult(Property, entity);
     }
 
     public override string ToString()
@@ -260,6 +250,6 @@ public class PropertyExpression : ConditionTreeItem
         }
 
         var dataTypeExpressionString = dataTypeExpression.ToString();
-        return string.Format("{0} {1}", property.DisplayName ?? property.Name, dataTypeExpressionString);
+        return $"{property.DisplayName} {dataTypeExpressionString}";
     }
 }

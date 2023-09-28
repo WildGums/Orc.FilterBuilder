@@ -1,9 +1,3 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <!--<ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Gum.Projects;component/Controls/DataGridEx/Themes/DataGridEx.generic.xaml" />
-        <ResourceDictionary Source="/Gum.Projects;component/Controls/PagingControl/Themes/PagingControl.generic.xaml" />
-    </ResourceDictionary.MergedDictionaries>-->
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
 </ResourceDictionary>

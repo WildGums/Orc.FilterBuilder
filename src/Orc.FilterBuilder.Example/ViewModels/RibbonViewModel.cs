@@ -23,8 +23,8 @@ public class RibbonViewModel : ViewModelBase
     private readonly IUIVisualizerService _uiVisualizerService;
     private readonly IFilterService _filterService;
 
-    private Type _targetType;
-    private FilterSchemes _filterSchemes;
+    private Type? _targetType;
+    private FilterSchemes? _filterSchemes;
 
     public RibbonViewModel(ITestDataService testDataService, IFilterSchemeManager filterSchemeManager,
         IFilterService filterService, IUIVisualizerService uiVisualizerService)
@@ -44,7 +44,7 @@ public class RibbonViewModel : ViewModelBase
 
     public FilterScheme SelectedFilterScheme { get; set; }
 
-    private readonly FilterScheme _noFilterFilter = new FilterScheme(typeof(object), "Default")
+    private readonly FilterScheme _noFilterFilter = new(typeof(object), "Default")
     {
         CanDelete = false,
         CanEdit = false
@@ -60,6 +60,12 @@ public class RibbonViewModel : ViewModelBase
             return;
         }
 
+        if (_filterSchemes is null)
+        {
+            Log.Warning("Filter schemes hasn't initialized");
+            return;
+        }
+        
         var filterScheme = new FilterScheme(_targetType);
         var filterSchemeEditInfo = new FilterSchemeEditInfo(filterScheme, RawItems, true, true);
 
