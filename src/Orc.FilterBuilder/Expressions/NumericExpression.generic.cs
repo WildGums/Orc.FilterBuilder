@@ -6,7 +6,6 @@ public abstract class NumericExpression<TValue> : ValueDataTypeExpression<TValue
     where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>
 {
     protected NumericExpression()
-        : base()
     {
 
     }

@@ -3,7 +3,7 @@
 using System;
 using System.Windows.Automation;
 using Orc.Automation;
-using Condition = FilterBuilder.Condition;
+using Condition = Condition;
 
 public static class EditFilterConditionGroupTreeItemExtensions
 {
@@ -25,12 +25,7 @@ public static class EditFilterConditionGroupTreeItemExtensions
         ArgumentNullException.ThrowIfNull(group);
 
         var newGroup = group.AddGroup(ConditionGroupType.Or);
-        if (newGroup is null)
-        {
-            throw new InvalidOperationException("Cannot add 'or' group");
-        }
-
-        return newGroup;
+        return newGroup ?? throw new InvalidOperationException("Cannot add 'or' group");
     }
 
     public static EditFilterConditionGroupTreeItem? FinishCondition(this EditFilterConditionGroupTreeItem group)

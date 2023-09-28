@@ -32,8 +32,7 @@ public class ObjectToValueConverter : ValueConverterBase
 
         try
         {
-            var modelBase = value as IModelEditor;
-            if (modelBase is not null)
+            if (value is IModelEditor modelBase)
             {
                 var propertyDataManager = PropertyDataManager.Default;
                 if (propertyDataManager.IsPropertyRegistered(modelBase.GetType(), propertyName))
@@ -49,10 +48,7 @@ public class ObjectToValueConverter : ValueConverterBase
                 return _propertyMetadata.GetValue(value);
             }
 
-            if (value is not null)
-            {
-                return PropertyHelper.GetPropertyValue(value, propertyName, false);
-            }
+            return PropertyHelper.GetPropertyValue(value, propertyName);
         }
         catch (Exception ex)
         {

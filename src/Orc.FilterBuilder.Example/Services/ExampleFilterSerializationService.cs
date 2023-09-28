@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Catel.Collections;
 using Catel.Runtime.Serialization.Xml;
 using global::FilterBuilder.Example.Models;
-using Orc.FileSystem;
-using Orc.FilterBuilder;
+using FileSystem;
+using FilterBuilder;
 
 public class ExampleFilterSerializationService : FilterSerializationService
 {
-    public ExampleFilterSerializationService(IDirectoryService directoryService, IFileService fileService, IXmlSerializer xmlSerializer) 
-        : base(directoryService, fileService, xmlSerializer)
+    public ExampleFilterSerializationService(IFileService fileService, IXmlSerializer xmlSerializer) 
+        : base(fileService, xmlSerializer)
     {
     }
 

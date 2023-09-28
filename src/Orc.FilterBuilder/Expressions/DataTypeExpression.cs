@@ -4,14 +4,9 @@ using Catel.Data;
 
 public abstract class DataTypeExpression : ModelBase
 {
-    protected DataTypeExpression()
-    {
-        IsValueRequired = true;
-    }
-
     public Condition SelectedCondition { get; set; }
 
-    public bool IsValueRequired { get; set; }
+    public bool IsValueRequired { get; set; } = true;
 
     public ValueControlType ValueControlType { get; set; }
 

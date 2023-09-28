@@ -16,11 +16,8 @@ public class TestFilterRuntimeModelMetadata : IPropertyMetadata
     }
 
     public string DisplayName { get; set; }
-
     public string Name => _attributeType.Name;
-
     public Type OwnerType { get; }
-
     public Type Type { get; }
 
     public object GetValue(object instance)
@@ -44,7 +41,8 @@ public class TestFilterRuntimeModelMetadata : IPropertyMetadata
     {
         var attributeName = attributeType?.Name;
 
-        TestAttributeValue value;
-        return operation.Attributes.TryGetValue(attributeName, out value) ? value.Value : null;
+        return operation.Attributes.TryGetValue(attributeName, out var value)
+            ? value.Value 
+            : null;
     }
 }

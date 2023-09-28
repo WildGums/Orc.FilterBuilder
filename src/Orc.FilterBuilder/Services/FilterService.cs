@@ -40,7 +40,6 @@ public class FilterService : IFilterService
     /// Occurs when any of the filters has been updated.
     /// </summary>
     public event EventHandler<EventArgs>? FiltersUpdated;
-
     /// <summary>
     /// Occurs when the currently selected filter has changed.
     /// </summary>
@@ -61,11 +60,6 @@ public class FilterService : IFilterService
         ArgumentNullException.ThrowIfNull(filter);
 
         filter.EnsureIntegrity(_reflectionService);
-
-        if (filteredCollection is null)
-        {
-            return;
-        }
 
         filter.Apply(rawCollection, filteredCollection);
     }

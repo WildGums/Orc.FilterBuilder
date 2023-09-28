@@ -26,7 +26,8 @@ public class ValueControlTypeVisibilityConverter : VisibilityConverterBase
             var parameterType = (ValueControlType[])parameter;
             return parameterType.Contains(controlType);
         }
-        else if (parameter is ValueControlType valueControlType)
+
+        if (parameter is ValueControlType valueControlType)
         {
             return controlType == valueControlType;
         }

@@ -49,67 +49,35 @@ public class TimeSpanExpression : NullableDataTypeExpression
             return;
         }
 
-        switch (SelectedSpanType)
+        Value = SelectedSpanType switch
         {
-            case TimeSpanType.Years:
-                Value = TimeSpan.FromDays(Amount * averageDaysInYear);
-                break;
-
-            case TimeSpanType.Months:
-                Value = TimeSpan.FromDays(Amount * averageDaysInMonth);
-                break;
-
-            case TimeSpanType.Days:
-                Value = TimeSpan.FromDays(Amount);
-                break;
-
-            case TimeSpanType.Hours:
-                Value = TimeSpan.FromHours(Amount);
-                break;
-
-            case TimeSpanType.Minutes:
-                Value = TimeSpan.FromMinutes(Amount);
-                break;
-
-            case TimeSpanType.Seconds:
-                Value = TimeSpan.FromSeconds(Amount);
-                break;
-
-            default:
-                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType));
-        }
+            TimeSpanType.Years => TimeSpan.FromDays(Amount * averageDaysInYear),
+            TimeSpanType.Months => TimeSpan.FromDays(Amount * averageDaysInMonth),
+            TimeSpanType.Days => TimeSpan.FromDays(Amount),
+            TimeSpanType.Hours => TimeSpan.FromHours(Amount),
+            TimeSpanType.Minutes => TimeSpan.FromMinutes(Amount),
+            TimeSpanType.Seconds => TimeSpan.FromSeconds(Amount),
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_TypeIsNotSupported_Pattern"), SelectedSpanType))
+        };
     }
 
     public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
     {
         var entityValue = propertyMetadata.GetValue<TimeSpan>(entity);
-        switch (SelectedCondition)
+        return SelectedCondition switch
         {
-            case Condition.EqualTo:
-                return entityValue == Value;
-
-            case Condition.NotEqualTo:
-                return entityValue != Value;
-
-            case Condition.GreaterThan:
-                return entityValue > Value;
-
-            case Condition.LessThan:
-                return entityValue < Value;
-
-            case Condition.GreaterThanOrEqualTo:
-                return entityValue >= Value;
-
-            case Condition.LessThanOrEqualTo:
-                return entityValue <= Value;
-
-            default:
-                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
-        }
+            Condition.EqualTo => entityValue == Value,
+            Condition.NotEqualTo => entityValue != Value,
+            Condition.GreaterThan => entityValue > Value,
+            Condition.LessThan => entityValue < Value,
+            Condition.GreaterThanOrEqualTo => entityValue >= Value,
+            Condition.LessThanOrEqualTo => entityValue <= Value,
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+        };
     }
 
     public override string ToString()
     {
-        return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
+        return $"{SelectedCondition.Humanize()} '{Value}'";
     }
 }

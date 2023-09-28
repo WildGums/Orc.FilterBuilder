@@ -76,19 +76,22 @@ public class FilterScheme : ModelBase
         get { return _scope; }
         set
         {
-            if (!ObjectHelper.AreEqual(_scope, value))
+            if (ObjectHelper.AreEqual(_scope, value))
             {
-                _scope = value;
+                return;
+            }
 
-                RaisePropertyChanged(nameof(Scope));
+            _scope = value;
+
+            RaisePropertyChanged(nameof(Scope));
 
 #pragma warning disable IDISP004 // Don't ignore created IDisposable.
-                var reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(_scope);
+            var reflectionService = this.GetServiceLocator()
+                .ResolveType<IReflectionService>(_scope);
 #pragma warning restore IDISP004 // Don't ignore created IDisposable.
-                if (reflectionService is not null)
-                {
-                    this.EnsureIntegrity(reflectionService);
-                }
+            if (reflectionService is not null)
+            {
+                this.EnsureIntegrity(reflectionService);
             }
         }
     }
@@ -101,8 +104,7 @@ public class FilterScheme : ModelBase
 
     private void OnConditionItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        var senderList = sender as IList;
-        if (senderList is null)
+        if (sender is not IList senderList)
         {
             return;
         }
@@ -115,13 +117,17 @@ public class FilterScheme : ModelBase
             }
         }
 
-        var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? senderList : e.NewItems;
-        if (newCollection is not null)
+        var newCollection = e.Action == NotifyCollectionChangedAction.Reset 
+            ? senderList
+            : e.NewItems;
+        if (newCollection is null)
         {
-            foreach (var item in newCollection)
-            {
-                ((ConditionTreeItem)item).Updated += OnConditionUpdated;
-            }
+            return;
+        }
+
+        foreach (var item in newCollection)
+        {
+            ((ConditionTreeItem)item).Updated += OnConditionUpdated;
         }
     }
 
@@ -139,7 +145,7 @@ public class FilterScheme : ModelBase
 
     private void CheckForInvalidItems()
     {
-        HasInvalidConditionItems = (ConditionItems is not null && ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
+        HasInvalidConditionItems = (ConditionItems.Count > 0 && CountInvalidItems(Root) > 0);
     }
 
     private int CountInvalidItems(ConditionTreeItem conditionTreeItem)
@@ -147,17 +153,12 @@ public class FilterScheme : ModelBase
         ArgumentNullException.ThrowIfNull(conditionTreeItem);
 
         var items = conditionTreeItem.Items;
-        if (items is null || items.Count == 0)
+        if (items.Count == 0)
         {
-            return conditionTreeItem?.IsValid??true ? 0 : 1;
+            return conditionTreeItem.IsValid ? 0 : 1;
         }
 
-        var invalidCount = 0;
-
-        foreach (var item in items)
-        {
-            invalidCount += CountInvalidItems(item);
-        }
+        var invalidCount = items.Sum(CountInvalidItems);
 
         invalidCount += conditionTreeItem.IsValid ? 0 : 1;
 
@@ -167,13 +168,11 @@ public class FilterScheme : ModelBase
     private void SubscribeToEvents()
     {
         var items = ConditionItems;
-        if (items is not null)
+        items.CollectionChanged += OnConditionItemsCollectionChanged;
+
+        foreach (var item in items)
         {
-            items.CollectionChanged += OnConditionItemsCollectionChanged;
-            foreach (var item in items)
-            {
-                item.Updated += OnConditionUpdated;
-            }
+            item.Updated += OnConditionUpdated;
         }
     }
 
@@ -189,12 +188,7 @@ public class FilterScheme : ModelBase
         ArgumentNullException.ThrowIfNull(entity);
 
         var root = Root;
-        if (root is not null)
-        {
-            return root.CalculateResult(entity);
-        }
-
-        return true;
+        return root.CalculateResult(entity);
     }
 
     public void Update(FilterScheme otherScheme)
@@ -226,28 +220,25 @@ public class FilterScheme : ModelBase
         {
             if (rootString.StartsWith("((") && rootString.EndsWith("))"))
             {
-                rootString = rootString.Substring(1, rootString.Length - 2);
+                rootString = rootString[1..^1];
             }
         }
 
-        if (!string.IsNullOrEmpty(rootString))
+        if (string.IsNullOrEmpty(rootString))
         {
-            stringBuilder.AppendLine();
-            stringBuilder.Append(rootString);
+            return stringBuilder.ToString();
         }
+
+        stringBuilder.AppendLine();
+        stringBuilder.Append(rootString);
 
         return stringBuilder.ToString();
     }
 
     public override bool Equals(object? obj)
     {
-        var filterScheme = obj as FilterScheme;
-        if (filterScheme is null)
-        {
-            return false;
-        }
-
-        return string.Equals(filterScheme.Title, Title);
+        return obj is FilterScheme filterScheme 
+               && string.Equals(filterScheme.Title, Title);
     }
 
     public override int GetHashCode()

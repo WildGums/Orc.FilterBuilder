@@ -8,23 +8,27 @@ public class FilterSchemeSerializerModifier : SerializerModifierBase<FilterSchem
 {
     public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
     {
-        if (string.Equals(memberValue.Name, nameof(FilterScheme.TargetType)))
+        if (!string.Equals(memberValue.Name, nameof(FilterScheme.TargetType)))
         {
-            if (memberValue.Value is Type targetType)
-            {
-                memberValue.Value = targetType.FullName;
-            }
+            return;
+        }
+
+        if (memberValue.Value is Type targetType)
+        {
+            memberValue.Value = targetType.FullName;
         }
     }
 
     public override void DeserializeMember(ISerializationContext context, MemberValue memberValue)
     {
-        if (string.Equals(memberValue.Name, nameof(FilterScheme.TargetType)))
+        if (!string.Equals(memberValue.Name, nameof(FilterScheme.TargetType)))
         {
-            if (memberValue.Value is string targetTypeAsString)
-            {
-                memberValue.Value = TypeCache.GetType(targetTypeAsString);
-            }
+            return;
+        }
+
+        if (memberValue.Value is string targetTypeAsString)
+        {
+            memberValue.Value = TypeCache.GetType(targetTypeAsString);
         }
     }
 }

@@ -67,7 +67,7 @@ public class EditFilterView : FrameworkElement<EditFilterViewModel, EditFilterVi
         get => Map.PreviewDataGrid?.Current.ItemsSource?.OfType<object>().ToList();
     }
 
-    public EditFilterConditionTreeItemBase? Root => Map.ConditionTree?.Children?.FirstOrDefault();
+    public EditFilterConditionTreeItemBase? Root => Map.ConditionTree?.Children.FirstOrDefault();
         
     public void Clear()
     {
@@ -79,12 +79,8 @@ public class EditFilterView : FrameworkElement<EditFilterViewModel, EditFilterVi
 #pragma warning disable IDISP001 // Dispose created
         var enumerator = Map.ConditionTree?.GetEnumerator();
 #pragma warning restore IDISP001 // Dispose created
-        if (enumerator is not null)
-        {
-            return enumerator;
-        }
-
-        return Enumerable.Empty<EditFilterConditionTreeItemBase>().GetEnumerator();
+        return enumerator 
+               ?? Enumerable.Empty<EditFilterConditionTreeItemBase>().GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

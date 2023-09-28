@@ -32,7 +32,7 @@ public class EditFilterConditionGroupTreeItem : EditFilterConditionTreeItemBase
         //Give time to create new item
         Wait.UntilResponsive();
 
-        var newGroup = Children?.LastOrDefault() as EditFilterConditionGroupTreeItem;
+        var newGroup = Children.LastOrDefault() as EditFilterConditionGroupTreeItem;
         if (newGroup is not null)
         {
             newGroup.GroupType = groupType;
@@ -48,7 +48,7 @@ public class EditFilterConditionGroupTreeItem : EditFilterConditionTreeItemBase
         //Give time to create new item
         Wait.UntilResponsive();
 
-        return Children?.LastOrDefault() as EditFilterPropertyConditionTreeItem;
+        return Children.LastOrDefault() as EditFilterPropertyConditionTreeItem;
     }
 
     public override void Delete()

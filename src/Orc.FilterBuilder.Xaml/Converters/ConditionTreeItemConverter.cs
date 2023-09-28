@@ -20,16 +20,11 @@ public class ConditionTreeItemConverter : VisibilityConverterBase
             return false;
         }
 
-        switch ((string) parameter)
+        return (string)parameter switch
         {
-            case "Group":
-                return value is ConditionGroup;
-
-            case "Expression":
-                return value is PropertyExpression;
-
-            default:
-                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern"), parameter));
-        }
+            "Group" => value is ConditionGroup,
+            "Expression" => value is PropertyExpression,
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ParameterIsNotSupported_Pattern"), parameter))
+        };
     }
 }

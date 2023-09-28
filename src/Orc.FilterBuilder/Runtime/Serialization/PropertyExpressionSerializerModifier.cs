@@ -8,7 +8,7 @@ public class PropertyExpressionSerializerModifier : SerializerModifierBase<Prope
 {
     private const string Separator = "||";
 
-    private static readonly string[] Separators = new string[] { Separator };
+    private static readonly string[] Separators = { Separator };
 
     private readonly IReflectionService _reflectionService;
 
@@ -21,35 +21,40 @@ public class PropertyExpressionSerializerModifier : SerializerModifierBase<Prope
 
     public override void SerializeMember(ISerializationContext context, MemberValue memberValue)
     {
-        if (string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
+        if (!string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
         {
-            var propertyInfo = memberValue.Value as IPropertyMetadata;
-            if (propertyInfo is not null)
-            {
-                memberValue.Value = string.Format("{0}{1}{2}", propertyInfo.OwnerType.FullName, Separator, propertyInfo.Name);
-            }
+            return;
+        }
+
+        if (memberValue.Value is IPropertyMetadata propertyInfo)
+        {
+            memberValue.Value = $"{propertyInfo.OwnerType.FullName}{Separator}{propertyInfo.Name}";
         }
     }
 
     public override void DeserializeMember(ISerializationContext context, MemberValue memberValue)
     {
-        if (string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
+        if (!string.Equals(memberValue.Name, nameof(PropertyExpression.Property)))
         {
-            var propertyMetadata = memberValue.Value as string;
-            if (propertyMetadata is not null)
-            {
-                // We need to delay this
-                ((PropertyExpression)context.Model).PropertySerializationValue = propertyMetadata;
-
-                var splitted = propertyMetadata.Split(Separators, System.StringSplitOptions.None);
-
-                var type = TypeCache.GetTypeWithoutAssembly(splitted[0]);
-                if (type is not null)
-                {
-                    var instanceProperties = _reflectionService.GetInstanceProperties(type);
-                    memberValue.Value = instanceProperties.GetProperty(splitted[1]);
-                }
-            }
+            return;
         }
+
+        if (memberValue.Value is not string propertyMetadata)
+        {
+            return;
+        }
+
+        // We need to delay this
+        ((PropertyExpression)context.Model).PropertySerializationValue = propertyMetadata;
+
+        var splitted = propertyMetadata.Split(Separators, StringSplitOptions.None);
+        var type = TypeCache.GetTypeWithoutAssembly(splitted[0]);
+        if (type is null)
+        {
+            return;
+        }
+
+        var instanceProperties = _reflectionService.GetInstanceProperties(type);
+        memberValue.Value = instanceProperties.GetProperty(splitted[1]);
     }
 }
