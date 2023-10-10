@@ -19,12 +19,6 @@ public class FilterBuilderControlModel : FrameworkElementModel
     [ActiveAutomationProperty]
     public IEnumerable? RawCollection { get; set; }
 
-    //public FilterBuilderFilteringFunctionBase FilteringFunc
-    //{
-    //    get;
-    //    set;
-    //}
-
     [ActiveAutomationProperty]
     public object? Scope { get; set; }
 
@@ -43,8 +37,3 @@ public class FilterBuilderControlModel : FrameworkElementModel
     [ActiveAutomationProperty]
     public bool AutoApplyFilter { get; set; }
 }
-
-//public abstract class FilterBuilderFilteringFunctionBase
-//{
-//    public abstract bool Invoke(object func);
-//}

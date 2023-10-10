@@ -15,7 +15,7 @@ public class FilterBuilderControlListItem : ListItem
     private FilterBuilderControlListItemMap Map => Map<FilterBuilderControlListItemMap>();
 
     public string Title => Map.Title?.Value ?? string.Empty;
-    public override string DisplayText => Title ?? string.Empty;
+    public override string DisplayText => Title;
 
     public bool CanEdit()
     {

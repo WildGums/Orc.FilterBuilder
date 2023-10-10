@@ -26,6 +26,6 @@ public class FilterCustomizationService : IFilterCustomizationService
         instanceProperties.Properties.RemoveAll(x => catelProperties.Contains(x.Name));
 
         // Remove unsupported type properties
-        instanceProperties.Properties.RemoveAll(x => !InstancePropertyHelper.IsSupportedType(x));
+        instanceProperties.Properties.RemoveAll(x => !x.IsSupportedType());
     }
 }

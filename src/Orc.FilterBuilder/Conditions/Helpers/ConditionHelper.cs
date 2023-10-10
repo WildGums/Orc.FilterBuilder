@@ -57,19 +57,19 @@ public static class ConditionHelper
     public static bool GetIsValueRequired(Condition condition)
     {
         return
-            condition == Condition.EqualTo ||
-            condition == Condition.NotEqualTo ||
-            condition == Condition.GreaterThan ||
-            condition == Condition.LessThan ||
-            condition == Condition.GreaterThanOrEqualTo ||
-            condition == Condition.LessThanOrEqualTo ||
-            condition == Condition.Contains ||
-            condition == Condition.DoesNotContain ||
-            condition == Condition.EndsWith ||
-            condition == Condition.DoesNotEndWith ||
-            condition == Condition.StartsWith ||
-            condition == Condition.DoesNotStartWith ||
-            condition == Condition.Matches ||
-            condition == Condition.DoesNotMatch;
+            condition is Condition.EqualTo 
+                or Condition.NotEqualTo
+                or Condition.GreaterThan 
+                or Condition.LessThan 
+                or Condition.GreaterThanOrEqualTo 
+                or Condition.LessThanOrEqualTo 
+                or Condition.Contains 
+                or Condition.DoesNotContain 
+                or Condition.EndsWith 
+                or Condition.DoesNotEndWith 
+                or Condition.StartsWith 
+                or Condition.DoesNotStartWith 
+                or Condition.Matches 
+                or Condition.DoesNotMatch;
     }
 }

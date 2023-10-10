@@ -39,7 +39,7 @@ public class InstanceProperties : IPropertyCollection
         Properties = new List<IPropertyMetadata>(finalProperties.Values.OrderBy(m => m.Name));
     }
 
-    public List<IPropertyMetadata> Properties { get; private set; }
+    public List<IPropertyMetadata> Properties { get; }
 
     public IPropertyMetadata? GetProperty(string propertyName)
     {

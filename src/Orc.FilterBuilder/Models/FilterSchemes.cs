@@ -9,30 +9,27 @@ public class FilterSchemes : ModelBase
 {
     private object? _scope;
 
-    public FilterSchemes()
-    {
-        Schemes = new ObservableCollection<FilterScheme>();
-    }
-
     [ExcludeFromSerialization]
     public object? Scope
     {
         get { return _scope; }
         set
         {
-            if (!ObjectHelper.AreEqual(_scope, value))
+            if (ObjectHelper.AreEqual(_scope, value))
             {
-                _scope = value;
+                return;
+            }
 
-                RaisePropertyChanged(nameof(Scope));
+            _scope = value;
 
-                foreach (var filterScheme in Schemes)
-                {
-                    filterScheme.Scope = Scope;
-                }
+            RaisePropertyChanged(nameof(Scope));
+
+            foreach (var filterScheme in Schemes)
+            {
+                filterScheme.Scope = Scope;
             }
         }
     }
 
-    public ObservableCollection<FilterScheme> Schemes { get; private set; }
+    public ObservableCollection<FilterScheme> Schemes { get; private set; } = new();
 }

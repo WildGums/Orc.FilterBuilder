@@ -264,13 +264,13 @@ namespace Orc.FilterBuilder.Converters
     {
         public IsCurrentFilterSchemeToCollapsingVisibilityConverter() { }
         public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
-        public object?[]? ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object?[] ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
     }
     public class LeftMarginMultiplierConverter : Catel.MVVM.Converters.ValueConverterBase
     {
         public LeftMarginMultiplierConverter() { }
         public double Length { get; set; }
-        protected override object? Convert(object? value, System.Type targetType, object? parameter) { }
+        protected override object Convert(object? value, System.Type targetType, object? parameter) { }
     }
     public class ObjectToValueConverter : Catel.MVVM.Converters.ValueConverterBase
     {
@@ -280,8 +280,8 @@ namespace Orc.FilterBuilder.Converters
     public class TriggerConverter : System.Windows.Data.IMultiValueConverter
     {
         public TriggerConverter() { }
-        public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
-        public object?[]? ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object?[] ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
     }
     public class ValueControlTypeVisibilityConverter : Catel.MVVM.Converters.VisibilityConverterBase
     {
@@ -325,7 +325,6 @@ namespace Orc.FilterBuilder.ViewModels
     {
         public static readonly Catel.Data.IPropertyData EnableLivePreviewProperty;
         public static readonly Catel.Data.IPropertyData FilterSchemeTitleProperty;
-        public static readonly Catel.Data.IPropertyData InstancePropertiesProperty;
         public static readonly Catel.Data.IPropertyData IsLivePreviewDirtyProperty;
         public static readonly Catel.Data.IPropertyData IsPreviewVisibleProperty;
         public EditFilterViewModel(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Catel.Services.ILanguageService languageService) { }

@@ -12,8 +12,8 @@ using Catel;
 [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
 public class StringExpression : DataTypeExpression
 {
-    private static readonly CacheStorage<string, Regex> _regexCache = new CacheStorage<string, Regex>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
-    private static readonly CacheStorage<string, bool> _regexIsValidCache = new CacheStorage<string, bool>(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+    private static readonly CacheStorage<string, Regex> RegexCache = new(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
+    private static readonly CacheStorage<string, bool> RegexIsValidCache = new(() => ExpirationPolicy.Sliding(TimeSpan.FromMinutes(1)), false, EqualityComparer<string>.Default);
 
     public StringExpression()
     {
@@ -27,76 +27,60 @@ public class StringExpression : DataTypeExpression
     public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
     {
         var entityValue = propertyMetadata.GetValue<string>(entity);
-        if (entityValue is null && propertyMetadata.Type.IsEnumEx())
+        if (entityValue is not null || !propertyMetadata.Type.IsEnumEx())
         {
-            var entityValueAsObject = propertyMetadata.GetValue(entity);
-            if (entityValueAsObject is not null)
+            return SelectedCondition switch
             {
-                entityValue = entityValueAsObject.ToString();
-            }
+                Condition.Contains => entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1,
+                Condition.DoesNotContain => entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1,
+                Condition.EndsWith => entityValue is not null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+                Condition.DoesNotEndWith => entityValue is not null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+                Condition.EqualTo => entityValue == Value,
+                Condition.GreaterThan => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) > 0,
+                Condition.GreaterThanOrEqualTo => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) >= 0,
+                Condition.IsEmpty => entityValue == string.Empty,
+                Condition.IsNull => entityValue is null,
+                Condition.LessThan => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) < 0,
+                Condition.LessThanOrEqualTo => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) <= 0,
+                Condition.NotEqualTo => entityValue != Value,
+                Condition.NotIsEmpty => entityValue != string.Empty,
+                Condition.NotIsNull => entityValue is not null,
+                Condition.StartsWith => entityValue is not null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+                Condition.DoesNotStartWith => entityValue is not null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+                Condition.Matches => entityValue is not null && RegexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value)) && RegexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue),
+                Condition.DoesNotMatch => entityValue is not null && RegexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value)) && !RegexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue),
+                _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+            };
         }
 
-        switch (SelectedCondition)
+        var entityValueAsObject = propertyMetadata.GetValue(entity);
+        if (entityValueAsObject is not null)
         {
-            case Condition.Contains:
-                return entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1;
-
-            case Condition.DoesNotContain:
-                return entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1;
-
-            case Condition.EndsWith:
-                return entityValue is not null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
-
-            case Condition.DoesNotEndWith:
-                return entityValue is not null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase);
-
-            case Condition.EqualTo:
-                return entityValue == Value;
-
-            case Condition.GreaterThan:
-                return string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) > 0;
-
-            case Condition.GreaterThanOrEqualTo:
-                return string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) >= 0;
-
-            case Condition.IsEmpty:
-                return entityValue == string.Empty;
-
-            case Condition.IsNull:
-                return entityValue is null;
-
-            case Condition.LessThan:
-                return string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) < 0;
-
-            case Condition.LessThanOrEqualTo:
-                return string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) <= 0;
-
-            case Condition.NotEqualTo:
-                return entityValue != Value;
-
-            case Condition.NotIsEmpty:
-                return entityValue != string.Empty;
-
-            case Condition.NotIsNull:
-                return entityValue is not null;
-
-            case Condition.StartsWith:
-                return entityValue is not null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
-
-            case Condition.DoesNotStartWith:
-                return entityValue is not null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase);
-
-            case Condition.Matches:
-                return entityValue is not null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
-                                               && _regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue);
-
-            case Condition.DoesNotMatch:
-                return entityValue is not null && _regexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value))
-                                               && !_regexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue);
-
-            default:
-                throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
+            entityValue = entityValueAsObject.ToString();
         }
+
+        return SelectedCondition switch
+        {
+            Condition.Contains => entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1,
+            Condition.DoesNotContain => entityValue is not null && entityValue.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) == -1,
+            Condition.EndsWith => entityValue is not null && entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+            Condition.DoesNotEndWith => entityValue is not null && !entityValue.EndsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+            Condition.EqualTo => entityValue == Value,
+            Condition.GreaterThan => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) > 0,
+            Condition.GreaterThanOrEqualTo => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) >= 0,
+            Condition.IsEmpty => entityValue == string.Empty,
+            Condition.IsNull => entityValue is null,
+            Condition.LessThan => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) < 0,
+            Condition.LessThanOrEqualTo => string.Compare(entityValue, Value, StringComparison.OrdinalIgnoreCase) <= 0,
+            Condition.NotEqualTo => entityValue != Value,
+            Condition.NotIsEmpty => entityValue != string.Empty,
+            Condition.NotIsNull => entityValue is not null,
+            Condition.StartsWith => entityValue is not null && entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+            Condition.DoesNotStartWith => entityValue is not null && !entityValue.StartsWith(Value, StringComparison.CurrentCultureIgnoreCase),
+            Condition.Matches => entityValue is not null && RegexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value)) && RegexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue),
+            Condition.DoesNotMatch => entityValue is not null && RegexIsValidCache.GetFromCacheOrFetch(Value, () => RegexHelper.IsValid(Value)) && !RegexCache.GetFromCacheOrFetch(Value, () => new Regex(Value, RegexOptions.Compiled, TimeSpan.FromSeconds(1))).IsMatch(entityValue),
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+        };
     }
 
     public override string ToString()

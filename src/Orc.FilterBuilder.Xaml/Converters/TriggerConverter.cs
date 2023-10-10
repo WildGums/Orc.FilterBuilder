@@ -11,7 +11,7 @@ using Catel.MVVM.Converters;
 /// </summary>
 public class TriggerConverter : IMultiValueConverter
 {
-    public object? Convert(object?[]? values, Type targetType, object? parameter, System.Globalization.CultureInfo? culture)
+    public object Convert(object?[]? values, Type targetType, object? parameter, System.Globalization.CultureInfo? culture)
     {
         if (values is null)
         {
@@ -25,17 +25,18 @@ public class TriggerConverter : IMultiValueConverter
             return ConverterHelper.UnsetValue;
         }
 
-        if (values[0] is ICatelCommand command)
+        if (values[0] is not ICatelCommand command)
         {
-            command.RaiseCanExecuteChanged();
-            return command;
+            return ConverterHelper.UnsetValue;
         }
 
-        return ConverterHelper.UnsetValue;
+        command.RaiseCanExecuteChanged();
+        return command;
+
     }
 
-    public object?[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture)
+    public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture)
     {
-        return new object[]{};
+        return Array.Empty<object?>();
     }
 }

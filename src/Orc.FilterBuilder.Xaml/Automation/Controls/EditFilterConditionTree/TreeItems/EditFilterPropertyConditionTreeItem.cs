@@ -2,7 +2,7 @@
 
 using System.Windows.Automation;
 using Orc.Automation;
-using Condition = FilterBuilder.Condition;
+using Condition = Condition;
 
 public class EditFilterPropertyConditionTreeItem : EditFilterConditionTreeItemBase
 {

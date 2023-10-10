@@ -246,7 +246,7 @@ namespace Orc.FilterBuilder
     }
     public class FilterSerializationService : Orc.FilterBuilder.IFilterSerializationService
     {
-        public FilterSerializationService(Orc.FileSystem.IDirectoryService directoryService, Orc.FileSystem.IFileService fileService, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer) { }
+        public FilterSerializationService(Orc.FileSystem.IFileService fileService, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer) { }
         public virtual System.Threading.Tasks.Task<Orc.FilterBuilder.FilterSchemes> LoadFiltersAsync(string fileName) { }
         public virtual System.Threading.Tasks.Task SaveFiltersAsync(string fileName, Orc.FilterBuilder.FilterSchemes filterSchemes) { }
     }
@@ -311,7 +311,7 @@ namespace Orc.FilterBuilder
         System.Type OwnerType { get; }
         System.Type Type { get; }
         object? GetValue(object instance);
-        TValue GetValue<TValue>(object instance);
+        TValue? GetValue<TValue>(object instance);
         void SetValue(object instance, object? value);
     }
     public interface IReflectionService
@@ -396,7 +396,7 @@ namespace Orc.FilterBuilder
         public override bool Equals(object? obj) { }
         public override int GetHashCode() { }
         public object? GetValue(object instance) { }
-        public TValue GetValue<TValue>(object instance) { }
+        public TValue? GetValue<TValue>(object instance) { }
         public void SetValue(object instance, object? value) { }
     }
     public class ReflectionService : Orc.FilterBuilder.IReflectionService

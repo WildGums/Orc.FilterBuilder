@@ -129,7 +129,7 @@ public partial class FilterBuilderControl
     }
 
     public static readonly DependencyProperty ScopeProperty = DependencyProperty.Register(nameof(Scope), typeof(object),
-        typeof(FilterBuilderControl), new FrameworkPropertyMetadata((sender, e) => ((FilterBuilderControl)sender).OnScopeChanged()));
+        typeof(FilterBuilderControl), new FrameworkPropertyMetadata((sender, _) => ((FilterBuilderControl)sender).OnScopeChanged()));
 
     private void OnScopeChanged()
     {

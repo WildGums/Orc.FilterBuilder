@@ -34,21 +34,19 @@ public class DisableSelectionInTreeView : BehaviorBase<TreeView>
 
     private static void ClearTreeViewItemsControlSelection(ItemCollection ic, ItemContainerGenerator icg)
     {
-        if ((ic is not null) && (icg is not null))
+        for (var i = 0; i < ic.Count; i++)
         {
-            for (var i = 0; i < ic.Count; i++)
+            if (icg.ContainerFromIndex(i) is not TreeViewItem tvi)
             {
-                var tvi = icg.ContainerFromIndex(i) as TreeViewItem;
-                if (tvi is not null)
-                {
-                    if (tvi.IsSelected)
-                    {
-                        tvi.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
-                    }
-
-                    ClearTreeViewItemsControlSelection(tvi.Items, tvi.ItemContainerGenerator);
-                }
+                continue;
             }
+
+            if (tvi.IsSelected)
+            {
+                tvi.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
+            }
+
+            ClearTreeViewItemsControlSelection(tvi.Items, tvi.ItemContainerGenerator);
         }
     }
 }

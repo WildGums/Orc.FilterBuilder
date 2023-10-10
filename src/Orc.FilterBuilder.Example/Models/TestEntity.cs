@@ -3,15 +3,6 @@
 using System;
 using Catel.Data;
 
-public enum MyEnum
-{
-    EnumValue1,
-
-    EnumValue2,
-
-    SpecialValue
-}
-
 public class TestEntity : ModelBase
 {
     public string FirstName { get; set; }

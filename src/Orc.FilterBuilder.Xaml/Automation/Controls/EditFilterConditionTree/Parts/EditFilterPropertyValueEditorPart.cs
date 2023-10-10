@@ -119,7 +119,6 @@ public class EditFilterPropertyValueEditorPart : AutomationBase
         if (timeSpanPicker?.IsVisible() ?? false)
         {
             timeSpanPicker.Value = (TimeSpan?)value;
-            return;
         }
     }
 }

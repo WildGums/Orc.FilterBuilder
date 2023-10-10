@@ -39,9 +39,8 @@ public class GH210
     public async Task OrcFilterSaveScenarioAsync()
     {
         var fileService = new FileService();
-        var filterSerializationService = new FilterSerializationService(
-            new DirectoryService(fileService), fileService,
-            ServiceLocator.Default.ResolveType<Catel.Runtime.Serialization.Xml.IXmlSerializer>());
+        var filterSerializationService = new FilterSerializationService(fileService,
+            ServiceLocator.Default.ResolveType<IXmlSerializer>());
 
         Type targetType = typeof(DataPointFilter);
         FilterScheme filterscheme = new FilterScheme(targetType, "All Data");
@@ -109,8 +108,7 @@ public class GH210
         }
 
         var fileService = new FileService();
-        var fSchemes = new FilterSerializationService(
-            new DirectoryService(fileService), fileService,
+        var fSchemes = new FilterSerializationService(fileService,
             ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.Xml.IXmlSerializer>());
         var filters = await fSchemes.LoadFiltersAsync(tempFile);
         var res = filters;
