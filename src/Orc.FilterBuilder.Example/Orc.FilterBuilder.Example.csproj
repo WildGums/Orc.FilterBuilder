@@ -1,6 +1,6 @@
 <Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <AssemblyName>Orc.FilterBuilder.Example</AssemblyName>
     <RootNamespace>Orc.FilterBuilder.Example</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
