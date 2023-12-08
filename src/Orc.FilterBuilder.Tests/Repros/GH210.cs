@@ -29,10 +29,9 @@ public class GH210
 
         fSchemes.SaveAsXml(tempFile);
 
-        Assert.IsTrue(System.IO.File.Exists(tempFile));
-        Assert.Greater(new System.IO.FileInfo(tempFile).Length, 0);
+        Assert.That(System.IO.File.Exists(tempFile), Is.True);
+        Assert.That(new System.IO.FileInfo(tempFile).Length, Is.GreaterThan(0));
     }
-
 
     [Test]
     [Category("Save")]
@@ -64,21 +63,21 @@ public class GH210
 
         await filterSerializationService.SaveFiltersAsync(tempFile, fSchemes);
 
-        Assert.IsTrue(System.IO.File.Exists(tempFile));
-        Assert.Greater(new System.IO.FileInfo(tempFile).Length, 0);
+        Assert.That(System.IO.File.Exists(tempFile), Is.True);
+        Assert.That(new System.IO.FileInfo(tempFile).Length, Is.GreaterThan(0));
 
         var clonedFilterSchemes = await filterSerializationService.LoadFiltersAsync(tempFile);
 
         var conditionGroup = clonedFilterSchemes.Schemes[0].ConditionItems[0] as ConditionGroup;
-        Assert.IsNotNull(conditionGroup);
-        Assert.AreEqual(1, conditionGroup.Items.Count);
+        Assert.That(conditionGroup, Is.Not.Null);
+        Assert.That(conditionGroup.Items.Count, Is.EqualTo(1));
 
         var clonedPropertyExpression = conditionGroup.Items[0] as PropertyExpression;
-        Assert.IsNotNull(clonedPropertyExpression);
+        Assert.That(clonedPropertyExpression, Is.Not.Null);
 
         var clonedDataTypeExpression = clonedPropertyExpression.DataTypeExpression as EnumExpression<Phase>;
-        Assert.IsNotNull(clonedDataTypeExpression);
-        Assert.AreEqual(Phase.Isokinetic, clonedDataTypeExpression.Value);
+        Assert.That(clonedDataTypeExpression, Is.Not.Null);
+        Assert.That(clonedDataTypeExpression.Value, Is.EqualTo(Phase.Isokinetic));
     }
 
     [Test]

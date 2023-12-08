@@ -33,19 +33,19 @@ public class EnumExpressionFacts
         }
 
         [Test]
-        public void Initizalize_The_Value_Property_With_The_First_Enum_Value()
+        public void Initialize_The_Value_Property_With_The_First_Enum_Value()
         {
             var enumExpression = new EnumExpression<TestEnum>(false);
-            Assert.AreEqual(TestEnum.Enum1, enumExpression.Value);
+            Assert.That(enumExpression.Value, Is.EqualTo(TestEnum.Enum1));
         }
 
         [Test]
         [TestCase(TestEnum.Enum1)]
         [TestCase(TestEnum.Enum2)]
-        public void Initizalize_The_EnumValues_Property_With_All_Enum_Values(TestEnum value)
+        public void Initialize_The_EnumValues_Property_With_All_Enum_Values(TestEnum value)
         {
             var enumExpression = new EnumExpression<TestEnum>(false);
-            Assert.Contains(value, enumExpression.EnumValues);
+            Assert.That(enumExpression.EnumValues, Does.Contain(value));
         }
     }
 
@@ -113,7 +113,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.EqualTo
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -129,7 +129,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.EqualTo
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -145,7 +145,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.NotEqualTo
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -161,7 +161,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.NotEqualTo
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -177,7 +177,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.GreaterThan
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -193,7 +193,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.GreaterThan
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -209,7 +209,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.GreaterThanOrEqualTo
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -225,7 +225,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.GreaterThanOrEqualTo
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -241,7 +241,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.GreaterThanOrEqualTo
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -257,7 +257,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.LessThan
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -273,7 +273,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.LessThan
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -289,7 +289,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.LessThanOrEqualTo
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -305,7 +305,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.LessThanOrEqualTo
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -321,7 +321,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.LessThanOrEqualTo
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -336,7 +336,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.IsNull
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -351,7 +351,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.IsNull
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
 
         [Test]
@@ -366,7 +366,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.NotIsNull
             };
 
-            Assert.IsTrue(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.True);
         }
 
         [Test]
@@ -381,7 +381,7 @@ public class EnumExpressionFacts
                 SelectedCondition = Condition.NotIsNull
             };
 
-            Assert.IsFalse(enumExpression.CalculateResult(propertyMetadataMock.Object, entity));
+            Assert.That(enumExpression.CalculateResult(propertyMetadataMock.Object, entity), Is.False);
         }
     }
 }

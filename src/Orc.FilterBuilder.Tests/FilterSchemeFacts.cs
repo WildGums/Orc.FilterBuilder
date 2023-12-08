@@ -18,7 +18,7 @@ public class FilterSchemeFacts
             var actual = filterScheme.ToString();
             var expected = @"Default";
 
-            Assert.AreEqual(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [TestCase]
@@ -30,7 +30,7 @@ public class FilterSchemeFacts
             var expected = @"Test filter
 (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
 
-            Assert.AreEqual(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }

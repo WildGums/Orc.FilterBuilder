@@ -94,7 +94,7 @@ public class EditFilterViewFacts : StyledControlTestFacts<EditFilterView>
 
         var previewCollection = target.PreviewCollection;
 
-        CollectionAssert.AreEquivalent(previewCollection, expectedPreviewCollection);
+        Assert.That(expectedPreviewCollection, Is.EquivalentTo(previewCollection));
     }
 
     private void InitializeTestTree()

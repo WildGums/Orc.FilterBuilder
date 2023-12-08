@@ -24,7 +24,7 @@ public class ObjectToValueConverterFacts
 
         var converter = new ObjectToValueConverter(null);
 
-        Assert.AreEqual(42, converter.Convert(model, null, nameof(TestModel.MyIntegerValue), null));
-        Assert.AreEqual("test", converter.Convert(model, null, nameof(TestModel.Reference), null));
+        Assert.That(converter.Convert(model, null, nameof(TestModel.MyIntegerValue), null), Is.EqualTo(42));
+        Assert.That(converter.Convert(model, null, nameof(TestModel.Reference), null), Is.EqualTo("test"));
     }
 }

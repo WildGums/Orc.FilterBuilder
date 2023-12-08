@@ -24,7 +24,7 @@ public class RuntimeMetadataFacts
         var filterService = typeFactory.CreateInstance<FilterService>();
         await filterService.FilterCollectionAsync(filterScheme, initialCollection, resultList);
 
-        Assert.AreEqual(1, resultList.Count);
-        Assert.AreEqual("one", resultList[0].Attributes[AttributeTypeNames.StringAttribute].Value);
+        Assert.That(resultList.Count, Is.EqualTo(1));
+        Assert.That(resultList[0].Attributes[AttributeTypeNames.StringAttribute].Value, Is.EqualTo("one"));
     }
 }
