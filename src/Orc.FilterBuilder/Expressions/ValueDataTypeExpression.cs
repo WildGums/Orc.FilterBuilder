@@ -1,105 +1,61 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueDataTypeExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.Collections.Generic;
+using Catel;
 
-namespace Orc.FilterBuilder
+public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
+    where TValue : struct, IComparable, IFormattable, IComparable<TValue>, IEquatable<TValue>
 {
-    using System;
-    using System.Collections.Generic;
-    using Catel;
+    private readonly Comparer<TValue> _comparer;
 
-    public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpression
-        where TValue : struct, IComparable, IFormattable, IComparable<TValue>, IEquatable<TValue>
+    protected ValueDataTypeExpression()
     {
-        #region Fields
-        private readonly Comparer<TValue> _comparer;
-        #endregion
+        _comparer = Comparer<TValue>.Default;
 
-        protected ValueDataTypeExpression()
-            : base()
+        SelectedCondition = Condition.EqualTo;
+        Value = default;
+    }
+
+    public TValue Value { get; set; }
+
+    public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
+    {
+        if (IsNullable)
         {
-            _comparer = Comparer<TValue>.Default;
+            var entityValue = propertyMetadata.GetValue<TValue?>(entity);
 
-            SelectedCondition = Condition.EqualTo;
-            Value = default(TValue);
-        }
-
-        #region Properties
-        public TValue Value { get; set; }
-        #endregion
-
-        #region Methods
-        public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
-        {
-            if (IsNullable)
+            return SelectedCondition switch
             {
-                var entityValue = propertyMetadata.GetValue<TValue?>(entity);
-                switch (SelectedCondition)
-                {
-                    case Condition.EqualTo:
-                        return object.Equals(entityValue, Value);
-
-                    case Condition.NotEqualTo:
-                        return !object.Equals(entityValue, Value);
-
-                    case Condition.GreaterThan:
-                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) > 0;
-
-                    case Condition.LessThan:
-                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) < 0;
-
-                    case Condition.GreaterThanOrEqualTo:
-                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) >= 0;
-
-                    case Condition.LessThanOrEqualTo:
-                        return entityValue is not null && _comparer.Compare(entityValue.Value, Value) <= 0;
-
-                    case Condition.IsNull:
-                        return entityValue is null;
-
-                    case Condition.NotIsNull:
-                        return entityValue is not null;
-
-                    default:
-                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
-                }
-            }
-            else
-            {
-                var entityValue = propertyMetadata.GetValue<TValue>(entity);
-                switch (SelectedCondition)
-                {
-                    case Condition.EqualTo:
-                        return object.Equals(entityValue, Value);
-
-                    case Condition.NotEqualTo:
-                        return !object.Equals(entityValue, Value);
-
-                    case Condition.GreaterThan:
-                        return _comparer.Compare(entityValue, Value) > 0;
-
-                    case Condition.LessThan:
-                        return _comparer.Compare(entityValue, Value) < 0;
-
-                    case Condition.GreaterThanOrEqualTo:
-                        return _comparer.Compare(entityValue, Value) >= 0;
-
-                    case Condition.LessThanOrEqualTo:
-                        return _comparer.Compare(entityValue, Value) <= 0;
-
-                    default:
-                        throw new NotSupportedException(string.Format(LanguageHelper.GetString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
-                }
-            }
+                Condition.EqualTo => Equals(entityValue, Value),
+                Condition.NotEqualTo => !Equals(entityValue, Value),
+                Condition.GreaterThan => entityValue is not null && _comparer.Compare(entityValue.Value, Value) > 0,
+                Condition.LessThan => entityValue is not null && _comparer.Compare(entityValue.Value, Value) < 0,
+                Condition.GreaterThanOrEqualTo => entityValue is not null && _comparer.Compare(entityValue.Value, Value) >= 0,
+                Condition.LessThanOrEqualTo => entityValue is not null && _comparer.Compare(entityValue.Value, Value) <= 0,
+                Condition.IsNull => entityValue is null,
+                Condition.NotIsNull => entityValue is not null,
+                _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+            };
         }
-
-        public override string ToString()
+        else
         {
-            return string.Format("{0} '{1}'", SelectedCondition.Humanize(), Value);
+            var entityValue = propertyMetadata.GetValue<TValue>(entity);
+            return SelectedCondition switch
+            {
+                Condition.EqualTo => Equals(entityValue, Value),
+                Condition.NotEqualTo => !Equals(entityValue, Value),
+                Condition.GreaterThan => _comparer.Compare(entityValue, Value) > 0,
+                Condition.LessThan => _comparer.Compare(entityValue, Value) < 0,
+                Condition.GreaterThanOrEqualTo => _comparer.Compare(entityValue, Value) >= 0,
+                Condition.LessThanOrEqualTo => _comparer.Compare(entityValue, Value) <= 0,
+                _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+            };
         }
-        #endregion
+    }
+
+    public override string ToString()
+    {
+        return $"{SelectedCondition.Humanize()} '{Value}'";
     }
 }

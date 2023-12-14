@@ -1,0 +1,438 @@
+﻿[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Behaviors")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Converters")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Markup")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.wildgums.com/orc/filterbuilder", "Orc.FilterBuilder.Views")]
+[assembly: System.Windows.Markup.XmlnsPrefix("http://schemas.wildgums.com/orc/filterbuilder", "orcfilterbuilder")]
+[assembly: System.Windows.ThemeInfo(System.Windows.ResourceDictionaryLocation.None, System.Windows.ResourceDictionaryLocation.SourceAssembly)]
+public static class ModuleInitializer
+{
+    public static void Initialize() { }
+}
+namespace Orc.FilterBuilder.Automation
+{
+    public class EditFilterConditionGroupTreeItem : Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase
+    {
+        public EditFilterConditionGroupTreeItem(System.Windows.Automation.AutomationElement element) { }
+        public Orc.FilterBuilder.ConditionGroupType? GroupType { get; set; }
+        public bool IsExpanded { get; set; }
+        public Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem? AddGroup(Orc.FilterBuilder.ConditionGroupType groupType = 0) { }
+        public Orc.FilterBuilder.Automation.EditFilterPropertyConditionTreeItem? AddPropertyExpression() { }
+        public override void Delete() { }
+    }
+    public static class EditFilterConditionGroupTreeItemExtensions
+    {
+        public static Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem And(this Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem group) { }
+        public static Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem? FinishCondition(this Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem group) { }
+        public static Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem Or(this Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem group) { }
+        public static Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem Property(this Orc.FilterBuilder.Automation.EditFilterConditionGroupTreeItem group, string propertyName, Orc.FilterBuilder.Condition condition, object? value = null) { }
+    }
+    public class EditFilterConditionGroupTreeItemMap : Orc.Automation.AutomationBase
+    {
+        public EditFilterConditionGroupTreeItemMap(System.Windows.Automation.AutomationElement element) { }
+        public Orc.Automation.Controls.Button? AddExpressionButton { get; }
+        public Orc.Automation.Controls.Button? AddGroupButton { get; }
+        public Orc.Automation.Controls.Button? DeleteButton { get; }
+        public Orc.Automation.Controls.ComboBox? GroupTypeComboBox { get; }
+    }
+    [Orc.Automation.AutomatedControl(ControlTypeName="Tree")]
+    public class EditFilterConditionTree : Orc.Automation.Controls.FrameworkElement, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase>, System.Collections.IEnumerable
+    {
+        protected readonly Orc.Automation.Controls.Tree _tree;
+        public EditFilterConditionTree(System.Windows.Automation.AutomationElement element) { }
+        public System.Collections.Generic.IReadOnlyList<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase> Children { get; }
+        public System.Collections.Generic.IEnumerator<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase> GetEnumerator() { }
+    }
+    public abstract class EditFilterConditionTreeItemBase : Orc.Automation.Controls.FrameworkElement
+    {
+        protected readonly Orc.Automation.Controls.TreeItem _treeItem;
+        protected EditFilterConditionTreeItemBase(System.Windows.Automation.AutomationElement element) { }
+        public System.Collections.Generic.IReadOnlyList<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase> Children { get; }
+        public abstract void Delete();
+    }
+    public static class EditFilterConditionTreeItemFactory
+    {
+        public static Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase Create(Orc.Automation.Controls.TreeItem item) { }
+    }
+    public class EditFilterPropertyConditionTreeItem : Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase
+    {
+        public EditFilterPropertyConditionTreeItem(System.Windows.Automation.AutomationElement element) { }
+        public Orc.FilterBuilder.Condition? Condition { get; set; }
+        public Orc.FilterBuilder.Automation.EditFilterPropertyConditionTreeItemMap Map { get; }
+        public string? Property { get; set; }
+        public object? Value { get; set; }
+        public override void Delete() { }
+    }
+    public class EditFilterPropertyConditionTreeItemMap : Orc.Automation.AutomationBase
+    {
+        public EditFilterPropertyConditionTreeItemMap(System.Windows.Automation.AutomationElement element) { }
+        public Orc.Automation.Controls.ComboBox? ConditionComboBox { get; }
+        public Orc.Automation.Controls.Button? DeleteButton { get; }
+        public Orc.FilterBuilder.Automation.EditFilterPropertyValueEditorPart EditFilterPropertyValueEditorPart { get; }
+        public Orc.Automation.Controls.ComboBox? PropertiesComboBox { get; }
+    }
+    public class EditFilterPropertyValueEditorPart : Orc.Automation.AutomationBase
+    {
+        public EditFilterPropertyValueEditorPart(System.Windows.Automation.AutomationElement element) { }
+        public Orc.Automation.Controls.ComboBox? BooleanValueComboBox { get; }
+        public Orc.Automation.Controls.ComboBox? EnumValueComboBox { get; }
+        public object? Value { get; set; }
+        public Orc.Controls.Automation.DateTimePicker? ValueDateTimePicker { get; }
+        public Orc.Automation.Controls.Edit? ValueEdit { get; }
+        public Orc.Controls.Automation.NumericUpDown? ValueNumericUpDown { get; }
+        public Orc.Controls.Automation.TimeSpanPicker? ValueTimeSpanPicker { get; }
+    }
+    [Orc.Automation.AutomatedControl(Class=typeof(Orc.FilterBuilder.Views.EditFilterView))]
+    public class EditFilterView : Orc.Automation.Controls.FrameworkElement<Orc.FilterBuilder.Automation.EditFilterViewModel, Orc.FilterBuilder.Automation.EditFilterViewMap>, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase>, System.Collections.IEnumerable
+    {
+        public EditFilterView(System.Windows.Automation.AutomationElement element) { }
+        public bool IsLivePreviewEnabled { get; set; }
+        public bool IsPreviewCollectionVisible { get; set; }
+        public System.Collections.Generic.IReadOnlyList<object>? PreviewCollection { get; }
+        public Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase? Root { get; }
+        public string Title { get; set; }
+        public void Clear() { }
+        public System.Collections.Generic.IEnumerator<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase> GetEnumerator() { }
+    }
+    public static class EditFilterViewExtensions
+    {
+        public static void Initialize<T>(this Orc.FilterBuilder.Automation.EditFilterView target, System.Collections.Generic.IEnumerable<T> testCollection) { }
+    }
+    public class EditFilterViewMap : Orc.Automation.AutomationBase
+    {
+        public EditFilterViewMap(System.Windows.Automation.AutomationElement element) { }
+        public Orc.FilterBuilder.Automation.EditFilterConditionTree? ConditionTree { get; }
+        public Orc.Automation.Controls.Edit? FilterSchemeTitleEdit { get; }
+        public Orc.Automation.Controls.CheckBox? LivePreviewCheckBox { get; }
+        public Orc.Automation.DataGrid? PreviewDataGrid { get; }
+        public Orc.Controls.Automation.LinkLabel? TogglePreviewLinkLabel { get; }
+    }
+    public class EditFilterViewModel : Orc.Automation.FrameworkElementModel
+    {
+        public EditFilterViewModel(Orc.Automation.AutomationElementAccessor accessor) { }
+        public Orc.FilterBuilder.FilterSchemeEditInfo? FilterSchemeEditInfo { get; set; }
+    }
+    public class EditFilterViewPeer : Orc.Automation.AutomationControlPeerBase<Orc.FilterBuilder.Views.EditFilterView>
+    {
+        public EditFilterViewPeer(Orc.FilterBuilder.Views.EditFilterView owner) { }
+        [Orc.Automation.AutomationMethod]
+        public Orc.FilterBuilder.FilterScheme? GetFilterScheme() { }
+        [Orc.Automation.AutomationMethod]
+        public Orc.FilterBuilder.FilterSchemeEditInfo? GetFilterSchemeEditInfo() { }
+        [Orc.Automation.AutomationMethod]
+        public void SetFilterSchemeEditInfo(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo) { }
+    }
+    [Orc.Automation.AutomatedControl(ControlTypeName="Window")]
+    public class EditFilterWindow : Orc.Automation.Controls.Window
+    {
+        public EditFilterWindow(System.Windows.Automation.AutomationElement element) { }
+        public Orc.FilterBuilder.Automation.EditFilterView? EditFilterView { get; }
+        public void Accept() { }
+        public void Decline() { }
+    }
+    public class EditFilterWindowMap : Orc.Automation.AutomationBase
+    {
+        public EditFilterWindowMap(System.Windows.Automation.AutomationElement element) { }
+        public Orc.Automation.Controls.Button? CancelButton { get; }
+        public Orc.FilterBuilder.Automation.EditFilterView? EditFilterView { get; }
+        public Orc.Automation.Controls.Button? OkButton { get; }
+    }
+    [Orc.Automation.AutomatedControl(Class=typeof(Orc.FilterBuilder.Views.FilterBuilderControl))]
+    public class FilterBuilderControl : Orc.Automation.Controls.FrameworkElement<Orc.FilterBuilder.Automation.FilterBuilderControlModel, Orc.FilterBuilder.Automation.FilterBuilderControlMap>
+    {
+        public FilterBuilderControl(System.Windows.Automation.AutomationElement element) { }
+        public System.Collections.Generic.IReadOnlyList<Orc.FilterBuilder.Automation.FilterBuilderControlListItem>? Items { get; }
+    }
+    [Orc.Automation.AutomatedControl(ControlTypeName="ListItem")]
+    public class FilterBuilderControlListItem : Orc.Automation.Controls.ListItem
+    {
+        public FilterBuilderControlListItem(System.Windows.Automation.AutomationElement element) { }
+        public override string DisplayText { get; }
+        public string Title { get; }
+        public bool CanDelete() { }
+        public bool CanEdit() { }
+        public void Delete() { }
+        public Orc.FilterBuilder.Automation.EditFilterWindow? Edit() { }
+    }
+    public class FilterBuilderControlListItemMap : Orc.Automation.AutomationBase
+    {
+        public FilterBuilderControlListItemMap(System.Windows.Automation.AutomationElement element) { }
+        public Orc.Automation.Controls.Button? DeleteSchemeButton { get; }
+        public Orc.Automation.Controls.Button? EditSchemeButton { get; }
+        public Orc.Automation.Controls.Text? Title { get; }
+    }
+    public class FilterBuilderControlMap : Orc.Automation.AutomationBase
+    {
+        public FilterBuilderControlMap(System.Windows.Automation.AutomationElement element) { }
+        public Orc.Automation.Controls.ListBox? FilterSchemesListBox { get; }
+    }
+    public class FilterBuilderControlModel : Orc.Automation.FrameworkElementModel
+    {
+        public static readonly Catel.Data.IPropertyData? AllowDeleteProperty;
+        public static readonly Catel.Data.IPropertyData? AllowLivePreviewProperty;
+        public static readonly Catel.Data.IPropertyData? AllowResetProperty;
+        public static readonly Catel.Data.IPropertyData? AutoApplyFilterProperty;
+        public static readonly Catel.Data.IPropertyData? EnableAutoCompletionProperty;
+        public static readonly Catel.Data.IPropertyData? FilteredCollectionProperty;
+        public static readonly Catel.Data.IPropertyData? ModeProperty;
+        public static readonly Catel.Data.IPropertyData? RawCollectionProperty;
+        public static readonly Catel.Data.IPropertyData? ScopeProperty;
+        public FilterBuilderControlModel(Orc.Automation.AutomationElementAccessor accessor) { }
+        [Orc.Automation.ActiveAutomationProperty]
+        public bool AllowDelete { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public bool AllowLivePreview { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public bool AllowReset { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public bool AutoApplyFilter { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public bool EnableAutoCompletion { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public System.Collections.IList? FilteredCollection { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public Orc.FilterBuilder.FilterBuilderMode? Mode { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public System.Collections.IEnumerable? RawCollection { get; set; }
+        [Orc.Automation.ActiveAutomationProperty]
+        public object? Scope { get; set; }
+    }
+    public class FilterBuilderControlPeer : Orc.Automation.AutomationControlPeerBase<Orc.FilterBuilder.Views.FilterBuilderControl>
+    {
+        public FilterBuilderControlPeer(Orc.FilterBuilder.Views.FilterBuilderControl owner) { }
+    }
+    public class FilterSchemeBuilder
+    {
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder And() { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder FinishConditionGroup() { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder Group(Orc.FilterBuilder.ConditionGroupType type) { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder Or() { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder Property(string name, Orc.FilterBuilder.DataTypeExpression expression) { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder Property(string name, Orc.FilterBuilder.Condition condition, string? value = null) { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder Property<TValue>(string name, Orc.FilterBuilder.Condition condition, TValue value = default)
+            where TValue :  struct, System.IComparable, System.IFormattable, System.IComparable<TValue>, System.IEquatable<TValue> { }
+        public Orc.FilterBuilder.Automation.FilterSchemeBuilder Title(string title) { }
+        public Orc.FilterBuilder.FilterScheme ToFilterScheme() { }
+        public static Orc.FilterBuilder.Automation.FilterSchemeBuilder Start<T>() { }
+        public static Orc.FilterBuilder.Automation.FilterSchemeBuilder StartGroup<T>(Orc.FilterBuilder.ConditionGroupType groupType = 0) { }
+    }
+    public class FilterSchemeEditInfoSerializationConverter : Orc.Automation.SerializationValueConverterBase<Orc.FilterBuilder.FilterSchemeEditInfo, Orc.FilterBuilder.Automation.SerializableFilterSchemeEditInfo>
+    {
+        public FilterSchemeEditInfoSerializationConverter() { }
+        public override object? ConvertFrom(Orc.FilterBuilder.FilterSchemeEditInfo value) { }
+        public override object? ConvertTo(Orc.FilterBuilder.Automation.SerializableFilterSchemeEditInfo value) { }
+    }
+    public class SerializableFilterSchemeEditInfo
+    {
+        public SerializableFilterSchemeEditInfo() { }
+        public bool AllowLivePreview { get; set; }
+        public bool EnableAutoCompletion { get; set; }
+        public Orc.FilterBuilder.FilterScheme? FilterScheme { get; set; }
+        public System.Collections.IEnumerable? RawCollection { get; set; }
+    }
+}
+namespace Orc.FilterBuilder.Behaviors
+{
+    public class DisableSelectionInTreeView : Catel.Windows.Interactivity.BehaviorBase<System.Windows.Controls.TreeView>
+    {
+        public DisableSelectionInTreeView() { }
+        protected override void OnAssociatedObjectLoaded() { }
+        protected override void OnAssociatedObjectUnloaded() { }
+    }
+}
+namespace Orc.FilterBuilder.Converters
+{
+    public class ConditionTreeItemConverter : Catel.MVVM.Converters.VisibilityConverterBase
+    {
+        public ConditionTreeItemConverter() { }
+        protected override bool IsVisible(object? value, System.Type targetType, object? parameter) { }
+    }
+    public class DataTypeExpressionToConditionsConverter : Catel.MVVM.Converters.ValueConverterBase
+    {
+        public DataTypeExpressionToConditionsConverter() { }
+        protected override object? Convert(object? value, System.Type targetType, object? parameter) { }
+    }
+    public class FilterResultMultiValueConverter : System.Windows.Data.IMultiValueConverter
+    {
+        public FilterResultMultiValueConverter() { }
+        public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object?[]? ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
+    }
+    public class IsCurrentFilterSchemeToCollapsingVisibilityConverter : System.Windows.Data.IMultiValueConverter
+    {
+        public IsCurrentFilterSchemeToCollapsingVisibilityConverter() { }
+        public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object?[] ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
+    }
+    public class LeftMarginMultiplierConverter : Catel.MVVM.Converters.ValueConverterBase
+    {
+        public LeftMarginMultiplierConverter() { }
+        public double Length { get; set; }
+        protected override object Convert(object? value, System.Type targetType, object? parameter) { }
+    }
+    public class ObjectToValueConverter : Catel.MVVM.Converters.ValueConverterBase
+    {
+        public ObjectToValueConverter(Orc.FilterBuilder.IPropertyMetadata? propertyMetadata) { }
+        protected override object? Convert(object? value, System.Type targetType, object? parameter) { }
+    }
+    public class TriggerConverter : System.Windows.Data.IMultiValueConverter
+    {
+        public TriggerConverter() { }
+        public object Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object?[] ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
+    }
+    public class ValueControlTypeVisibilityConverter : Catel.MVVM.Converters.VisibilityConverterBase
+    {
+        public ValueControlTypeVisibilityConverter() { }
+        protected override bool IsVisible(object? value, System.Type targetType, object? parameter) { }
+    }
+}
+namespace Orc.FilterBuilder
+{
+    public enum FilterBuilderMode
+    {
+        Collection = 0,
+        FilteringFunction = 1,
+    }
+    [System.Diagnostics.DebuggerDisplay("{Title}")]
+    public class FilterGroup
+    {
+        public FilterGroup(string title, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.FilterScheme>? filterSchemes) { }
+        public System.Collections.Generic.List<Orc.FilterBuilder.FilterScheme> FilterSchemes { get; }
+        public string Title { get; }
+    }
+    public static class TreeViewItemExtensions
+    {
+        public static int GetDepth(this System.Windows.Controls.TreeViewItem item) { }
+    }
+}
+namespace Orc.FilterBuilder.Markup
+{
+    public class EnumBinding : System.Windows.Markup.MarkupExtension
+    {
+        public EnumBinding() { }
+        public EnumBinding(System.Type enumType) { }
+        [System.Windows.Markup.ConstructorArgument("enumType")]
+        public System.Type? EnumType { get; }
+        public override object? ProvideValue(System.IServiceProvider serviceProvider) { }
+    }
+}
+namespace Orc.FilterBuilder.ViewModels
+{
+    public class EditFilterViewModel : Catel.MVVM.ViewModelBase
+    {
+        public static readonly Catel.Data.IPropertyData EnableLivePreviewProperty;
+        public static readonly Catel.Data.IPropertyData FilterSchemeTitleProperty;
+        public static readonly Catel.Data.IPropertyData IsLivePreviewDirtyProperty;
+        public static readonly Catel.Data.IPropertyData IsPreviewVisibleProperty;
+        public EditFilterViewModel(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Catel.Services.ILanguageService languageService) { }
+        public Catel.MVVM.Command<Orc.FilterBuilder.ConditionGroup> AddExpressionCommand { get; }
+        public Catel.MVVM.Command<Orc.FilterBuilder.ConditionGroup> AddGroupCommand { get; }
+        public bool AllowLivePreview { get; }
+        public Catel.MVVM.Command<Orc.FilterBuilder.ConditionTreeItem> DeleteConditionItem { get; }
+        public bool EnableAutoCompletion { get; }
+        public bool EnableLivePreview { get; set; }
+        public Orc.FilterBuilder.FilterScheme FilterScheme { get; }
+        public string FilterSchemeTitle { get; set; }
+        public System.Collections.Generic.List<Orc.FilterBuilder.IPropertyMetadata> InstanceProperties { get; }
+        public bool IsLivePreviewDirty { get; }
+        public bool IsPreviewVisible { get; set; }
+        public Catel.Collections.FastObservableCollection<object> PreviewItems { get; }
+        public System.Collections.IEnumerable RawCollection { get; }
+        public override string Title { get; }
+        public Catel.MVVM.Command TogglePreview { get; }
+        protected override System.Threading.Tasks.Task<bool> CancelAsync() { }
+        protected override System.Threading.Tasks.Task CloseAsync() { }
+        protected override System.Threading.Tasks.Task InitializeAsync() { }
+        protected override System.Threading.Tasks.Task<bool> SaveAsync() { }
+        protected override void ValidateFields(System.Collections.Generic.List<Catel.Data.IFieldValidationResult> validationResults) { }
+    }
+    public class FilterBuilderViewModel : Catel.MVVM.ViewModelBase
+    {
+        public static readonly Catel.Data.IPropertyData AllowDeleteProperty;
+        public static readonly Catel.Data.IPropertyData AllowLivePreviewProperty;
+        public static readonly Catel.Data.IPropertyData AllowResetProperty;
+        public static readonly Catel.Data.IPropertyData AutoApplyFilterProperty;
+        public static readonly Catel.Data.IPropertyData EnableAutoCompletionProperty;
+        public static readonly Catel.Data.IPropertyData FilterGroupsProperty;
+        public static readonly Catel.Data.IPropertyData FilteredCollectionProperty;
+        public static readonly Catel.Data.IPropertyData FilteringFuncProperty;
+        public static readonly Catel.Data.IPropertyData ModeProperty;
+        public static readonly Catel.Data.IPropertyData RawCollectionProperty;
+        public static readonly Catel.Data.IPropertyData ScopeProperty;
+        public static readonly Catel.Data.IPropertyData SelectedFilterSchemeProperty;
+        public FilterBuilderViewModel(Catel.Services.IUIVisualizerService uiVisualizerService, Orc.FilterBuilder.IFilterSchemeManager filterSchemeManager, Orc.FilterBuilder.IFilterService filterService, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Orc.FilterBuilder.IReflectionService reflectionService, Catel.Services.ILanguageService languageService) { }
+        public bool AllowDelete { get; set; }
+        public bool AllowLivePreview { get; set; }
+        public bool AllowReset { get; set; }
+        public Catel.MVVM.TaskCommand ApplySchemeCommand { get; }
+        public bool AutoApplyFilter { get; set; }
+        public Catel.MVVM.TaskCommand<Orc.FilterBuilder.FilterScheme> DeleteSchemeCommand { get; }
+        public Catel.MVVM.TaskCommand<Orc.FilterBuilder.FilterScheme> EditSchemeCommand { get; }
+        public bool EnableAutoCompletion { get; set; }
+        public System.Collections.Generic.List<Orc.FilterBuilder.FilterGroup> FilterGroups { get; }
+        public System.Collections.IList? FilteredCollection { get; set; }
+        public System.Func<object, bool>? FilteringFunc { get; set; }
+        public Orc.FilterBuilder.FilterBuilderMode Mode { get; set; }
+        public Catel.MVVM.TaskCommand NewSchemeCommand { get; }
+        public System.Collections.IEnumerable? RawCollection { get; set; }
+        public Catel.MVVM.Command ResetSchemeCommand { get; }
+        public object? Scope { get; set; }
+        public Orc.FilterBuilder.FilterScheme? SelectedFilterScheme { get; set; }
+        protected override System.Threading.Tasks.Task CloseAsync() { }
+        protected override System.Threading.Tasks.Task InitializeAsync() { }
+    }
+}
+namespace Orc.FilterBuilder.Views
+{
+    public sealed class EditFilterView : Catel.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector
+    {
+        public EditFilterView() { }
+        public void InitializeComponent() { }
+        protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() { }
+        protected override void OnViewModelChanged() { }
+    }
+    public class EditFilterWindow : Catel.Windows.DataWindow, System.Windows.Markup.IComponentConnector
+    {
+        public EditFilterWindow() { }
+        public void InitializeComponent() { }
+    }
+    public class FilterBuilderControl : Catel.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector, System.Windows.Markup.IStyleConnector
+    {
+        public static readonly System.Windows.DependencyProperty AllowDeleteProperty;
+        public static readonly System.Windows.DependencyProperty AllowLivePreviewProperty;
+        public static readonly System.Windows.DependencyProperty AllowResetProperty;
+        public static readonly System.Windows.DependencyProperty AutoApplyFilterProperty;
+        public static readonly System.Windows.DependencyProperty EnableAutoCompletionProperty;
+        public static readonly System.Windows.DependencyProperty FilteredCollectionProperty;
+        public static readonly System.Windows.DependencyProperty FilteringFuncProperty;
+        public static readonly System.Windows.DependencyProperty ModeProperty;
+        public static readonly System.Windows.DependencyProperty RawCollectionProperty;
+        public static readonly System.Windows.DependencyProperty ScopeProperty;
+        public FilterBuilderControl() { }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AllowDelete { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AllowLivePreview { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AllowReset { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public bool AutoApplyFilter { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public bool EnableAutoCompletion { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public System.Collections.IList? FilteredCollection { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public System.Func<object, bool>? FilteringFunc { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public Orc.FilterBuilder.FilterBuilderMode Mode { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public System.Collections.IEnumerable? RawCollection { get; set; }
+        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
+        public object? Scope { get; set; }
+        public void InitializeComponent() { }
+        protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() { }
+    }
+}

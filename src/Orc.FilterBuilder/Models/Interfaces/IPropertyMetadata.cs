@@ -1,30 +1,20 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPropertyMetadata.cs" company="WildGums">
-//     Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
-namespace Orc.FilterBuilder
+using System;
+
+public interface IPropertyMetadata
 {
-    using System;
+    string DisplayName { get; set; }
 
-    public interface IPropertyMetadata
-    {
-        /// <summary>
-        /// Display name of the property
-        /// </summary>
-        string DisplayName { get; set; }
+    string Name { get; }
 
-        string Name { get; }
+    Type OwnerType { get; }
 
-        Type OwnerType { get; }
+    Type Type { get; }
 
-        Type Type { get; }
+    object? GetValue(object instance);
 
-        object GetValue(object instance);
+    TValue? GetValue<TValue>(object instance);
 
-        TValue GetValue<TValue>(object instance);
-
-        void SetValue(object instance, object value);
-    }
+    void SetValue(object instance, object? value);
 }

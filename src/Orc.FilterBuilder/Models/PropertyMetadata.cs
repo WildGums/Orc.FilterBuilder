@@ -1,164 +1,135 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyMetadata.cs" company="WildGums">
-//     Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using Catel;
+using Catel.Data;
 
-namespace Orc.FilterBuilder
+[DebuggerDisplay("{OwnerType}.{Name}")]
+public class PropertyMetadata : IPropertyMetadata
 {
-    using System;
-    using System.Diagnostics;
-    using System.Reflection;
-    using Catel;
-    using Catel.Data;
+    private readonly IPropertyData? _propertyData;
+    private readonly PropertyInfo? _propertyInfo;
+    private string? _displayName;
 
-    [DebuggerDisplay("{OwnerType}.{Name}")]
-    public class PropertyMetadata : IPropertyMetadata
+    public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
     {
-        private readonly PropertyData _propertyData;
-        private readonly PropertyInfo _propertyInfo;
-        private string _displayName;
+        ArgumentNullException.ThrowIfNull(ownerType);
+        ArgumentNullException.ThrowIfNull(propertyInfo);
 
-        #region Constructors
-        public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
+        _propertyInfo = propertyInfo;
+
+        OwnerType = ownerType;
+        Name = propertyInfo.Name;
+        DisplayName = propertyInfo.GetDisplayName() ?? Name;
+        Type = propertyInfo.PropertyType;
+    }
+
+    public PropertyMetadata(Type ownerType, IPropertyData propertyData)
+    {
+        ArgumentNullException.ThrowIfNull(ownerType);
+        ArgumentNullException.ThrowIfNull(propertyData);
+
+        _propertyData = propertyData;
+
+        OwnerType = ownerType;
+        Name = propertyData.Name;
+        DisplayName = ownerType.GetProperty(propertyData.Name)?.GetDisplayName() ?? Name;
+        Type = propertyData.Type;
+    }
+
+    public string DisplayName
+    {
+        get => _displayName ?? Name;
+        set => _displayName = value;
+    }
+
+    public string Name { get; }
+
+    public Type OwnerType { get; }
+
+    public Type Type { get; }
+
+    private bool Equals(PropertyMetadata other)
+    {
+        return Equals(_propertyData, other._propertyData) && string.Equals(Name, other.Name) && Type == other.Type;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
         {
-            Argument.IsNotNull(() => ownerType);
-            Argument.IsNotNull(() => propertyInfo);
-
-            _propertyInfo = propertyInfo;
-
-            OwnerType = ownerType;
-            Name = propertyInfo.Name;
-            DisplayName = propertyInfo.GetDisplayName() ?? Name;
-            Type = propertyInfo.PropertyType;
+            return false;
         }
 
-        public PropertyMetadata(Type ownerType, PropertyData propertyData)
+        if (ReferenceEquals(this, obj))
         {
-            Argument.IsNotNull(() => ownerType);
-            Argument.IsNotNull(() => propertyData);
-
-            _propertyData = propertyData;
-
-            OwnerType = ownerType;
-            Name = propertyData.Name;
-            DisplayName = ownerType.GetProperty(Name).GetDisplayName() ?? Name;
-            Type = propertyData.Type;
-        }
-        #endregion Constructors
-
-        #region Properties
-        public string DisplayName
-        {
-            get
-            {
-                if (_displayName is not null)
-                {
-                    return _displayName;
-                }
-
-                return Name;
-            }
-            set => _displayName = value;
+            return true;
         }
 
-        public string Name { get; }
+        return obj.GetType() == GetType() 
+               && Equals((PropertyMetadata)obj);
+    }
 
-        public Type OwnerType { get; }
-
-        public Type Type { get; }
-        #endregion Properties
-
-        #region Methods
-        private bool Equals(PropertyMetadata other)
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            return Equals(_propertyData, other._propertyData) && string.Equals(Name, other.Name) && Type == other.Type;
+            var hashCode = _propertyData is not null ? _propertyData.GetHashCode() : 0;
+            hashCode = (hashCode * 397) ^ Name.GetHashCode();
+            hashCode = (hashCode * 397) ^ Type.GetHashCode();
+            return hashCode;
+        }
+    }
+
+    public object? GetValue(object instance)
+    {
+        return GetValue<object?>(instance);
+    }
+
+    public TValue? GetValue<TValue>(object instance)
+    {
+        ArgumentNullException.ThrowIfNull(instance);
+
+        object? value = null;
+
+        if (_propertyInfo is not null)
+        {
+            value = _propertyInfo.GetValue(instance, null);
+        }
+        else if (_propertyData is not null && instance is IModelEditor modelEditor)
+        {
+            value = modelEditor.GetValue<TValue>(_propertyData.Name);
         }
 
-        public override bool Equals(object obj)
+        if (value is null)
         {
-            if (obj is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((PropertyMetadata)obj);
+            return default;
         }
 
-        public override int GetHashCode()
+        if (typeof(TValue) == typeof(string))
         {
-            unchecked
-            {
-                var hashCode = _propertyData is not null ? _propertyData.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (Name is not null ? Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Type is not null ? Type.GetHashCode() : 0);
-                return hashCode;
-            }
+            value = ObjectToStringHelper.ToString(value);
         }
 
-        public object GetValue(object instance)
+        return (TValue)value;
+    }
+
+    public void SetValue(object instance, object? value)
+    {
+        ArgumentNullException.ThrowIfNull(instance);
+
+        _propertyInfo?.SetValue(instance, value, null);
+
+        if (_propertyData is null)
         {
-            return GetValue<object>(instance);
+            return;
         }
 
-        public TValue GetValue<TValue>(object instance)
+        if (instance is IModelEditor modelEditor)
         {
-            Argument.IsNotNull(() => instance);
-
-            object value = null;
-
-            if (_propertyInfo is not null)
-            {
-                value = _propertyInfo.GetValue(instance, null);
-            }
-            else if (_propertyData is not null && instance is IModelEditor modelEditor)
-            {
-                value = modelEditor.GetValue(_propertyData.Name);
-            }
-
-            if (value is null)
-            {
-                return default(TValue);
-            }
-
-            if (typeof(TValue) == typeof(string))
-            {
-                value = ObjectToStringHelper.ToString(value);
-            }
-
-            return (TValue)value;
+            modelEditor.SetValue(_propertyData.Name, value);
         }
-
-        public void SetValue(object instance, object value)
-        {
-            Argument.IsNotNull(() => instance);
-
-            if (_propertyInfo is not null)
-            {
-                _propertyInfo.SetValue(instance, value, null);
-            }
-
-            if (_propertyData is null)
-            {
-                return;
-            }
-
-            if (instance is IModelEditor modelEditor)
-            {
-                modelEditor.SetValue(_propertyData.Name, value);
-            }
-        }
-        #endregion Methods
     }
 }

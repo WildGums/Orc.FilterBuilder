@@ -1,17 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPropertyCollection.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
-namespace Orc.FilterBuilder
+using System.Collections.Generic;
+
+public interface IPropertyCollection
 {
-    using System.Collections.Generic;
+    List<IPropertyMetadata> Properties { get; }
 
-    public interface IPropertyCollection
-    {
-        List<IPropertyMetadata> Properties { get; }
-
-        IPropertyMetadata GetProperty(string propertyName);
-    }
+    IPropertyMetadata? GetProperty(string propertyName);
 }

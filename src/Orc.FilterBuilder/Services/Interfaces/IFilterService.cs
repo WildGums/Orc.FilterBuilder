@@ -1,29 +1,24 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Collections;
+using System.Threading.Tasks;
+
+public interface IFilterService
 {
-    using System;
-    using System.Collections;
-    using System.Threading.Tasks;
+    FilterScheme? SelectedFilter { get; set; }
 
-    public interface IFilterService
-    {
-        #region Properties
-        FilterScheme SelectedFilter { get; set; }
-        #endregion
+    Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection);
 
-        #region Methods
-        Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection);
+    void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection);
 
-        void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection);
-        #endregion
+    /// <summary>
+    /// Occurs when any of the filters has been updated.
+    /// </summary>
+    event EventHandler<EventArgs>? FiltersUpdated;
 
-        /// <summary>
-        /// Occurs when any of the filters has been updated.
-        /// </summary>
-        event EventHandler<EventArgs> FiltersUpdated;
-
-        /// <summary>
-        /// Occurs when the currently selected filter has changed.
-        /// </summary>
-        event EventHandler<EventArgs> SelectedFilterChanged;
-    }
+    /// <summary>
+    /// Occurs when the currently selected filter has changed.
+    /// </summary>
+    event EventHandler<EventArgs>? SelectedFilterChanged;
 }

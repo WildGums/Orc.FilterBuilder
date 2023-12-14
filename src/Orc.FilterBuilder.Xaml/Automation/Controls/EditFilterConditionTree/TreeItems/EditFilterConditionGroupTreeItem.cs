@@ -19,20 +19,20 @@ public class EditFilterConditionGroupTreeItem : EditFilterConditionTreeItemBase
         set => _treeItem.IsExpanded = value;
     }
 
-    public ConditionGroupType GroupType
+    public ConditionGroupType? GroupType
     {
-        get => Map.GroupTypeComboBox.GetSelectedValue<ConditionGroupType>();
-        set => Map.GroupTypeComboBox.SelectValue(value);
+        get => Map.GroupTypeComboBox?.GetSelectedValue<ConditionGroupType>();
+        set => Map.GroupTypeComboBox?.SelectValue(value);
     }
 
-    public EditFilterConditionGroupTreeItem AddGroup(ConditionGroupType groupType = ConditionGroupType.And)
+    public EditFilterConditionGroupTreeItem? AddGroup(ConditionGroupType groupType = ConditionGroupType.And)
     {
         Map.AddGroupButton?.Click();
 
         //Give time to create new item
         Wait.UntilResponsive();
 
-        var newGroup = Children?.LastOrDefault() as EditFilterConditionGroupTreeItem;
+        var newGroup = Children.LastOrDefault() as EditFilterConditionGroupTreeItem;
         if (newGroup is not null)
         {
             newGroup.GroupType = groupType;
@@ -41,14 +41,14 @@ public class EditFilterConditionGroupTreeItem : EditFilterConditionTreeItemBase
         return newGroup;
     }
 
-    public EditFilterPropertyConditionTreeItem AddPropertyExpression()
+    public EditFilterPropertyConditionTreeItem? AddPropertyExpression()
     {
         Map.AddExpressionButton?.Click();
 
         //Give time to create new item
         Wait.UntilResponsive();
 
-        return Children?.LastOrDefault() as EditFilterPropertyConditionTreeItem;
+        return Children.LastOrDefault() as EditFilterPropertyConditionTreeItem;
     }
 
     public override void Delete()

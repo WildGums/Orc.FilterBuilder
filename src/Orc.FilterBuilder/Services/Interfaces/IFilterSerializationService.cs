@@ -1,10 +1,9 @@
-﻿namespace Orc.FilterBuilder
-{
-    using System.Threading.Tasks;
+﻿namespace Orc.FilterBuilder;
 
-    public interface IFilterSerializationService
-    {
-        Task<FilterSchemes> LoadFiltersAsync(string fileName);
-        Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes);
-    }
+using System.Threading.Tasks;
+
+public interface IFilterSerializationService
+{
+    Task<FilterSchemes> LoadFiltersAsync(string fileName);
+    Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes);
 }

@@ -1,37 +1,24 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyInfoExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using Catel.ComponentModel;
+using Catel.Reflection;
 
-namespace Orc.FilterBuilder
+internal static class PropertyInfoExtensions
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.Reflection;
-    using Catel.ComponentModel;
-    using Catel.Reflection;
-
-    internal static class PropertyInfoExtensions
+    public static string? GetDisplayName(this PropertyInfo propertyInfo)
     {
-        #region Methods
-        public static string GetDisplayName(this PropertyInfo propertyInfo)
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        if (propertyInfo.TryGetAttribute<DisplayNameAttribute>(out var catelDispNameAttr))
         {
-            if (propertyInfo is not null)
-            {
-                if (propertyInfo.TryGetAttribute(out DisplayNameAttribute catelDispNameAttr))
-                {
-                    return catelDispNameAttr.DisplayName;
-                }
-
-                if (propertyInfo.TryGetAttribute(out DisplayAttribute dispAttr))
-                {
-                    return dispAttr.GetName();
-                }
-            }
-
-            return null;
+            return catelDispNameAttr.DisplayName;
         }
-        #endregion
+
+        return propertyInfo.TryGetAttribute<DisplayAttribute>(out var dispAttr) 
+            ? dispAttr.GetName() 
+            : null;
     }
 }

@@ -1,89 +1,78 @@
-﻿namespace Orc.FilterBuilder.Tests
+﻿namespace Orc.FilterBuilder.Tests;
+
+using System;
+using System.IO;
+using Catel.Logging;
+
+public sealed class TemporaryFilesContext : IDisposable
 {
-    using System;
-    using System.IO;
-    using Catel.Logging;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public sealed class TemporaryFilesContext : IDisposable
+    private readonly Guid _randomGuid = Guid.NewGuid();
+    private readonly string _rootDirectory;
+
+    public TemporaryFilesContext(string name = null)
     {
-        #region Constants
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        #endregion
-
-        #region Fields
-        private readonly Guid _randomGuid = Guid.NewGuid();
-        private readonly string _rootDirectory;
-        #endregion
-
-        #region Constructors
-        public TemporaryFilesContext(string name = null)
+        if (string.IsNullOrWhiteSpace(name))
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                name = _randomGuid.ToString();
-            }
-
-            _rootDirectory = Path.Combine(Path.GetTempPath(), "Orc.FilterBuilder.Tests", name);
-
-            Directory.CreateDirectory(_rootDirectory);
-        }
-        #endregion
-
-        #region IDisposable Members
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Log.Info("Deleting temporary files from '{0}'", _rootDirectory);
-
-            try
-            {
-                if (Directory.Exists(_rootDirectory))
-                {
-                    Directory.Delete(_rootDirectory, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to delete temporary files");
-            }
-        }
-        #endregion
-
-        #region Methods
-        public string GetDirectory(string relativeDirectoryName)
-        {
-            var fullPath = Path.Combine(_rootDirectory, relativeDirectoryName);
-
-            if (!Directory.Exists(fullPath))
-            {
-                Directory.CreateDirectory(fullPath);
-            }
-
-            return fullPath;
+            name = _randomGuid.ToString();
         }
 
-        public string GetFile(string relativeFilePath, bool deleteIfExists = false)
+        _rootDirectory = Path.Combine(Path.GetTempPath(), "Orc.FilterBuilder.Tests", name);
+
+        Directory.CreateDirectory(_rootDirectory);
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Log.Info("Deleting temporary files from '{0}'", _rootDirectory);
+
+        try
         {
-            var fullPath = Path.Combine(_rootDirectory, relativeFilePath);
-
-            var directory = Path.GetDirectoryName(fullPath);
-            if (!Directory.Exists(directory))
+            if (Directory.Exists(_rootDirectory))
             {
-                Directory.CreateDirectory(directory);
+                Directory.Delete(_rootDirectory, true);
             }
-
-            if (deleteIfExists)
-            {
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                }
-            }
-
-            return fullPath;
         }
-        #endregion
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to delete temporary files");
+        }
+    }
+
+    public string GetDirectory(string relativeDirectoryName)
+    {
+        var fullPath = Path.Combine(_rootDirectory, relativeDirectoryName);
+
+        if (!Directory.Exists(fullPath))
+        {
+            Directory.CreateDirectory(fullPath);
+        }
+
+        return fullPath;
+    }
+
+    public string GetFile(string relativeFilePath, bool deleteIfExists = false)
+    {
+        var fullPath = Path.Combine(_rootDirectory, relativeFilePath);
+
+        var directory = Path.GetDirectoryName(fullPath);
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        if (deleteIfExists)
+        {
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+        }
+
+        return fullPath;
     }
 }

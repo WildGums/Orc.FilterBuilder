@@ -1,37 +1,36 @@
-﻿namespace Orc.FilterBuilder.Tests.Models
+﻿namespace Orc.FilterBuilder.Tests.Models;
+
+using NUnit.Framework;
+
+public class FilterSchemeFacts
 {
-    using NUnit.Framework;
-
-    public class FilterSchemeFacts
+    [TestFixture]
+    public class TheToStringMethod
     {
-        [TestFixture]
-        public class TheToStringMethod
+        [TestCase]
+        public void WorksCorrectlyOnEmptyFilterScheme()
         {
-            [TestCase]
-            public void WorksCorrectlyOnEmptyFilterScheme()
+            var filterScheme = new FilterScheme
             {
-                var filterScheme = new FilterScheme
-                {
-                    Title = "Default"
-                };
+                Title = "Default"
+            };
 
-                var actual = filterScheme.ToString();
-                var expected = @"Default";
+            var actual = filterScheme.ToString();
+            var expected = @"Default";
 
-                Assert.AreEqual(expected, actual);
-            }
+            Assert.That(actual, Is.EqualTo(expected));
+        }
 
-            [TestCase]
-            public void WorksCorrectlyOnLargeFilterScheme()
-            {
-                var filterScheme = FilterSchemeHelper.GenerateFilterScheme();
+        [TestCase]
+        public void WorksCorrectlyOnLargeFilterScheme()
+        {
+            var filterScheme = FilterSchemeHelper.GenerateFilterScheme();
 
-                var actual = filterScheme.ToString();
-                var expected = @"Test filter
+            var actual = filterScheme.ToString();
+            var expected = @"Test filter
 (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
 
-                Assert.AreEqual(expected, actual);
-            }
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }

@@ -1,38 +1,24 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestFilterRuntimeModelPropertyCollection.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Tests;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Orc.FilterBuilder.Tests
+public class TestFilterRuntimeModelPropertyCollection : IPropertyCollection
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Catel;
-
-    public class TestFilterRuntimeModelPropertyCollection : IPropertyCollection
+    public TestFilterRuntimeModelPropertyCollection(IList<TestAttributeType> attributeTypes)
     {
-        #region Constructors
-        public TestFilterRuntimeModelPropertyCollection(IList<TestAttributeType> attributeTypes)
-        {
-            Argument.IsNotNull(() => attributeTypes);
+        ArgumentNullException.ThrowIfNull(attributeTypes);
 
-            Properties = attributeTypes.Select(x => new TestFilterRuntimeModelMetadata(x))
-                .Cast<IPropertyMetadata>()
-                .ToList();
-        }
-        #endregion
+        Properties = attributeTypes.Select(x => new TestFilterRuntimeModelMetadata(x))
+            .Cast<IPropertyMetadata>()
+            .ToList();
+    }
 
-        #region Properties
-        public List<IPropertyMetadata> Properties { get; }
-        #endregion
+    public List<IPropertyMetadata> Properties { get; }
 
-        #region Methods
-        public IPropertyMetadata GetProperty(string propertyName)
-        {
-            return Properties.FirstOrDefault(x => x.Name == propertyName);
-        }
-        #endregion
+    public IPropertyMetadata GetProperty(string propertyName)
+    {
+        return Properties.FirstOrDefault(x => x.Name == propertyName);
     }
 }

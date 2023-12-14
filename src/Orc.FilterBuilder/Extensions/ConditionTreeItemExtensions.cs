@@ -1,21 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionTreeItemExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
 
-namespace Orc.FilterBuilder
+public static class ConditionTreeItemExtensions
 {
-    using Catel;
-
-    public static class ConditionTreeItemExtensions
+    public static bool IsRoot(this ConditionTreeItem item)
     {
-        public static bool IsRoot(this ConditionTreeItem item)
-        {
-            Argument.IsNotNull(() => item);
+        ArgumentNullException.ThrowIfNull(item);
 
-            return item.Parent is null;
-        }
+        return item.Parent is null;
     }
 }

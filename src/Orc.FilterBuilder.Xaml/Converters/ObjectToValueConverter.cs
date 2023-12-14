@@ -1,74 +1,60 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectToValueConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Converters;
 
+using System;
+using Catel.Data;
+using Catel.Logging;
+using Catel.MVVM.Converters;
+using Catel.Reflection;
 
-namespace Orc.FilterBuilder.Converters
+public class ObjectToValueConverter : ValueConverterBase
 {
-    using System;
-    using Catel.Data;
-    using Catel.Logging;
-    using Catel.MVVM.Converters;
-    using Catel.Reflection;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public class ObjectToValueConverter : ValueConverterBase
+    private readonly IPropertyMetadata? _propertyMetadata;
+
+    public ObjectToValueConverter(IPropertyMetadata? propertyMetadata)
     {
-        private readonly IPropertyMetadata _propertyMetadata;
+        _propertyMetadata = propertyMetadata;
+    }
 
-        public ObjectToValueConverter(IPropertyMetadata propertyMetadata)
+    protected override object? Convert(object? value, Type targetType, object? parameter)
+    {
+        if (value is null)
         {
-            _propertyMetadata = propertyMetadata;
-        }
-
-        public ObjectToValueConverter()
-        {
-
-        }
-
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        #region Methods
-        protected override object Convert(object value, Type targetType, object parameter)
-        {
-            var propertyName = parameter as string;
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return null;
-            }
-
-            try
-            {
-                var modelBase = value as IModelEditor;
-                if (modelBase is not null)
-                {
-                    var propertyDataManager = PropertyDataManager.Default;
-                    if (propertyDataManager.IsPropertyRegistered(modelBase.GetType(), propertyName))
-                    {
-#pragma warning disable CS0618 // Type or member is obsolete
-                        return modelBase.GetValueFastButUnsecure<object>(propertyName);
-#pragma warning restore CS0618 // Type or member is obsolete
-                    }
-                }
-
-                if (_propertyMetadata is not null)
-                {
-                    return _propertyMetadata.GetValue(value);
-                }
-
-                if (value is not null)
-                {
-                    return PropertyHelper.GetPropertyValue(value, propertyName, false);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to get property value '{0}'", propertyName);
-            }
-
             return null;
         }
-        #endregion
+
+        var propertyName = parameter as string;
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return null;
+        }
+
+        try
+        {
+            if (value is IModelEditor modelBase)
+            {
+                var propertyDataManager = PropertyDataManager.Default;
+                if (propertyDataManager.IsPropertyRegistered(modelBase.GetType(), propertyName))
+                {
+#pragma warning disable CS0618 // Type or member is obsolete
+                    return modelBase.GetValueFastButUnsecure<object>(propertyName);
+#pragma warning restore CS0618 // Type or member is obsolete
+                }
+            }
+
+            if (_propertyMetadata is not null)
+            {
+                return _propertyMetadata.GetValue(value);
+            }
+
+            return PropertyHelper.GetPropertyValue(value, propertyName);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to get property value '{0}'", propertyName);
+        }
+
+        return null;
     }
 }

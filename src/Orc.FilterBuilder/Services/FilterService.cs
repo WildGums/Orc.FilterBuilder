@@ -1,97 +1,71 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.Collections;
+using System.Threading.Tasks;
+using Catel.IoC;
+using MethodTimer;
 
-namespace Orc.FilterBuilder
+public class FilterService : IFilterService
 {
-    using System;
-    using System.Collections;
-    using System.Threading.Tasks;
-    using Catel;
-    using Catel.IoC;
-    using Catel.Threading;
-    using MethodTimer;
+    private readonly IReflectionService _reflectionService;
+    private FilterScheme? _selectedFilter;
 
-    public class FilterService : IFilterService
+    public FilterService(IFilterSchemeManager filterSchemeManager)
     {
-        #region Fields
-        private readonly IReflectionService _reflectionService;
-        private FilterScheme _selectedFilter;
-        #endregion
+        ArgumentNullException.ThrowIfNull(filterSchemeManager);
 
-        #region Constructors
-        public FilterService(IFilterSchemeManager filterSchemeManager)
-        {
-            Argument.IsNotNull(() => filterSchemeManager);
-
-            var scope = filterSchemeManager.Scope;
+        var scope = filterSchemeManager.Scope;
 #pragma warning disable IDISP004 // Don't ignore created IDisposable.
-            _reflectionService = this.GetServiceLocator().ResolveType<IReflectionService>(scope);
+        _reflectionService = this.GetServiceLocator().ResolveRequiredType<IReflectionService>(scope);
 #pragma warning restore IDISP004 // Don't ignore created IDisposable.
 
-            filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
-        }
-        #endregion
+        filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
+    }
 
-        #region Properties
-        public FilterScheme SelectedFilter
+    public FilterScheme? SelectedFilter
+    {
+        get { return _selectedFilter; }
+        set
         {
-            get { return _selectedFilter; }
-            set
-            {
-                // ORCOMP-257: don't check for equality
+            // ORCOMP-257: don't check for equality
 
-                _selectedFilter = value;
+            _selectedFilter = value;
 
-                SelectedFilterChanged?.Invoke(this, EventArgs.Empty);
-            }
+            SelectedFilterChanged?.Invoke(this, EventArgs.Empty);
         }
-        #endregion
+    }
 
-        #region IFilterService Members
-        /// <summary>
-        /// Occurs when any of the filters has been updated.
-        /// </summary>
-        public event EventHandler<EventArgs> FiltersUpdated;
+    /// <summary>
+    /// Occurs when any of the filters has been updated.
+    /// </summary>
+    public event EventHandler<EventArgs>? FiltersUpdated;
+    /// <summary>
+    /// Occurs when the currently selected filter has changed.
+    /// </summary>
+    public event EventHandler<EventArgs>? SelectedFilterChanged;
 
-        /// <summary>
-        /// Occurs when the currently selected filter has changed.
-        /// </summary>
-        public event EventHandler<EventArgs> SelectedFilterChanged;
+    public Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+    {
+        ArgumentNullException.ThrowIfNull(filter);
 
-        public Task FilterCollectionAsync(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
-        {
-            Argument.IsNotNull(() => filter);
+        FilterCollection(filter, rawCollection, filteredCollection);
 
-            FilterCollection(filter, rawCollection, filteredCollection);
+        return Task.CompletedTask;
+    }
 
-            return TaskHelper.Completed;
-        }
+    [Time]
+    public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
+    {
+        ArgumentNullException.ThrowIfNull(filter);
 
-        [Time]
-        public void FilterCollection(FilterScheme filter, IEnumerable rawCollection, IList filteredCollection)
-        {
-            Argument.IsNotNull(() => filter);
+        filter.EnsureIntegrity(_reflectionService);
 
-            filter.EnsureIntegrity(_reflectionService);
+        filter.Apply(rawCollection, filteredCollection);
+    }
 
-            if (filteredCollection is null)
-            {
-                return;
-            }
-
-            filter.Apply(rawCollection, filteredCollection);
-        }
-        #endregion
-
-        #region Methods
-        private void OnFilterSchemeManagerUpdated(object sender, EventArgs e)
-        {
-            FiltersUpdated?.Invoke(this, EventArgs.Empty);
-        }
-        #endregion
+    private void OnFilterSchemeManagerUpdated(object? sender, EventArgs e)
+    {
+        FiltersUpdated?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -1,37 +1,19 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTypeExpression.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using Catel.Data;
 
-namespace Orc.FilterBuilder
+public abstract class DataTypeExpression : ModelBase
 {
-    using System.Runtime.Serialization;
-    using Catel.Data;
+    public Condition SelectedCondition { get; set; }
 
-    public abstract class DataTypeExpression : ModelBase
+    public bool IsValueRequired { get; set; } = true;
+
+    public ValueControlType ValueControlType { get; set; }
+
+    private void OnSelectedConditionChanged()
     {
-        protected DataTypeExpression()
-        {
-            IsValueRequired = true;
-        }
-
-        #region Properties
-        public Condition SelectedCondition { get; set; }
-
-        public bool IsValueRequired { get; set; }
-
-        public ValueControlType ValueControlType { get; set; }
-        #endregion
-
-        #region Methods
-        private void OnSelectedConditionChanged()
-        {
-            IsValueRequired = ConditionHelper.GetIsValueRequired(SelectedCondition);
-        }
-
-        public abstract bool CalculateResult(IPropertyMetadata propertyMetadata, object entity);
-        #endregion
+        IsValueRequired = ConditionHelper.GetIsValueRequired(SelectedCondition);
     }
+
+    public abstract bool CalculateResult(IPropertyMetadata propertyMetadata, object entity);
 }

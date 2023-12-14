@@ -1,157 +1,142 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionTreeItem.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using Catel.Data;
+using Catel.Runtime.Serialization;
 
-namespace Orc.FilterBuilder
+public abstract class ConditionTreeItem : ValidatableModelBase
 {
-    using System;
-    using System.Collections;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.Runtime.Serialization;
-    using Catel;
-    using Catel.Data;
-    using Catel.Runtime.Serialization;
+    [ExcludeFromSerialization]
+    public ConditionTreeItem? Parent { get; set; }
 
-    public abstract class ConditionTreeItem : ValidatableModelBase
+    [ExcludeFromSerialization]
+    [ExcludeFromValidation]
+    public bool IsValid { get; private set; } = true;
+
+    public ObservableCollection<ConditionTreeItem> Items { get; private set; } = new();
+
+    public event EventHandler<EventArgs>? Updated;
+
+    private void OnConditionItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        protected ConditionTreeItem()
+        if (sender is not IList listSender)
         {
-            Items = new ObservableCollection<ConditionTreeItem>();
+            return;
         }
 
-        #region Properties
-        [ExcludeFromSerialization]
-        public ConditionTreeItem Parent { get; set; }
-
-        [ExcludeFromSerialization]
-        [ExcludeFromValidation]
-        public bool IsValid { get; private set; } = true;
-
-        public ObservableCollection<ConditionTreeItem> Items { get; private set; }
-        #endregion
-
-        public event EventHandler<EventArgs> Updated;
-
-        #region Methods
-        private void OnConditionItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        if (e.OldItems is not null)
         {
-            if (e.OldItems is not null)
+            foreach (var item in e.OldItems)
             {
-                foreach (var item in e.OldItems)
+                var conditionTreeItem = (ConditionTreeItem)item;
+
+                if (ReferenceEquals(conditionTreeItem, this))
                 {
-                    var conditionTreeItem = (ConditionTreeItem)item;
-
-                    if (ReferenceEquals(conditionTreeItem, this))
-                    {
-                        conditionTreeItem.Parent = null;
-                    }
-
-                    conditionTreeItem.Updated -= OnConditionUpdated;
+                    conditionTreeItem.Parent = null;
                 }
-            }
 
-            var newCollection = (e.Action == NotifyCollectionChangedAction.Reset) ? (IList)sender : e.NewItems;
-            if (newCollection is not null)
-            {
-                foreach (var item in newCollection)
-                {
-                    var conditionTreeItem = (ConditionTreeItem)item;
-
-                    conditionTreeItem.Parent = this;
-                    conditionTreeItem.Updated += OnConditionUpdated;
-                }
+                conditionTreeItem.Updated -= OnConditionUpdated;
             }
         }
 
-        protected override void OnDeserialized()
+        var newCollection = e.Action == NotifyCollectionChangedAction.Reset 
+            ? listSender
+            : e.NewItems;
+        if (newCollection is null)
         {
-            base.OnDeserialized();
-
-            SubscribeToEvents();
-
-            foreach (var item in Items)
-            {
-                item.Parent = this;
-            }
+            return;
         }
 
-        protected override void OnValidated(IValidationContext validationContext)
+        foreach (var item in newCollection)
         {
-            base.OnValidated(validationContext);
+            var conditionTreeItem = (ConditionTreeItem)item;
 
-            IsValid = !validationContext.HasErrors;
+            conditionTreeItem.Parent = this;
+            conditionTreeItem.Updated += OnConditionUpdated;
+        }
+    }
+
+    protected override void OnDeserialized()
+    {
+        base.OnDeserialized();
+
+        SubscribeToEvents();
+
+        foreach (var item in Items)
+        {
+            item.Parent = this;
+        }
+    }
+
+    protected override void OnValidated(IValidationContext validationContext)
+    {
+        base.OnValidated(validationContext);
+
+        IsValid = !validationContext.HasErrors;
+    }
+
+    private void OnItemsChanged()
+    {
+        SubscribeToEvents();
+    }
+
+    private void SubscribeToEvents()
+    {
+        var items = Items;
+        items.CollectionChanged += OnConditionItemsCollectionChanged;
+
+        foreach (var item in items)
+        {
+            item.Updated += OnConditionUpdated;
+        }
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        RaiseUpdated();
+    }
+
+    protected void RaiseUpdated()
+    {
+        Updated?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnConditionUpdated(object? sender, EventArgs e)
+    {
+        RaiseUpdated();
+    }
+
+    public abstract bool CalculateResult(object entity);
+
+    protected bool Equals(ConditionTreeItem other)
+    {
+        return Items.Equals(other.Items);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
+        {
+            return false;
         }
 
-        private void OnItemsChanged()
+        if (ReferenceEquals(this, obj))
         {
-            SubscribeToEvents();
+            return true;
         }
 
-        private void SubscribeToEvents()
-        {
-            var items = Items;
-            if (items is not null)
-            {
-                items.CollectionChanged += OnConditionItemsCollectionChanged;
-                foreach (var item in items)
-                {
-                    item.Updated += OnConditionUpdated;
-                }
-            }
-        }
+        return obj.GetType() == GetType() 
+               && Equals((ConditionTreeItem)obj);
+    }
 
-        protected override void OnPropertyChanged(AdvancedPropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-
-            RaiseUpdated();
-        }
-
-        protected void RaiseUpdated()
-        {
-            Updated?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnConditionUpdated(object sender, EventArgs e)
-        {
-            RaiseUpdated();
-        }
-
-        public abstract bool CalculateResult(object entity);
-
-        protected bool Equals(ConditionTreeItem other)
-        {
-            return Items.Equals(other.Items);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((ConditionTreeItem)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Items.GetHashCode();
-        }
-        #endregion
+    public override int GetHashCode()
+    {
+        return Items.GetHashCode();
     }
 }

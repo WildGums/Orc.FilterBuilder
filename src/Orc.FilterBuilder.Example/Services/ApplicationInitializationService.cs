@@ -1,44 +1,23 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationInitializationService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Example.Services;
 
+using System;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using Orchestra.Services;
 
-namespace Orc.FilterBuilder.Example.Services
+public class ApplicationInitializationService : ApplicationInitializationServiceBase
 {
-    using System;
-    using System.Threading.Tasks;
-    using System.Windows.Media;
-    using Catel;
-    using Catel.IoC;
-    using Catel.Threading;
-    using Orc.Controls;
-    using Orchestra.Services;
-
-    public class ApplicationInitializationService : ApplicationInitializationServiceBase
+    public override Task InitializeBeforeCreatingShellAsync()
     {
-        private readonly IServiceLocator _serviceLocator;
+        InitializeFonts();
 
-        public ApplicationInitializationService(IServiceLocator serviceLocator)
-        {
-            Argument.IsNotNull(() => serviceLocator);
+        return Task.CompletedTask;
+    }
 
-            _serviceLocator = serviceLocator;
-        }
-
-        public override Task InitializeBeforeCreatingShellAsync()
-        {
-            InitializeFonts();
-
-            return TaskHelper.Completed;
-        }
-
-        private void InitializeFonts()
-        {
-            Orc.Theming.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
-            Orc.Theming.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
-            Orc.Theming.FontImage.DefaultFontFamily = "FontAwesome";
-        }
+    private void InitializeFonts()
+    {
+        Theming.FontImage.RegisterFont("FontAwesome", new FontFamily(new Uri("pack://application:,,,/Orc.FilterBuilder.Example;component/Resources/Fonts/", UriKind.RelativeOrAbsolute), "./#FontAwesome"));
+        Theming.FontImage.DefaultBrush = new SolidColorBrush(Color.FromArgb(255, 87, 87, 87));
+        Theming.FontImage.DefaultFontFamily = "FontAwesome";
     }
 }

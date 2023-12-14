@@ -1,27 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestAttributeType.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Tests;
 
+using System;
 
-namespace Orc.FilterBuilder.Tests
+public class TestAttributeType
 {
-    using System;
-
-    public class TestAttributeType
+    public TestAttributeType(string name, Type type)
     {
-        #region Constructors
-        public TestAttributeType(string name, Type type)
-        {
-            Name = name;
-            Type = type;
-        }
-        #endregion
-
-        #region Properties
-        public string Name { get; }
-        public Type Type { get; }
-        #endregion
+        Name = name;
+        Type = type;
     }
+
+    public string Name { get; }
+    public Type Type { get; }
 }

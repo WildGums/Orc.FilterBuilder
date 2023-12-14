@@ -1,48 +1,35 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemes.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System.Collections.ObjectModel;
+using Catel;
+using Catel.Data;
+using Catel.Runtime.Serialization;
 
-namespace Orc.FilterBuilder
+public class FilterSchemes : ModelBase
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Runtime.Serialization;
-    using Catel;
-    using Catel.Data;
-    using Catel.Runtime.Serialization;
+    private object? _scope;
 
-    public class FilterSchemes : ModelBase
+    [ExcludeFromSerialization]
+    public object? Scope
     {
-        private object _scope;
-
-        public FilterSchemes()
+        get { return _scope; }
+        set
         {
-            Schemes = new ObservableCollection<FilterScheme>();
-        }
-
-        [ExcludeFromSerialization]
-        public object Scope
-        {
-            get { return _scope; }
-            set
+            if (ObjectHelper.AreEqual(_scope, value))
             {
-                if (!ObjectHelper.AreEqual(_scope, value))
-                {
-                    _scope = value;
+                return;
+            }
 
-                    RaisePropertyChanged(nameof(Scope));
+            _scope = value;
 
-                    foreach (var filterScheme in Schemes)
-                    {
-                        filterScheme.Scope = Scope;
-                    }
-                }
+            RaisePropertyChanged(nameof(Scope));
+
+            foreach (var filterScheme in Schemes)
+            {
+                filterScheme.Scope = Scope;
             }
         }
-
-        public ObservableCollection<FilterScheme> Schemes { get; private set; }
     }
+
+    public ObservableCollection<FilterScheme> Schemes { get; private set; } = new();
 }

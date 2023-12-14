@@ -1,35 +1,37 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueControlTypeVisibilityConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Converters;
 
+using System;
+using System.Linq;
+using System.Windows;
+using Catel.MVVM.Converters;
+using Catel.Reflection;
 
-namespace Orc.FilterBuilder.Converters
+public class ValueControlTypeVisibilityConverter : VisibilityConverterBase
 {
-    using System;
-    using System.Linq;
-    using System.Windows;
-    using Catel.MVVM.Converters;
-    using Catel.Reflection;
-
-    public class ValueControlTypeVisibilityConverter : ValueConverterBase
+    public ValueControlTypeVisibilityConverter()
+        : base(Visibility.Collapsed)
     {
-        #region Methods
-        protected override object Convert(object value, Type targetType, object parameter)
+
+    }
+
+    protected override bool IsVisible(object? value, Type targetType, object? parameter)
+    {
+        if (value is not ValueControlType controlType)
         {
-            var controlType = (ValueControlType)value;
-            if (parameter is not null && parameter.GetType().IsArrayEx())
-            {
-                var parameterType = (ValueControlType[])parameter;
-                return parameterType.Contains(controlType) ? Visibility.Visible : Visibility.Collapsed;
-            }
-            else
-            {
-                var parameterType = (ValueControlType)parameter;
-                return controlType == parameterType ? Visibility.Visible : Visibility.Collapsed;
-            }
+            return false;
         }
-        #endregion
+
+        if (parameter is not null && parameter.GetType().IsArrayEx())
+        {
+            var parameterType = (ValueControlType[])parameter;
+            return parameterType.Contains(controlType);
+        }
+
+        if (parameter is ValueControlType valueControlType)
+        {
+            return controlType == valueControlType;
+        }
+
+        return false;
     }
 }

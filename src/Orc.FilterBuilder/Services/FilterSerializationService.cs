@@ -1,81 +1,74 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc.FilterBuilder;
+
+using System;
+using System.Threading.Tasks;
+using Catel;
+using Catel.Logging;
+using Catel.Runtime.Serialization.Xml;
+using FileSystem;
+
+public class FilterSerializationService : IFilterSerializationService
 {
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
-    using Catel;
-    using Catel.Logging;
-    using Catel.Runtime.Serialization.Xml;
-    using Orc.FileSystem;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public class FilterSerializationService : IFilterSerializationService
+    private readonly IFileService _fileService;
+    private readonly IXmlSerializer _xmlSerializer;
+
+    public FilterSerializationService(IFileService fileService,
+        IXmlSerializer xmlSerializer)
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        ArgumentNullException.ThrowIfNull(fileService);
+        ArgumentNullException.ThrowIfNull(xmlSerializer);
 
-        private readonly IDirectoryService _directoryService;
-        private readonly IFileService _fileService;
-        private readonly IXmlSerializer _xmlSerializer;
+        _fileService = fileService;
+        _xmlSerializer = xmlSerializer;
+    }
 
-        public FilterSerializationService(IDirectoryService directoryService, IFileService fileService,
-            IXmlSerializer xmlSerializer)
+    public virtual async Task<FilterSchemes> LoadFiltersAsync(string fileName)
+    {
+        Argument.IsNotNullOrWhitespace(() => fileName);
+
+        Log.Info($"Loading filter schemes from '{fileName}'");
+
+        var filterSchemes = new FilterSchemes();
+
+        try
         {
-            Argument.IsNotNull(() => directoryService);
-            Argument.IsNotNull(() => fileService);
-            Argument.IsNotNull(() => xmlSerializer);
+            if (_fileService.Exists(fileName))
+            {
+                await using var stream = _fileService.OpenRead(fileName);
+                _xmlSerializer.Deserialize(filterSchemes, stream);
+            }
 
-            _directoryService = directoryService;
-            _fileService = fileService;
-            _xmlSerializer = xmlSerializer;
+            Log.Debug("Loaded filter schemes from '{0}'", fileName);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to load filter schemes");
         }
 
-        public async virtual Task<FilterSchemes> LoadFiltersAsync(string fileName)
+        return filterSchemes;
+    }
+
+    public virtual async Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes)
+    {
+        Argument.IsNotNullOrWhitespace(() => fileName);
+        ArgumentNullException.ThrowIfNull(filterSchemes);
+
+        Log.Info($"Saving filter schemes to '{fileName}'");
+
+        try
         {
-            Argument.IsNotNullOrWhitespace(() => fileName);
-
-            Log.Info($"Loading filter schemes from '{fileName}'");
-
-            var filterSchemes = new FilterSchemes();
-
-            try
+            await using (var stream = _fileService.OpenWrite(fileName))
             {
-                if (_fileService.Exists(fileName))
-                {
-                    using (var stream = _fileService.OpenRead(fileName))
-                    {
-                        _xmlSerializer.Deserialize(filterSchemes, stream, null);
-                    }
-                }
-
-                Log.Debug("Loaded filter schemes from '{0}'", fileName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to load filter schemes");
+                _xmlSerializer.Serialize(filterSchemes, stream);
             }
 
-            return filterSchemes;
+            Log.Debug("Saved filter schemes to '{0}'", fileName);
         }
-
-        public async virtual Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes)
+        catch (Exception ex)
         {
-            Argument.IsNotNullOrWhitespace(() => fileName);
-            Argument.IsNotNull(() => filterSchemes);
-
-            Log.Info($"Saving filter schemes to '{fileName}'");
-
-            try
-            {
-                using (var stream = _fileService.OpenWrite(fileName))
-                {
-                    _xmlSerializer.Serialize(filterSchemes, stream, null);
-                }
-
-                Log.Debug("Saved filter schemes to '{0}'", fileName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to save filter schemes");
-            }
+            Log.Error(ex, "Failed to save filter schemes");
         }
     }
 }

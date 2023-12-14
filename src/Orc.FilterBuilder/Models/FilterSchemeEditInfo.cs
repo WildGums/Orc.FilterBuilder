@@ -1,36 +1,26 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterSchemeEditInfo.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.Collections;
 
-namespace Orc.FilterBuilder
+public class FilterSchemeEditInfo
 {
-    using System.Collections;
-    using Catel;
-
-    public class FilterSchemeEditInfo
+    public FilterSchemeEditInfo(FilterScheme filterScheme, IEnumerable rawCollection, bool allowLivePreview, bool enableAutoCompletion)
     {
-        #region Constructors
-        public FilterSchemeEditInfo(FilterScheme filterScheme, IEnumerable rawCollection, bool allowLivePreview, bool enableAutoCompletion)
-        {
-            Argument.IsNotNull(() => filterScheme);
-            Argument.IsNotNull(() => rawCollection);
+        ArgumentNullException.ThrowIfNull(filterScheme);
+        ArgumentNullException.ThrowIfNull(rawCollection);
 
-            FilterScheme = filterScheme;
-            RawCollection = rawCollection;
-            AllowLivePreview = allowLivePreview;
-            EnableAutoCompletion = enableAutoCompletion;
-        }
-        #endregion
-
-        public FilterScheme FilterScheme { get; private set; }
-
-        public IEnumerable RawCollection { get; private set; }
-
-        public bool AllowLivePreview { get; private set; }
-
-        public bool EnableAutoCompletion { get; private set; }
+        FilterScheme = filterScheme;
+        RawCollection = rawCollection;
+        AllowLivePreview = allowLivePreview;
+        EnableAutoCompletion = enableAutoCompletion;
     }
+
+    public FilterScheme FilterScheme { get; private set; }
+
+    public IEnumerable RawCollection { get; private set; }
+
+    public bool AllowLivePreview { get; private set; }
+
+    public bool EnableAutoCompletion { get; private set; }
 }

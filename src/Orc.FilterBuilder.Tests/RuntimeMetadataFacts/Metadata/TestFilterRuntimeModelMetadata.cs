@@ -1,73 +1,48 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestFilterRuntimeModelMetadata.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Tests;
 
+using System;
 
-namespace Orc.FilterBuilder.Tests
+public class TestFilterRuntimeModelMetadata : IPropertyMetadata
 {
-    using System;
+    private readonly TestAttributeType _attributeType;
 
-    public class TestFilterRuntimeModelMetadata : IPropertyMetadata
+    public TestFilterRuntimeModelMetadata(TestAttributeType attributeType)
     {
-        #region Fields
-        private readonly TestAttributeType _attributeType;
-        #endregion
+        _attributeType = attributeType;
 
-        #region Constructors
-        public TestFilterRuntimeModelMetadata(TestAttributeType attributeType)
-        {
-            _attributeType = attributeType;
+        OwnerType = typeof (TestFilterRuntimeModel);
+        Type = attributeType.Type;
+        DisplayName = _attributeType.Name;
+    }
 
-            OwnerType = typeof (TestFilterRuntimeModel);
-            Type = attributeType.Type;
-            DisplayName = _attributeType.Name;
-        }
-        #endregion
+    public string DisplayName { get; set; }
+    public string Name => _attributeType.Name;
+    public Type OwnerType { get; }
+    public Type Type { get; }
 
-        #region Properties
-        public string DisplayName { get; set; }
+    public object GetValue(object instance)
+    {
+        var testData = instance as TestFilterRuntimeModel;
 
-        public string Name => _attributeType.Name;
+        return GetAttributeValue(testData, _attributeType);
+    }
 
-        public Type OwnerType { get; }
+    public TValue GetValue<TValue>(object instance)
+    {
+        return (TValue) GetValue(instance);
+    }
 
-        public Type Type { get; }
-        #endregion
+    public void SetValue(object instance, object value)
+    {
+        throw new NotImplementedException();
+    }
 
-        #region IPropertyMetadata Members
-        public object GetValue(object instance)
-        {
-            var testData = instance as TestFilterRuntimeModel;
+    private object GetAttributeValue(TestFilterRuntimeModel operation, TestAttributeType attributeType)
+    {
+        var attributeName = attributeType?.Name;
 
-            return GetAttributeValue(testData, _attributeType);
-        }
-
-        public TValue GetValue<TValue>(object instance)
-        {
-            return (TValue) GetValue(instance);
-        }
-
-        public void SetValue(object instance, object value)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region Methods
-        private object GetAttributeValue(TestFilterRuntimeModel operation, TestAttributeType attributeType)
-        {
-            var attributeName = attributeType?.Name;
-
-            if (ReferenceEquals(attributeName, null))
-            {
-                return null;
-            }
-
-            TestAttributeValue value;
-            return operation.Attributes.TryGetValue(attributeName, out value) ? value.Value : null;
-        }
-        #endregion
+        return operation.Attributes.TryGetValue(attributeName, out var value)
+            ? value.Value 
+            : null;
     }
 }

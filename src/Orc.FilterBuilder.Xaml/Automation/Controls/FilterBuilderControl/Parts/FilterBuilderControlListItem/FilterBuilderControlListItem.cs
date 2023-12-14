@@ -1,52 +1,51 @@
-﻿namespace Orc.FilterBuilder.Automation
+﻿namespace Orc.FilterBuilder.Automation;
+
+using System.Windows.Automation;
+using Orc.Automation;
+using Orc.Automation.Controls;
+
+[AutomatedControl(ControlTypeName = nameof(ControlType.ListItem))]
+public class FilterBuilderControlListItem : ListItem
 {
-    using System.Windows.Automation;
-    using Orc.Automation;
-    using Orc.Automation.Controls;
-
-    [AutomatedControl(ControlTypeName = nameof(ControlType.ListItem))]
-    public class FilterBuilderControlListItem : ListItem
+    public FilterBuilderControlListItem(AutomationElement element) 
+        : base(element)
     {
-        public FilterBuilderControlListItem(AutomationElement element) 
-            : base(element)
-        {
-        }
+    }
 
-        private FilterBuilderControlListItemMap Map => Map<FilterBuilderControlListItemMap>();
+    private FilterBuilderControlListItemMap Map => Map<FilterBuilderControlListItemMap>();
 
-        public string Title => Map.Title?.Value;
-        public override string DisplayText => Title;
+    public string Title => Map.Title?.Value ?? string.Empty;
+    public override string DisplayText => Title;
 
-        public bool CanEdit()
-        {
-            return Map.EditSchemeButton.IsVisible();
-        }
+    public bool CanEdit()
+    {
+        return Map.EditSchemeButton?.IsVisible() ?? false;
+    }
 
-        public EditFilterWindow Edit()
-        {
-            Map.EditSchemeButton.Click();
+    public EditFilterWindow? Edit()
+    {
+        Map.EditSchemeButton?.Click();
 
-            Wait.UntilResponsive(200);
+        Wait.UntilResponsive(200);
 
-            var hostWindow = Element.GetHostWindow();
+        var hostWindow = Element.GetHostWindow();
 
-            return hostWindow.Find<EditFilterWindow>(name: "Filter scheme");
-        }
+        return hostWindow?.Find<EditFilterWindow>(name: "Filter scheme");
+    }
 
-        public bool CanDelete()
-        {
-            return Map.DeleteSchemeButton.IsVisible();
-        }
+    public bool CanDelete()
+    {
+        return Map.DeleteSchemeButton?.IsVisible() ?? false;
+    }
 
-        public void Delete()
-        {
-            Map.DeleteSchemeButton.Click();
+    public void Delete()
+    {
+        Map.DeleteSchemeButton?.Click();
 
-            Wait.UntilResponsive();
+        Wait.UntilResponsive();
 
-            var hostWindow = Element.GetHostWindow();
-            var messageBox = hostWindow.Find<MessageBox>();
-            messageBox?.Yes();
-        }
+        var hostWindow = Element.GetHostWindow();
+        var messageBox = hostWindow?.Find<MessageBox>();
+        messageBox?.Yes();
     }
 }

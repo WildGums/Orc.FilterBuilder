@@ -1,39 +1,39 @@
-﻿namespace Orc.FilterBuilder.Views
+﻿namespace Orc.FilterBuilder.Views;
+
+using System;
+using System.Windows.Automation.Peers;
+using System.Windows.Controls;
+using System.Windows.Data;
+using Catel.IoC;
+using Converters;
+using ViewModels;
+
+public sealed partial class EditFilterView
 {
-    using System;
-    using System.Windows.Automation.Peers;
-    using System.Windows.Controls;
-    using System.Windows.Data;
-    using Catel.IoC;
-    using Converters;
-    using ViewModels;
-
-    public sealed partial class EditFilterView
+    public EditFilterView()
     {
-        #region Constructors
-        public EditFilterView()
+        InitializeComponent();
+    }
+        
+    protected override void OnViewModelChanged()
+    {
+        base.OnViewModelChanged();
+
+        PreviewDataGrid.Columns.Clear();
+
+        if (ViewModel is not EditFilterViewModel vm)
         {
-            InitializeComponent();
+            return;
         }
-        #endregion
 
-        protected override void OnViewModelChanged()
+        if (vm.AllowLivePreview)
         {
-            base.OnViewModelChanged();
+            var dependencyResolver = this.GetDependencyResolver();
+            var reflectionService = dependencyResolver.ResolveRequired<IReflectionService>(vm.FilterScheme.Scope);
 
-            PreviewDataGrid.Columns.Clear();
-
-            if (ViewModel is not EditFilterViewModel vm)
+            var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
+            if (targetType is not null)
             {
-                return;
-            }
-
-            if (vm.AllowLivePreview)
-            {
-                var dependencyResolver = this.GetDependencyResolver();
-                var reflectionService = dependencyResolver.Resolve<IReflectionService>(vm.FilterScheme.Scope);
-
-                var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
                 var instanceProperties = reflectionService.GetInstanceProperties(targetType);
 
                 foreach (var instanceProperty in instanceProperties.Properties)
@@ -54,14 +54,14 @@
                     PreviewDataGrid.Columns.Add(column);
                 }
             }
-
-            // Fix for SA-144
-            Dispatcher.BeginInvoke(new Action(() => Focus()));
         }
 
-        protected override AutomationPeer OnCreateAutomationPeer()
-        {
-            return new Automation.EditFilterViewPeer(this);
-        }
+        // Fix for SA-144
+        Dispatcher.BeginInvoke(new Action(() => Focus()));
+    }
+
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new Automation.EditFilterViewPeer(this);
     }
 }

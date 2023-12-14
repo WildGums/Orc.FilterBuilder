@@ -1,18 +1,6 @@
-﻿namespace Orc.FilterBuilder.Example.Views
-{
-    using Catel.Windows.Controls;
+﻿namespace Orc.FilterBuilder.Example.Views;
 
-    /// <summary>
-    /// Interaction logic for MainView.xaml.
-    /// </summary>
-    public partial class MainView : UserControl
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainView"/> class.
-        /// </summary>
-        public MainView()
-        {
-            InitializeComponent();
-        }
-    }
+public partial class MainView
+{
+    public MainView() => InitializeComponent();
 }

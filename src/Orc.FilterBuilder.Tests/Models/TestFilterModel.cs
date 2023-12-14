@@ -1,20 +1,12 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestFilterModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Tests.Models;
 
+using Catel.Data;
 
-namespace Orc.FilterBuilder.Tests.Models
+public class TestFilterModel : ModelBase
 {
-    using Catel.Data;
+    public string StringProperty { get; set; }
 
-    public class TestFilterModel : ModelBase
-    {
-        public string StringProperty { get; set; }
+    public bool BoolProperty { get; set; }
 
-        public bool BoolProperty { get; set; }
-
-        public int IntProperty { get; set; }
-    }
+    public int IntProperty { get; set; }
 }

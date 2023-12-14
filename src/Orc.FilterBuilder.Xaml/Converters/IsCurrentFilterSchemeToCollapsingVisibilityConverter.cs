@@ -1,45 +1,40 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IsCurrentFilterSchemeToCollapsingVisibilityConverter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder.Converters;
 
+using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using Catel;
 
-namespace Orc.FilterBuilder.Converters
+public class IsCurrentFilterSchemeToCollapsingVisibilityConverter : IMultiValueConverter
 {
-    using System;
-    using System.Globalization;
-    using System.Windows;
-    using System.Windows.Data;
-    using Catel;
-
-    public class IsCurrentFilterSchemeToCollapsingVisibilityConverter : IMultiValueConverter
+    public object? Convert(object?[]? values, Type targetType, object? parameter, CultureInfo? culture)
     {
-        #region IMultiValueConverter Members
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        if (values is null)
         {
-            var filterScheme = values[0] as FilterScheme;
-            var selectedFilterScheme = values[1] as FilterScheme;
+            return null;
+        }
 
-            var visibility = Visibility.Collapsed;
+        var filterScheme = values[0] as FilterScheme;
+        var selectedFilterScheme = values[1] as FilterScheme;
 
-            if (filterScheme is null)
-            {
-                return visibility;
-            }
+        var visibility = Visibility.Collapsed;
 
-            if (ObjectHelper.AreEqual(selectedFilterScheme, filterScheme))
-            {
-                visibility = Visibility.Visible;
-            }
-
+        if (filterScheme is null)
+        {
             return visibility;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        if (ObjectHelper.AreEqual(selectedFilterScheme, filterScheme))
         {
-            throw new NotImplementedException();
+            visibility = Visibility.Visible;
         }
-        #endregion
+
+        return visibility;
+    }
+
+    public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo? culture)
+    {
+        throw new NotImplementedException();
     }
 }

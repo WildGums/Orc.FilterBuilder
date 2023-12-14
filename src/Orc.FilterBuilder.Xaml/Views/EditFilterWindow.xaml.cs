@@ -1,16 +1,12 @@
-﻿namespace Orc.FilterBuilder.Views
-{
-    using Catel.Windows;
+﻿namespace Orc.FilterBuilder.Views;
 
-    /// <summary>
-    /// Interaction logic for EditFilterWindow.xaml
-    /// </summary>
-    public partial class EditFilterWindow
+using Catel.Windows;
+
+public partial class EditFilterWindow
+{
+    public EditFilterWindow()
+        : base(DataWindowMode.OkCancel, infoBarMessageControlGenerationMode: InfoBarMessageControlGenerationMode.None)
     {
-        public EditFilterWindow()
-            : base(DataWindowMode.OkCancel, infoBarMessageControlGenerationMode: InfoBarMessageControlGenerationMode.None)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

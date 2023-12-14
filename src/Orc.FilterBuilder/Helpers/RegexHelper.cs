@@ -1,31 +1,24 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RegexHelper.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System;
+using System.Text.RegularExpressions;
 
-namespace Orc.FilterBuilder
+public static class RegexHelper
 {
-    using Catel;
-    using System;
-    using System.Collections;
-    using System.Text.RegularExpressions;
-
-    public static class RegexHelper
+    public static bool IsValid(string pattern)
     {
-        public static bool IsValid(string pattern)
-        {
-            try
-            {
-                new Regex(pattern, RegexOptions.None).IsMatch(string.Empty);
-            }
-            catch
-            {
-                return false;
-            }
+        ArgumentNullException.ThrowIfNull(pattern);
 
-            return true;
+        try
+        {
+            new Regex(pattern, RegexOptions.None, TimeSpan.FromSeconds(1))
+                .IsMatch(string.Empty);
         }
+        catch
+        {
+            return false;
+        }
+
+        return true;
     }
 }

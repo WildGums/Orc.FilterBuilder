@@ -1,19 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Description.cs" company="WildGums">
-//   Copyright (c) 2008 - 2016 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace FilterBuilder.Example.Models;
 
-
-namespace FilterBuilder.Example.Models
+public class Description
 {
-    public class Description
+    public Description(string value)
     {
-        public Description(string value)
-        {
-            Value = value;
-        }
-
-        public string Value { get; }
+        Value = value;
     }
+
+    public string Value { get; }
 }

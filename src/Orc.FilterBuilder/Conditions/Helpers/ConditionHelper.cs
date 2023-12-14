@@ -1,87 +1,75 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConditionHelper.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.FilterBuilder;
 
+using System.Collections.Generic;
 
-namespace Orc.FilterBuilder
+public static class ConditionHelper
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public static class ConditionHelper
+    public static List<Condition> GetValueConditions()
     {
-        #region Methods
-        public static List<Condition> GetValueConditions()
+        return new List<Condition>
         {
-            return new List<Condition>
-            {
-                Condition.EqualTo,
-                Condition.NotEqualTo,
-                Condition.LessThan,
-                Condition.LessThanOrEqualTo,
-                Condition.GreaterThan,
-                Condition.GreaterThanOrEqualTo
-            };
-        }
+            Condition.EqualTo,
+            Condition.NotEqualTo,
+            Condition.LessThan,
+            Condition.LessThanOrEqualTo,
+            Condition.GreaterThan,
+            Condition.GreaterThanOrEqualTo
+        };
+    }
 
-        public static List<Condition> GetNullableValueConditions()
-        {
-            List<Condition> conditions = GetValueConditions();
-            conditions.Add(Condition.IsNull);
-            conditions.Add(Condition.NotIsNull);
-            return conditions;
-        }
+    public static List<Condition> GetNullableValueConditions()
+    {
+        var conditions = GetValueConditions();
+        conditions.Add(Condition.IsNull);
+        conditions.Add(Condition.NotIsNull);
+        return conditions;
+    }
 
-        public static List<Condition> GetBooleanConditions()
+    public static List<Condition> GetBooleanConditions()
+    {
+        return new List<Condition>
         {
-            return new List<Condition>
-            {
-                Condition.EqualTo
-            };
-        }
+            Condition.EqualTo
+        };
+    }
         
-        public static List<Condition> GetStringConditions()
+    public static List<Condition> GetStringConditions()
+    {
+        return new List<Condition>
         {
-            return new List<Condition>
-            {
-                Condition.Contains,
-                Condition.DoesNotContain,
-                Condition.StartsWith,
-                Condition.DoesNotStartWith,
-                Condition.EndsWith,
-                Condition.DoesNotEndWith,
-                Condition.EqualTo,
-                Condition.NotEqualTo,
-                Condition.Matches,
-                Condition.DoesNotMatch,
-                Condition.IsEmpty,
-                Condition.NotIsEmpty,
-                Condition.IsNull,
-                Condition.NotIsNull
-            };
-        }
+            Condition.Contains,
+            Condition.DoesNotContain,
+            Condition.StartsWith,
+            Condition.DoesNotStartWith,
+            Condition.EndsWith,
+            Condition.DoesNotEndWith,
+            Condition.EqualTo,
+            Condition.NotEqualTo,
+            Condition.Matches,
+            Condition.DoesNotMatch,
+            Condition.IsEmpty,
+            Condition.NotIsEmpty,
+            Condition.IsNull,
+            Condition.NotIsNull
+        };
+    }
 
-        public static bool GetIsValueRequired(Condition condition)
-        {
-            return
-                condition == Condition.EqualTo ||
-                condition == Condition.NotEqualTo ||
-                condition == Condition.GreaterThan ||
-                condition == Condition.LessThan ||
-                condition == Condition.GreaterThanOrEqualTo ||
-                condition == Condition.LessThanOrEqualTo ||
-                condition == Condition.Contains ||
-                condition == Condition.DoesNotContain ||
-                condition == Condition.EndsWith ||
-                condition == Condition.DoesNotEndWith ||
-                condition == Condition.StartsWith ||
-                condition == Condition.DoesNotStartWith ||
-                condition == Condition.Matches ||
-                condition == Condition.DoesNotMatch;
-        }
-        #endregion
+    public static bool GetIsValueRequired(Condition condition)
+    {
+        return
+            condition is Condition.EqualTo 
+                or Condition.NotEqualTo
+                or Condition.GreaterThan 
+                or Condition.LessThan 
+                or Condition.GreaterThanOrEqualTo 
+                or Condition.LessThanOrEqualTo 
+                or Condition.Contains 
+                or Condition.DoesNotContain 
+                or Condition.EndsWith 
+                or Condition.DoesNotEndWith 
+                or Condition.StartsWith 
+                or Condition.DoesNotStartWith 
+                or Condition.Matches 
+                or Condition.DoesNotMatch;
     }
 }

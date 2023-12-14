@@ -1,69 +1,90 @@
-﻿namespace Orc.FilterBuilder.Automation
+﻿namespace Orc.FilterBuilder.Automation;
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Automation;
+using Catel.Collections;
+using Orc.Automation;
+using Orc.Automation.Controls;
+
+[AutomatedControl(Class = typeof(Views.EditFilterView))]
+public class EditFilterView : FrameworkElement<EditFilterViewModel, EditFilterViewMap>,
+    IEnumerable<EditFilterConditionTreeItemBase>
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows.Automation;
-    using Catel.Collections;
-    using Orc.Automation;
-    using Orc.Automation.Controls;
-
-    [AutomatedControl(Class = typeof(Views.EditFilterView))]
-    public class EditFilterView : FrameworkElement<EditFilterViewModel, EditFilterViewMap>,
-        IEnumerable<EditFilterConditionTreeItemBase>
+    public EditFilterView(AutomationElement element) 
+        : base(element)
     {
-        public EditFilterView(AutomationElement element) 
-            : base(element)
-        {
-        }
+    }
 
-        public string Title
+    public string Title
+    {
+        get => Map.FilterSchemeTitleEdit?.Text ?? string.Empty;
+        set
         {
-            get => Map.FilterSchemeTitleEdit.Text;
-            set => Map.FilterSchemeTitleEdit.Text = value;
-        }
-
-        public bool IsLivePreviewEnabled
-        {
-            get => Map.LivePreviewCheckBox.IsChecked == true;
-            set => Map.LivePreviewCheckBox.IsChecked = value;
-        }
-
-        public bool IsPreviewCollectionVisible
-        {
-            get => Map.PreviewDataGrid.IsVisible();
-            set
+            var filterSchemeTitleEdit = Map.FilterSchemeTitleEdit;
+            if (filterSchemeTitleEdit is null)
             {
-                var isPreviewCollectionVisible = IsPreviewCollectionVisible;
+                return;
+            }
 
-                if (value && !isPreviewCollectionVisible
-                    || !value && isPreviewCollectionVisible)
-                {
-                    Map.TogglePreviewLinkLabel.Invoke();
-                }
+            filterSchemeTitleEdit.Text = value;
+        }
+    }
+
+    public bool IsLivePreviewEnabled
+    {
+        get => Map.LivePreviewCheckBox?.IsChecked ?? false;
+        set
+        {
+            var livePreviewCheckBox = Map.LivePreviewCheckBox;
+            if (livePreviewCheckBox is null)
+            {
+                return;
+            }
+
+            livePreviewCheckBox.IsChecked = value;
+        }
+    }
+
+    public bool IsPreviewCollectionVisible
+    {
+        get => Map.PreviewDataGrid?.IsVisible() ?? false;
+        set
+        {
+            var isPreviewCollectionVisible = IsPreviewCollectionVisible;
+
+            if (value && !isPreviewCollectionVisible
+                || !value && isPreviewCollectionVisible)
+            {
+                Map.TogglePreviewLinkLabel?.Invoke();
             }
         }
+    }
 
-        public IReadOnlyList<object> PreviewCollection
-        {
-            get => Map.PreviewDataGrid.Current.ItemsSource?.OfType<object>().ToList();
-        }
+    public IReadOnlyList<object>? PreviewCollection
+    {
+        get => Map.PreviewDataGrid?.Current.ItemsSource?.OfType<object>().ToList();
+    }
 
-        public EditFilterConditionTreeItemBase Root => Map.ConditionTree?.Children?.FirstOrDefault();
+    public EditFilterConditionTreeItemBase? Root => Map.ConditionTree?.Children.FirstOrDefault();
         
-        public void Clear()
-        {
-            Map.ConditionTree?.Children?.ForEach(x => x.Delete());
-        }
+    public void Clear()
+    {
+        Map.ConditionTree?.Children?.ForEach(x => x.Delete());
+    }
 
-        public IEnumerator<EditFilterConditionTreeItemBase> GetEnumerator()
-        {
-            return Map.ConditionTree.GetEnumerator();
-        }
+    public IEnumerator<EditFilterConditionTreeItemBase> GetEnumerator()
+    {
+#pragma warning disable IDISP001 // Dispose created
+        var enumerator = Map.ConditionTree?.GetEnumerator();
+#pragma warning restore IDISP001 // Dispose created
+        return enumerator 
+               ?? Enumerable.Empty<EditFilterConditionTreeItemBase>().GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
