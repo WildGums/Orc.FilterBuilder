@@ -124,7 +124,7 @@ namespace Orc.FilterBuilder.Automation
         [Orc.Automation.AutomationMethod]
         public void SetFilterSchemeEditInfo(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo) { }
     }
-    [Orc.Automation.AutomatedControl(ControlTypeName="Window")]
+    [Orc.Automation.Control(ControlTypeName="Window")]
     public class EditFilterWindow : Orc.Automation.Controls.Window
     {
         public EditFilterWindow(System.Windows.Automation.AutomationElement element) { }
