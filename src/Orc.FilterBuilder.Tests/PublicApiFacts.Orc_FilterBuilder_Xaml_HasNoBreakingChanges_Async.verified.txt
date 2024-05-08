@@ -37,7 +37,7 @@ namespace Orc.FilterBuilder.Automation
         public Orc.Automation.Controls.Button? DeleteButton { get; }
         public Orc.Automation.Controls.ComboBox? GroupTypeComboBox { get; }
     }
-    [Orc.Automation.AutomatedControl(ControlTypeName="Tree")]
+    [Orc.Automation.Control(ControlTypeName="Tree")]
     public class EditFilterConditionTree : Orc.Automation.Controls.FrameworkElement, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase>, System.Collections.IEnumerable
     {
         protected readonly Orc.Automation.Controls.Tree _tree;
