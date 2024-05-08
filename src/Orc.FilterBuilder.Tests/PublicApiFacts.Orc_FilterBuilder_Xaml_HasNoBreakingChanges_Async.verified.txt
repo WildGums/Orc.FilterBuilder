@@ -145,7 +145,7 @@ namespace Orc.FilterBuilder.Automation
         public FilterBuilderControl(System.Windows.Automation.AutomationElement element) { }
         public System.Collections.Generic.IReadOnlyList<Orc.FilterBuilder.Automation.FilterBuilderControlListItem>? Items { get; }
     }
-    [Orc.Automation.AutomatedControl(ControlTypeName="ListItem")]
+    [Orc.Automation.Control(ControlTypeName="ListItem")]
     public class FilterBuilderControlListItem : Orc.Automation.Controls.ListItem
     {
         public FilterBuilderControlListItem(System.Windows.Automation.AutomationElement element) { }
