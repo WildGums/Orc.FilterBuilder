@@ -37,7 +37,7 @@ namespace Orc.FilterBuilder.Automation
         public Orc.Automation.Controls.Button? DeleteButton { get; }
         public Orc.Automation.Controls.ComboBox? GroupTypeComboBox { get; }
     }
-    [Orc.Automation.AutomatedControl(ControlTypeName="Tree")]
+    [Orc.Automation.Control(ControlTypeName="Tree")]
     public class EditFilterConditionTree : Orc.Automation.Controls.FrameworkElement, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.Automation.EditFilterConditionTreeItemBase>, System.Collections.IEnumerable
     {
         protected readonly Orc.Automation.Controls.Tree _tree;
@@ -124,7 +124,7 @@ namespace Orc.FilterBuilder.Automation
         [Orc.Automation.AutomationMethod]
         public void SetFilterSchemeEditInfo(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo) { }
     }
-    [Orc.Automation.AutomatedControl(ControlTypeName="Window")]
+    [Orc.Automation.Control(ControlTypeName="Window")]
     public class EditFilterWindow : Orc.Automation.Controls.Window
     {
         public EditFilterWindow(System.Windows.Automation.AutomationElement element) { }
@@ -145,7 +145,7 @@ namespace Orc.FilterBuilder.Automation
         public FilterBuilderControl(System.Windows.Automation.AutomationElement element) { }
         public System.Collections.Generic.IReadOnlyList<Orc.FilterBuilder.Automation.FilterBuilderControlListItem>? Items { get; }
     }
-    [Orc.Automation.AutomatedControl(ControlTypeName="ListItem")]
+    [Orc.Automation.Control(ControlTypeName="ListItem")]
     public class FilterBuilderControlListItem : Orc.Automation.Controls.ListItem
     {
         public FilterBuilderControlListItem(System.Windows.Automation.AutomationElement element) { }
