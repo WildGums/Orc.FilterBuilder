@@ -7,7 +7,7 @@ using System.Windows.Automation;
 using Orc.Automation;
 using Orc.Automation.Controls;
 
-[AutomatedControl(ControlTypeName = nameof(ControlType.Tree))]
+[Control(ControlTypeName = nameof(ControlType.Tree))]
 public class EditFilterConditionTree : FrameworkElement, IEnumerable<EditFilterConditionTreeItemBase>
 {
     protected readonly Tree _tree;
