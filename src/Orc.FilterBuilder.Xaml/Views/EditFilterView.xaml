@@ -229,7 +229,7 @@
                                 </orccontrols:NumericUpDown>
 
                                 <orccontrols:DateTimePicker x:Name="PART_ValueDateTimePicker"
-                                                            Value="{Binding DataTypeExpression.Value}"
+                                                            Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureDateTimeValueConverter}}"
                                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
 
                                 <ComboBox x:Name="PART_BooleanValueComboBox"
@@ -243,7 +243,7 @@
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
 
                                 <orccontrols:TimeSpanPicker x:Name="PART_ValueTimeSpanPicker"
-                                                            Value="{Binding DataTypeExpression.Value}"
+                                                            Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureTimeSpanValueConverter}}"
                                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"/>
 
                             </Grid>
