@@ -17,12 +17,12 @@
 
   <ItemGroup>
     <PackageReference Include="Catel.Fody" Version="4.9.0" PrivateAssets="all" />
-    <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all">
+    <PackageReference Include="Fody" Version="6.8.2" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.6.0" PrivateAssets="all" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
-    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.0" />
+    <PackageReference Include="Orchestra.Shell.Ribbon.Fluent" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
