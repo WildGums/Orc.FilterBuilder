@@ -18,7 +18,6 @@
                 <ResourceDictionary Source="../Themes/Geometry.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:ConditionTreeItemConverter x:Key="ConditionTreeItemConverter" />
             <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
             <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter" SupportInversionUsingCommandParameter="False"/>
             <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter"/>
@@ -119,7 +118,7 @@
                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                     <Grid HorizontalAlignment="Stretch" Background="Transparent">
                         <StackPanel Orientation="Horizontal" Margin="0"
-                                    Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Group}">
+                                    Visibility="{Binding Converter={converters:ConditionTreeItemConverter SupportInversionUsingCommandParameter=False}, ConverterParameter=Group}">
                             <ComboBox x:Name="PART_GroupTypeComboBox"
                                       ItemsSource="{markup:EnumBinding {x:Type filterBuilder:ConditionGroupType}}"
                                       SelectedItem="{Binding Type}">
@@ -173,7 +172,7 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0"
-                                    Visibility="{Binding Converter={StaticResource ConditionTreeItemConverter}, ConverterParameter=Expression}">
+                                    Visibility="{Binding Converter={converters:ConditionTreeItemConverter SupportInversionUsingCommandParameter=False}, ConverterParameter=Expression}">
                             <ComboBox x:Name="PART_PropertiesComboBox"
                                       ItemsSource="{Binding DataContext.InstanceProperties, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
                                       DisplayMemberPath="DisplayName" SelectedItem="{Binding Property, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
@@ -230,7 +229,7 @@
                                 </orccontrols:NumericUpDown>
 
                                 <orccontrols:DateTimePicker x:Name="PART_ValueDateTimePicker"
-                                                            Value="{Binding DataTypeExpression.Value}"
+                                                            Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureDateTimeValueConverter}}"
                                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
 
                                 <ComboBox x:Name="PART_BooleanValueComboBox"
@@ -244,7 +243,7 @@
                                           Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
 
                                 <orccontrols:TimeSpanPicker x:Name="PART_ValueTimeSpanPicker"
-                                                            Value="{Binding DataTypeExpression.Value}"
+                                                            Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureTimeSpanValueConverter}}"
                                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"/>
 
                             </Grid>
