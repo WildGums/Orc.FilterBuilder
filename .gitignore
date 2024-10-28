@@ -158,6 +158,3 @@ data/dsl/*.java
 # Nodejs / NPM
 node_modules
 package-lock.json
-
-!tools/**
-!tools/packages.config
