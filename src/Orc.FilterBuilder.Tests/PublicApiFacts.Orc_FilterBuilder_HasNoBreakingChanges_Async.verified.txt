@@ -361,8 +361,8 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.IPropertyData IsDecimalProperty;
         public static readonly Catel.Data.IPropertyData IsSignedProperty;
         protected NumericExpression() { }
-        public bool IsDecimal { get; set; }
-        public bool IsSigned { get; set; }
+        public bool IsDecimal { get; protected set; }
+        public bool IsSigned { get; protected set; }
     }
     [Catel.Data.ValidateModel(typeof(Orc.FilterBuilder.PropertyExpressionValidator?))]
     [Catel.Runtime.Serialization.SerializerModifier(typeof(Orc.FilterBuilder.Runtime.Serialization.PropertyExpressionSerializerModifier?))]
@@ -431,8 +431,8 @@ namespace Orc.FilterBuilder
         public override string ToString() { }
     }
     [System.Diagnostics.DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
-    [System.Obsolete(("Use `Use TimeSpanValueExpression instead` instead. Will be treated as an error fr" +
-        "om version 6.0.0. Will be removed in version 7.0.0."), false)]
+    [System.Obsolete("Use `Use TimeSpanValueExpression instead` instead. Will be treated as an error fr" +
+        "om version 6.0.0. Will be removed in version 7.0.0.", false)]
     public class TimeSpanExpression : Orc.FilterBuilder.NullableDataTypeExpression
     {
         public static readonly Catel.Data.IPropertyData AmountProperty;
