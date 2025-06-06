@@ -17,7 +17,7 @@ public abstract class ConditionTreeItem : ValidatableModelBase
     [ExcludeFromValidation]
     public bool IsValid { get; private set; } = true;
 
-    public ObservableCollection<ConditionTreeItem> Items { get; private set; } = new();
+    public ObservableCollection<ConditionTreeItem> Items { get; } = new();
 
     public event EventHandler<EventArgs>? Updated;
 
