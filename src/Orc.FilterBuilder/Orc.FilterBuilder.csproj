@@ -27,6 +27,7 @@
     <PackageReference Include="Obsolete.Fody" Version="5.3.1" PrivateAssets="all" />
     <PackageReference Include="Orc.Controls" Version="5.3.1" />
     <PackageReference Include="Orc.Metadata" Version="5.0.0" />
+    <PackageReference Include="Orc.Theming" Version="5.3.1" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.build.nullable.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.build.nullable.props')" />
