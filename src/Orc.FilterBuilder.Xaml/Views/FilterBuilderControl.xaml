@@ -106,7 +106,7 @@
                                         <Button x:Name="DeleteSchemeButton"
                                                 Grid.Column="4" 
                                                 Height="24"
-                                                Padding="7 8.5 7 8.5"
+                                                Padding="7"
                                                 CommandParameter="{Binding}" 
                                                 Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
 
