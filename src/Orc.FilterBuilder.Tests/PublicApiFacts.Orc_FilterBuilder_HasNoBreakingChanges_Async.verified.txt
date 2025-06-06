@@ -361,8 +361,8 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.IPropertyData IsDecimalProperty;
         public static readonly Catel.Data.IPropertyData IsSignedProperty;
         protected NumericExpression() { }
-        public bool IsDecimal { get; set; }
-        public bool IsSigned { get; set; }
+        public bool IsDecimal { get; protected set; }
+        public bool IsSigned { get; protected set; }
     }
     [Catel.Data.ValidateModel(typeof(Orc.FilterBuilder.PropertyExpressionValidator?))]
     [Catel.Runtime.Serialization.SerializerModifier(typeof(Orc.FilterBuilder.Runtime.Serialization.PropertyExpressionSerializerModifier?))]

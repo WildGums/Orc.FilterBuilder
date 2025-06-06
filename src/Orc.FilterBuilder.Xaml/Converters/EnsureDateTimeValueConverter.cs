@@ -14,4 +14,9 @@ internal class EnsureDateTimeValueConverter : ValueConverterBase<object, DateTim
 
         return time;
     }
+
+    protected override object? ConvertBack(DateTime? value, Type targetType, object? parameter)
+    {
+        return value;
+    }
 }

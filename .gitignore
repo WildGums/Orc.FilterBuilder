@@ -132,7 +132,6 @@ build.cakeoverrides
 TestResults
 .vs/
 .sonarqube/
-.github/
 BundleArtifacts/
 
 # docker / tye
@@ -159,6 +158,3 @@ data/dsl/*.java
 # Nodejs / NPM
 node_modules
 package-lock.json
-
-!tools/**
-!tools/packages.config
