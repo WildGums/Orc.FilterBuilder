@@ -83,7 +83,7 @@
 
                                         <Button x:Name="EditSchemeButton"
                                                 Grid.Column="2"
-                                                Width="24"
+                                                Height="24"
                                                 Content="..."
                                                 HorizontalContentAlignment="Center"
                                                 CommandParameter="{Binding}"
@@ -105,10 +105,15 @@
 
                                         <Button x:Name="DeleteSchemeButton"
                                                 Grid.Column="4" 
-                                                Width="24"
+                                                Height="24"
                                                 Padding="7 8.5 7 8.5"
                                                 CommandParameter="{Binding}" 
                                                 Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={catel:BooleanToHidingVisibilityConverter}}">
+
+                                            <b:Interaction.Behaviors>
+                                                <orctheming:Square/>
+                                            </b:Interaction.Behaviors>
+                                            
                                             <!-- NOTE: important to fix commands where command parameter is not yet available when
                                                      the command is being evaluated. See http://stackoverflow.com/questions/335849/wpf-commandparameter-is-null-first-time-canexecute-is-called -->
                                             <Button.Command>
