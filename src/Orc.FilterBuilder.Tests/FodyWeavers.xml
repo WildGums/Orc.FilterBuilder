@@ -7,5 +7,4 @@
             Orc.FilterBuilder.Xaml
         </IncludeAssemblies>
     </LoadAssembliesOnStartup>
-    <ModuleInit />
 </Weavers>
