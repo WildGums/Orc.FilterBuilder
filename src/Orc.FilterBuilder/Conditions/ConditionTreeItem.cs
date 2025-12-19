@@ -10,14 +10,20 @@ using Catel.Runtime.Serialization;
 
 public abstract class ConditionTreeItem : ValidatableModelBase
 {
+    protected ConditionTreeItem()
+    {
+        Items = new ObservableCollection<ConditionTreeItem>();
+        IsValid = true;
+    }
+
     [ExcludeFromSerialization]
     public ConditionTreeItem? Parent { get; set; }
 
     [ExcludeFromSerialization]
     [ExcludeFromValidation]
-    public bool IsValid { get; private set; } = true;
+    public bool IsValid { get; private set; }
 
-    public ObservableCollection<ConditionTreeItem> Items { get; private set; } = new();
+    public ObservableCollection<ConditionTreeItem> Items { get; private set; }
 
     public event EventHandler<EventArgs>? Updated;
 

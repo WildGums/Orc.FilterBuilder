@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/misc/">
+    <File Path="Directory.build.project.props" />
+    <File Path="Directory.build.props" />
+    <File Path="Directory.build.shared.explicit.props" />
+    <File Path="Directory.build.shared.implicit.props" />
+    <File Path="Directory.build.shared.mat.props" />
+    <File Path="Directory.build.targets" />
+    <File Path="GlobalSuppressions.cs" />
+    <File Path="nuget.config" />
+    <File Path="Orc.FilterBuilder.sln.DotSettings" />
+    <File Path="Settings.StyleCop" />
+    <File Path="SolutionAssemblyInfo.cs" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="Orc.FilterBuilder.Xaml/Orc.FilterBuilder.Xaml.csproj" />
+    <Project Path="Orc.FilterBuilder/Orc.FilterBuilder.csproj" />
+  </Folder>
+  <Folder Name="/src/Example/">
+    <Project Path="Orc.FilterBuilder.Example/Orc.FilterBuilder.Example.csproj" />
+  </Folder>
+  <Folder Name="/src/Tests/">
+    <Project Path="Orc.FilterBuilder.Tests/Orc.FilterBuilder.Tests.csproj" />
+  </Folder>
+</Solution>

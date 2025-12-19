@@ -1,4 +1,5 @@
-﻿using Catel.IoC;
+using System.Runtime.CompilerServices;
+using Catel.IoC;
 using Catel.Services;
 using Orc.FilterBuilder.ViewModels;
 using Orc.FilterBuilder.Views;
@@ -11,6 +12,7 @@ public static class ModuleInitializer
     /// <summary>
     /// Initializes the module.
     /// </summary>
+    [ModuleInitializer]
     public static void Initialize()
     {
         var serviceLocator = ServiceLocator.Default;
