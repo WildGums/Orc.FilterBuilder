@@ -1,16 +1,23 @@
 ﻿namespace Orc.FilterBuilder.Converters;
 
 using System;
+using Catel;
 using Catel.Data;
 using Catel.Logging;
 using Catel.MVVM.Converters;
 using Catel.Reflection;
+using Microsoft.Extensions.Logging;
 
-public class ObjectToValueConverter : ValueConverterBase
+public partial class ObjectToValueConverter : ValueConverterBase
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(ObjectToValueConverter));
 
     private readonly IPropertyMetadata? _propertyMetadata;
+
+    public ObjectToValueConverter()
+    {
+        throw new CatelException("Do not use this ctor");
+    }
 
     public ObjectToValueConverter(IPropertyMetadata? propertyMetadata)
     {
@@ -52,7 +59,7 @@ public class ObjectToValueConverter : ValueConverterBase
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to get property value '{0}'", propertyName);
+            Logger.LogError(ex, "Failed to get property value '{0}'", propertyName);
         }
 
         return null;

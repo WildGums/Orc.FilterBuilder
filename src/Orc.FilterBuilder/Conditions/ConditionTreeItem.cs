@@ -5,8 +5,8 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using Catel.Data;
-using Catel.Runtime.Serialization;
 
 public abstract class ConditionTreeItem : ValidatableModelBase
 {
@@ -16,10 +16,10 @@ public abstract class ConditionTreeItem : ValidatableModelBase
         IsValid = true;
     }
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     public ConditionTreeItem? Parent { get; set; }
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     [ExcludeFromValidation]
     public bool IsValid { get; private set; }
 
@@ -63,18 +63,6 @@ public abstract class ConditionTreeItem : ValidatableModelBase
 
             conditionTreeItem.Parent = this;
             conditionTreeItem.Updated += OnConditionUpdated;
-        }
-    }
-
-    protected override void OnDeserialized()
-    {
-        base.OnDeserialized();
-
-        SubscribeToEvents();
-
-        foreach (var item in Items)
-        {
-            item.Parent = this;
         }
     }
 

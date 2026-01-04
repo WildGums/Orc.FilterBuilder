@@ -3,7 +3,6 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
-using Catel.IoC;
 using MethodTimer;
 
 public class FilterService : IFilterService
@@ -11,14 +10,9 @@ public class FilterService : IFilterService
     private readonly IReflectionService _reflectionService;
     private FilterScheme? _selectedFilter;
 
-    public FilterService(IFilterSchemeManager filterSchemeManager)
+    public FilterService(IFilterSchemeManager filterSchemeManager, IReflectionService reflectionService)
     {
-        ArgumentNullException.ThrowIfNull(filterSchemeManager);
-
-        var scope = filterSchemeManager.Scope;
-#pragma warning disable IDISP004 // Don't ignore created IDisposable.
-        _reflectionService = this.GetServiceLocator().ResolveRequiredType<IReflectionService>(scope);
-#pragma warning restore IDISP004 // Don't ignore created IDisposable.
+        _reflectionService = reflectionService;
 
         filterSchemeManager.Updated += OnFilterSchemeManagerUpdated;
     }

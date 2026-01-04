@@ -7,21 +7,22 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Catel.Collections;
-using Catel.IoC;
 using Catel.Logging;
 using Catel.MVVM;
 using Catel.Reflection;
 using Catel.Services;
+using Microsoft.Extensions.Logging;
 using Views;
 using CollectionHelper = CollectionHelper;
 
 public class FilterBuilderViewModel : ViewModelBase
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(FilterBuilderViewModel));
 
     private readonly IUIVisualizerService _uiVisualizerService;
     private readonly IMessageService _messageService;
-    private readonly IServiceLocator _serviceLocator;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILanguageService _languageService;
 
     private readonly FilterScheme _noFilterFilter = new(typeof(object), "Default")
     {
@@ -29,7 +30,6 @@ public class FilterBuilderViewModel : ViewModelBase
         CanDelete = false
     };
 
-    private readonly ILanguageService _languageService;
     private IFilterSchemeManager? _filterSchemeManager;
     private IFilterService? _filterService;
     private IReflectionService? _reflectionService;
@@ -38,31 +38,25 @@ public class FilterBuilderViewModel : ViewModelBase
     private bool _applyingFilter;
 
     public FilterBuilderViewModel(IUIVisualizerService uiVisualizerService, IFilterSchemeManager filterSchemeManager,
-        IFilterService filterService, IMessageService messageService, IServiceLocator serviceLocator, IReflectionService reflectionService, ILanguageService languageService)
+        IFilterService filterService, IMessageService messageService, IServiceProvider serviceProvider, 
+        IReflectionService reflectionService, ILanguageService languageService)
+        : base(serviceProvider)
     {
-        ArgumentNullException.ThrowIfNull(uiVisualizerService);
-        ArgumentNullException.ThrowIfNull(filterSchemeManager);
-        ArgumentNullException.ThrowIfNull(filterService);
-        ArgumentNullException.ThrowIfNull(messageService);
-        ArgumentNullException.ThrowIfNull(serviceLocator);
-        ArgumentNullException.ThrowIfNull(reflectionService);
-        ArgumentNullException.ThrowIfNull(languageService);
-
         _uiVisualizerService = uiVisualizerService;
         _filterSchemeManager = filterSchemeManager;
         _filterService = filterService;
         _messageService = messageService;
-        _serviceLocator = serviceLocator;
+        _serviceProvider = serviceProvider;
         _reflectionService = reflectionService;
         _languageService = languageService;
 
         FilterGroups = new List<FilterGroup>();
 
-        NewSchemeCommand = new TaskCommand(OnNewSchemeExecuteAsync);
-        EditSchemeCommand = new TaskCommand<FilterScheme>(OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
-        ApplySchemeCommand = new TaskCommand(OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
-        ResetSchemeCommand = new Command(OnResetSchemeExecute, OnResetSchemeCanExecute);
-        DeleteSchemeCommand = new TaskCommand<FilterScheme>(OnDeleteSchemeExecuteAsync, OnDeleteSchemeCanExecute);
+        NewSchemeCommand = new TaskCommand(serviceProvider, OnNewSchemeExecuteAsync);
+        EditSchemeCommand = new TaskCommand<FilterScheme>(serviceProvider, OnEditSchemeExecuteAsync, OnEditSchemeCanExecute);
+        ApplySchemeCommand = new TaskCommand(serviceProvider, OnApplySchemeExecuteAsync, OnApplySchemeCanExecute);
+        ResetSchemeCommand = new Command(serviceProvider, OnResetSchemeExecute, OnResetSchemeCanExecute);
+        DeleteSchemeCommand = new TaskCommand<FilterScheme>(serviceProvider, OnDeleteSchemeExecuteAsync, OnDeleteSchemeCanExecute);
     }
 
     public List<FilterGroup> FilterGroups { get; private set; }
@@ -88,15 +82,13 @@ public class FilterBuilderViewModel : ViewModelBase
     /// </summary>
     public Func<object, bool>? FilteringFunc { get; set; }
 
-    public object? Scope { get; set; }
-
     public TaskCommand NewSchemeCommand { get; private set; }
 
     private async Task OnNewSchemeExecuteAsync()
     {
         if (_targetType is null)
         {
-            Log.Warning("Target type is unknown, cannot get any type information to create filters");
+            Logger.LogWarning("Target type is unknown, cannot get any type information to create filters");
             return;
         }
 
@@ -174,14 +166,14 @@ public class FilterBuilderViewModel : ViewModelBase
 
             if (ReferenceEquals(filterScheme, _filterService.SelectedFilter))
             {
-                Log.Debug("Current filter has been edited, re-applying filter");
+                Logger.LogDebug("Current filter has been edited, re-applying filter");
 
                 _filterService.SelectedFilter = filterScheme;
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, $"Failed to edit filter scheme '{filterScheme.Title}'");
+            Logger.LogError(ex, $"Failed to edit filter scheme '{filterScheme.Title}'");
             throw;
         }
     }
@@ -228,7 +220,7 @@ public class FilterBuilderViewModel : ViewModelBase
             return;
         }
 
-        Log.Debug("Applying filter scheme '{0}'", selectedFilterScheme);
+        Logger.LogDebug("Applying filter scheme '{0}'", selectedFilterScheme);
 
         //build filtered collection only if current mode is Collection
         if (Mode != FilterBuilderMode.Collection)
@@ -302,43 +294,6 @@ public class FilterBuilderViewModel : ViewModelBase
         }
     }
 
-    private void OnScopeChanged()
-    {
-        if (_filterSchemeManager is not null)
-        {
-            _filterSchemeManager.Loaded -= OnFilterSchemeManagerLoaded;
-            _filterSchemeManager = null;
-        }
-
-        if (_filterService is not null)
-        {
-            _filterService.SelectedFilterChanged -= OnFilterServiceSelectedFilterChanged;
-            _filterService = null;
-        }
-
-        _reflectionService = null;
-
-        var scope = Scope;
-        if (_serviceLocator.IsTypeRegistered<IFilterSchemeManager>(scope))
-        {
-            _filterSchemeManager = _serviceLocator.ResolveRequiredType<IFilterSchemeManager>(scope);
-            _filterSchemeManager.Loaded += OnFilterSchemeManagerLoaded;
-        }
-
-        if (_serviceLocator.IsTypeRegistered<IFilterService>(scope))
-        {
-            _filterService = _serviceLocator.ResolveRequiredType<IFilterService>(scope);
-            _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
-        }
-
-        if (_serviceLocator.IsTypeRegistered<IReflectionService>(scope))
-        {
-            _reflectionService = _serviceLocator.ResolveRequiredType<IReflectionService>(scope);
-        }
-
-        UpdateFilters();
-    }
-
     private void ApplyFilterScheme(FilterScheme filterScheme, bool force = false)
     {
         if (_applyingFilter)
@@ -386,7 +341,7 @@ public class FilterBuilderViewModel : ViewModelBase
 
     private void OnRawCollectionChanged()
     {
-        Log.Debug("Raw collection changed");
+        Logger.LogDebug("Raw collection changed");
 
         UpdateFilters();
 
@@ -395,7 +350,7 @@ public class FilterBuilderViewModel : ViewModelBase
 
     private void OnFilteredCollectionChanged()
     {
-        Log.Debug("Filtered collection changed");
+        Logger.LogDebug("Filtered collection changed");
 
         ApplyFilter();
     }
@@ -407,7 +362,7 @@ public class FilterBuilderViewModel : ViewModelBase
 
     private void UpdateFilters()
     {
-        Log.Debug("Updating filters");
+        Logger.LogDebug("Updating filters");
 
         if (_filterSchemes is not null)
         {

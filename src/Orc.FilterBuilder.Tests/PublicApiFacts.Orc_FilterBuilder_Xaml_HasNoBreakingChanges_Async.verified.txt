@@ -257,7 +257,7 @@ namespace Orc.FilterBuilder.Converters
     }
     public class FilterResultMultiValueConverter : System.Windows.Data.IMultiValueConverter
     {
-        public FilterResultMultiValueConverter() { }
+        public FilterResultMultiValueConverter(Catel.Services.ILanguageService languageService) { }
         public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
         public object?[]? ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
     }
@@ -275,6 +275,7 @@ namespace Orc.FilterBuilder.Converters
     }
     public class ObjectToValueConverter : Catel.MVVM.Converters.ValueConverterBase
     {
+        public ObjectToValueConverter() { }
         public ObjectToValueConverter(Orc.FilterBuilder.IPropertyMetadata? propertyMetadata) { }
         protected override object? Convert(object? value, System.Type targetType, object? parameter) { }
     }
@@ -304,6 +305,10 @@ namespace Orc.FilterBuilder
         public System.Collections.Generic.List<Orc.FilterBuilder.FilterScheme> FilterSchemes { get; }
         public string Title { get; }
     }
+    public static class OrcFilterBuilderXamlModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFilterBuilderXaml(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
+    }
     public static class TreeViewItemExtensions
     {
         public static int GetDepth(this System.Windows.Controls.TreeViewItem item) { }
@@ -322,13 +327,14 @@ namespace Orc.FilterBuilder.Markup
 }
 namespace Orc.FilterBuilder.ViewModels
 {
-    public class EditFilterViewModel : Catel.MVVM.ViewModelBase
+    public class EditFilterViewModel : Catel.MVVM.FeaturedViewModelBase
     {
         public static readonly Catel.Data.IPropertyData EnableLivePreviewProperty;
+        public static readonly Catel.Data.IPropertyData FilterSchemeProperty;
         public static readonly Catel.Data.IPropertyData FilterSchemeTitleProperty;
         public static readonly Catel.Data.IPropertyData IsLivePreviewDirtyProperty;
         public static readonly Catel.Data.IPropertyData IsPreviewVisibleProperty;
-        public EditFilterViewModel(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo, Catel.Runtime.Serialization.Xml.IXmlSerializer xmlSerializer, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Catel.Services.ILanguageService languageService) { }
+        public EditFilterViewModel(Orc.FilterBuilder.FilterSchemeEditInfo filterSchemeEditInfo, Catel.Services.IMessageService messageService, System.IServiceProvider serviceProvider, Catel.Services.ILanguageService languageService, Catel.Services.IDispatcherService dispatcherService, Orc.FilterBuilder.IReflectionService reflectionService, Orc.Serialization.Json.IJsonSerializerFactory jsonSerializerFactory) { }
         public Catel.MVVM.Command<Orc.FilterBuilder.ConditionGroup> AddExpressionCommand { get; }
         public Catel.MVVM.Command<Orc.FilterBuilder.ConditionGroup> AddGroupCommand { get; }
         public bool AllowLivePreview { get; }
@@ -362,9 +368,8 @@ namespace Orc.FilterBuilder.ViewModels
         public static readonly Catel.Data.IPropertyData FilteringFuncProperty;
         public static readonly Catel.Data.IPropertyData ModeProperty;
         public static readonly Catel.Data.IPropertyData RawCollectionProperty;
-        public static readonly Catel.Data.IPropertyData ScopeProperty;
         public static readonly Catel.Data.IPropertyData SelectedFilterSchemeProperty;
-        public FilterBuilderViewModel(Catel.Services.IUIVisualizerService uiVisualizerService, Orc.FilterBuilder.IFilterSchemeManager filterSchemeManager, Orc.FilterBuilder.IFilterService filterService, Catel.Services.IMessageService messageService, Catel.IoC.IServiceLocator serviceLocator, Orc.FilterBuilder.IReflectionService reflectionService, Catel.Services.ILanguageService languageService) { }
+        public FilterBuilderViewModel(Catel.Services.IUIVisualizerService uiVisualizerService, Orc.FilterBuilder.IFilterSchemeManager filterSchemeManager, Orc.FilterBuilder.IFilterService filterService, Catel.Services.IMessageService messageService, System.IServiceProvider serviceProvider, Orc.FilterBuilder.IReflectionService reflectionService, Catel.Services.ILanguageService languageService) { }
         public bool AllowDelete { get; set; }
         public bool AllowLivePreview { get; set; }
         public bool AllowReset { get; set; }
@@ -380,7 +385,6 @@ namespace Orc.FilterBuilder.ViewModels
         public Catel.MVVM.TaskCommand NewSchemeCommand { get; }
         public System.Collections.IEnumerable? RawCollection { get; set; }
         public Catel.MVVM.Command ResetSchemeCommand { get; }
-        public object? Scope { get; set; }
         public Orc.FilterBuilder.FilterScheme? SelectedFilterScheme { get; set; }
         protected override System.Threading.Tasks.Task CloseAsync() { }
         protected override System.Threading.Tasks.Task InitializeAsync() { }
@@ -391,6 +395,7 @@ namespace Orc.FilterBuilder.Views
     public sealed class EditFilterView : Catel.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector
     {
         public EditFilterView() { }
+        public EditFilterView(System.IServiceProvider serviceProvider, Catel.Services.IViewModelWrapperService viewModelWrapperService, Catel.MVVM.IDataContextSubscriptionService dataContextSubscriptionService, Orc.FilterBuilder.IReflectionService reflectionService) { }
         public void InitializeComponent() { }
         protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() { }
         protected override void OnViewModelChanged() { }
@@ -398,6 +403,9 @@ namespace Orc.FilterBuilder.Views
     public class EditFilterWindow : Catel.Windows.DataWindow, System.Windows.Markup.IComponentConnector
     {
         public EditFilterWindow() { }
+        [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
+        public EditFilterWindow(System.IServiceProvider serviceProvider, Catel.Services.IWrapControlService wrapControlService, Catel.Services.ILanguageService languageService) { }
+        public EditFilterWindow(Catel.MVVM.IViewModel? viewModel, System.IServiceProvider serviceProvider, Catel.Services.IWrapControlService wrapControlService, Catel.Services.ILanguageService languageService) { }
         public void InitializeComponent() { }
     }
     public class FilterBuilderControl : Catel.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector, System.Windows.Markup.IStyleConnector
@@ -411,8 +419,10 @@ namespace Orc.FilterBuilder.Views
         public static readonly System.Windows.DependencyProperty FilteringFuncProperty;
         public static readonly System.Windows.DependencyProperty ModeProperty;
         public static readonly System.Windows.DependencyProperty RawCollectionProperty;
-        public static readonly System.Windows.DependencyProperty ScopeProperty;
         public FilterBuilderControl() { }
+        [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
+        public FilterBuilderControl(System.IServiceProvider serviceProvider, Catel.Services.IViewModelWrapperService viewModelWrapperService, Catel.MVVM.IDataContextSubscriptionService dataContextSubscriptionService) { }
+        public FilterBuilderControl(Catel.MVVM.IViewModel? viewModel, System.IServiceProvider serviceProvider, Catel.Services.IViewModelWrapperService viewModelWrapperService, Catel.MVVM.IDataContextSubscriptionService dataContextSubscriptionService) { }
         [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
         public bool AllowDelete { get; set; }
         [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
@@ -431,8 +441,6 @@ namespace Orc.FilterBuilder.Views
         public Orc.FilterBuilder.FilterBuilderMode Mode { get; set; }
         [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
         public System.Collections.IEnumerable? RawCollection { get; set; }
-        [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]
-        public object? Scope { get; set; }
         public void InitializeComponent() { }
         protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() { }
     }

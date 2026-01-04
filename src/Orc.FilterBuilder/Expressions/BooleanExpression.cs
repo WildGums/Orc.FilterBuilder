@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using Catel;
-using Catel.Runtime.Serialization;
 
 [DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
 public class BooleanExpression : DataTypeExpression
@@ -19,7 +19,7 @@ public class BooleanExpression : DataTypeExpression
 
     public bool Value { get; set; }
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     public List<bool> BooleanValues { get; set; }
 
     public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)

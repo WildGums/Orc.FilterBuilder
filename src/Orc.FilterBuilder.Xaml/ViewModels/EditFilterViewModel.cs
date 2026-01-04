@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Catel.Collections;
 using Catel.Data;
-using Catel.IoC;
 using Catel.MVVM;
-using Catel.Runtime.Serialization.Xml;
 using Catel.Services;
+using Orc.Serialization.Json;
 
-public class EditFilterViewModel : ViewModelBase
+public class EditFilterViewModel : FeaturedViewModelBase
 {
     private readonly FilterScheme _originalFilterScheme;
     private readonly IReflectionService _reflectionService;
-    private readonly IXmlSerializer _xmlSerializer;
+    private readonly IJsonSerializerFactory _jsonSerializerFactory;
     private readonly IMessageService _messageService;
     private readonly ILanguageService _languageService;
 
@@ -26,22 +25,19 @@ public class EditFilterViewModel : ViewModelBase
 
     private bool _isFilterDirty;
 
-    public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IXmlSerializer xmlSerializer,
-        IMessageService messageService, IServiceLocator serviceLocator, ILanguageService languageService)
+    public EditFilterViewModel(FilterSchemeEditInfo filterSchemeEditInfo, IMessageService messageService, 
+        IServiceProvider serviceProvider, ILanguageService languageService, IDispatcherService dispatcherService,
+        IReflectionService reflectionService, IJsonSerializerFactory jsonSerializerFactory)
+        : base(serviceProvider)
     {
-        ArgumentNullException.ThrowIfNull(filterSchemeEditInfo);
-        ArgumentNullException.ThrowIfNull(xmlSerializer);
-        ArgumentNullException.ThrowIfNull(messageService);
-        ArgumentNullException.ThrowIfNull(serviceLocator);
-        ArgumentNullException.ThrowIfNull(languageService);
-
-        _xmlSerializer = xmlSerializer;
         _messageService = messageService;
         _languageService = languageService;
+        _reflectionService = reflectionService;
+        _jsonSerializerFactory = jsonSerializerFactory;
 
         DeferValidationUntilFirstSaveCall = true;
 
-        PreviewItems = new FastObservableCollection<object>();
+        PreviewItems = new FastObservableCollection<object>(dispatcherService);
         RawCollection = filterSchemeEditInfo.RawCollection;
         EnableAutoCompletion = filterSchemeEditInfo.EnableAutoCompletion;
         AllowLivePreview = filterSchemeEditInfo.AllowLivePreview;
@@ -49,20 +45,16 @@ public class EditFilterViewModel : ViewModelBase
         var filterScheme = filterSchemeEditInfo.FilterScheme;
         _originalFilterScheme = filterScheme;
 
-        _reflectionService = serviceLocator.ResolveRequiredType<IReflectionService>(filterScheme.Scope);
         InstanceProperties = _reflectionService.GetInstanceProperties(_originalFilterScheme.TargetType).Properties.ToList();
 
-        FilterScheme = new FilterScheme(_originalFilterScheme.TargetType)
-        {
-            Scope = _originalFilterScheme.Scope
-        };
+        FilterScheme = new FilterScheme(_originalFilterScheme.TargetType);
 
         FilterSchemeTitle = string.Empty;
 
-        AddGroupCommand = new Command<ConditionGroup>(OnAddGroup);
-        AddExpressionCommand = new Command<ConditionGroup>(OnAddExpression);
-        DeleteConditionItem = new Command<ConditionTreeItem>(OnDeleteCondition, OnDeleteConditionCanExecute);
-        TogglePreview = new Command(OnTogglePreview);
+        AddGroupCommand = new Command<ConditionGroup>(serviceProvider, OnAddGroup);
+        AddExpressionCommand = new Command<ConditionGroup>(serviceProvider, OnAddExpression);
+        DeleteConditionItem = new Command<ConditionTreeItem>(serviceProvider, OnDeleteCondition, OnDeleteConditionCanExecute);
+        TogglePreview = new Command(serviceProvider, OnTogglePreview);
 
         _applyFilterTimer = new DispatcherTimer
         {
@@ -77,7 +69,7 @@ public class EditFilterViewModel : ViewModelBase
     }
 
     public string FilterSchemeTitle { get; set; }
-    public FilterScheme FilterScheme { get; }
+    public FilterScheme FilterScheme { get; private set; }
     public bool EnableAutoCompletion { get; }
     public bool AllowLivePreview { get; }
     public bool EnableLivePreview { get; set; }
@@ -96,15 +88,16 @@ public class EditFilterViewModel : ViewModelBase
     {
         await base.InitializeAsync();
 
+        var serializer = _jsonSerializerFactory.CreateSerializer();
+
         await using (var memoryStream = new MemoryStream())
         {
-            _xmlSerializer.Serialize(_originalFilterScheme, memoryStream);
+            serializer.Serialize(memoryStream, _originalFilterScheme);
             memoryStream.Position = 0L;
-            _xmlSerializer.Deserialize(FilterScheme, memoryStream);
+            FilterScheme = serializer.Deserialize<FilterScheme>(memoryStream) ?? new FilterScheme();
         }
 
         FilterScheme.EnsureIntegrity(_reflectionService);
-        FilterScheme.Scope = _originalFilterScheme.Scope;
         FilterSchemeTitle = FilterScheme.Title;
 
         RaisePropertyChanged(nameof(FilterScheme));

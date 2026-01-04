@@ -3,10 +3,11 @@
 using System;
 using System.Collections;
 using Catel.Logging;
+using Microsoft.Extensions.Logging;
 
 public static class CollectionHelper
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(CollectionHelper));
 
     public static Type? GetTargetType(IEnumerable collection)
     {
@@ -15,7 +16,7 @@ public static class CollectionHelper
         var enumerator = collection.GetEnumerator();
         if (!enumerator.MoveNext())
         {
-            Log.Debug("Collection does not contain items, cannot get any type information");
+            Logger.LogDebug("Collection does not contain items, cannot get any type information");
             return null;
         }
 

@@ -3,11 +3,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Catel.Data;
-using Catel.IoC;
-using Catel.Runtime.Serialization.Xml;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Orc.FileSystem;
+using Orc.Serialization.Json;
 
 // See https://github.com/WildGums/Orc.FilterBuilder/issues/210
 
@@ -15,48 +14,34 @@ using Orc.FileSystem;
 public class GH210
 {
     [Test]
-    [Category("Basic Save")]
-    public void OrcFilterBasicSaveScenario()
-    {
-        Type targetType = typeof(DataPointFilter);
-        var filterscheme = new FilterScheme(targetType, "All Data");
-
-        var fSchemes = new FilterSchemes();
-        fSchemes.Schemes.Add(filterscheme);
-
-        using var tempFileContext = new TemporaryFilesContext("filters");
-        var tempFile = tempFileContext.GetFile($"GH210-basic-save.xml", true);
-
-        fSchemes.SaveAsXml(tempFile);
-
-        Assert.That(System.IO.File.Exists(tempFile), Is.True);
-        Assert.That(new System.IO.FileInfo(tempFile).Length, Is.GreaterThan(0));
-    }
-
-    [Test]
     [Category("Save")]
     public async Task OrcFilterSaveScenarioAsync()
     {
-        var fileService = new FileService();
-        var filterSerializationService = new FilterSerializationService(fileService,
-            ServiceLocator.Default.ResolveType<IXmlSerializer>());
+        var serviceCollection = ServiceCollectionHelper.CreateServiceCollection();
+
+        using var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var jsonSerializerFactory = serviceProvider.GetRequiredService<IJsonSerializerFactory>();
+        var serializer = jsonSerializerFactory.CreateSerializer();
+
+        var filterSerializationService = serviceProvider.GetRequiredService<IFilterSerializationService>();
 
         Type targetType = typeof(DataPointFilter);
-        FilterScheme filterscheme = new FilterScheme(targetType, "All Data");
+        var filterScheme = new FilterScheme(targetType, "All Data");
 
-        PropertyExpression pe = new PropertyExpression();
+        var pe = new PropertyExpression();
         var iex = new EnumExpression<Phase>(false);
         var pManager = new InstanceProperties(targetType);
 
         var fSchemes = new FilterSchemes();
-        fSchemes.Schemes.Add(filterscheme);
+        fSchemes.Schemes.Add(filterScheme);
 
         iex.SelectedCondition = Condition.EqualTo;
         iex.Value = Phase.Isokinetic;
         pe.Property = pManager.GetProperty("Phase");
         pe.DataTypeExpression = iex;
 
-        filterscheme.Root.Items.Add(pe);
+        filterScheme.Root.Items.Add(pe);
 
         using var tempFileContext = new TemporaryFilesContext("filters");
         var tempFile = tempFileContext.GetFile($"GH210-save.xml", true);
@@ -84,16 +69,19 @@ public class GH210
     [Category("Serialize")]
     public async Task OrcFilterSerializeScenarioAsync()
     {
-        var xmlSerializer = new XmlSerializer(ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.SerializationManager>(),
-            ServiceLocator.Default.ResolveRequiredType<IDataContractSerializerFactory>(),
-            ServiceLocator.Default.ResolveRequiredType<IXmlNamespaceManager>(),
-            ServiceLocator.Default.ResolveRequiredType<ITypeFactory>(),
-            ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.IObjectAdapter>());
+        var serviceCollection = ServiceCollectionHelper.CreateServiceCollection();
+
+        using var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var jsonSerializerFactory = serviceProvider.GetRequiredService<IJsonSerializerFactory>();
+        var serializer = jsonSerializerFactory.CreateSerializer();
+
+        var filterSerializationService = serviceProvider.GetRequiredService<IFilterSerializationService>();
 
         using (var memoryStream = new MemoryStream())
         {
-            xmlSerializer.Serialize(new FilterScheme(), memoryStream);
-            var xml = ReadAll(memoryStream);
+            serializer.Serialize(memoryStream, new FilterScheme());
+            var content = ReadAll(memoryStream);
         }
 
         var filterSchemes = new FilterSchemes();
@@ -103,13 +91,10 @@ public class GH210
 
         using (var fs = new FileStream(tempFile, FileMode.Create))
         {
-            xmlSerializer.Serialize(filterSchemes, fs);
+            serializer.Serialize(fs, filterSchemes);
         }
 
-        var fileService = new FileService();
-        var fSchemes = new FilterSerializationService(fileService,
-            ServiceLocator.Default.ResolveRequiredType<Catel.Runtime.Serialization.Xml.IXmlSerializer>());
-        var filters = await fSchemes.LoadFiltersAsync(tempFile);
+        var filters = await filterSerializationService.LoadFiltersAsync(tempFile);
         var res = filters;
     }
 

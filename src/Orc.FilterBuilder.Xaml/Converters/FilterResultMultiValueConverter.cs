@@ -3,10 +3,17 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using Catel;
+using Catel.Services;
 
-public class FilterResultMultiValueConverter : IMultiValueConverter
+public partial class FilterResultMultiValueConverter : IMultiValueConverter
 {
+    private readonly ILanguageService _languageService;
+
+    public FilterResultMultiValueConverter(ILanguageService languageService)
+    {
+        _languageService = languageService;
+    }
+
     public object? Convert(object?[]? values, Type targetType, object? parameter, CultureInfo? culture)
     {
         culture ??= CultureInfo.CurrentUICulture;
@@ -17,8 +24,8 @@ public class FilterResultMultiValueConverter : IMultiValueConverter
         }
 
         return isEnabled 
-            ? $"{(isPreviewVisible ? LanguageHelper.GetRequiredString("FilterBuilder_Hide", culture) : LanguageHelper.GetRequiredString("FilterBuilder_Show", culture))} {string.Format(LanguageHelper.GetRequiredString("FilterBuilder_FilteredItemsOfPattern"), values[2], values[3])}" 
-            : LanguageHelper.GetRequiredString("FilterBuilder_NotFiltered", culture);
+            ? $"{(isPreviewVisible ? _languageService.GetRequiredString("FilterBuilder_Hide", culture) : _languageService.GetRequiredString("FilterBuilder_Show", culture))} {string.Format(_languageService.GetRequiredString("FilterBuilder_FilteredItemsOfPattern"), values[2], values[3])}" 
+            : _languageService.GetRequiredString("FilterBuilder_NotFiltered", culture);
     }
 
     public object?[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo? culture)

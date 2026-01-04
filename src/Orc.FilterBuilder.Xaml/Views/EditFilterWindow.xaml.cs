@@ -4,9 +4,8 @@ using Catel.Windows;
 
 public partial class EditFilterWindow
 {
-    public EditFilterWindow()
-        : base(DataWindowMode.OkCancel, infoBarMessageControlGenerationMode: InfoBarMessageControlGenerationMode.None)
+    partial void OnInitializingComponent()
     {
-        InitializeComponent();
+        InfoBarMessageControlGenerationMode = InfoBarMessageControlGenerationMode.None;
     }
 }

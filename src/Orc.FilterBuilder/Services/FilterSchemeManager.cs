@@ -5,21 +5,19 @@ using System.IO;
 using System.Threading.Tasks;
 using Catel.Logging;
 using Catel.Services;
+using Microsoft.Extensions.Logging;
 
 public class FilterSchemeManager : IFilterSchemeManager
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(FilterSchemeManager));
 
     private readonly IFilterSerializationService _filterSerializationService;
     private readonly IAppDataService _appDataService;
+
     private string? _lastFileName;
-    private object? _scope;
 
     public FilterSchemeManager(IFilterSerializationService filterSerializationService, IAppDataService appDataService)
     {
-        ArgumentNullException.ThrowIfNull(filterSerializationService);
-        ArgumentNullException.ThrowIfNull(appDataService);
-
         _filterSerializationService = filterSerializationService;
         _appDataService = appDataService;
 
@@ -29,15 +27,6 @@ public class FilterSchemeManager : IFilterSchemeManager
 
     public bool AutoSave { get; set; }
     public FilterSchemes FilterSchemes { get; private set; }
-    public object? Scope
-    {
-        get { return _scope; }
-        set
-        {
-            _scope = value;
-            FilterSchemes.Scope = _scope;
-        }
-    }
 
     public event EventHandler<EventArgs>? Updated;
     public event EventHandler<EventArgs>? Loaded;
@@ -56,7 +45,7 @@ public class FilterSchemeManager : IFilterSchemeManager
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to update filters");
+            Logger.LogError(ex, "Failed to update filters");
             throw;
         }
     }
@@ -68,7 +57,6 @@ public class FilterSchemeManager : IFilterSchemeManager
         _lastFileName = fileName;
 
         var filterSchemes = await _filterSerializationService.LoadFiltersAsync(fileName);
-        filterSchemes.Scope = Scope;
 
         FilterSchemes = filterSchemes;
 

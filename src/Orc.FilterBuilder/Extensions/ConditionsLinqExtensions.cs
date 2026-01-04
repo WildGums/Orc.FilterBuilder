@@ -6,10 +6,11 @@ using System.Linq.Expressions;
 using Catel;
 using Catel.Logging;
 using Catel.Reflection;
+using Microsoft.Extensions.Logging;
 
 public static class ConditionsLinqExtensions
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(ConditionsLinqExtensions));
 
     public static Expression<Func<T, bool>> BuildLambda<T>(this ConditionTreeItem conditionTreeItem)
     {
@@ -19,7 +20,7 @@ public static class ConditionsLinqExtensions
         var parameterExpression = Expression.Parameter(type, "item");
         var expression = conditionTreeItem.BuildExpression(parameterExpression);
         return expression is null 
-            ? throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'") : Expression.Lambda<Func<T, bool>>(expression, parameterExpression);
+            ? throw Logger.LogErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'") : Expression.Lambda<Func<T, bool>>(expression, parameterExpression);
     }
 
     private static Expression? BuildExpression(this ConditionTreeItem conditionTreeItem,
@@ -29,7 +30,7 @@ public static class ConditionsLinqExtensions
         {
             ConditionGroup conditionGroup => conditionGroup.BuildExpression(parameterExpression),
             PropertyExpression propertyExpression => propertyExpression.BuildExpression(parameterExpression),
-            _ => throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'")
+            _ => throw Logger.LogErrorAndCreateException<InvalidOperationException>($"Cannot create expression from condition tree item type '{conditionTreeItem.GetType().Name}'")
         };
     }
 
@@ -133,7 +134,7 @@ public static class ConditionsLinqExtensions
             Condition.LessThanOrEqualTo => Expression.AndAlso(Expression.Not(isNullExpression), Expression.LessThanOrEqual(propertyExpression, valueExpression)),
             Condition.IsNull => isNullExpression,
             Condition.NotIsNull => Expression.Not(isNullExpression),
-            _ => throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition))
+            _ => throw Logger.LogErrorAndCreateException<NotSupportedException>(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition))
         };
     }
 
@@ -143,7 +144,7 @@ public static class ConditionsLinqExtensions
         return expression.SelectedCondition switch
         {
             Condition.EqualTo => Expression.AndAlso(Expression.Not(BuildIsNullExpression(parameterExpression, propertyName)), Expression.Equal(BuildPropertyExpression(parameterExpression, propertyName), Expression.Constant(expression.Value))),
-            _ => throw Log.ErrorAndCreateException<NotSupportedException>(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition))
+            _ => throw Logger.LogErrorAndCreateException<NotSupportedException>(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition))
         };
     }
 
@@ -183,7 +184,7 @@ public static class ConditionsLinqExtensions
             Condition.NotIsNull => Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(null))),
             Condition.IsEmpty => Expression.Equal(propertyExpression, Expression.Constant(string.Empty)),
             Condition.NotIsEmpty => Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(string.Empty))),
-            _ => throw Log.ErrorAndCreateException((x) => new NotSupportedException(x), string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition))
+            _ => throw Logger.LogErrorAndCreateException((x) => new NotSupportedException(x), string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition))
         };
     }
 

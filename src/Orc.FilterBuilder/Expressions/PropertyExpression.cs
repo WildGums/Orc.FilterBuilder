@@ -3,20 +3,19 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using Catel.Data;
 using Catel.Logging;
 using Catel.Reflection;
-using Catel.Runtime.Serialization;
-using Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 
 [DebuggerDisplay("{Property} = {DataTypeExpression}")]
-[SerializerModifier(typeof(PropertyExpressionSerializerModifier))]
 [ValidateModel(typeof(PropertyExpressionValidator))]
 public class PropertyExpression : ConditionTreeItem
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(PropertyExpression));
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     internal string? PropertySerializationValue { get; set; }
 
     public IPropertyMetadata? Property { get; set; }
@@ -48,7 +47,7 @@ public class PropertyExpression : ConditionTreeItem
         var property = Property;
         if (property is null)
         {
-            throw Log.ErrorAndCreateException<InvalidOperationException>("Cannot create data type expression without valid property");
+            throw Logger.LogErrorAndCreateException<InvalidOperationException>("Cannot create data type expression without valid property");
         }
 
         var propertyType = property.Type;
@@ -65,7 +64,7 @@ public class PropertyExpression : ConditionTreeItem
 
         if (!TryCreateDataTypeExpressionForSystemType(propertyType, isNullable))
         {
-            Log.Error($"Unable to create data type expression for type '{propertyType}'");
+            Logger.LogError($"Unable to create data type expression for type '{propertyType}'");
         }
     }
 
@@ -164,7 +163,7 @@ public class PropertyExpression : ConditionTreeItem
         var dataTypeExpression = (DataTypeExpression?)constructorInfo?.Invoke(new object[] { isNullable });
         if (dataTypeExpression is null)
         {
-            throw Log.ErrorAndCreateException<InvalidOperationException>($"Cannot create data type expression for enum '{propertyType.Name}'");
+            throw Logger.LogErrorAndCreateException<InvalidOperationException>($"Cannot create data type expression for enum '{propertyType.Name}'");
         }
 
         DataTypeExpression = dataTypeExpression;
@@ -200,20 +199,20 @@ public class PropertyExpression : ConditionTreeItem
         DataTypeExpression = createFunc();
     }
 
-    protected override void OnDeserialized()
-    {
-        base.OnDeserialized();
+    //protected override void OnDeserialized()
+    //{
+    //    base.OnDeserialized();
 
-        var dataTypeExpression = DataTypeExpression;
-        if (dataTypeExpression is not null)
-        {
-            dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
-        }
-        else
-        {
-            OnPropertyChanged();
-        }
-    }
+    //    var dataTypeExpression = DataTypeExpression;
+    //    if (dataTypeExpression is not null)
+    //    {
+    //        dataTypeExpression.PropertyChanged += OnDataTypeExpressionPropertyChanged;
+    //    }
+    //    else
+    //    {
+    //        OnPropertyChanged();
+    //    }
+    //}
 
     private void OnDataTypeExpressionPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
