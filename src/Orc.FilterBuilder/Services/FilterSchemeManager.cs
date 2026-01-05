@@ -77,7 +77,7 @@ public class FilterSchemeManager : IFilterSchemeManager
 
     protected virtual string GetDefaultFileName()
     {
-        var defaultFileName = Path.Combine(_appDataService.GetApplicationDataDirectory(Catel.IO.ApplicationDataTarget.UserRoaming), "FilterSchemes.xml");
+        var defaultFileName = Path.Combine(_appDataService.GetApplicationDataDirectory(Catel.IO.ApplicationDataTarget.UserRoaming), "FilterSchemes.json");
         return defaultFileName;
     }
 

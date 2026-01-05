@@ -44,7 +44,7 @@ public class GH210
         filterScheme.Root.Items.Add(pe);
 
         using var tempFileContext = new TemporaryFilesContext("filters");
-        var tempFile = tempFileContext.GetFile($"GH210-save.xml", true);
+        var tempFile = tempFileContext.GetFile($"GH210-save.json", true);
 
         await filterSerializationService.SaveFiltersAsync(tempFile, fSchemes);
 
@@ -87,7 +87,7 @@ public class GH210
         var filterSchemes = new FilterSchemes();
 
         using var tempFileContext = new TemporaryFilesContext("filters");
-        var tempFile = tempFileContext.GetFile($"GH210-serialize.xml", true);
+        var tempFile = tempFileContext.GetFile($"GH210-serialize.json", true);
 
         using (var fs = new FileStream(tempFile, FileMode.Create))
         {
