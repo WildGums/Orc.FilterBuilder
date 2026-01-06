@@ -18,6 +18,8 @@ public sealed partial class EditFilterView
         : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
     {
         _reflectionService = reflectionService;
+
+        InitializeComponent();
     }
 
     protected override void OnViewModelChanged()

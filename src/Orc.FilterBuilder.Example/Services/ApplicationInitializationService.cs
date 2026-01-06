@@ -3,10 +3,15 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using Orchestra.Services;
+using Orchestra;
 
 public class ApplicationInitializationService : ApplicationInitializationServiceBase
 {
+    public ApplicationInitializationService(IServiceProvider serviceProvider) 
+        : base(serviceProvider)
+    {
+    }
+
     public override Task InitializeBeforeCreatingShellAsync()
     {
         InitializeFonts();

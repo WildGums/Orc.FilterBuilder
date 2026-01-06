@@ -3,15 +3,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Catel.Collections;
-using Catel.Runtime.Serialization.Xml;
 using global::FilterBuilder.Example.Models;
 using FileSystem;
 using FilterBuilder;
+using Orc.Serialization.Json;
 
 public class ExampleFilterSerializationService : FilterSerializationService
 {
-    public ExampleFilterSerializationService(IFileService fileService, IXmlSerializer xmlSerializer) 
-        : base(fileService, xmlSerializer)
+    public ExampleFilterSerializationService(IFileService fileService, IJsonSerializerFactory jsonSerializerFactory)
+        : base(fileService, jsonSerializerFactory)
     {
     }
 
@@ -35,8 +35,8 @@ public class ExampleFilterSerializationService : FilterSerializationService
         // Create clone with filters we want to serialize
         var finalFilterSchemes = new FilterSchemes();
         finalFilterSchemes.Schemes.AddRange(from x in filterSchemes.Schemes
-            where x.FilterGroup is null
-            select x);
+                                            where x.FilterGroup is null
+                                            select x);
 
         await base.SaveFiltersAsync(path, finalFilterSchemes);
     }

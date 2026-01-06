@@ -6,28 +6,30 @@ using System.Collections.ObjectModel;
 using Catel.Collections;
 using Catel.Logging;
 using Catel.MVVM;
+using Catel.Services;
 using global::FilterBuilder.Example.Models;
 using global::FilterBuilder.Example.Services;
+using Microsoft.Extensions.Logging;
 
 public class MainViewModel : ViewModelBase
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(MainViewModel));
 
     private readonly ITestDataService _testDataService;
     private readonly IFilterService _filterService;
 
-    public MainViewModel(ITestDataService testDataService, IFilterService filterService)
+    public MainViewModel(IServiceProvider serviceProvider, 
+        ITestDataService testDataService, IFilterService filterService,
+        IDispatcherService dispatcherService)
+        : base(serviceProvider)
     {
-        ArgumentNullException.ThrowIfNull(testDataService);
-        ArgumentNullException.ThrowIfNull(filterService);
-
         _testDataService = testDataService;
         _filterService = filterService;
         _filterService.SelectedFilterChanged += OnFilterServiceSelectedFilterChanged;
         RawItems = _testDataService.GetTestItems();
-        FilteredItems = new FastObservableCollection<TestEntity>();
+        FilteredItems = new FastObservableCollection<TestEntity>(dispatcherService);
 
-        FilteredItems.CollectionChanged += (_, _) => Log.Info("Collection updated");
+        FilteredItems.CollectionChanged += (_, _) => Logger.LogInformation("Collection updated");
     }
 
     public override string Title => "Filter Builder Test";

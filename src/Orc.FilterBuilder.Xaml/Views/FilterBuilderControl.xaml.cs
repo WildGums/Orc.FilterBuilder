@@ -6,10 +6,7 @@ using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using Automation;
-using Catel;
-using Catel.IoC;
 using Catel.MVVM.Views;
-using Microsoft.Extensions.DependencyInjection;
 using ViewModels;
 using PropertyMetadata = System.Windows.PropertyMetadata;
 
