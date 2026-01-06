@@ -355,10 +355,6 @@ namespace Orc.FilterBuilder
         public bool IsDecimal { get; protected set; }
         public bool IsSigned { get; protected set; }
     }
-    public static class OrcFilterBuilderModule
-    {
-        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFilterBuilder(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
-    }
     [Catel.Data.ValidateModel(typeof(Orc.FilterBuilder.PropertyExpressionValidator?))]
     [System.Diagnostics.DebuggerDisplay("{Property} = {DataTypeExpression}")]
     public class PropertyExpression : Orc.FilterBuilder.ConditionTreeItem
@@ -484,5 +480,12 @@ namespace Orc.FilterBuilder
         public TValue Value { get; set; }
         public override bool CalculateResult(Orc.FilterBuilder.IPropertyMetadata propertyMetadata, object entity) { }
         public override string ToString() { }
+    }
+}
+namespace Orc
+{
+    public static class OrcFilterBuilderModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFilterBuilder(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
     }
 }

@@ -257,6 +257,7 @@ namespace Orc.FilterBuilder.Converters
     }
     public class FilterResultMultiValueConverter : System.Windows.Data.IMultiValueConverter
     {
+        public FilterResultMultiValueConverter() { }
         public FilterResultMultiValueConverter(Catel.Services.ILanguageService languageService) { }
         public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
         public object?[]? ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
@@ -304,10 +305,6 @@ namespace Orc.FilterBuilder
         public FilterGroup(string title, System.Collections.Generic.IEnumerable<Orc.FilterBuilder.FilterScheme>? filterSchemes) { }
         public System.Collections.Generic.List<Orc.FilterBuilder.FilterScheme> FilterSchemes { get; }
         public string Title { get; }
-    }
-    public static class OrcFilterBuilderXamlModule
-    {
-        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFilterBuilderXaml(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
     }
     public static class TreeViewItemExtensions
     {
@@ -443,5 +440,12 @@ namespace Orc.FilterBuilder.Views
         public System.Collections.IEnumerable? RawCollection { get; set; }
         public void InitializeComponent() { }
         protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() { }
+    }
+}
+namespace Orc
+{
+    public static class OrcFilterBuilderXamlModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcFilterBuilderXaml(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
     }
 }
