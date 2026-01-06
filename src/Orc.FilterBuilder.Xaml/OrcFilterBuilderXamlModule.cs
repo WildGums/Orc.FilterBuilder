@@ -1,4 +1,4 @@
-﻿namespace Orc.FilterBuilder
+﻿namespace Orc
 {
     using Catel.IoC;
     using Catel.Services;
