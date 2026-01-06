@@ -15,16 +15,6 @@ using PropertyMetadata = System.Windows.PropertyMetadata;
 
 public partial class FilterBuilderControl
 {
-    static FilterBuilderControl()
-    {
-        if (CatelEnvironment.IsInDesignMode)
-        {
-            return;
-        }
-
-        typeof(FilterBuilderControl).AutoDetectViewPropertiesToSubscribe(IoCContainer.ServiceProvider.GetRequiredService<IViewPropertySelector>());
-    }
-
     [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
     public IEnumerable? RawCollection
     {
