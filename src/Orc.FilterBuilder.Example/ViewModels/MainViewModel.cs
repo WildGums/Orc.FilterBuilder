@@ -47,6 +47,6 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public ObservableCollection<TestEntity> RawItems { get; }
+    public System.Collections.ObjectModel.ObservableCollection<TestEntity> RawItems { get; }
     public FastObservableCollection<TestEntity> FilteredItems { get; }
 }
