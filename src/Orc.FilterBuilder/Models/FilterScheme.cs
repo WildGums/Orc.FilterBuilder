@@ -7,7 +7,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
-using Catel;
 using Catel.Data;
 
 public class FilterScheme : ModelBase
@@ -38,10 +37,7 @@ public class FilterScheme : ModelBase
         TargetType = targetType;
         Title = title;
 
-        ConditionItems = new ObservableCollection<ConditionTreeItem>
-        {
-            root
-        };
+        ConditionItems = [root];
 
         CanEdit = true;
         CanDelete = true;
