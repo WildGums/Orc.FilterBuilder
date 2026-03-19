@@ -96,16 +96,25 @@ namespace Orc.FilterBuilder
         public static System.Collections.Generic.List<Orc.FilterBuilder.Condition> GetStringConditions() { }
         public static System.Collections.Generic.List<Orc.FilterBuilder.Condition> GetValueConditions() { }
     }
+    [System.Text.Json.Serialization.JsonConverter(typeof(Orc.FilterBuilder.Serialization.Json.ConditionTreeItemJsonConverter))]
     public abstract class ConditionTreeItem : Catel.Data.ValidatableModelBase
     {
         public static readonly Catel.Data.IPropertyData IsValidProperty;
         public static readonly Catel.Data.IPropertyData ItemsProperty;
         public static readonly Catel.Data.IPropertyData ParentProperty;
         protected ConditionTreeItem() { }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool HasErrors { get; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool HasWarnings { get; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool IsDirty { get; protected set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool IsReadOnly { get; protected set; }
         [Catel.Data.ExcludeFromValidation]
         [System.Text.Json.Serialization.JsonIgnore]
         public bool IsValid { get; }
-        public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.ConditionTreeItem> Items { get; }
+        public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.ConditionTreeItem> Items { get; init; }
         [System.Text.Json.Serialization.JsonIgnore]
         public Orc.FilterBuilder.ConditionTreeItem? Parent { get; set; }
         public event System.EventHandler<System.EventArgs>? Updated;
@@ -125,12 +134,18 @@ namespace Orc.FilterBuilder
     {
         public static System.Linq.Expressions.Expression<System.Func<T, bool>> BuildLambda<T>(this Orc.FilterBuilder.ConditionTreeItem conditionTreeItem) { }
     }
+    [System.Text.Json.Serialization.JsonConverter(typeof(Orc.FilterBuilder.Serialization.Json.DataTypeExpressionJsonConverter))]
     public abstract class DataTypeExpression : Catel.Data.ModelBase
     {
         public static readonly Catel.Data.IPropertyData IsValueRequiredProperty;
         public static readonly Catel.Data.IPropertyData SelectedConditionProperty;
         public static readonly Catel.Data.IPropertyData ValueControlTypeProperty;
         protected DataTypeExpression() { }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool IsDirty { get; protected set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool IsReadOnly { get; protected set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public bool IsValueRequired { get; set; }
         public Orc.FilterBuilder.Condition SelectedCondition { get; set; }
         public Orc.FilterBuilder.ValueControlType ValueControlType { get; set; }
@@ -161,6 +176,7 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.IPropertyData ValueProperty;
         public EnumExpression() { }
         public EnumExpression(bool isNullable) { }
+        [System.Text.Json.Serialization.JsonIgnore]
         public System.Collections.Generic.List<TEnum> EnumValues { get; }
         public TEnum Value { get; set; }
         public override sealed bool CalculateResult(Orc.FilterBuilder.IPropertyMetadata propertyMetadata, object entity) { }
@@ -190,10 +206,16 @@ namespace Orc.FilterBuilder
         public bool CanEdit { get; set; }
         public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.ConditionTreeItem> ConditionItems { get; init; }
         public string? FilterGroup { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public bool HasInvalidConditionItems { get; }
         [System.Text.Json.Serialization.JsonIgnore]
+        public override bool IsDirty { get; protected set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public override bool IsReadOnly { get; protected set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public Orc.FilterBuilder.ConditionTreeItem Root { get; }
-        public System.Type TargetType { get; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.Serialization.Json.TypeJsonConverter))]
+        public System.Type TargetType { get; init; }
         public string Title { get; set; }
         public event System.EventHandler<System.EventArgs>? Updated;
         public bool CalculateResult(object entity) { }
@@ -207,10 +229,10 @@ namespace Orc.FilterBuilder
     public class FilterSchemeEditInfo
     {
         public FilterSchemeEditInfo(Orc.FilterBuilder.FilterScheme filterScheme, System.Collections.IEnumerable rawCollection, bool allowLivePreview, bool enableAutoCompletion) { }
-        public bool AllowLivePreview { get; }
-        public bool EnableAutoCompletion { get; }
-        public Orc.FilterBuilder.FilterScheme FilterScheme { get; }
-        public System.Collections.IEnumerable RawCollection { get; }
+        public bool AllowLivePreview { get; init; }
+        public bool EnableAutoCompletion { get; init; }
+        public Orc.FilterBuilder.FilterScheme FilterScheme { get; init; }
+        public System.Collections.IEnumerable RawCollection { get; init; }
     }
     public static class FilterSchemeExtensions
     {
@@ -230,11 +252,10 @@ namespace Orc.FilterBuilder
         public virtual System.Threading.Tasks.Task SaveAsync(string? fileName = null) { }
         public virtual System.Threading.Tasks.Task UpdateFiltersAsync() { }
     }
-    public class FilterSchemes : Catel.Data.ModelBase
+    public class FilterSchemes
     {
-        public static readonly Catel.Data.IPropertyData SchemesProperty;
         public FilterSchemes() { }
-        public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.FilterScheme> Schemes { get; }
+        public System.Collections.ObjectModel.ObservableCollection<Orc.FilterBuilder.FilterScheme> Schemes { get; init; }
     }
     public class FilterSerializationService : Orc.FilterBuilder.IFilterSerializationService
     {
@@ -299,7 +320,9 @@ namespace Orc.FilterBuilder
     {
         string DisplayName { get; set; }
         string Name { get; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.Serialization.Json.TypeJsonConverter))]
         System.Type OwnerType { get; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.Serialization.Json.TypeJsonConverter))]
         System.Type Type { get; }
         object? GetValue(object instance);
         TValue? GetValue<TValue>(object instance);
@@ -363,7 +386,9 @@ namespace Orc.FilterBuilder
         public static readonly Catel.Data.IPropertyData? PropertyProperty;
         public static readonly Catel.Data.IPropertyData? PropertySerializationValueProperty;
         public PropertyExpression() { }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.FilterBuilder.Serialization.Json.DataTypeExpressionJsonConverter?))]
         public Orc.FilterBuilder.DataTypeExpression? DataTypeExpression { get; set; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.FilterBuilder.Serialization.Json.PropertyMetadataJsonConverter?))]
         public Orc.FilterBuilder.IPropertyMetadata? Property { get; set; }
         public override bool CalculateResult(object entity) { }
         public override string ToString() { }
@@ -376,12 +401,15 @@ namespace Orc.FilterBuilder
     [System.Diagnostics.DebuggerDisplay("{OwnerType}.{Name}")]
     public class PropertyMetadata : Orc.FilterBuilder.IPropertyMetadata
     {
+        public PropertyMetadata() { }
         public PropertyMetadata(System.Type ownerType, Catel.Data.IPropertyData propertyData) { }
         public PropertyMetadata(System.Type ownerType, System.Reflection.PropertyInfo propertyInfo) { }
         public string DisplayName { get; set; }
-        public string Name { get; }
-        public System.Type OwnerType { get; }
-        public System.Type Type { get; }
+        public string Name { get; init; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.Serialization.Json.TypeJsonConverter))]
+        public System.Type OwnerType { get; init; }
+        [System.Text.Json.Serialization.JsonConverter(typeof(Orc.Serialization.Json.TypeJsonConverter))]
+        public System.Type Type { get; init; }
         public override bool Equals(object? obj) { }
         public override int GetHashCode() { }
         public object? GetValue(object instance) { }
@@ -480,6 +508,21 @@ namespace Orc.FilterBuilder
         public TValue Value { get; set; }
         public override bool CalculateResult(Orc.FilterBuilder.IPropertyMetadata propertyMetadata, object entity) { }
         public override string ToString() { }
+    }
+}
+namespace Orc.FilterBuilder.Serialization.Json
+{
+    public class ConditionTreeItemJsonConverter : Orc.Serialization.Json.AbstractTypeJsonConverter<Orc.FilterBuilder.ConditionTreeItem>
+    {
+        public ConditionTreeItemJsonConverter() { }
+    }
+    public class DataTypeExpressionJsonConverter : Orc.Serialization.Json.AbstractTypeJsonConverter<Orc.FilterBuilder.DataTypeExpression>
+    {
+        public DataTypeExpressionJsonConverter() { }
+    }
+    public class PropertyMetadataJsonConverter : Orc.Serialization.Json.AbstractTypeJsonConverter<Orc.FilterBuilder.IPropertyMetadata>
+    {
+        public PropertyMetadataJsonConverter() { }
     }
 }
 namespace Orc

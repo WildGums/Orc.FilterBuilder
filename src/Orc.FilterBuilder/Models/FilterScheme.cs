@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Catel.Data;
+using Orc.Serialization.Json;
 
 public class FilterScheme : ModelBase
 {
@@ -43,7 +44,8 @@ public class FilterScheme : ModelBase
         CanDelete = true;
     }
 
-    public Type TargetType { get; private set; }
+    [JsonConverter(typeof(TypeJsonConverter))]
+    public Type TargetType { get; init; }
 
     public string Title { get; set; }
 
@@ -61,7 +63,22 @@ public class FilterScheme : ModelBase
         get { return ConditionItems.First(); }
     }
 
+    [JsonIgnore]
     public bool HasInvalidConditionItems { get; private set; }
+
+    [JsonIgnore]
+    public override bool IsReadOnly
+    {
+        get => base.IsReadOnly;
+        protected set => base.IsReadOnly = value;
+    }
+
+    [JsonIgnore]
+    public override bool IsDirty
+    {
+        get => base.IsDirty;
+        protected set => base.IsDirty = value;
+    }
 
     public ObservableCollection<ConditionTreeItem> ConditionItems { get; init; }
 
@@ -82,7 +99,7 @@ public class FilterScheme : ModelBase
             }
         }
 
-        var newCollection = e.Action == NotifyCollectionChangedAction.Reset 
+        var newCollection = e.Action == NotifyCollectionChangedAction.Reset
             ? senderList
             : e.NewItems;
         if (newCollection is null)
@@ -195,7 +212,7 @@ public class FilterScheme : ModelBase
 
     public override bool Equals(object? obj)
     {
-        return obj is FilterScheme filterScheme 
+        return obj is FilterScheme filterScheme
                && string.Equals(filterScheme.Title, Title);
     }
 

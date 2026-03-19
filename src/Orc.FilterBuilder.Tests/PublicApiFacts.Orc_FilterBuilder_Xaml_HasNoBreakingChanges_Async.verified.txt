@@ -400,7 +400,6 @@ namespace Orc.FilterBuilder.Views
     public class EditFilterWindow : Catel.Windows.DataWindow, System.Windows.Markup.IComponentConnector
     {
         public EditFilterWindow() { }
-        [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
         public EditFilterWindow(System.IServiceProvider serviceProvider, Catel.Services.IWrapControlService wrapControlService, Catel.Services.ILanguageService languageService) { }
         public EditFilterWindow(Catel.MVVM.IViewModel? viewModel, System.IServiceProvider serviceProvider, Catel.Services.IWrapControlService wrapControlService, Catel.Services.ILanguageService languageService) { }
         public void InitializeComponent() { }
@@ -417,7 +416,6 @@ namespace Orc.FilterBuilder.Views
         public static readonly System.Windows.DependencyProperty ModeProperty;
         public static readonly System.Windows.DependencyProperty RawCollectionProperty;
         public FilterBuilderControl() { }
-        [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
         public FilterBuilderControl(System.IServiceProvider serviceProvider, Catel.Services.IViewModelWrapperService viewModelWrapperService, Catel.MVVM.IDataContextSubscriptionService dataContextSubscriptionService) { }
         public FilterBuilderControl(Catel.MVVM.IViewModel? viewModel, System.IServiceProvider serviceProvider, Catel.Services.IViewModelWrapperService viewModelWrapperService, Catel.MVVM.IDataContextSubscriptionService dataContextSubscriptionService) { }
         [Catel.MVVM.Views.ViewToViewModel("", MappingType=Catel.MVVM.Views.ViewToViewModelMappingType.ViewToViewModel)]

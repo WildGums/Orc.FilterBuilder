@@ -1,10 +1,8 @@
 ﻿namespace Orc.FilterBuilder;
 
 using System.Collections.ObjectModel;
-using Catel;
-using Catel.Data;
 
-public class FilterSchemes : ModelBase
+public class FilterSchemes
 {
-    public ObservableCollection<FilterScheme> Schemes { get; private set; } = new();
+    public ObservableCollection<FilterScheme> Schemes { get; init; } = new();
 }

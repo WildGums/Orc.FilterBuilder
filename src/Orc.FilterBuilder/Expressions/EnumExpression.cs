@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Catel;
 using Catel.Reflection;
 
@@ -43,6 +44,7 @@ public class EnumExpression<TEnum> : NullableDataTypeExpression
     /// <summary>
     /// Gets the enum values.
     /// </summary>
+    [JsonIgnore]
     public List<TEnum> EnumValues { get; }
 
     /// <summary>

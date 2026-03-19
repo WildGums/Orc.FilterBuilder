@@ -7,7 +7,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Catel.Data;
+using Orc.FilterBuilder.Serialization.Json;
 
+[JsonConverter(typeof(ConditionTreeItemJsonConverter))]
 public abstract class ConditionTreeItem : ValidatableModelBase
 {
     protected ConditionTreeItem()
@@ -23,7 +25,33 @@ public abstract class ConditionTreeItem : ValidatableModelBase
     [ExcludeFromValidation]
     public bool IsValid { get; private set; }
 
-    public ObservableCollection<ConditionTreeItem> Items { get; private set; }
+    public ObservableCollection<ConditionTreeItem> Items { get; init; }
+
+    [JsonIgnore]
+    public override bool IsReadOnly
+    {
+        get => base.IsReadOnly;
+        protected set => base.IsReadOnly = value;
+    }
+
+    [JsonIgnore]
+    public override bool IsDirty
+    {
+        get => base.IsDirty;
+        protected set => base.IsDirty = value;
+    }
+
+    [JsonIgnore]
+    public override bool HasErrors
+    {
+        get => base.HasErrors;
+    }
+
+    [JsonIgnore]
+    public override bool HasWarnings
+    {
+        get => base.HasWarnings;
+    }
 
     public event EventHandler<EventArgs>? Updated;
 
@@ -49,7 +77,7 @@ public abstract class ConditionTreeItem : ValidatableModelBase
             }
         }
 
-        var newCollection = e.Action == NotifyCollectionChangedAction.Reset 
+        var newCollection = e.Action == NotifyCollectionChangedAction.Reset
             ? listSender
             : e.NewItems;
         if (newCollection is null)
@@ -125,7 +153,7 @@ public abstract class ConditionTreeItem : ValidatableModelBase
             return true;
         }
 
-        return obj.GetType() == GetType() 
+        return obj.GetType() == GetType()
                && Equals((ConditionTreeItem)obj);
     }
 

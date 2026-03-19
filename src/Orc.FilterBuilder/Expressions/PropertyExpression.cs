@@ -8,6 +8,7 @@ using Catel.Data;
 using Catel.Logging;
 using Catel.Reflection;
 using Microsoft.Extensions.Logging;
+using Orc.FilterBuilder.Serialization.Json;
 
 [DebuggerDisplay("{Property} = {DataTypeExpression}")]
 [ValidateModel(typeof(PropertyExpressionValidator))]
@@ -18,8 +19,10 @@ public class PropertyExpression : ConditionTreeItem
     [JsonIgnore]
     internal string? PropertySerializationValue { get; set; }
 
+    [JsonConverter(typeof(PropertyMetadataJsonConverter))]
     public IPropertyMetadata? Property { get; set; }
 
+    [JsonConverter(typeof(DataTypeExpressionJsonConverter))]
     public DataTypeExpression? DataTypeExpression { get; set; }
 
     private void OnPropertyChanged()

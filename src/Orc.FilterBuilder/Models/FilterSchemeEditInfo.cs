@@ -16,11 +16,11 @@ public class FilterSchemeEditInfo
         EnableAutoCompletion = enableAutoCompletion;
     }
 
-    public FilterScheme FilterScheme { get; private set; }
+    public FilterScheme FilterScheme { get; init; }
 
-    public IEnumerable RawCollection { get; private set; }
+    public IEnumerable RawCollection { get; init; }
 
-    public bool AllowLivePreview { get; private set; }
+    public bool AllowLivePreview { get; init; }
 
-    public bool EnableAutoCompletion { get; private set; }
+    public bool EnableAutoCompletion { get; init; }
 }
