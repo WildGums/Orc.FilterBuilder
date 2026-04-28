@@ -19,7 +19,7 @@ public static class FilterBuilderControlTestData
     {
         if (Equals(scope, TestScopeWith3CustomRecords))
         {
-            var filterSchemes = new FilterSchemes { Scope = scope };
+            var filterSchemes = new FilterSchemes();
 
             var schemes = filterSchemes.Schemes;
 
@@ -32,7 +32,7 @@ public static class FilterBuilderControlTestData
 
         if (Equals(scope, TestScopeWith5CustomRecords))
         {
-            var filterSchemes = new FilterSchemes { Scope = scope };
+            var filterSchemes = new FilterSchemes();
 
             var schemes = filterSchemes.Schemes;
 

@@ -6,17 +6,13 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using Catel;
+using System.Text.Json.Serialization;
 using Catel.Data;
-using Catel.IoC;
-using Catel.Runtime.Serialization;
-using Runtime.Serialization;
+using Orc.Serialization.Json;
 
-[SerializerModifier(typeof(FilterSchemeSerializerModifier))]
 public class FilterScheme : ModelBase
 {
     private static readonly Type DefaultTargetType = typeof(object);
-    private object? _scope;
 
     public FilterScheme()
         : this(DefaultTargetType)
@@ -42,63 +38,49 @@ public class FilterScheme : ModelBase
         TargetType = targetType;
         Title = title;
 
-        ConditionItems = new ObservableCollection<ConditionTreeItem>
-        {
-            root
-        };
+        ConditionItems = [root];
 
         CanEdit = true;
         CanDelete = true;
     }
 
-    [IncludeInSerialization]
-    public Type TargetType { get; private set; }
+    [JsonConverter(typeof(TypeJsonConverter))]
+    public Type TargetType { get; init; }
 
     public string Title { get; set; }
 
     public string? FilterGroup { get; set; }
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     public bool CanEdit { get; set; }
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     public bool CanDelete { get; set; }
 
-    [ExcludeFromSerialization]
+    [JsonIgnore]
     public ConditionTreeItem Root
     {
         get { return ConditionItems.First(); }
     }
 
-    [ExcludeFromSerialization]
-    public object? Scope
-    {
-        get { return _scope; }
-        set
-        {
-            if (ObjectHelper.AreEqual(_scope, value))
-            {
-                return;
-            }
-
-            _scope = value;
-
-            RaisePropertyChanged(nameof(Scope));
-
-#pragma warning disable IDISP004 // Don't ignore created IDisposable.
-            var reflectionService = this.GetServiceLocator()
-                .ResolveType<IReflectionService>(_scope);
-#pragma warning restore IDISP004 // Don't ignore created IDisposable.
-            if (reflectionService is not null)
-            {
-                this.EnsureIntegrity(reflectionService);
-            }
-        }
-    }
-
+    [JsonIgnore]
     public bool HasInvalidConditionItems { get; private set; }
 
-    public ObservableCollection<ConditionTreeItem> ConditionItems { get; private set; }
+    [JsonIgnore]
+    public override bool IsReadOnly
+    {
+        get => base.IsReadOnly;
+        protected set => base.IsReadOnly = value;
+    }
+
+    [JsonIgnore]
+    public override bool IsDirty
+    {
+        get => base.IsDirty;
+        protected set => base.IsDirty = value;
+    }
+
+    public ObservableCollection<ConditionTreeItem> ConditionItems { get; init; }
 
     public event EventHandler<EventArgs>? Updated;
 
@@ -117,7 +99,7 @@ public class FilterScheme : ModelBase
             }
         }
 
-        var newCollection = e.Action == NotifyCollectionChangedAction.Reset 
+        var newCollection = e.Action == NotifyCollectionChangedAction.Reset
             ? senderList
             : e.NewItems;
         if (newCollection is null)
@@ -133,13 +115,6 @@ public class FilterScheme : ModelBase
 
     private void OnConditionItemsChanged()
     {
-        SubscribeToEvents();
-    }
-
-    protected override void OnDeserialized()
-    {
-        base.OnDeserialized();
-
         SubscribeToEvents();
     }
 
@@ -237,7 +212,7 @@ public class FilterScheme : ModelBase
 
     public override bool Equals(object? obj)
     {
-        return obj is FilterScheme filterScheme 
+        return obj is FilterScheme filterScheme
                && string.Equals(filterScheme.Title, Title);
     }
 

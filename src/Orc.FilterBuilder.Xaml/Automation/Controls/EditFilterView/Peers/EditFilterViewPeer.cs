@@ -1,5 +1,6 @@
 ﻿namespace Orc.FilterBuilder.Automation;
 
+using System;
 using Catel.IoC;
 using Orc.Automation;
 
@@ -32,11 +33,12 @@ public class EditFilterViewPeer : AutomationControlPeerBase<Views.EditFilterView
     [AutomationMethod]
     public void SetFilterSchemeEditInfo(FilterSchemeEditInfo filterSchemeEditInfo)
     {
-#pragma warning disable IDISP001 // Dispose created
-        var typeFactory = this.GetTypeFactory();
-#pragma warning restore IDISP001 // Dispose created
-        var editFilterViewModel = typeFactory.CreateInstanceWithParametersAndAutoCompletion<ViewModels.EditFilterViewModel>(filterSchemeEditInfo);
+        throw new NotImplementedException();
+        //#pragma warning disable IDISP001 // Dispose created
+        //        var typeFactory = this.GetTypeFactory();
+        //#pragma warning restore IDISP001 // Dispose created
+        //        var editFilterViewModel = typeFactory.CreateInstanceWithParametersAndAutoCompletion<ViewModels.EditFilterViewModel>(filterSchemeEditInfo);
 
-        Control.DataContext = editFilterViewModel;
+        //        Control.DataContext = editFilterViewModel;
     }
 }

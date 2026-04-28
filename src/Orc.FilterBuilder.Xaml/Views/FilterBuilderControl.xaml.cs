@@ -12,16 +12,6 @@ using PropertyMetadata = System.Windows.PropertyMetadata;
 
 public partial class FilterBuilderControl
 {
-    static FilterBuilderControl()
-    {
-        typeof(FilterBuilderControl).AutoDetectViewPropertiesToSubscribe();
-    }
-
-    public FilterBuilderControl()
-    {
-        InitializeComponent();
-    }
-
     [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
     public IEnumerable? RawCollection
     {
@@ -120,24 +110,6 @@ public partial class FilterBuilderControl
     public static readonly DependencyProperty AllowDeleteProperty = DependencyProperty.Register(nameof(AllowDelete), 
         typeof(bool), typeof(FilterBuilderControl), new PropertyMetadata(true));
 
-
-    [ViewToViewModel(MappingType = ViewToViewModelMappingType.ViewToViewModel)]
-    public object? Scope
-    {
-        get { return GetValue(ScopeProperty); }
-        set { SetValue(ScopeProperty, value); }
-    }
-
-    public static readonly DependencyProperty ScopeProperty = DependencyProperty.Register(nameof(Scope), typeof(object),
-        typeof(FilterBuilderControl), new FrameworkPropertyMetadata((sender, _) => ((FilterBuilderControl)sender).OnScopeChanged()));
-
-    private void OnScopeChanged()
-    {
-        if (ViewModel is FilterBuilderViewModel vm)
-        {
-            vm.Scope = Scope;
-        }
-    }
 
     private void OnFilterPreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {

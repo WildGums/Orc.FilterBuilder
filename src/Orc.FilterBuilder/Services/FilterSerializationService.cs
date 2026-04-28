@@ -4,31 +4,29 @@ using System;
 using System.Threading.Tasks;
 using Catel;
 using Catel.Logging;
-using Catel.Runtime.Serialization.Xml;
 using FileSystem;
+using Microsoft.Extensions.Logging;
+using Orc.Serialization.Json;
 
 public class FilterSerializationService : IFilterSerializationService
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(FilterSerializationService));
 
     private readonly IFileService _fileService;
-    private readonly IXmlSerializer _xmlSerializer;
+    private readonly IJsonSerializerFactory _jsonSerializerFactory;
 
     public FilterSerializationService(IFileService fileService,
-        IXmlSerializer xmlSerializer)
+        IJsonSerializerFactory jsonSerializerFactory)
     {
-        ArgumentNullException.ThrowIfNull(fileService);
-        ArgumentNullException.ThrowIfNull(xmlSerializer);
-
         _fileService = fileService;
-        _xmlSerializer = xmlSerializer;
+        _jsonSerializerFactory = jsonSerializerFactory;
     }
 
     public virtual async Task<FilterSchemes> LoadFiltersAsync(string fileName)
     {
         Argument.IsNotNullOrWhitespace(() => fileName);
 
-        Log.Info($"Loading filter schemes from '{fileName}'");
+        Logger.LogInformation($"Loading filter schemes from '{fileName}'");
 
         var filterSchemes = new FilterSchemes();
 
@@ -36,18 +34,21 @@ public class FilterSerializationService : IFilterSerializationService
         {
             if (_fileService.Exists(fileName))
             {
+                var serializer = _jsonSerializerFactory.CreateSerializer();
+
                 await using var stream = _fileService.OpenRead(fileName);
-                _xmlSerializer.Deserialize(filterSchemes, stream);
+
+                filterSchemes = serializer.Deserialize<FilterSchemes>(stream);
             }
 
-            Log.Debug("Loaded filter schemes from '{0}'", fileName);
+            Logger.LogDebug("Loaded filter schemes from '{0}'", fileName);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to load filter schemes");
+            Logger.LogError(ex, "Failed to load filter schemes");
         }
 
-        return filterSchemes;
+        return filterSchemes ?? new FilterSchemes();
     }
 
     public virtual async Task SaveFiltersAsync(string fileName, FilterSchemes filterSchemes)
@@ -55,20 +56,22 @@ public class FilterSerializationService : IFilterSerializationService
         Argument.IsNotNullOrWhitespace(() => fileName);
         ArgumentNullException.ThrowIfNull(filterSchemes);
 
-        Log.Info($"Saving filter schemes to '{fileName}'");
+        Logger.LogInformation($"Saving filter schemes to '{fileName}'");
 
         try
         {
+            var serializer = _jsonSerializerFactory.CreateSerializer();
+
             await using (var stream = _fileService.OpenWrite(fileName))
             {
-                _xmlSerializer.Serialize(filterSchemes, stream);
+                serializer.Serialize(stream, filterSchemes);
             }
 
-            Log.Debug("Saved filter schemes to '{0}'", fileName);
+            Logger.LogDebug("Saved filter schemes to '{0}'", fileName);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to save filter schemes");
+            Logger.LogError(ex, "Failed to save filter schemes");
         }
     }
 }

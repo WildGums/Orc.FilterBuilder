@@ -13,10 +13,11 @@ using Catel.Services;
 using FilterBuilder.ViewModels;
 using global::FilterBuilder.Example.Models;
 using global::FilterBuilder.Example.Services;
-    
+using Microsoft.Extensions.Logging;
+
 public class RibbonViewModel : ViewModelBase
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(RibbonViewModel));
 
     private readonly ITestDataService _testDataService;
     private readonly IFilterSchemeManager _filterSchemeManager;
@@ -26,8 +27,9 @@ public class RibbonViewModel : ViewModelBase
     private Type? _targetType;
     private FilterSchemes? _filterSchemes;
 
-    public RibbonViewModel(ITestDataService testDataService, IFilterSchemeManager filterSchemeManager,
-        IFilterService filterService, IUIVisualizerService uiVisualizerService)
+    public RibbonViewModel(IServiceProvider serviceProvider, ITestDataService testDataService, 
+        IFilterSchemeManager filterSchemeManager, IFilterService filterService, IUIVisualizerService uiVisualizerService)
+        : base(serviceProvider)
     {
         _testDataService = testDataService;
         _filterSchemeManager = filterSchemeManager;
@@ -35,7 +37,7 @@ public class RibbonViewModel : ViewModelBase
         _uiVisualizerService = uiVisualizerService;
         RawItems = _testDataService.GetTestItems();
 
-        NewSchemeCommand = new TaskCommand(OnNewSchemeExecuteAsync);
+        NewSchemeCommand = new TaskCommand(serviceProvider, OnNewSchemeExecuteAsync);
     }
 
     public ObservableCollection<TestEntity> RawItems { get; private set; }
@@ -56,13 +58,13 @@ public class RibbonViewModel : ViewModelBase
     {
         if (_targetType is null)
         {
-            Log.Warning("Target type is unknown, cannot get any type information to create filters");
+            Logger.LogWarning("Target type is unknown, cannot get any type information to create filters");
             return;
         }
 
         if (_filterSchemes is null)
         {
-            Log.Warning("Filter schemes hasn't initialized");
+            Logger.LogWarning("Filter schemes hasn't initialized");
             return;
         }
         

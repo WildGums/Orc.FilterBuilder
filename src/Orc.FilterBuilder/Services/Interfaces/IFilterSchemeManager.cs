@@ -7,7 +7,6 @@ public interface IFilterSchemeManager
 {
     bool AutoSave { get; set; }
     FilterSchemes FilterSchemes { get; }
-    object? Scope { get; set; }
         
     event EventHandler<EventArgs>? Updated;
     event EventHandler<EventArgs>? Loaded;

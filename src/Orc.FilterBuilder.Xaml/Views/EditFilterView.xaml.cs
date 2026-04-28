@@ -4,17 +4,24 @@ using System;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Catel.IoC;
+using Catel.MVVM;
+using Catel.Services;
 using Converters;
 using ViewModels;
 
 public sealed partial class EditFilterView
 {
-    public EditFilterView()
+    private readonly IReflectionService _reflectionService;
+
+    public EditFilterView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
+        IDataContextSubscriptionService dataContextSubscriptionService, IReflectionService reflectionService)
+        : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
     {
+        _reflectionService = reflectionService;
+
         InitializeComponent();
     }
-        
+
     protected override void OnViewModelChanged()
     {
         base.OnViewModelChanged();
@@ -28,13 +35,10 @@ public sealed partial class EditFilterView
 
         if (vm.AllowLivePreview)
         {
-            var dependencyResolver = this.GetDependencyResolver();
-            var reflectionService = dependencyResolver.ResolveRequired<IReflectionService>(vm.FilterScheme.Scope);
-
             var targetType = CollectionHelper.GetTargetType(vm.RawCollection);
             if (targetType is not null)
             {
-                var instanceProperties = reflectionService.GetInstanceProperties(targetType);
+                var instanceProperties = _reflectionService.GetInstanceProperties(targetType);
 
                 foreach (var instanceProperty in instanceProperties.Properties)
                 {

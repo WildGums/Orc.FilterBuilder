@@ -3,8 +3,10 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Catel;
 using Catel.Data;
+using Orc.Serialization.Json;
 
 [DebuggerDisplay("{OwnerType}.{Name}")]
 public class PropertyMetadata : IPropertyMetadata
@@ -13,11 +15,16 @@ public class PropertyMetadata : IPropertyMetadata
     private readonly PropertyInfo? _propertyInfo;
     private string? _displayName;
 
+    public PropertyMetadata()
+    {
+        // Serialization support
+        Name = string.Empty;
+        OwnerType = typeof(object);
+        Type = typeof(object);
+    }
+
     public PropertyMetadata(Type ownerType, PropertyInfo propertyInfo)
     {
-        ArgumentNullException.ThrowIfNull(ownerType);
-        ArgumentNullException.ThrowIfNull(propertyInfo);
-
         _propertyInfo = propertyInfo;
 
         OwnerType = ownerType;
@@ -28,9 +35,6 @@ public class PropertyMetadata : IPropertyMetadata
 
     public PropertyMetadata(Type ownerType, IPropertyData propertyData)
     {
-        ArgumentNullException.ThrowIfNull(ownerType);
-        ArgumentNullException.ThrowIfNull(propertyData);
-
         _propertyData = propertyData;
 
         OwnerType = ownerType;
@@ -45,11 +49,13 @@ public class PropertyMetadata : IPropertyMetadata
         set => _displayName = value;
     }
 
-    public string Name { get; }
+    public string Name { get; init; }
 
-    public Type OwnerType { get; }
+    [JsonConverter(typeof(TypeJsonConverter))]
+    public Type OwnerType { get; init; }
 
-    public Type Type { get; }
+    [JsonConverter(typeof(TypeJsonConverter))]
+    public Type Type { get; init; }
 
     private bool Equals(PropertyMetadata other)
     {
@@ -68,7 +74,7 @@ public class PropertyMetadata : IPropertyMetadata
             return true;
         }
 
-        return obj.GetType() == GetType() 
+        return obj.GetType() == GetType()
                && Equals((PropertyMetadata)obj);
     }
 
