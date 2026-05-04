@@ -29,7 +29,7 @@ public sealed class TemporaryFilesContext : IDisposable
     /// </summary>
     public void Dispose()
     {
-        Logger.LogInformation("Deleting temporary files from '{0}'", _rootDirectory);
+        Logger.LogInformation("Deleting temporary files from '{RootDirectory}'", _rootDirectory);
 
         try
         {

@@ -67,7 +67,7 @@ public class PropertyExpression : ConditionTreeItem
 
         if (!TryCreateDataTypeExpressionForSystemType(propertyType, isNullable))
         {
-            Logger.LogError($"Unable to create data type expression for type '{propertyType}'");
+            Logger.LogError("Unable to create data type expression for type '{PropertyType}'", propertyType);
         }
     }
 
@@ -166,7 +166,7 @@ public class PropertyExpression : ConditionTreeItem
         var dataTypeExpression = (DataTypeExpression?)constructorInfo?.Invoke(new object[] { isNullable });
         if (dataTypeExpression is null)
         {
-            throw Logger.LogErrorAndCreateException<InvalidOperationException>($"Cannot create data type expression for enum '{propertyType.Name}'");
+            throw Logger.LogErrorAndCreateException<InvalidOperationException>("Cannot create data type expression for enum '{EnumName}'", propertyType.Name);
         }
 
         DataTypeExpression = dataTypeExpression;

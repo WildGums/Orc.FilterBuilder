@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Catel.Logging;
 using System;
-using System.Globalization;
 using Microsoft.Extensions.Logging;
 
 /// <summary>
@@ -27,14 +26,15 @@ internal static class MethodTimeLogger
             return;
         }
 
-        var finalMessage = $"[METHODTIMER] {type.Name}.{methodName} took '{milliseconds.ToString(CultureInfo.InvariantCulture)}' ms";
+        var logger = LogManager.GetLogger(type);
 
         if (!string.IsNullOrWhiteSpace(message))
         {
-            finalMessage += $" | {message}";
+            logger.LogDebug("[METHODTIMER] {TypeName}.{MethodName} took '{Milliseconds}' ms | {Message}", type.Name, methodName, milliseconds, message);
         }
-
-        var logger = LogManager.GetLogger(type);
-        logger.LogDebug(finalMessage);
+        else
+        {
+            logger.LogDebug("[METHODTIMER] {TypeName}.{MethodName} took '{Milliseconds}' ms", type.Name, methodName, milliseconds);
+        }
     }
 }
