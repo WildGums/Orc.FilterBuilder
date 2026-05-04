@@ -59,7 +59,7 @@ public partial class ObjectToValueConverter : ValueConverterBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Failed to get property value '{0}'", propertyName);
+            Logger.LogError(ex, "Failed to get property value '{PropertyName}'", propertyName);
         }
 
         return null;

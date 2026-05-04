@@ -173,7 +173,7 @@ public class FilterBuilderViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, $"Failed to edit filter scheme '{filterScheme.Title}'");
+            Logger.LogError(ex, "Failed to edit filter scheme '{FilterSchemeTitle}'", filterScheme.Title);
             throw;
         }
     }
@@ -220,7 +220,7 @@ public class FilterBuilderViewModel : ViewModelBase
             return;
         }
 
-        Logger.LogDebug("Applying filter scheme '{0}'", selectedFilterScheme);
+        Logger.LogDebug("Applying filter scheme '{FilterScheme}'", selectedFilterScheme);
 
         //build filtered collection only if current mode is Collection
         if (Mode != FilterBuilderMode.Collection)

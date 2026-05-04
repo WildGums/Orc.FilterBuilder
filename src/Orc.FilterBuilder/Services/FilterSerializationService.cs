@@ -26,7 +26,7 @@ public class FilterSerializationService : IFilterSerializationService
     {
         Argument.IsNotNullOrWhitespace(() => fileName);
 
-        Logger.LogInformation($"Loading filter schemes from '{fileName}'");
+        Logger.LogInformation("Loading filter schemes from '{FileName}'", fileName);
 
         var filterSchemes = new FilterSchemes();
 
@@ -41,7 +41,7 @@ public class FilterSerializationService : IFilterSerializationService
                 filterSchemes = serializer.Deserialize<FilterSchemes>(stream);
             }
 
-            Logger.LogDebug("Loaded filter schemes from '{0}'", fileName);
+            Logger.LogDebug("Loaded filter schemes from '{FileName}'", fileName);
         }
         catch (Exception ex)
         {
@@ -56,7 +56,7 @@ public class FilterSerializationService : IFilterSerializationService
         Argument.IsNotNullOrWhitespace(() => fileName);
         ArgumentNullException.ThrowIfNull(filterSchemes);
 
-        Logger.LogInformation($"Saving filter schemes to '{fileName}'");
+        Logger.LogInformation("Saving filter schemes to '{FileName}'", fileName);
 
         try
         {
@@ -67,7 +67,7 @@ public class FilterSerializationService : IFilterSerializationService
                 serializer.Serialize(stream, filterSchemes);
             }
 
-            Logger.LogDebug("Saved filter schemes to '{0}'", fileName);
+            Logger.LogDebug("Saved filter schemes to '{FileName}'", fileName);
         }
         catch (Exception ex)
         {
