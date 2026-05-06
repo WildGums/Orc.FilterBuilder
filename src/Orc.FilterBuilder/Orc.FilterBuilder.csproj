@@ -25,7 +25,7 @@
     <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.7.0" PrivateAssets="all" />
     <PackageReference Include="MethodTimer.Fody" Version="3.2.3" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="5.3.1" PrivateAssets="all" />
-    <PackageReference Include="Orc.FileSystem" Version="6.0.0-alpha0104" />
+    <PackageReference Include="Orc.FileSystem" Version="6.0.0-alpha0123" />
     <PackageReference Include="Orc.Metadata" Version="6.0.0-alpha0088" />
     <PackageReference Include="Orc.Serialization.Json" Version="6.0.0-alpha0044" />
   </ItemGroup>
