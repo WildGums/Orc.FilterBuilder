@@ -34,7 +34,7 @@ public class FilterSerializationService : IFilterSerializationService
         {
             if (_fileService.Exists(fileName))
             {
-                var serializer = _jsonSerializerFactory.CreateSerializer();
+                var serializer = _jsonSerializerFactory.CreateSerializer(CreateSettings());
 
                 await using var stream = _fileService.OpenRead(fileName);
 
@@ -60,7 +60,7 @@ public class FilterSerializationService : IFilterSerializationService
 
         try
         {
-            var serializer = _jsonSerializerFactory.CreateSerializer();
+            var serializer = _jsonSerializerFactory.CreateSerializer(CreateSettings());
 
             await using (var stream = _fileService.OpenWrite(fileName))
             {
@@ -73,5 +73,13 @@ public class FilterSerializationService : IFilterSerializationService
         {
             Logger.LogError(ex, "Failed to save filter schemes");
         }
+    }
+
+    private static JsonSerializerSettings CreateSettings()
+    {
+        return new JsonSerializerSettings
+        {
+            UseTypeInfoConverter = true
+        };
     }
 }

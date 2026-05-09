@@ -88,7 +88,10 @@ public class EditFilterViewModel : FeaturedViewModelBase
     {
         await base.InitializeAsync();
 
-        var serializer = _jsonSerializerFactory.CreateSerializer();
+        var serializer = _jsonSerializerFactory.CreateSerializer(new JsonSerializerSettings
+        {
+            UseTypeInfoConverter = true
+        });
 
         await using (var memoryStream = new MemoryStream())
         {
