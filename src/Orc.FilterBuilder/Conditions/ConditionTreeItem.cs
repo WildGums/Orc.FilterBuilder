@@ -7,9 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Catel.Data;
-using Orc.FilterBuilder.Serialization.Json;
 
-[JsonConverter(typeof(ConditionTreeItemJsonConverter))]
 public abstract class ConditionTreeItem : ValidatableModelBase
 {
     protected ConditionTreeItem()

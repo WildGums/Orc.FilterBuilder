@@ -2,9 +2,7 @@
 
 using System.Text.Json.Serialization;
 using Catel.Data;
-using Orc.FilterBuilder.Serialization.Json;
 
-[JsonConverter(typeof(DataTypeExpressionJsonConverter))]
 public abstract class DataTypeExpression : ModelBase
 {
     public Condition SelectedCondition { get; set; }
