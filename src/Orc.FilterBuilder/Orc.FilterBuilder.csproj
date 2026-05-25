@@ -26,7 +26,7 @@
     <PackageReference Include="Obsolete.Fody" Version="5.3.1" PrivateAssets="all" />
     <PackageReference Include="Orc.FileSystem" Version="6.0.0-alpha0123" />
     <PackageReference Include="Orc.Metadata" Version="6.0.0-alpha0088" />
-    <PackageReference Include="Orc.Serialization.Json" Version="6.0.0-alpha0131" />
+    <PackageReference Include="Orc.Serialization.Json" Version="6.0.0-alpha0145" />
   </ItemGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\..\Directory.Build.nullable.props" Condition="Exists('$(MSBuildProjectDirectory)\..\Directory.Build.nullable.props')" />
