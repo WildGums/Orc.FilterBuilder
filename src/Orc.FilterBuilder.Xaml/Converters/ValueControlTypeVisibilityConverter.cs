@@ -2,14 +2,12 @@
 
 using System;
 using System.Linq;
-using System.Windows;
 using Catel.MVVM.Converters;
 using Catel.Reflection;
 
 public class ValueControlTypeVisibilityConverter : VisibilityConverterBase
 {
     public ValueControlTypeVisibilityConverter()
-        : base(Visibility.Collapsed)
     {
 
     }

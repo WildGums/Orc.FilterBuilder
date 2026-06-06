@@ -1,14 +1,12 @@
 ﻿namespace Orc.FilterBuilder.Converters;
 
 using System;
-using System.Windows;
 using Catel;
 using Catel.MVVM.Converters;
 
 public class ConditionTreeItemConverter : VisibilityConverterBase
 {
     public ConditionTreeItemConverter()
-        : base(Visibility.Collapsed)
     {
 
     }
