@@ -7,5 +7,6 @@ public partial class EditFilterWindow
     partial void OnInitializingComponent()
     {
         InfoBarMessageControlGenerationMode = InfoBarMessageControlGenerationMode.None;
+        Mode = DataWindowMode.OkCancel;
     }
 }
