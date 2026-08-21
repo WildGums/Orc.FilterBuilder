@@ -27,8 +27,7 @@ public class FilterSchemeFacts
             var filterScheme = FilterSchemeHelper.GenerateFilterScheme();
 
             var actual = filterScheme.ToString();
-            var expected = @"Test filter
-(StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
+            var expected = "Test filter\r\n(StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42') and (StringProperty contains '123' and BoolProperty is equal to 'True' and IntProperty is greater than or equal to '42')";
 
             Assert.That(actual, Is.EqualTo(expected));
         }
