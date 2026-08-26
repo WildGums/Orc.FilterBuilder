@@ -237,4 +237,7 @@
   <data name="FilterBuilder_LiveUpdate" xml:space="preserve">
     <value>Live update</value>
   </data>
+  <data name="FilterBuilder_PropertyCanNotBeNull" xml:space="preserve">
+    <value>Property can not be null</value>
+  </data>
 </root>
