@@ -65,7 +65,7 @@ public class EditFilterViewModel : FeaturedViewModelBase
 
     public override string Title
     {
-        get { return "Filter scheme"; }
+        get { return _languageService.GetRequiredString("FilterBuilder_EditFilterViewModel_Title"); }
     }
 
     public string FilterSchemeTitle { get; set; }

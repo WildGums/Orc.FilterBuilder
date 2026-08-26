@@ -1,5 +1,6 @@
 ﻿namespace Orc.FilterBuilder;
 
+using Catel;
 using Catel.Data;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ public class PropertyExpressionValidator : ValidatorBase<PropertyExpression>
     {
         if (instance.Property is null)
         {
-            validationResults.Add(FieldValidationResult.CreateError("Property", "Property can not be null"));
+            validationResults.Add(FieldValidationResult.CreateError("Property", LanguageHelper.GetRequiredString("FilterBuilder_PropertyCanNotBeNull")));
         }
     }
 }
