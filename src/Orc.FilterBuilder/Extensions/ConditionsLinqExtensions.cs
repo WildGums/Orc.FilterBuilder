@@ -115,6 +115,11 @@ public static class ConditionsLinqExtensions
     private static Expression BuildNumericExpression(this DataTypeExpression expression,
         ParameterExpression parameterExpression, string propertyName)
     {
+        if (expression.ValueProperty is { } valueProperty)
+        {
+            return BuildPropertyComparisonExpression(expression.SelectedCondition, parameterExpression, propertyName, valueProperty.Name);
+        }
+
         return NumericExpression(expression.SelectedCondition,
             BuildPropertyExpression(parameterExpression, propertyName),
             Expression.Constant(expression.GetType().GetProperty("Value")?.GetValue(expression)),
@@ -138,9 +143,49 @@ public static class ConditionsLinqExtensions
         };
     }
 
+    private static Expression BuildPropertyComparisonExpression(Condition condition, ParameterExpression parameterExpression,
+        string propertyName, string valuePropertyName)
+    {
+        var propertyExpression = BuildPropertyExpression(parameterExpression, propertyName);
+        var valueExpression = BuildPropertyExpression(parameterExpression, valuePropertyName);
+        if (propertyExpression.Type != valueExpression.Type)
+        {
+            throw Logger.LogErrorAndCreateException<InvalidOperationException>("Cannot compare property '{PropertyName}' of type '{PropertyType}' with property '{ValuePropertyName}' of type '{ValuePropertyType}'",
+                propertyName, propertyExpression.Type.Name, valuePropertyName, valueExpression.Type.Name);
+        }
+
+        var isNullExpression = BuildIsNullExpression(parameterExpression, propertyName);
+        var valueIsNullExpression = BuildIsNullExpression(parameterExpression, valuePropertyName);
+
+        // Ordering comparisons need a value on both sides; two nulls are considered equal
+        var hasBothValuesExpression = Expression.AndAlso(Expression.Not(isNullExpression), Expression.Not(valueIsNullExpression));
+        var isEqualExpression = Expression.OrElse(Expression.AndAlso(isNullExpression, valueIsNullExpression),
+            Expression.AndAlso(hasBothValuesExpression, Expression.Equal(propertyExpression, valueExpression)));
+
+        return condition switch
+        {
+            Condition.EqualTo => isEqualExpression,
+            Condition.NotEqualTo => Expression.Not(isEqualExpression),
+            Condition.GreaterThan => Expression.AndAlso(hasBothValuesExpression, Expression.GreaterThan(propertyExpression, valueExpression)),
+            Condition.GreaterThanOrEqualTo => Expression.AndAlso(hasBothValuesExpression, Expression.GreaterThanOrEqual(propertyExpression, valueExpression)),
+            Condition.LessThan => Expression.AndAlso(hasBothValuesExpression, Expression.LessThan(propertyExpression, valueExpression)),
+            Condition.LessThanOrEqualTo => Expression.AndAlso(hasBothValuesExpression, Expression.LessThanOrEqual(propertyExpression, valueExpression)),
+            Condition.IsNull => isNullExpression,
+            Condition.NotIsNull => Expression.Not(isNullExpression),
+            _ => throw Logger.LogErrorAndCreateException<NotSupportedException>(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition)
+        };
+    }
+
     private static Expression BuildExpression(this BooleanExpression expression,
         ParameterExpression parameterExpression, string propertyName)
     {
+        if (expression.ValueProperty is { } valueProperty)
+        {
+            return expression.SelectedCondition is Condition.EqualTo or Condition.NotEqualTo
+                ? BuildPropertyComparisonExpression(expression.SelectedCondition, parameterExpression, propertyName, valueProperty.Name)
+                : throw Logger.LogErrorAndCreateException<NotSupportedException>(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), expression.SelectedCondition);
+        }
+
         return expression.SelectedCondition switch
         {
             Condition.EqualTo => Expression.AndAlso(Expression.Not(BuildIsNullExpression(parameterExpression, propertyName)), Expression.Equal(BuildPropertyExpression(parameterExpression, propertyName), Expression.Constant(expression.Value))),
@@ -151,7 +196,19 @@ public static class ConditionsLinqExtensions
     private static Expression BuildExpression(this StringExpression expression,
         ParameterExpression parameterExpression, string propertyName)
     {
-        return BuildStringExpression(expression.SelectedCondition, Expression.Property(parameterExpression, propertyName), Expression.Constant(expression.Value));
+        Expression valueExpression = Expression.Constant(expression.Value, typeof(string));
+
+        if (expression.ValueProperty is { } valueProperty)
+        {
+            valueExpression = Expression.Property(parameterExpression, valueProperty.Name);
+            if (valueExpression.Type != typeof(string))
+            {
+                throw Logger.LogErrorAndCreateException<InvalidOperationException>("Cannot compare string property '{PropertyName}' with property '{ValuePropertyName}' of type '{ValuePropertyType}'",
+                    propertyName, valueProperty.Name, valueExpression.Type.Name);
+            }
+        }
+
+        return BuildStringExpression(expression.SelectedCondition, Expression.Property(parameterExpression, propertyName), valueExpression);
     }
 
     //// TODO: Try to combine expression builders as much as possible.
@@ -161,13 +218,13 @@ public static class ConditionsLinqExtensions
         return condition switch
         {
             Condition.Contains => Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)), 
-                Expression.Call(propertyExpression, typeof(string).GetMethod("Contains", TypeArray.From<string>())!, valueExpression)),
+                WhenValueIsNotNull(valueExpression, Expression.Call(propertyExpression, typeof(string).GetMethod("Contains", TypeArray.From<string>())!, valueExpression))),
             Condition.DoesNotContain => Expression.Not(BuildStringExpression(Condition.Contains, propertyExpression, valueExpression)),
             Condition.StartsWith => Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)), 
-                Expression.Call(propertyExpression, typeof(string).GetMethod("StartsWith", TypeArray.From<string>())!, valueExpression)),
+                WhenValueIsNotNull(valueExpression, Expression.Call(propertyExpression, typeof(string).GetMethod("StartsWith", TypeArray.From<string>())!, valueExpression))),
             Condition.DoesNotStartWith => Expression.Not(BuildStringExpression(Condition.StartsWith, propertyExpression, valueExpression)),
             Condition.EndsWith => Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)), 
-                Expression.Call(propertyExpression, typeof(string).GetMethod("EndsWith", TypeArray.From<string>())!, valueExpression)),
+                WhenValueIsNotNull(valueExpression, Expression.Call(propertyExpression, typeof(string).GetMethod("EndsWith", TypeArray.From<string>())!, valueExpression))),
             Condition.DoesNotEndWith => Expression.Not(BuildStringExpression(Condition.EndsWith, propertyExpression, valueExpression)),
             Condition.EqualTo => Expression.AndAlso(Expression.Not(Expression.Call(typeof(string).GetMethod("IsNullOrEmpty", TypeArray.From<string>())!, propertyExpression)), 
                 Expression.Equal(propertyExpression, valueExpression)),
@@ -186,6 +243,12 @@ public static class ConditionsLinqExtensions
             Condition.NotIsEmpty => Expression.Not(Expression.Equal(propertyExpression, Expression.Constant(string.Empty))),
             _ => throw Logger.LogErrorAndCreateException((x) => new NotSupportedException(x), LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), condition)
         };
+    }
+
+    private static Expression WhenValueIsNotNull(Expression valueExpression, Expression expression)
+    {
+        // A value read from another property can be null, which string methods do not accept
+        return Expression.AndAlso(Expression.NotEqual(valueExpression, Expression.Constant(null, typeof(string))), expression);
     }
 
     private static Expression BuildIsNullExpression(ParameterExpression parameterExpression, string propertyName)

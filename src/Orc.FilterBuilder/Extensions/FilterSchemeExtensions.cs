@@ -29,6 +29,7 @@ public static class FilterSchemeExtensions
 
         var propertyExpression = conditionTreeItem as PropertyExpression;
         propertyExpression?.EnsureIntegrity(reflectionService);
+        propertyExpression?.EnsureValuePropertyIntegrity(reflectionService);
 
         foreach (var item in conditionTreeItem.Items)
         {
@@ -74,6 +75,21 @@ public static class FilterSchemeExtensions
 
         typeProperties = reflectionService.GetInstanceProperties(type);
         propertyExpression.Property = typeProperties.GetProperty(splittedString[1]);
+    }
+
+    private static void EnsureValuePropertyIntegrity(this PropertyExpression propertyExpression, IReflectionService reflectionService)
+    {
+        var dataTypeExpression = propertyExpression.DataTypeExpression;
+        var valueProperty = dataTypeExpression?.ValueProperty;
+        if (dataTypeExpression is null || valueProperty is null)
+        {
+            return;
+        }
+
+        // Use the live instance so values can be read. If the property no longer exists, keep the stored
+        // one: the comparison then sees null instead of silently falling back to the constant value.
+        var typeProperties = reflectionService.GetInstanceProperties(valueProperty.OwnerType);
+        dataTypeExpression.ValueProperty = typeProperties.GetProperty(valueProperty.Name) ?? valueProperty;
     }
 
     [Time]
