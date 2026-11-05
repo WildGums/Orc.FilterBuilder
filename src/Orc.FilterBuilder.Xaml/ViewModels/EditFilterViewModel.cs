@@ -54,6 +54,7 @@ public class EditFilterViewModel : FeaturedViewModelBase
         AddGroupCommand = new Command<ConditionGroup>(serviceProvider, OnAddGroup);
         AddExpressionCommand = new Command<ConditionGroup>(serviceProvider, OnAddExpression);
         DeleteConditionItem = new Command<ConditionTreeItem>(serviceProvider, OnDeleteCondition, OnDeleteConditionCanExecute);
+        ToggleCompareToField = new Command<PropertyExpression>(serviceProvider, OnToggleCompareToField);
         TogglePreview = new Command(serviceProvider, OnTogglePreview);
 
         _applyFilterTimer = new DispatcherTimer
@@ -82,6 +83,7 @@ public class EditFilterViewModel : FeaturedViewModelBase
     public Command<ConditionGroup> AddGroupCommand { get; }
     public Command<ConditionGroup> AddExpressionCommand { get; }
     public Command<ConditionTreeItem> DeleteConditionItem { get; }
+    public Command<PropertyExpression> ToggleCompareToField { get; }
     public Command TogglePreview { get; }
 
     protected override async Task InitializeAsync()
@@ -219,6 +221,21 @@ public class EditFilterViewModel : FeaturedViewModelBase
 
         group.Items.Add(propertyExpression);
         propertyExpression.Parent = group;
+    }
+
+    private void OnToggleCompareToField(PropertyExpression? propertyExpression)
+    {
+        var property = propertyExpression?.Property;
+        var dataTypeExpression = propertyExpression?.DataTypeExpression;
+        if (property is null || dataTypeExpression is null)
+        {
+            return;
+        }
+
+        // Switch back to the constant value, or start comparing to the first field of the same type
+        dataTypeExpression.ValueProperty = dataTypeExpression.ValueProperty is null
+            ? InstanceProperties.FirstOrDefault(x => property.CanCompareTo(x))
+            : null;
     }
 
     private void OnAddGroup(ConditionGroup? group)

@@ -134,9 +134,10 @@ namespace Orc.FilterBuilder
     }
     public abstract class DataTypeExpression : Catel.Data.ModelBase
     {
-        public static readonly Catel.Data.IPropertyData IsValueRequiredProperty;
-        public static readonly Catel.Data.IPropertyData SelectedConditionProperty;
-        public static readonly Catel.Data.IPropertyData ValueControlTypeProperty;
+        public static readonly Catel.Data.IPropertyData? IsValueRequiredProperty;
+        public static readonly Catel.Data.IPropertyData? SelectedConditionProperty;
+        public static readonly Catel.Data.IPropertyData? ValueControlTypeProperty;
+        public static readonly Catel.Data.IPropertyData? ValuePropertyProperty;
         protected DataTypeExpression() { }
         [System.Text.Json.Serialization.JsonIgnore]
         public override bool IsDirty { get; protected set; }
@@ -146,6 +147,7 @@ namespace Orc.FilterBuilder
         public bool IsValueRequired { get; set; }
         public Orc.FilterBuilder.Condition SelectedCondition { get; set; }
         public Orc.FilterBuilder.ValueControlType ValueControlType { get; set; }
+        public Orc.FilterBuilder.IPropertyMetadata? ValueProperty { get; set; }
         public abstract bool CalculateResult(Orc.FilterBuilder.IPropertyMetadata propertyMetadata, object entity);
     }
     [System.Diagnostics.DebuggerDisplay("{ValueControlType} {SelectedCondition} {Value}")]
@@ -410,6 +412,10 @@ namespace Orc.FilterBuilder
         public object? GetValue(object instance) { }
         public TValue? GetValue<TValue>(object instance) { }
         public void SetValue(object instance, object? value) { }
+    }
+    public static class PropertyMetadataExtensions
+    {
+        public static bool CanCompareTo(this Orc.FilterBuilder.IPropertyMetadata propertyMetadata, Orc.FilterBuilder.IPropertyMetadata otherPropertyMetadata) { }
     }
     public class ReflectionService : Orc.FilterBuilder.IReflectionService
     {

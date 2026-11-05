@@ -22,6 +22,7 @@
             <converters:ValueControlTypeVisibilityConverter x:Key="ValueControlTypeVisibilityConverter" SupportInversionUsingCommandParameter="False"/>
             <catel:ObjectToDisplayNameConverter x:Key="ObjectToDisplayNameConverter"/>
             <converters:FilterResultMultiValueConverter x:Key="FilterResultMultiValueConverter"/>
+            <converters:ComparablePropertiesMultiValueConverter x:Key="ComparablePropertiesMultiValueConverter"/>
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -187,66 +188,100 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <Grid Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}"
-                                  Margin="0">
-                                <TextBox x:Name="PART_ValueTextBox"
-                                         Text="{Binding DataTypeExpression.Value}"
-                                         Height="27"
-                                         orccontrols:EnterKeyTraversal.IsEnabled="True"
-                                         Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Text}}">
-                                    <xamlbehaviors:Interaction.Behaviors>
-                                        <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
-                                        <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
-                                                              IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
-                                    </xamlbehaviors:Interaction.Behaviors>
-                                </TextBox>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0"
+                                        Visibility="{Binding DataTypeExpression.IsValueRequired, Converter={StaticResource VisibilityConverter}}">
+                                <Grid Margin="0"
+                                      Visibility="{Binding DataTypeExpression.ValueProperty, Converter={catel:ReferenceToCollapsingVisibilityConverter}, ConverterParameter=True}">
+                                    <TextBox x:Name="PART_ValueTextBox"
+                                             Text="{Binding DataTypeExpression.Value}"
+                                             Height="27"
+                                             orccontrols:EnterKeyTraversal.IsEnabled="True"
+                                             Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Text}}">
+                                        <xamlbehaviors:Interaction.Behaviors>
+                                            <catel:UpdateBindingOnTextChanged UpdateDelay="500" />
+                                            <!--<catel:AutoCompletion PropertyName="{Binding Property.Name, Mode=OneWay}" ItemsSource="{Binding DataContext.RawCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" 
+                                                                  IsEnabled="{Binding DataContext.EnableAutoCompletion, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"/>-->
+                                        </xamlbehaviors:Interaction.Behaviors>
+                                    </TextBox>
 
-                                <orccontrols:NumericUpDown x:Name="PART_ValueNumericUpDown"
-                                                           Value="{Binding DataTypeExpression.Value, Mode=TwoWay}"
-                                                           Height="27"
-                                                           orccontrols:EnterKeyTraversal.IsEnabled="True"
-                                                           IsDecimalPointDynamic="{Binding DataTypeExpression.IsDecimal}">
-                                    <orccontrols:NumericUpDown.Visibility>
-                                        <Binding Path="DataTypeExpression.ValueControlType" Converter="{StaticResource ValueControlTypeVisibilityConverter}">
-                                            <Binding.ConverterParameter>
-                                                <x:Array Type="{x:Type filterBuilder:ValueControlType}">
-                                                    <filterBuilder:ValueControlType>Byte</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>SByte</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Short</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>UnsignedShort</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Integer</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>UnsignedInteger</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Long</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>UnsignedLong</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Decimal</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Float</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Double</filterBuilder:ValueControlType>
-                                                    <filterBuilder:ValueControlType>Numeric</filterBuilder:ValueControlType>
-                                                </x:Array>
-                                            </Binding.ConverterParameter>
-                                        </Binding>
-                                    </orccontrols:NumericUpDown.Visibility>
-                                </orccontrols:NumericUpDown>
+                                    <orccontrols:NumericUpDown x:Name="PART_ValueNumericUpDown"
+                                                               Value="{Binding DataTypeExpression.Value, Mode=TwoWay}"
+                                                               Height="27"
+                                                               orccontrols:EnterKeyTraversal.IsEnabled="True"
+                                                               IsDecimalPointDynamic="{Binding DataTypeExpression.IsDecimal}">
+                                        <orccontrols:NumericUpDown.Visibility>
+                                            <Binding Path="DataTypeExpression.ValueControlType" Converter="{StaticResource ValueControlTypeVisibilityConverter}">
+                                                <Binding.ConverterParameter>
+                                                    <x:Array Type="{x:Type filterBuilder:ValueControlType}">
+                                                        <filterBuilder:ValueControlType>Byte</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>SByte</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Short</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>UnsignedShort</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Integer</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>UnsignedInteger</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Long</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>UnsignedLong</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Decimal</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Float</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Double</filterBuilder:ValueControlType>
+                                                        <filterBuilder:ValueControlType>Numeric</filterBuilder:ValueControlType>
+                                                    </x:Array>
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </orccontrols:NumericUpDown.Visibility>
+                                    </orccontrols:NumericUpDown>
 
-                                <orccontrols:DateTimePicker x:Name="PART_ValueDateTimePicker"
-                                                            Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureDateTimeValueConverter}}"
-                                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
+                                    <orccontrols:DateTimePicker x:Name="PART_ValueDateTimePicker"
+                                                                Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureDateTimeValueConverter}}"
+                                                                Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.DateTime}}"/>
 
-                                <ComboBox x:Name="PART_BooleanValueComboBox"
-                                          ItemsSource="{Binding DataTypeExpression.BooleanValues}"
-                                          SelectedValue="{Binding DataTypeExpression.Value}"
-                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Boolean}}"/>
+                                    <ComboBox x:Name="PART_BooleanValueComboBox"
+                                              ItemsSource="{Binding DataTypeExpression.BooleanValues}"
+                                              SelectedValue="{Binding DataTypeExpression.Value}"
+                                              Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Boolean}}"/>
 
-                                <ComboBox x:Name="PART_EnumValueComboBox"
-                                          ItemsSource="{Binding DataTypeExpression.EnumValues}"
-                                          SelectedValue="{Binding DataTypeExpression.Value}"
-                                          Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
+                                    <ComboBox x:Name="PART_EnumValueComboBox"
+                                              ItemsSource="{Binding DataTypeExpression.EnumValues}"
+                                              SelectedValue="{Binding DataTypeExpression.Value}"
+                                              Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.Enum}}"/>
 
-                                <orccontrols:TimeSpanPicker x:Name="PART_ValueTimeSpanPicker"
-                                                            Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureTimeSpanValueConverter}}"
-                                                            Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"/>
+                                    <orccontrols:TimeSpanPicker x:Name="PART_ValueTimeSpanPicker"
+                                                                Value="{Binding DataTypeExpression.Value, Converter={converters:EnsureTimeSpanValueConverter}}"
+                                                                Visibility="{Binding DataTypeExpression.ValueControlType, Converter={StaticResource ValueControlTypeVisibilityConverter}, ConverterParameter={x:Static filterBuilder:ValueControlType.TimeSpan}}"/>
 
-                            </Grid>
+                                </Grid>
+
+                                <!-- ItemsSource is declared before SelectedItem so the selection is not lost on load -->
+                                <ComboBox x:Name="PART_ValuePropertyComboBox"
+                                          DisplayMemberPath="DisplayName"
+                                          Visibility="{Binding DataTypeExpression.ValueProperty, Converter={catel:ReferenceToCollapsingVisibilityConverter}}">
+                                    <ComboBox.ItemsSource>
+                                        <MultiBinding Converter="{StaticResource ComparablePropertiesMultiValueConverter}">
+                                            <Binding Path="Property" />
+                                            <Binding Path="DataContext.InstanceProperties" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=TreeView}" />
+                                        </MultiBinding>
+                                    </ComboBox.ItemsSource>
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="DataTypeExpression.ValueProperty" />
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
+
+                                <Button x:Name="PART_ToggleCompareToFieldButton"
+                                        BorderThickness="0"
+                                        Padding="3"
+                                        ToolTip="{catel:LanguageBinding FilterBuilder_ToggleCompareToField}"
+                                        Command="{Binding DataContext.ToggleCompareToField, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}"
+                                        CommandParameter="{Binding}"
+                                        IsEnabled="{Binding ElementName=PART_ValuePropertyComboBox, Path=HasItems}">
+
+                                    <Path Data="{StaticResource CompareToFieldGeometry}"
+                                          Margin="2"
+                                          Stretch="Uniform"
+                                          Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+
+                                </Button>
+                            </StackPanel>
 
                             <Button x:Name="PART_DeleteExpressionButton"
                                     BorderThickness="0"

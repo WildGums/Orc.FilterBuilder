@@ -240,4 +240,7 @@
   <data name="FilterBuilder_PropertyCanNotBeNull" xml:space="preserve">
     <value>Property can not be null</value>
   </data>
+  <data name="FilterBuilder_ToggleCompareToField" xml:space="preserve">
+    <value>Switch between comparing to a value or to another field</value>
+  </data>
 </root>
