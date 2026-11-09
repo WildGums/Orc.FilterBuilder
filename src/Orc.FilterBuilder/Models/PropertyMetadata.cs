@@ -59,7 +59,9 @@ public class PropertyMetadata : IPropertyMetadata
 
     private bool Equals(PropertyMetadata other)
     {
-        return Equals(_propertyData, other._propertyData) && string.Equals(Name, other.Name) && Type == other.Type;
+        // The backing property is part of equality so a deserialized instance (which cannot read values)
+        // is not considered equal to the live one, otherwise re-linking it after loading is skipped
+        return Equals(_propertyData, other._propertyData) && Equals(_propertyInfo, other._propertyInfo) && string.Equals(Name, other.Name) && Type == other.Type;
     }
 
     public override bool Equals(object? obj)
@@ -83,6 +85,7 @@ public class PropertyMetadata : IPropertyMetadata
         unchecked
         {
             var hashCode = _propertyData is not null ? _propertyData.GetHashCode() : 0;
+            hashCode = (hashCode * 397) ^ (_propertyInfo is not null ? _propertyInfo.GetHashCode() : 0);
             hashCode = (hashCode * 397) ^ Name.GetHashCode();
             hashCode = (hashCode * 397) ^ Type.GetHashCode();
             return hashCode;

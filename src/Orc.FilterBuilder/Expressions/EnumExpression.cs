@@ -76,6 +76,12 @@ public class EnumExpression<TEnum> : NullableDataTypeExpression
             throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition));
         }
 
+        var valueProperty = ValueProperty;
+        if (valueProperty is not null)
+        {
+            return CalculateResultUsingValueProperty(entityValue, valueProperty.GetValue(entity));
+        }
+
         return SelectedCondition switch
         {
             Condition.EqualTo => Equals(entityValue, Value),
@@ -90,12 +96,36 @@ public class EnumExpression<TEnum> : NullableDataTypeExpression
         };
     }
 
+    private bool CalculateResultUsingValueProperty(object? entityValue, object? valuePropertyValue)
+    {
+        // A value of another type on the compared property is treated as null instead of throwing
+        var otherValue = valuePropertyValue is TEnum value ? (object)value : null;
+
+        // Null when either side is null, so every ordering comparison below is false
+        int? comparison = entityValue is not null && otherValue is not null
+            ? Comparer.Default.Compare(entityValue, otherValue)
+            : null;
+
+        return SelectedCondition switch
+        {
+            Condition.EqualTo => Equals(entityValue, otherValue),
+            Condition.NotEqualTo => !Equals(entityValue, otherValue),
+            Condition.GreaterThan => comparison > 0,
+            Condition.GreaterThanOrEqualTo => comparison >= 0,
+            Condition.LessThan => comparison < 0,
+            Condition.LessThanOrEqualTo => comparison <= 0,
+            Condition.IsNull => entityValue is null,
+            Condition.NotIsNull => entityValue is not null,
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+        };
+    }
+
     /// <summary>
     /// Converts the object to string.
     /// </summary>
     /// <returns>String representation of the object.</returns>
     public override string ToString()
     {
-        return $"{SelectedCondition.Humanize()} '{Value}'";
+        return ToDisplayString(Value);
     }
 }

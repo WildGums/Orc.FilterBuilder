@@ -24,6 +24,20 @@ public class BooleanExpression : DataTypeExpression
 
     public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
     {
+        var valueProperty = ValueProperty;
+        if (valueProperty is not null)
+        {
+            var left = propertyMetadata.GetValue(entity) as bool?;
+            var right = valueProperty.GetValue(entity) as bool?;
+
+            return SelectedCondition switch
+            {
+                Condition.EqualTo => left == right,
+                Condition.NotEqualTo => left != right,
+                _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+            };
+        }
+
         var entityValue = propertyMetadata.GetValue<bool>(entity);
 
         return SelectedCondition switch
@@ -36,6 +50,6 @@ public class BooleanExpression : DataTypeExpression
 
     public override string ToString()
     {
-        return $"{SelectedCondition.Humanize()} '{Value}'";
+        return ToDisplayString(Value);
     }
 }

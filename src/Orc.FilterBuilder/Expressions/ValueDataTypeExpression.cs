@@ -21,6 +21,12 @@ public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpressi
 
     public override bool CalculateResult(IPropertyMetadata propertyMetadata, object entity)
     {
+        var valueProperty = ValueProperty;
+        if (valueProperty is not null)
+        {
+            return CalculateResultUsingValueProperty(propertyMetadata, valueProperty, entity);
+        }
+
         if (IsNullable)
         {
             var entityValue = propertyMetadata.GetValue<TValue?>(entity);
@@ -54,8 +60,33 @@ public abstract class ValueDataTypeExpression<TValue> : NullableDataTypeExpressi
         }
     }
 
+    private bool CalculateResultUsingValueProperty(IPropertyMetadata propertyMetadata, IPropertyMetadata valueProperty, object entity)
+    {
+        // A value of another type on the compared property is treated as null instead of throwing
+        var entityValue = propertyMetadata.GetValue<TValue?>(entity);
+        var otherValue = valueProperty.GetValue(entity) is TValue value ? value : (TValue?)null;
+
+        // Null when either side is null, so every ordering comparison below is false
+        int? comparison = entityValue is { } leftValue && otherValue is { } rightValue
+            ? _comparer.Compare(leftValue, rightValue)
+            : null;
+
+        return SelectedCondition switch
+        {
+            Condition.EqualTo => Equals(entityValue, otherValue),
+            Condition.NotEqualTo => !Equals(entityValue, otherValue),
+            Condition.GreaterThan => comparison > 0,
+            Condition.LessThan => comparison < 0,
+            Condition.GreaterThanOrEqualTo => comparison >= 0,
+            Condition.LessThanOrEqualTo => comparison <= 0,
+            Condition.IsNull => entityValue is null,
+            Condition.NotIsNull => entityValue is not null,
+            _ => throw new NotSupportedException(string.Format(LanguageHelper.GetRequiredString("FilterBuilder_Exception_Message_ConditionIsNotSupported_Pattern"), SelectedCondition))
+        };
+    }
+
     public override string ToString()
     {
-        return $"{SelectedCondition.Humanize()} '{Value}'";
+        return ToDisplayString(Value);
     }
 }

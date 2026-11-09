@@ -245,6 +245,12 @@ namespace Orc.FilterBuilder.Behaviors
 }
 namespace Orc.FilterBuilder.Converters
 {
+    public class ComparablePropertiesMultiValueConverter : System.Windows.Data.IMultiValueConverter
+    {
+        public ComparablePropertiesMultiValueConverter() { }
+        public object? Convert(object?[]? values, System.Type targetType, object? parameter, System.Globalization.CultureInfo? culture) { }
+        public object?[]? ConvertBack(object? value, System.Type[] targetTypes, object? parameter, System.Globalization.CultureInfo? culture) { }
+    }
     public class ConditionTreeItemConverter : Catel.MVVM.Converters.VisibilityConverterBase
     {
         public ConditionTreeItemConverter() { }
@@ -346,6 +352,7 @@ namespace Orc.FilterBuilder.ViewModels
         public Catel.Collections.FastObservableCollection<object> PreviewItems { get; }
         public System.Collections.IEnumerable RawCollection { get; }
         public override string Title { get; }
+        public Catel.MVVM.Command<Orc.FilterBuilder.PropertyExpression> ToggleCompareToField { get; }
         public Catel.MVVM.Command TogglePreview { get; }
         protected override System.Threading.Tasks.Task<bool> CancelAsync() { }
         protected override System.Threading.Tasks.Task CloseAsync() { }
