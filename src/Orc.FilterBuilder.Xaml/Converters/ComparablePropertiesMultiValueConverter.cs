@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
 /// <summary>
@@ -12,14 +13,26 @@ using System.Windows.Data;
 /// </summary>
 public class ComparablePropertiesMultiValueConverter : IMultiValueConverter
 {
+    // Results are cached per list of available properties (held weakly) and per property, so every
+    // row and every re-evaluation for the same field reuses one array. The available properties
+    // list is expected not to change after it is bound.
+    private readonly ConditionalWeakTable<IEnumerable<IPropertyMetadata>, Dictionary<IPropertyMetadata, IPropertyMetadata[]>> _cache = new();
+
     public object? Convert(object?[]? values, Type targetType, object? parameter, CultureInfo? culture)
     {
         if (values is not [IPropertyMetadata property, IEnumerable<IPropertyMetadata> properties])
         {
-            return new List<IPropertyMetadata>();
+            return Array.Empty<IPropertyMetadata>();
         }
 
-        return properties.Where(x => property.CanCompareTo(x)).ToList();
+        var comparablePropertiesCache = _cache.GetOrCreateValue(properties);
+        if (!comparablePropertiesCache.TryGetValue(property, out var comparableProperties))
+        {
+            comparableProperties = properties.Where(property.CanCompareTo).ToArray();
+            comparablePropertiesCache[property] = comparableProperties;
+        }
+
+        return comparableProperties;
     }
 
     public object?[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo? culture)

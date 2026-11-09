@@ -11,47 +11,47 @@ using Orc.FilterBuilder.Converters;
 
 public class CompareToFieldFacts
 {
-    private static readonly IPropertyCollection OrderProperties = new InstanceProperties(typeof(FieldComparisonOrder));
+    private static readonly IPropertyCollection EntityProperties = new InstanceProperties(typeof(FieldComparisonEntity));
 
-    private static List<FieldComparisonOrder> CreateOrders()
+    private static List<FieldComparisonEntity> CreateEntities()
     {
-        return new List<FieldComparisonOrder>
+        return new List<FieldComparisonEntity>
         {
             new()
             {
                 Id = 1,
-                PromiseDate = new DateTime(2026, 11, 17), NewPromiseDate = new DateTime(2026, 11, 17), PreviousPromiseDate = new DateTime(2026, 11, 17),
-                Quantity = 5, DeliveredQuantity = 5,
-                Route = "PAINT", PreviousRoute = "PAINT",
-                IsPlanned = true, WasPlanned = true,
-                CurrentStep = FieldComparisonStep.Process, PreviousStep = FieldComparisonStep.Process
+                StartDate = new DateTime(2024, 1, 17), EndDate = new DateTime(2024, 1, 17), PreviousEndDate = new DateTime(2024, 1, 17),
+                Count = 5, OtherCount = 5,
+                Name = "Red", OtherName = "Red",
+                IsEnabled = true, WasEnabled = true,
+                Status = FieldComparisonStatus.Active, PreviousStatus = FieldComparisonStatus.Active
             },
             new()
             {
                 Id = 2,
-                PromiseDate = new DateTime(2026, 11, 4), NewPromiseDate = new DateTime(2026, 11, 16), PreviousPromiseDate = null,
-                Quantity = 5, DeliveredQuantity = 3,
-                Route = "PREGAL", PreviousRoute = "PAINT",
-                IsPlanned = true, WasPlanned = false,
-                CurrentStep = FieldComparisonStep.Paint, PreviousStep = FieldComparisonStep.Load
+                StartDate = new DateTime(2024, 1, 4), EndDate = new DateTime(2024, 1, 16), PreviousEndDate = null,
+                Count = 5, OtherCount = 3,
+                Name = "Blue", OtherName = "Red",
+                IsEnabled = true, WasEnabled = false,
+                Status = FieldComparisonStatus.Closed, PreviousStatus = FieldComparisonStatus.Draft
             },
             new()
             {
                 Id = 3,
-                PromiseDate = new DateTime(2026, 11, 20), NewPromiseDate = new DateTime(2026, 11, 10), PreviousPromiseDate = new DateTime(2026, 11, 10),
-                Quantity = 2, DeliveredQuantity = 7,
-                Route = "PAINT", PreviousRoute = "PAINTED",
-                IsPlanned = false, WasPlanned = false,
-                CurrentStep = FieldComparisonStep.Load, PreviousStep = FieldComparisonStep.Paint
+                StartDate = new DateTime(2024, 1, 20), EndDate = new DateTime(2024, 1, 10), PreviousEndDate = new DateTime(2024, 1, 10),
+                Count = 2, OtherCount = 7,
+                Name = "Red", OtherName = "Redwood",
+                IsEnabled = false, WasEnabled = false,
+                Status = FieldComparisonStatus.Draft, PreviousStatus = FieldComparisonStatus.Closed
             },
             new()
             {
                 Id = 4,
-                PromiseDate = new DateTime(2026, 11, 1), NewPromiseDate = null, PreviousPromiseDate = null,
-                Quantity = 0, DeliveredQuantity = null,
-                Route = null, PreviousRoute = "PAINT",
-                IsPlanned = false, WasPlanned = false,
-                CurrentStep = FieldComparisonStep.Load, PreviousStep = null
+                StartDate = new DateTime(2024, 1, 1), EndDate = null, PreviousEndDate = null,
+                Count = 0, OtherCount = null,
+                Name = null, OtherName = "Red",
+                IsEnabled = false, WasEnabled = false,
+                Status = FieldComparisonStatus.Draft, PreviousStatus = null
             }
         };
     }
@@ -60,14 +60,14 @@ public class CompareToFieldFacts
     {
         var propertyExpression = new PropertyExpression
         {
-            Property = OrderProperties.GetProperty(propertyName)
+            Property = EntityProperties.GetProperty(propertyName)
         };
 
         var dataTypeExpression = propertyExpression.DataTypeExpression;
         Assert.That(dataTypeExpression, Is.Not.Null, $"No expression created for '{propertyName}'");
 
         dataTypeExpression.SelectedCondition = condition;
-        dataTypeExpression.ValueProperty = OrderProperties.GetProperty(valuePropertyName);
+        dataTypeExpression.ValueProperty = EntityProperties.GetProperty(valuePropertyName);
         Assert.That(dataTypeExpression.ValueProperty, Is.Not.Null, $"Unknown property '{valuePropertyName}'");
 
         return propertyExpression;
@@ -75,7 +75,7 @@ public class CompareToFieldFacts
 
     private static int[] GetMatchingIds(ConditionTreeItem conditionTreeItem)
     {
-        return CreateOrders().Where(conditionTreeItem.CalculateResult).Select(x => x.Id).ToArray();
+        return CreateEntities().Where(conditionTreeItem.CalculateResult).Select(x => x.Id).ToArray();
     }
 
     [TestFixture]
@@ -91,7 +91,7 @@ public class CompareToFieldFacts
         [TestCase(Condition.NotIsNull, new[] { 1, 2, 3 })]
         public void Compares_Nullable_DateTime_To_DateTime_Field(Condition condition, int[] expectedIds)
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), condition, nameof(FieldComparisonOrder.PromiseDate));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), condition, nameof(FieldComparisonEntity.StartDate));
 
             Assert.That(GetMatchingIds(propertyExpression), Is.EqualTo(expectedIds));
         }
@@ -102,7 +102,7 @@ public class CompareToFieldFacts
         [TestCase(Condition.GreaterThanOrEqualTo, new[] { 1, 3 })]
         public void Treats_Two_Nulls_As_Equal_And_Never_Orders_Nulls(Condition condition, int[] expectedIds)
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), condition, nameof(FieldComparisonOrder.PreviousPromiseDate));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), condition, nameof(FieldComparisonEntity.PreviousEndDate));
 
             Assert.That(GetMatchingIds(propertyExpression), Is.EqualTo(expectedIds));
         }
@@ -113,17 +113,17 @@ public class CompareToFieldFacts
         [TestCase(Condition.LessThan, new[] { 3 })]
         public void Compares_Int_To_Nullable_Int_Field(Condition condition, int[] expectedIds)
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.Quantity), condition, nameof(FieldComparisonOrder.DeliveredQuantity));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.Count), condition, nameof(FieldComparisonEntity.OtherCount));
 
             Assert.That(GetMatchingIds(propertyExpression), Is.EqualTo(expectedIds));
         }
 
-        [TestCase(nameof(FieldComparisonOrder.Route), Condition.EqualTo, nameof(FieldComparisonOrder.PreviousRoute), new[] { 1 })]
-        [TestCase(nameof(FieldComparisonOrder.Route), Condition.NotEqualTo, nameof(FieldComparisonOrder.PreviousRoute), new[] { 2, 3, 4 })]
-        [TestCase(nameof(FieldComparisonOrder.Route), Condition.Contains, nameof(FieldComparisonOrder.PreviousRoute), new[] { 1 })]
-        [TestCase(nameof(FieldComparisonOrder.PreviousRoute), Condition.StartsWith, nameof(FieldComparisonOrder.Route), new[] { 1, 3 })]
-        [TestCase(nameof(FieldComparisonOrder.PreviousRoute), Condition.DoesNotStartWith, nameof(FieldComparisonOrder.Route), new[] { 2 })]
-        [TestCase(nameof(FieldComparisonOrder.PreviousRoute), Condition.Matches, nameof(FieldComparisonOrder.Route), new[] { 1, 3 })]
+        [TestCase(nameof(FieldComparisonEntity.Name), Condition.EqualTo, nameof(FieldComparisonEntity.OtherName), new[] { 1 })]
+        [TestCase(nameof(FieldComparisonEntity.Name), Condition.NotEqualTo, nameof(FieldComparisonEntity.OtherName), new[] { 2, 3, 4 })]
+        [TestCase(nameof(FieldComparisonEntity.Name), Condition.Contains, nameof(FieldComparisonEntity.OtherName), new[] { 1 })]
+        [TestCase(nameof(FieldComparisonEntity.OtherName), Condition.StartsWith, nameof(FieldComparisonEntity.Name), new[] { 1, 3 })]
+        [TestCase(nameof(FieldComparisonEntity.OtherName), Condition.DoesNotStartWith, nameof(FieldComparisonEntity.Name), new[] { 2 })]
+        [TestCase(nameof(FieldComparisonEntity.OtherName), Condition.Matches, nameof(FieldComparisonEntity.Name), new[] { 1, 3 })]
         public void Compares_String_To_String_Field_And_Never_Matches_Text_Against_Null(string propertyName, Condition condition, string valuePropertyName, int[] expectedIds)
         {
             var propertyExpression = CreatePropertyExpression(propertyName, condition, valuePropertyName);
@@ -135,7 +135,7 @@ public class CompareToFieldFacts
         [TestCase(Condition.NotEqualTo, new[] { 2 })]
         public void Compares_Bool_To_Bool_Field(Condition condition, int[] expectedIds)
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.IsPlanned), condition, nameof(FieldComparisonOrder.WasPlanned));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.IsEnabled), condition, nameof(FieldComparisonEntity.WasEnabled));
 
             Assert.That(GetMatchingIds(propertyExpression), Is.EqualTo(expectedIds));
         }
@@ -149,11 +149,11 @@ public class CompareToFieldFacts
             // Enum expressions are not created automatically for a new property expression
             var propertyExpression = new PropertyExpression
             {
-                Property = OrderProperties.GetProperty(nameof(FieldComparisonOrder.CurrentStep)),
-                DataTypeExpression = new EnumExpression<FieldComparisonStep>(false)
+                Property = EntityProperties.GetProperty(nameof(FieldComparisonEntity.Status)),
+                DataTypeExpression = new EnumExpression<FieldComparisonStatus>(false)
                 {
                     SelectedCondition = condition,
-                    ValueProperty = OrderProperties.GetProperty(nameof(FieldComparisonOrder.PreviousStep))
+                    ValueProperty = EntityProperties.GetProperty(nameof(FieldComparisonEntity.PreviousStatus))
                 }
             };
 
@@ -163,8 +163,8 @@ public class CompareToFieldFacts
         [Test]
         public void Treats_A_Field_Of_Another_Type_As_Null_Instead_Of_Throwing()
         {
-            var equalTo = CreatePropertyExpression(nameof(FieldComparisonOrder.Quantity), Condition.EqualTo, nameof(FieldComparisonOrder.LongQuantity));
-            var notEqualTo = CreatePropertyExpression(nameof(FieldComparisonOrder.Quantity), Condition.NotEqualTo, nameof(FieldComparisonOrder.LongQuantity));
+            var equalTo = CreatePropertyExpression(nameof(FieldComparisonEntity.Count), Condition.EqualTo, nameof(FieldComparisonEntity.LongCount));
+            var notEqualTo = CreatePropertyExpression(nameof(FieldComparisonEntity.Count), Condition.NotEqualTo, nameof(FieldComparisonEntity.LongCount));
 
             Assert.That(GetMatchingIds(equalTo), Is.Empty);
             Assert.That(GetMatchingIds(notEqualTo), Is.EqualTo(new[] { 1, 2, 3, 4 }));
@@ -173,10 +173,10 @@ public class CompareToFieldFacts
         [Test]
         public void Uses_The_Constant_Value_Again_When_The_Field_Is_Cleared()
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), Condition.EqualTo, nameof(FieldComparisonOrder.PromiseDate));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), Condition.EqualTo, nameof(FieldComparisonEntity.StartDate));
             var dataTypeExpression = (DateTimeExpression)propertyExpression.DataTypeExpression;
 
-            dataTypeExpression.Value = new DateTime(2026, 11, 16);
+            dataTypeExpression.Value = new DateTime(2024, 1, 16);
             dataTypeExpression.ValueProperty = null;
 
             Assert.That(GetMatchingIds(propertyExpression), Is.EqualTo(new[] { 2 }));
@@ -186,27 +186,27 @@ public class CompareToFieldFacts
     [TestFixture]
     public class TheBuildLambdaMethod
     {
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.EqualTo, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.NotEqualTo, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.GreaterThan, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.GreaterThanOrEqualTo, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.LessThan, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.LessThanOrEqualTo, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.IsNull, nameof(FieldComparisonOrder.PromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.EqualTo, nameof(FieldComparisonOrder.PreviousPromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.NotEqualTo, nameof(FieldComparisonOrder.PreviousPromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), Condition.GreaterThan, nameof(FieldComparisonOrder.PreviousPromiseDate))]
-        [TestCase(nameof(FieldComparisonOrder.Quantity), Condition.EqualTo, nameof(FieldComparisonOrder.DeliveredQuantity))]
-        [TestCase(nameof(FieldComparisonOrder.Quantity), Condition.NotEqualTo, nameof(FieldComparisonOrder.DeliveredQuantity))]
-        [TestCase(nameof(FieldComparisonOrder.Quantity), Condition.GreaterThan, nameof(FieldComparisonOrder.DeliveredQuantity))]
-        [TestCase(nameof(FieldComparisonOrder.Quantity), Condition.LessThan, nameof(FieldComparisonOrder.DeliveredQuantity))]
-        [TestCase(nameof(FieldComparisonOrder.Route), Condition.EqualTo, nameof(FieldComparisonOrder.PreviousRoute))]
-        [TestCase(nameof(FieldComparisonOrder.Route), Condition.NotEqualTo, nameof(FieldComparisonOrder.PreviousRoute))]
-        [TestCase(nameof(FieldComparisonOrder.Route), Condition.Contains, nameof(FieldComparisonOrder.PreviousRoute))]
-        [TestCase(nameof(FieldComparisonOrder.PreviousRoute), Condition.StartsWith, nameof(FieldComparisonOrder.Route))]
-        [TestCase(nameof(FieldComparisonOrder.PreviousRoute), Condition.EndsWith, nameof(FieldComparisonOrder.Route))]
-        [TestCase(nameof(FieldComparisonOrder.IsPlanned), Condition.EqualTo, nameof(FieldComparisonOrder.WasPlanned))]
-        [TestCase(nameof(FieldComparisonOrder.IsPlanned), Condition.NotEqualTo, nameof(FieldComparisonOrder.WasPlanned))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.EqualTo, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.NotEqualTo, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.GreaterThan, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.GreaterThanOrEqualTo, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.LessThan, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.LessThanOrEqualTo, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.IsNull, nameof(FieldComparisonEntity.StartDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.EqualTo, nameof(FieldComparisonEntity.PreviousEndDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.NotEqualTo, nameof(FieldComparisonEntity.PreviousEndDate))]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), Condition.GreaterThan, nameof(FieldComparisonEntity.PreviousEndDate))]
+        [TestCase(nameof(FieldComparisonEntity.Count), Condition.EqualTo, nameof(FieldComparisonEntity.OtherCount))]
+        [TestCase(nameof(FieldComparisonEntity.Count), Condition.NotEqualTo, nameof(FieldComparisonEntity.OtherCount))]
+        [TestCase(nameof(FieldComparisonEntity.Count), Condition.GreaterThan, nameof(FieldComparisonEntity.OtherCount))]
+        [TestCase(nameof(FieldComparisonEntity.Count), Condition.LessThan, nameof(FieldComparisonEntity.OtherCount))]
+        [TestCase(nameof(FieldComparisonEntity.Name), Condition.EqualTo, nameof(FieldComparisonEntity.OtherName))]
+        [TestCase(nameof(FieldComparisonEntity.Name), Condition.NotEqualTo, nameof(FieldComparisonEntity.OtherName))]
+        [TestCase(nameof(FieldComparisonEntity.Name), Condition.Contains, nameof(FieldComparisonEntity.OtherName))]
+        [TestCase(nameof(FieldComparisonEntity.OtherName), Condition.StartsWith, nameof(FieldComparisonEntity.Name))]
+        [TestCase(nameof(FieldComparisonEntity.OtherName), Condition.EndsWith, nameof(FieldComparisonEntity.Name))]
+        [TestCase(nameof(FieldComparisonEntity.IsEnabled), Condition.EqualTo, nameof(FieldComparisonEntity.WasEnabled))]
+        [TestCase(nameof(FieldComparisonEntity.IsEnabled), Condition.NotEqualTo, nameof(FieldComparisonEntity.WasEnabled))]
         public void Matches_The_In_Memory_Result(string propertyName, Condition condition, string valuePropertyName)
         {
             var propertyExpression = CreatePropertyExpression(propertyName, condition, valuePropertyName);
@@ -216,24 +216,24 @@ public class CompareToFieldFacts
             };
             conditionGroup.Items.Add(propertyExpression);
 
-            var predicate = conditionGroup.BuildLambda<FieldComparisonOrder>().Compile();
-            var actualIds = CreateOrders().Where(predicate).Select(x => x.Id).ToArray();
+            var predicate = conditionGroup.BuildLambda<FieldComparisonEntity>().Compile();
+            var actualIds = CreateEntities().Where(predicate).Select(x => x.Id).ToArray();
 
             Assert.That(actualIds, Is.EqualTo(GetMatchingIds(propertyExpression)));
         }
 
         [Test]
-        public void Returns_Changed_Promise_Dates()
+        public void Returns_Rows_Where_The_Dates_Differ()
         {
             var conditionGroup = new ConditionGroup
             {
                 Type = ConditionGroupType.And
             };
-            conditionGroup.Items.Add(CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), Condition.NotEqualTo, nameof(FieldComparisonOrder.PromiseDate)));
+            conditionGroup.Items.Add(CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), Condition.NotEqualTo, nameof(FieldComparisonEntity.StartDate)));
 
-            var predicate = conditionGroup.BuildLambda<FieldComparisonOrder>().Compile();
+            var predicate = conditionGroup.BuildLambda<FieldComparisonEntity>().Compile();
 
-            Assert.That(CreateOrders().Where(predicate).Select(x => x.Id), Is.EqualTo(new[] { 2, 3, 4 }));
+            Assert.That(CreateEntities().Where(predicate).Select(x => x.Id), Is.EqualTo(new[] { 2, 3, 4 }));
         }
 
         [Test]
@@ -243,9 +243,9 @@ public class CompareToFieldFacts
             {
                 Type = ConditionGroupType.And
             };
-            conditionGroup.Items.Add(CreatePropertyExpression(nameof(FieldComparisonOrder.Quantity), Condition.EqualTo, nameof(FieldComparisonOrder.LongQuantity)));
+            conditionGroup.Items.Add(CreatePropertyExpression(nameof(FieldComparisonEntity.Count), Condition.EqualTo, nameof(FieldComparisonEntity.LongCount)));
 
-            Assert.Throws<InvalidOperationException>(() => conditionGroup.BuildLambda<FieldComparisonOrder>());
+            Assert.Throws<InvalidOperationException>(() => conditionGroup.BuildLambda<FieldComparisonEntity>());
         }
     }
 
@@ -255,9 +255,9 @@ public class CompareToFieldFacts
         [Test]
         public void Shows_The_Field_Name_Instead_Of_The_Value()
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), Condition.NotEqualTo, nameof(FieldComparisonOrder.PromiseDate));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), Condition.NotEqualTo, nameof(FieldComparisonEntity.StartDate));
 
-            Assert.That(propertyExpression.ToString(), Is.EqualTo("NewPromiseDate is not equal to [PromiseDate]"));
+            Assert.That(propertyExpression.ToString(), Is.EqualTo("EndDate is not equal to [StartDate]"));
         }
     }
 
@@ -273,8 +273,8 @@ public class CompareToFieldFacts
             var filterSerializationService = serviceProvider.GetRequiredService<IFilterSerializationService>();
             var reflectionService = serviceProvider.GetRequiredService<IReflectionService>();
 
-            var filterScheme = new FilterScheme(typeof(FieldComparisonOrder), "Changed promise dates");
-            filterScheme.Root.Items.Add(CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), Condition.NotEqualTo, nameof(FieldComparisonOrder.PromiseDate)));
+            var filterScheme = new FilterScheme(typeof(FieldComparisonEntity), "Dates differ");
+            filterScheme.Root.Items.Add(CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), Condition.NotEqualTo, nameof(FieldComparisonEntity.StartDate)));
 
             var filterSchemes = new FilterSchemes();
             filterSchemes.Schemes.Add(filterScheme);
@@ -291,14 +291,14 @@ public class CompareToFieldFacts
             var loadedPropertyExpression = (PropertyExpression)loadedFilterScheme.Root.Items.Single();
             var loadedValueProperty = loadedPropertyExpression.DataTypeExpression?.ValueProperty;
 
-            var liveProperties = reflectionService.GetInstanceProperties(typeof(FieldComparisonOrder));
+            var liveProperties = reflectionService.GetInstanceProperties(typeof(FieldComparisonEntity));
 
             // Both sides must be the live instances, a deserialized one cannot read values
-            Assert.That(loadedPropertyExpression.Property, Is.SameAs(liveProperties.GetProperty(nameof(FieldComparisonOrder.NewPromiseDate))));
+            Assert.That(loadedPropertyExpression.Property, Is.SameAs(liveProperties.GetProperty(nameof(FieldComparisonEntity.EndDate))));
             Assert.That(loadedValueProperty, Is.Not.Null);
-            Assert.That(loadedValueProperty.Name, Is.EqualTo(nameof(FieldComparisonOrder.PromiseDate)));
-            Assert.That(loadedValueProperty, Is.SameAs(liveProperties.GetProperty(nameof(FieldComparisonOrder.PromiseDate))));
-            Assert.That(CreateOrders().Where(loadedFilterScheme.CalculateResult).Select(x => x.Id), Is.EqualTo(new[] { 2, 3, 4 }));
+            Assert.That(loadedValueProperty.Name, Is.EqualTo(nameof(FieldComparisonEntity.StartDate)));
+            Assert.That(loadedValueProperty, Is.SameAs(liveProperties.GetProperty(nameof(FieldComparisonEntity.StartDate))));
+            Assert.That(CreateEntities().Where(loadedFilterScheme.CalculateResult).Select(x => x.Id), Is.EqualTo(new[] { 2, 3, 4 }));
         }
 
         [Test]
@@ -312,13 +312,13 @@ public class CompareToFieldFacts
 
             var propertyExpression = new PropertyExpression
             {
-                Property = OrderProperties.GetProperty(nameof(FieldComparisonOrder.Quantity))
+                Property = EntityProperties.GetProperty(nameof(FieldComparisonEntity.Count))
             };
             var integerExpression = (IntegerExpression)propertyExpression.DataTypeExpression;
             integerExpression.SelectedCondition = Condition.EqualTo;
             integerExpression.Value = 5;
 
-            var filterScheme = new FilterScheme(typeof(FieldComparisonOrder), "Quantity of five");
+            var filterScheme = new FilterScheme(typeof(FieldComparisonEntity), "Count of five");
             filterScheme.Root.Items.Add(propertyExpression);
 
             var filterSchemes = new FilterSchemes();
@@ -331,35 +331,35 @@ public class CompareToFieldFacts
             var loadedFilterScheme = (await filterSerializationService.LoadFiltersAsync(fileName)).Schemes.Single();
             loadedFilterScheme.EnsureIntegrity(reflectionService);
 
-            Assert.That(CreateOrders().Where(loadedFilterScheme.CalculateResult).Select(x => x.Id), Is.EqualTo(new[] { 1, 2 }));
+            Assert.That(CreateEntities().Where(loadedFilterScheme.CalculateResult).Select(x => x.Id), Is.EqualTo(new[] { 1, 2 }));
         }
 
         [Test]
         public void Keeps_A_Field_That_No_Longer_Exists_Instead_Of_Using_The_Constant_Value()
         {
-            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonOrder.NewPromiseDate), Condition.EqualTo, nameof(FieldComparisonOrder.PromiseDate));
+            var propertyExpression = CreatePropertyExpression(nameof(FieldComparisonEntity.EndDate), Condition.EqualTo, nameof(FieldComparisonEntity.StartDate));
             var dataTypeExpression = (DateTimeExpression)propertyExpression.DataTypeExpression;
-            dataTypeExpression.Value = new DateTime(2026, 11, 16);
+            dataTypeExpression.Value = new DateTime(2024, 1, 16);
 
             var storedValueProperty = new PropertyMetadata
             {
-                Name = "RemovedPromiseDate",
-                OwnerType = typeof(FieldComparisonOrder),
+                Name = "RemovedDate",
+                OwnerType = typeof(FieldComparisonEntity),
                 Type = typeof(DateTime)
             };
             dataTypeExpression.ValueProperty = storedValueProperty;
 
-            var filterScheme = new FilterScheme(typeof(FieldComparisonOrder));
+            var filterScheme = new FilterScheme(typeof(FieldComparisonEntity));
             filterScheme.Root.Items.Add(propertyExpression);
 
             var reflectionServiceMock = new Mock<IReflectionService>();
-            reflectionServiceMock.Setup(x => x.GetInstanceProperties(typeof(FieldComparisonOrder))).Returns(OrderProperties);
+            reflectionServiceMock.Setup(x => x.GetInstanceProperties(typeof(FieldComparisonEntity))).Returns(EntityProperties);
 
             filterScheme.EnsureIntegrity(reflectionServiceMock.Object);
 
             Assert.That(dataTypeExpression.ValueProperty, Is.SameAs(storedValueProperty));
 
-            // The stored field has no value, so only rows where NewPromiseDate is null are equal to it
+            // The stored field has no value, so only rows where EndDate is null are equal to it
             Assert.That(GetMatchingIds(filterScheme.Root), Is.EqualTo(new[] { 4 }));
         }
     }
@@ -367,17 +367,17 @@ public class CompareToFieldFacts
     [TestFixture]
     public class TheCanCompareToMethod
     {
-        [TestCase(nameof(FieldComparisonOrder.NewPromiseDate), nameof(FieldComparisonOrder.PromiseDate), true)]
-        [TestCase(nameof(FieldComparisonOrder.PromiseDate), nameof(FieldComparisonOrder.NewPromiseDate), true)]
-        [TestCase(nameof(FieldComparisonOrder.Route), nameof(FieldComparisonOrder.PreviousRoute), true)]
-        [TestCase(nameof(FieldComparisonOrder.CurrentStep), nameof(FieldComparisonOrder.PreviousStep), true)]
-        [TestCase(nameof(FieldComparisonOrder.Quantity), nameof(FieldComparisonOrder.LongQuantity), false)]
-        [TestCase(nameof(FieldComparisonOrder.Quantity), nameof(FieldComparisonOrder.Route), false)]
-        [TestCase(nameof(FieldComparisonOrder.PromiseDate), nameof(FieldComparisonOrder.PromiseDate), false)]
+        [TestCase(nameof(FieldComparisonEntity.EndDate), nameof(FieldComparisonEntity.StartDate), true)]
+        [TestCase(nameof(FieldComparisonEntity.StartDate), nameof(FieldComparisonEntity.EndDate), true)]
+        [TestCase(nameof(FieldComparisonEntity.Name), nameof(FieldComparisonEntity.OtherName), true)]
+        [TestCase(nameof(FieldComparisonEntity.Status), nameof(FieldComparisonEntity.PreviousStatus), true)]
+        [TestCase(nameof(FieldComparisonEntity.Count), nameof(FieldComparisonEntity.LongCount), false)]
+        [TestCase(nameof(FieldComparisonEntity.Count), nameof(FieldComparisonEntity.Name), false)]
+        [TestCase(nameof(FieldComparisonEntity.StartDate), nameof(FieldComparisonEntity.StartDate), false)]
         public void Returns_Whether_The_Fields_Have_The_Same_Type(string propertyName, string otherPropertyName, bool expected)
         {
-            var property = OrderProperties.GetProperty(propertyName);
-            var otherProperty = OrderProperties.GetProperty(otherPropertyName);
+            var property = EntityProperties.GetProperty(propertyName);
+            var otherProperty = EntityProperties.GetProperty(otherPropertyName);
 
             Assert.That(property.CanCompareTo(otherProperty), Is.EqualTo(expected));
         }
@@ -390,11 +390,23 @@ public class CompareToFieldFacts
         public void Returns_Other_Fields_Of_The_Same_Type()
         {
             var converter = new ComparablePropertiesMultiValueConverter();
-            var property = OrderProperties.GetProperty(nameof(FieldComparisonOrder.NewPromiseDate));
+            var property = EntityProperties.GetProperty(nameof(FieldComparisonEntity.EndDate));
 
-            var result = (IEnumerable<IPropertyMetadata>)converter.Convert(new object[] { property, OrderProperties.Properties }, typeof(object), null, null);
+            var result = (IEnumerable<IPropertyMetadata>)converter.Convert(new object[] { property, EntityProperties.Properties }, typeof(object), null, null);
 
-            Assert.That(result.Select(x => x.Name), Is.EqualTo(new[] { nameof(FieldComparisonOrder.PreviousPromiseDate), nameof(FieldComparisonOrder.PromiseDate) }));
+            Assert.That(result.Select(x => x.Name), Is.EqualTo(new[] { nameof(FieldComparisonEntity.PreviousEndDate), nameof(FieldComparisonEntity.StartDate) }));
+        }
+
+        [Test]
+        public void Reuses_The_Result_For_The_Same_Field()
+        {
+            var converter = new ComparablePropertiesMultiValueConverter();
+            var property = EntityProperties.GetProperty(nameof(FieldComparisonEntity.EndDate));
+
+            var first = converter.Convert(new object[] { property, EntityProperties.Properties }, typeof(object), null, null);
+            var second = converter.Convert(new object[] { property, EntityProperties.Properties }, typeof(object), null, null);
+
+            Assert.That(second, Is.SameAs(first));
         }
 
         [Test]
@@ -402,45 +414,45 @@ public class CompareToFieldFacts
         {
             var converter = new ComparablePropertiesMultiValueConverter();
 
-            var result = (IEnumerable<IPropertyMetadata>)converter.Convert(new object[] { null, OrderProperties.Properties }, typeof(object), null, null);
+            var result = (IEnumerable<IPropertyMetadata>)converter.Convert(new object[] { null, EntityProperties.Properties }, typeof(object), null, null);
 
             Assert.That(result, Is.Empty);
         }
     }
 }
 
-public enum FieldComparisonStep
+public enum FieldComparisonStatus
 {
-    Load,
-    Process,
-    Paint
+    Draft,
+    Active,
+    Closed
 }
 
-public class FieldComparisonOrder
+public class FieldComparisonEntity
 {
     public int Id { get; set; }
 
-    public DateTime PromiseDate { get; set; }
+    public DateTime StartDate { get; set; }
 
-    public DateTime? NewPromiseDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    public DateTime? PreviousPromiseDate { get; set; }
+    public DateTime? PreviousEndDate { get; set; }
 
-    public int Quantity { get; set; }
+    public int Count { get; set; }
 
-    public int? DeliveredQuantity { get; set; }
+    public int? OtherCount { get; set; }
 
-    public long LongQuantity { get; set; }
+    public long LongCount { get; set; }
 
-    public string Route { get; set; }
+    public string Name { get; set; }
 
-    public string PreviousRoute { get; set; }
+    public string OtherName { get; set; }
 
-    public bool IsPlanned { get; set; }
+    public bool IsEnabled { get; set; }
 
-    public bool WasPlanned { get; set; }
+    public bool WasEnabled { get; set; }
 
-    public FieldComparisonStep CurrentStep { get; set; }
+    public FieldComparisonStatus Status { get; set; }
 
-    public FieldComparisonStep? PreviousStep { get; set; }
+    public FieldComparisonStatus? PreviousStatus { get; set; }
 }

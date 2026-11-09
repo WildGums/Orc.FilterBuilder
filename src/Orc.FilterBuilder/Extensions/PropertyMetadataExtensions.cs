@@ -24,6 +24,9 @@ public static class PropertyMetadataExtensions
             return false;
         }
 
-        return propertyMetadata.Type.GetNonNullable() == otherPropertyMetadata.Type.GetNonNullable();
+        var type = Nullable.GetUnderlyingType(propertyMetadata.Type) ?? propertyMetadata.Type;
+        var otherType = Nullable.GetUnderlyingType(otherPropertyMetadata.Type) ?? otherPropertyMetadata.Type;
+
+        return type == otherType;
     }
 }
