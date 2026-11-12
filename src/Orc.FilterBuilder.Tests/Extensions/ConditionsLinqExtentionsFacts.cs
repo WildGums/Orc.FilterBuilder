@@ -25,7 +25,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = true
             });
 
-            Assert.That(People.Where(t => t.BOOL), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.BOOL), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
 
@@ -38,7 +38,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.DATE == new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.DATE == new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -50,7 +50,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.INT == 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.INT == 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -62,7 +62,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = true
             });
 
-            Assert.That(People.Where(t => t.NullBOOL.HasValue && t.NullBOOL.Value), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullBOOL.HasValue && t.NullBOOL.Value), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -74,7 +74,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.NullDATE == new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE == new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -86,7 +86,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.NullINT == 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT == 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -98,7 +98,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "Ann"
             });
 
-            Assert.That(People.Where(t => t.STRING is not null && t.STRING == "Ann"), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is not null && t.STRING == "Ann"), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -115,7 +115,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "nn"
             });
 
-            Assert.That(People.Where(t => t.STRING is not null && t.STRING.Contains("nn")), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is not null && t.STRING.Contains("nn")), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -132,7 +132,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "nn"
             });
 
-            Assert.That(People.Where(t => t.STRING is null || !t.STRING.Contains("nn")), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is null || !t.STRING.Contains("nn")), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -148,7 +148,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "A"
             });
 
-            Assert.That(People.Where(t => t.STRING is not null && t.STRING.StartsWith("A")), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is not null && t.STRING.StartsWith("A")), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -164,7 +164,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "A"
             });
 
-            Assert.That(People.Where(t => t.STRING is null || !t.STRING.StartsWith("A")), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is null || !t.STRING.StartsWith("A")), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -180,7 +180,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "io"
             });
 
-            Assert.That(People.Where(t => t.STRING is not null && t.STRING.EndsWith("io")), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is not null && t.STRING.EndsWith("io")), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -196,7 +196,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "io"
             });
 
-            Assert.That(People.Where(t => t.STRING is null || !t.STRING.EndsWith("io")), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is null || !t.STRING.EndsWith("io")), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -212,7 +212,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.DATE != new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.DATE != new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -224,7 +224,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.INT != 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.INT != 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -236,7 +236,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.NullDATE != new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE != new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -247,7 +247,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.NotEqualTo,
                 Value = 5
             });
-            Assert.That(People.Where(t => t.NullINT != 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT != 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -259,7 +259,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = "Sergio"
             });
 
-            Assert.That(People.Where(t => t.STRING is null || t.STRING != "Sergio"), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.STRING is null || t.STRING != "Sergio"), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -275,7 +275,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.DATE > new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.DATE > new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -287,7 +287,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.INT > 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.INT > 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -299,7 +299,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.NullDATE > new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE > new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -311,7 +311,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.NullINT > 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT > 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -324,7 +324,7 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t => string.Compare(t.STRING, "Ann", StringComparison.InvariantCultureIgnoreCase) > 0), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t => string.Compare(t.STRING, "Ann", StringComparison.InvariantCultureIgnoreCase) > 0), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -340,7 +340,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(1990, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.DATE >= new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.DATE >= new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -352,7 +352,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.INT >= 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.INT >= 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -363,7 +363,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.GreaterThanOrEqualTo,
                 Value = new DateTime(1990, 1, 1)
             });
-            Assert.That(People.Where(t => t.NullDATE >= new DateTime(1990, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE >= new DateTime(1990, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -375,7 +375,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.NullINT >= 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT >= 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -388,8 +388,8 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t =>
-                    string.Compare(t.STRING, "Ann", StringComparison.InvariantCultureIgnoreCase) >= 0), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t =>
+                    string.Compare(t.STRING, "Ann", StringComparison.InvariantCultureIgnoreCase) >= 0), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -405,7 +405,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(2000, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.DATE < new DateTime(2000, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.DATE < new DateTime(2000, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -417,7 +417,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.INT < 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.INT < 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -429,7 +429,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(2000, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.NullDATE < new DateTime(2000, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE < new DateTime(2000, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -441,7 +441,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.NullINT < 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT < 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -454,8 +454,8 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t =>
-                    string.Compare(t.STRING, "Sergio", StringComparison.InvariantCultureIgnoreCase) < 0), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t =>
+                    string.Compare(t.STRING, "Sergio", StringComparison.InvariantCultureIgnoreCase) < 0), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -471,7 +471,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(2000, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.DATE <= new DateTime(2000, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.DATE <= new DateTime(2000, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -483,7 +483,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.INT <= 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.INT <= 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -495,7 +495,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = new DateTime(2000, 1, 1)
             });
 
-            Assert.That(People.Where(t => t.NullDATE <= new DateTime(2000, 1, 1)), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE <= new DateTime(2000, 1, 1)), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -507,7 +507,7 @@ public class ConditionsLinqExtentionsFacts
                 Value = 5
             });
 
-            Assert.That(People.Where(t => t.NullINT <= 5), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT <= 5), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -520,8 +520,8 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t =>
-                    string.Compare(t.STRING, "Sergio", StringComparison.InvariantCultureIgnoreCase) <= 0), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t =>
+                    string.Compare(t.STRING, "Sergio", StringComparison.InvariantCultureIgnoreCase) <= 0), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -536,7 +536,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.IsNull
             });
 
-            Assert.That(People.Where(x => x.NullDATE is null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(x => x.NullDATE is null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -547,7 +547,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.IsNull
             });
 
-            Assert.That(new List<Human>(), Is.EqualTo(People.Where(predicate)).AsCollection);
+            Assert.That(new List<Human>(), Is.EqualTo(GetPeople().Where(predicate)).AsCollection);
         }
 
         [Test]
@@ -558,7 +558,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.IsNull
             });
 
-            Assert.That(People.Where(t => t.NullDATE is null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE is null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -569,7 +569,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.IsNull
             });
 
-            Assert.That(People.Where(t => t.NullINT is null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT is null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -581,7 +581,7 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t => t.STRING is null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t => t.STRING is null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -596,7 +596,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.NotIsNull
             });
 
-            Assert.That(People, Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople(), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -607,7 +607,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.NotIsNull
             });
 
-            Assert.That(People, Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople(), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -618,7 +618,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.NotIsNull
             });
 
-            Assert.That(People.Where(t => t.NullDATE is not null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullDATE is not null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -629,7 +629,7 @@ public class ConditionsLinqExtentionsFacts
                 SelectedCondition = Condition.NotIsNull
             });
 
-            Assert.That(People.Where(t => t.NullINT is not null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+            Assert.That(GetPeople().Where(t => t.NullINT is not null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
 
         [Test]
@@ -641,7 +641,7 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t => t.STRING is not null), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t => t.STRING is not null), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -657,7 +657,7 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t => t.STRING == string.Empty), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t => t.STRING == string.Empty), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -673,7 +673,7 @@ public class ConditionsLinqExtentionsFacts
             });
 
             Assert.That(
-                People.Where(t => t.STRING != string.Empty), Is.EqualTo(People.Where(predicate)).Using(HumanComparer));
+                GetPeople().Where(t => t.STRING != string.Empty), Is.EqualTo(GetPeople().Where(predicate)).Using(HumanComparer));
         }
     }
 
@@ -712,7 +712,7 @@ public class ConditionsLinqExtentionsFacts
         return conditionGroup.BuildLambda<Human>().Compile();
     }
 
-    public static List<Human> People => new List<Human>
+    public static List<Human> GetPeople() => new List<Human>
     {
         new Human("Ann", false, true, 0, 0, new DateTime(1990, 1, 1), new DateTime(1990, 1, 1)),
         new Human("Sergio", true, false, 5, 5, new DateTime(2000, 1, 1), new DateTime(2000, 1, 1)),

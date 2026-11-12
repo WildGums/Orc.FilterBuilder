@@ -14,7 +14,9 @@ public class EditFilterViewFacts : StyledControlTestFacts<EditFilterView>
     [Target]
     public Automation.EditFilterView Target { get; set; }
 
+#pragma warning disable WFO2000
     public static IReadOnlyList<TestEntity> TestCollection =>
+#pragma warning restore WFO2000
         new List<TestEntity>
         {
             new() { Age = 1, FirstName = "Record 1", DateOfBirth = DateTime.Today},

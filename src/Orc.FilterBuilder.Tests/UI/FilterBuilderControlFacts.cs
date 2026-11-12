@@ -15,7 +15,9 @@ public class FilterBuilderControlFacts : StyledControlTestFacts<FilterBuilderCon
     [Target]
     public Automation.FilterBuilderControl Target { get; set; }
 
+#pragma warning disable WFO2000
     public static IReadOnlyList<TestEntity> TestCollection =>
+#pragma warning restore WFO2000
         new List<TestEntity>
         {
             new() { Age = 1, FirstName = "Record 1", DateOfBirth = DateTime.Today},
